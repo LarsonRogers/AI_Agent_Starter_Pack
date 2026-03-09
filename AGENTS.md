@@ -1,5 +1,5 @@
-# AGENTS.md
-<!-- Starter Pack v9.0 — 2026-03-09 --> — [PROJECT_NAME]
+# AGENTS.md — [PROJECT_NAME]
+<!-- Starter Pack v9.0 — 2026-03-09 -->
 
 > **This file exists for ChatGPT Codex compatibility.** Codex reads `AGENTS.md`
 > automatically, just as Claude Code reads `CLAUDE.md`.
