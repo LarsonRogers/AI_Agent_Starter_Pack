@@ -1,5 +1,5 @@
 # CLAUDE.md
-<!-- Starter Pack v10.6 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v10.7 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents (Claude Code, ChatGPT Codex, and others):**
 > Read files in this exact order before making any changes:
@@ -7,7 +7,8 @@
 > 1. `ARCHITECTURE.md` — core rules, guardrails, and behavioral protocols
 > 2. This file (`CLAUDE.md`) — tech stack, style, workflow, task prompts
 > 3. `CAPTAINS_LOG.md` — most recent entry only (if it exists)
-> 4. `PROTOCOLS.md` — load triggered sections only (trigger table: `AGENTS.md` → Step 2b)
+> 4. `PROTOCOLS.md` — triggered sections only, loaded after the log
+>    (trigger table: `AGENTS.md` → Step 2b; canonical source: `ARCHITECTURE.md` → Protocol Index)
 > 5. Any supplementary docs listed in the Related Docs table below
 >
 >

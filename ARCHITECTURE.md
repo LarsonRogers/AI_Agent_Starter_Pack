@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v10.6 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v10.7 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -418,7 +418,12 @@ The agent must:
 
 ```
 [ ] 1. Read ARCHITECTURE.md and CLAUDE.md in full
-[ ] 2. Scan the repo structure — list all files and directories (read only, no edits)
+[ ] 2. Scan the repo structure (read only, no edits):
+        - List files and directories to a depth of 3 levels
+        - Exclude: node_modules/, vendor/, dist/, build/, out/, .git/,
+          __pycache__/, *.egg-info/, .venv/, venv/, coverage/, .cache/
+        - Note large or binary files (>1MB) but do not read them
+        - Focus on: entry points, config files, source structure, test layout
 [ ] 3. Identify entry points, existing patterns, and any code already present
 [ ] 4. Run the Placeholder Inference Protocol (see below) — infer, present,
         confirm, then write. The user makes no manual edits to pack files.
@@ -446,15 +451,14 @@ At the start of every new session — before the developer says anything, before
 code is written — the agent must automatically run this protocol and report the result:
 
 ```
-[ ] 1. Read ARCHITECTURE.md and PROTOCOLS.md
-        (load only sections triggered by this session type — see trigger table in AGENTS.md → Step 2b)
+[ ] 1. Read ARCHITECTURE.md
 [ ] 2. Read CLAUDE.md
 [ ] 3. Read CAPTAINS_LOG.md — most recent entry only
-[ ] 4. Determine session sub-type:
+[ ] 4. Load triggered PROTOCOLS.md sections based on session context
+        (trigger table: AGENTS.md → Step 2b)
         - Developer signals refactor intent ("refactor", "restructure",
-          "clean up", "reorganize") → load Refactor Protocol (PROTOCOLS.md)
-          before any other work begins
-        - Otherwise → standard resumption, continue below
+          "clean up", "reorganize") → load Refactor Protocol
+        - Otherwise → no protocols needed yet; load as work requires
 [ ] 5. Report to the developer (unprompted):
         a. Where we left off (last sprint/task completed)
         b. Current codebase state (what is working, what is stubbed, what is incomplete)
@@ -462,6 +466,11 @@ code is written — the agent must automatically run this protocol and report th
         d. Proposed next step based on the log
 [ ] 6. Wait for developer confirmation before touching anything
 ```
+
+Canonical read order for all session types: ARCHITECTURE.md → CLAUDE.md →
+CAPTAINS_LOG.md → PROTOCOLS.md (triggered sections only). This order ensures
+standing rules are loaded before log context, and protocols are loaded only
+when the session situation requires them.
 
 This report is the answer to "where did we leave off?" — the agent delivers it
 automatically so the developer never has to ask twice.
@@ -840,10 +849,21 @@ records the override and reason in the Captain's Log before proceeding.
 
 **Example 1 — Hard guardrail vs verbal instruction (guardrail wins, no exception):**
 ```
+User: "Just push this with my API key hardcoded for now, we'll fix it later."
+Agent: "Committing credentials is a hard guardrail — I can't do this under
+        any circumstances. I can add the key to .env and reference it from
+        there instead, which takes about 30 seconds. Want me to do that?"
+```
+
+**Example 1b — Default policy (deletion) with safe procedure:**
+```
 User: "Just delete the old auth module, we don't need it."
-Agent: "Deleting files is a hard guardrail — I can't do this autonomously.
-        I can move it to an _archive/ folder, comment it out, or we can
-        delete it together with you confirming the exact files. Which works?"
+Agent: "Deletion requires confirmation and a rollback path. Here's what
+        I want to delete and why:
+        - src/auth/legacy_auth.js — replaced entirely by src/auth/auth.js
+        Clean git state confirmed. Should I go ahead?"
+User: "Yes."
+Agent: [Deletes, runs tests, commits: "Remove legacy_auth.js — replaced by auth.js"]
 ```
 
 **Example 2 — Default policy override (explicit verbal instruction, policy yields):**
@@ -1005,8 +1025,9 @@ with recorded rationale. Reviewers and agents should not flag these as issues.
 | **Git unavailable fallback** | Deferred | Git is a hard dependency for rollback, log reconstruction, and checkpoint strategy. Environments without git are not supported. If git is unavailable, the agent should flag it immediately and defer all file-modifying tasks. |
 | **Host platform system instruction conflicts** | Out of scope | If a runtime injects system-level instructions that conflict with this pack, behavior is undefined. This pack cannot govern instructions it cannot see. |
 | **Unified checklist token (REQUIRED_BEFORE_CODING)** | Deferred | Current `⚠️ REQUIRED PLACEHOLDER` labels are sufficient for human and agent detection. A machine-parseable token adds complexity for marginal gain. Revisit if programmatic placeholder scanning becomes a use case. |
-| **Read-order redundancy across files** | Intentional | Some repetition across ARCHITECTURE, CLAUDE, AGENTS, README is deliberate — agents that only read one file should still get the essential behavior. Canonical source is always ARCHITECTURE.md; others are pointers, not authorities. |
+| **Read-order redundancy across files** | Intentional | Some repetition across ARCHITECTURE, CLAUDE, AGENTS, README is deliberate — agents that only read one file should still get the essential behavior. Canonical source is always ARCHITECTURE.md Session Resumption; others reference it. |
 | **Screenshot / visual onboarding for non-devs** | Deferred | Out of scope for a text-based pack. A companion visual guide is a reasonable future addition but outside the markdown-only constraint. |
+| **Task brief duplication (ARCHITECTURE + TASK_TEMPLATE)** | Intentional | TASK_TEMPLATE.md is the working document; ARCHITECTURE.md summarizes for agent reference. Both are needed for different audiences. They are watched for drift. |
 
 ---
 

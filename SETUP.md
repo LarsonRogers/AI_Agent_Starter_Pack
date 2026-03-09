@@ -1,5 +1,5 @@
 # Setup Guide
-<!-- Starter Pack v10.6 -->
+<!-- Starter Pack v10.7 -->
 
 No coding experience required. If you are a developer, skip to
 Developer Quick Setup at the bottom.
@@ -49,6 +49,7 @@ your-project/
 ├── ARCHITECTURE.md
 ├── AGENTS.md
 ├── CLAUDE.md
+├── PROTOCOLS.md
 ├── SETUP.md
 ├── TASK_TEMPLATE.md
 ├── README.md
@@ -116,15 +117,9 @@ see "If something goes wrong" below.
 
 **You start the session. The agent responds first — unprompted:**
 
-> "Hi! Before I do anything, I need to understand who I'm working with
-> so I can communicate in the most useful way.
->
-> Two quick questions:
-> 1. Are you a developer, or do you prefer plain English explanations?
-> 2. Have you worked with AI coding agents before?
->
-> (You can also just say 'developer', 'non-dev', or 'somewhere in between'
-> and I'll calibrate from there.)"
+> "Quick question before we start — are you a developer or engineer, or
+> are you coming at this from a different angle? There's no wrong answer,
+> it just helps me calibrate how much I explain."
 
 **You say:** "Non-developer, first time using this."
 
@@ -183,6 +178,12 @@ This shouldn't happen — the agent fills these in automatically. If it does,
 tell it: *"Run the Placeholder Inference Protocol and present your inferred
 values for my confirmation."*
 
+**"The agent says it can't find PROTOCOLS.md or a protocol is missing"**
+PROTOCOLS.md is a required pack file. Check that it was copied into your
+project root alongside ARCHITECTURE.md. If it's missing, copy it from the
+original zip file. Without it, several key agent behaviors are unavailable
+and the agent will halt rather than guess.
+
 **"The agent seems confused or has lost track"**
 Tell it: *"Check the Captain's Log and tell me where we left off."*
 Or start a fresh session — it will resume from the log automatically.
@@ -224,6 +225,55 @@ regardless of platform.
 **If your agent can't read files directly**, paste the contents of
 `ARCHITECTURE.md` and `CLAUDE.md` into the chat manually. They're plain
 text files — you can open them in any text editor, select all, and paste.
+
+---
+
+## Appendix: Glossary for Non-Developers
+
+Terms the pack uses that may be unfamiliar:
+
+**Git** — A tool that saves snapshots of your code over time, like a detailed
+undo history. Each snapshot is called a "commit." If something breaks, you
+can roll back to any previous snapshot. The agent handles git for you.
+
+**Repo (repository)** — Your project folder when it's being tracked by git.
+"The repo root" means the top-level folder of your project.
+
+**Terminal** — A text-based window where you type commands. Also called
+"command line," "command prompt," or "shell." The agent runs inside it.
+
+**Dotfiles / hidden folders** — Files and folders whose names start with a dot
+(`.claude/`, `.codex/`). They're hidden by default in most file browsers.
+See the appendix below for how to show them.
+
+**CI (Continuous Integration)** — An automated system that runs tests every
+time code is saved, usually on a service like GitHub Actions. Optional for
+most projects. The pack includes a CI template but you don't need to use it.
+
+**Lint / linter** — A tool that automatically checks code for common mistakes,
+style inconsistencies, and potential bugs — like spell-check for code.
+
+**Type check** — A tool that verifies variables and functions are used
+correctly according to their declared types. Only relevant for some languages
+(TypeScript, Python with type hints). The agent will tell you if it applies.
+
+**Tests / test suite** — Code that automatically verifies your project behaves
+correctly. The agent runs these after every change to make sure nothing broke.
+
+**Lockfile** — A file (like `package-lock.json` or `poetry.lock`) that records
+the exact versions of all installed packages. Auto-generated — never edit it.
+
+**Allow list** — A list of commands the agent is permitted to run automatically
+without asking. Configured in `.claude/settings.json`. Comes pre-set with
+safe defaults; you don't need to change it.
+
+**Stack** — The combination of programming languages, frameworks, and tools
+used to build a project. "What's your stack?" means "what technology are
+you using?"
+
+**Dependency / package** — A piece of software your project relies on, written
+by someone else. Installing a dependency means adding it to your project.
+The agent will always ask before adding new ones.
 
 ---
 

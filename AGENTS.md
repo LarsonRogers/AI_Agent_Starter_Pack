@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v10.6 — 2026-03-09 -->
+<!-- Starter Pack v10.7 — 2026-03-09 -->
 
 > **This file is the entry point for ChatGPT Codex and any agent that reads
 > `AGENTS.md` automatically.** It contains bootstrapping instructions and a
@@ -18,8 +18,11 @@ Read in this canonical order every session:
 1. `ARCHITECTURE.md` — core rules, guardrails, and behavioral protocols
 2. `CLAUDE.md` — project-specific stack, style, and task instructions
 3. `CAPTAINS_LOG.md` — most recent entry only (if it exists)
-4. `PROTOCOLS.md` — load only sections triggered by current situation
-   (trigger table below in Step 2b — use it, do not guess)
+4. `PROTOCOLS.md` — triggered sections only, loaded after the log
+   (trigger table: Step 2b below; canonical source: ARCHITECTURE.md → Protocol Index)
+
+This order is authoritative. ARCHITECTURE.md and CLAUDE.md load first so
+standing rules are active before the log is read and protocols are triggered.
 
 Do not write any code until all four are read and the session start
 protocol in `ARCHITECTURE.md` is complete.
