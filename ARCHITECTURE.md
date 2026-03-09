@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v10.7 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v10.8 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -1028,6 +1028,9 @@ with recorded rationale. Reviewers and agents should not flag these as issues.
 | **Read-order redundancy across files** | Intentional | Some repetition across ARCHITECTURE, CLAUDE, AGENTS, README is deliberate — agents that only read one file should still get the essential behavior. Canonical source is always ARCHITECTURE.md Session Resumption; others reference it. |
 | **Screenshot / visual onboarding for non-devs** | Deferred | Out of scope for a text-based pack. A companion visual guide is a reasonable future addition but outside the markdown-only constraint. |
 | **Task brief duplication (ARCHITECTURE + TASK_TEMPLATE)** | Intentional | TASK_TEMPLATE.md is the working document; ARCHITECTURE.md summarizes for agent reference. Both are needed for different audiences. They are watched for drift. |
+| **Read-order redundancy (raised multiple times)** | Intentional | Session start and read-order summaries appear in ARCHITECTURE, CLAUDE, AGENTS, README, and SETUP. This is deliberate — agents reading only one file should still get core behavior. Canonical source is ARCHITECTURE.md Session Resumption. This tradeoff has been reviewed and accepted across multiple audit cycles. Do not re-flag. |
+| **Generic agent paste path omits AGENTS trigger table** | Accepted limitation | SETUP.md generic path tells users to paste ARCHITECTURE and CLAUDE if file access is limited. This omits AGENTS trigger table. Tradeoff: keeping paste instructions simple matters more than completeness for first-time non-CLI users. Agents following ARCHITECTURE alone will still have the Protocol Index. |
+| **"Platform-neutral" vs platform-specific config files** | Intentional | Behavioral rules are platform-neutral. Integration files (.claude/, .codex/) are platform-specific adapters. These are separate concerns. CLAUDE.md now states this explicitly. The claim of neutrality applies to behavior, not tooling. |
 
 ---
 

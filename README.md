@@ -1,5 +1,5 @@
 # AI Agent Starter Pack
-<!-- Starter Pack v10.7 -->
+<!-- Starter Pack v10.8 -->
 
 A platform-agnostic instruction set for AI coding agents. Drop it into any repo
 and any agent — Claude Code, Codex, Cursor, Windsurf, Aider, or others — will
@@ -80,7 +80,7 @@ If two files appear to conflict on a topic, this table is authoritative:
 | Verbal override rules | `ARCHITECTURE.md` → Instruction Precedence |
 | Session start read order | `ARCHITECTURE.md` → Session Resumption |
 | Placeholder inference procedure | `PROTOCOLS.md` → Placeholder Inference Protocol |
-| Which PROTOCOLS.md section to load when | `AGENTS.md` → Step 2b trigger table |
+| Which PROTOCOLS.md section to load when | `ARCHITECTURE.md` → Protocol Index (canonical); `AGENTS.md` → Step 2b (quick-reference mirror) |
 | Project-specific tech stack and style | `CLAUDE.md` |
 | All detailed protocols (inherited, refactor, research, etc.) | `PROTOCOLS.md` |
 | Session history and handoff | `CAPTAINS_LOG.md` |
@@ -136,6 +136,16 @@ AGENTS.md                   Entry point for Codex and other agents. Core
   agent-ci.yml              CI template — lint, format, type check, tests,
                             secret scanning, dependency audit. Adapt to
                             your stack before use.
+
+--- Agent-created files (not present until first session) ---
+
+CAPTAINS_LOG.md             Created on first session. Running handoff log,
+                            newest entry first. Enables any agent on any
+                            platform to resume where the last session ended.
+
+CHANGELOG.md                Created after first commit. Appended after every
+                            committed task — what changed, why, and any
+                            decisions made.
 ```
 
 ---
@@ -180,7 +190,7 @@ pack to catch regressions in agent behavior before they affect real work.
 
 ## Version
 
-This is **Starter Pack v10.7**. The version is recorded in the header of
+This is **Starter Pack v10.8**. The version is recorded in the header of
 `ARCHITECTURE.md`, `CLAUDE.md`, and `AGENTS.md`, and in every Captain's Log
 entry so there's always an audit trail of which instruction set was active
 for any given session.

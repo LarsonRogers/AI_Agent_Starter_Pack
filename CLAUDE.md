@@ -1,5 +1,5 @@
 # CLAUDE.md
-<!-- Starter Pack v10.7 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v10.8 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents (Claude Code, ChatGPT Codex, and others):**
 > Read files in this exact order before making any changes:
@@ -28,7 +28,8 @@
 >
 > Do not write any code until all steps are complete.
 > Claude Code reads this file automatically. Codex agents: see also `AGENTS.md`.
-> All instructions are platform-neutral — follow them regardless of which agent you use.
+> Behavioral rules are platform-neutral — follow them regardless of which agent you use.
+> Integration files (.claude/, .codex/) are platform-specific adapters, not core behavior.
 >
 > **For the developer:** This is your project instruction manual. `ARCHITECTURE.md`
 > is your structural contract. Together they are the single source of truth.
