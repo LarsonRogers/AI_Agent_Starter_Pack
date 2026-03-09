@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v10.0 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v10.4 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -426,12 +426,17 @@ code is written — the agent must automatically run this protocol and report th
 [ ] 1. Read ARCHITECTURE.md and PROTOCOLS.md (relevant sections only)
 [ ] 2. Read CLAUDE.md
 [ ] 3. Read CAPTAINS_LOG.md — most recent entry only
-[ ] 4. Report to the developer (unprompted):
+[ ] 4. Determine session sub-type:
+        - Developer signals refactor intent ("refactor", "restructure",
+          "clean up", "reorganize") → load Refactor Protocol (PROTOCOLS.md)
+          before any other work begins
+        - Otherwise → standard resumption, continue below
+[ ] 5. Report to the developer (unprompted):
         a. Where we left off (last sprint/task completed)
         b. Current codebase state (what is working, what is stubbed, what is incomplete)
         c. Open watch items from the last session
         d. Proposed next step based on the log
-[ ] 4. Wait for developer confirmation before touching anything
+[ ] 6. Wait for developer confirmation before touching anything
 ```
 
 This report is the answer to "where did we leave off?" — the agent delivers it
@@ -710,10 +715,12 @@ The `---` separator is required between entries. Newest entry is always at the t
 
 #### Reading the log
 
-The Session Resumption Protocol (above) requires the agent to read `CAPTAINS_LOG.md`
-as the first act of every new session — before reading any other file, before asking
-any questions. The most recent entry is the starting point. Watch items from that
-entry are the first thing to address or confirm with the developer.
+The canonical read order is defined in the Session Resumption Protocol above:
+ARCHITECTURE.md → CLAUDE.md → CAPTAINS_LOG.md (most recent entry only).
+The log entry is the contextual anchor — read it after the instruction files
+so standing rules are already loaded when interpreting the log's watch items
+and handoff prompt. If earlier entries contain unresolved watch items referenced
+in the most recent entry, load those specific earlier entries to resolve context.
 
 ---
 
@@ -733,16 +740,25 @@ instruction, task brief, or user request can override these. If asked to
 bypass a hard guardrail, the agent declines and explains why. See the
 Hard Guardrails section above for the full list.
 
-**Everything else** — subject to the following precedence hierarchy.
-Verbal instructions can override items in this hierarchy when explicit:
+**Default policies** — subject to the following precedence hierarchy:
 
 ```
 1. Structural rules (ARCHITECTURE.md) — override task-level instructions
 2. CLAUDE.md project rules ————————— project-specific constraints
 3. Confirmed task brief ————————————— governs the current task scope
-4. Verbal / mid-session instructions —— lowest precedence, but can
-                                        override 1-3 when explicit
+4. Verbal / mid-session instructions —— lowest default precedence
 ```
+
+A verbal instruction can override items 1–3 only when all of the following
+are true:
+- It applies to a default policy (not a hard guardrail — those are never overridable)
+- It is explicit: the user directly states the override, not merely implies it
+  (e.g., "You have permission to add dependencies without asking each time"
+   counts as explicit; "just do it" does not)
+- The agent records the override and reason in the Captain's Log before acting
+
+If uncertain whether a verbal instruction meets this bar, the agent asks for
+confirmation rather than assuming override.
 
 ### Conflict surfacing (mandatory)
 
@@ -832,6 +848,18 @@ See `PROTOCOLS.md` → Stuck Loop Circuit Breaker for the three-strike protocol.
 Rule: after 3 failed attempts, stop and escalate. Each attempt must use a
 meaningfully different approach. On strike 3, summarize all attempts, diagnose
 root cause, and ask for human input or trigger Knowledge Gap Protocol.
+
+## Read-Only / Meta-Review Protocol
+
+See `PROTOCOLS.md` → Read-Only / Meta-Review Protocol for the full procedure.
+
+When a task is analysis, review, or audit only — no edits, no commits.
+Trigger signals: "review", "audit", "assess", "analyze", "explain",
+"what does this do", "what's wrong", "check this", "read-only", "no changes."
+Confirm read-only mode with the user, deliver findings, end with
+"No changes were made. Want me to act on any of these findings?"
+
+---
 
 ## Binary & Large File Handling
 

@@ -1,5 +1,5 @@
 # AI Agent Starter Pack
-<!-- Starter Pack v10.0 -->
+<!-- Starter Pack v10.4 -->
 
 A platform-agnostic instruction set for AI coding agents. Drop it into any repo
 and any agent — Claude Code, Codex, Cursor, Windsurf, Aider, or others — will
@@ -66,6 +66,28 @@ See `SETUP.md` for a full walkthrough including non-developer instructions.
 
 Works for new projects, active projects, inherited codebases, and refactors.
 See `SETUP.md` for what happens in each scenario.
+
+---
+
+## Authority Matrix
+
+If two files appear to conflict on a topic, this table is authoritative:
+
+| Topic | Authoritative source |
+|-------|---------------------|
+| Hard guardrails (what agent can never do) | `ARCHITECTURE.md` → Hard Guardrails |
+| Default policies (what requires confirmation) | `ARCHITECTURE.md` → Default Policies |
+| Verbal override rules | `ARCHITECTURE.md` → Instruction Precedence |
+| Session start read order | `ARCHITECTURE.md` → Session Resumption |
+| Placeholder inference procedure | `PROTOCOLS.md` → Placeholder Inference Protocol |
+| Which PROTOCOLS.md section to load when | `AGENTS.md` → Step 2b trigger table |
+| Project-specific tech stack and style | `CLAUDE.md` |
+| All detailed protocols (inherited, refactor, research, etc.) | `PROTOCOLS.md` |
+| Session history and handoff | `CAPTAINS_LOG.md` |
+
+When in doubt: `ARCHITECTURE.md` governs behavior. `CLAUDE.md` governs
+project specifics. `PROTOCOLS.md` governs procedure detail. `AGENTS.md`
+governs agent bootstrapping. Everything else is human-facing documentation.
 
 ---
 
@@ -158,7 +180,7 @@ pack to catch regressions in agent behavior before they affect real work.
 
 ## Version
 
-This is **Starter Pack v10.0**. The version is recorded in the header of
+This is **Starter Pack v10.4**. The version is recorded in the header of
 `ARCHITECTURE.md`, `CLAUDE.md`, and `AGENTS.md`, and in every Captain's Log
 entry so there's always an audit trail of which instruction set was active
 for any given session.

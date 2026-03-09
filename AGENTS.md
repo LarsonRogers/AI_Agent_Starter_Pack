@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v10.0 — 2026-03-09 -->
+<!-- Starter Pack v10.4 — 2026-03-09 -->
 
 > **This file is the entry point for ChatGPT Codex and any agent that reads
 > `AGENTS.md` automatically.** It is a compatibility shim — not an authority.
@@ -54,6 +54,7 @@ when the situation requires it:
 | Web access unavailable, training data unverifiable | Knowledge Gap Protocol |
 | Change touches 3+ files or layers | Cross-Cutting Changes |
 | Writing or evaluating tests | Testing Strategy |
+| Review / audit / analysis only (no edits) | Read-Only / Meta-Review Protocol |
 
 ---
 
@@ -75,8 +76,12 @@ A condensed reference — full protocols are in `ARCHITECTURE.md`:
 - Record pack version in every Captain's Log entry.
 - Never guess on unknown external systems — Knowledge Gap Protocol.
 - Validation tooling missing? Report, propose, never skip silently.
-- Never edit starter pack files (ARCHITECTURE.md, PROTOCOLS.md, CLAUDE.md,
-  AGENTS.md, TASK_TEMPLATE.md) unless explicitly instructed to update the pack.
+- Never edit starter pack files (ARCHITECTURE.md, PROTOCOLS.md, AGENTS.md,
+  TASK_TEMPLATE.md) unless explicitly instructed to update the pack.
+  Exception — CLAUDE.md: designated placeholder sections (project name, tech
+  stack, validation commands, file structure) may be written during the
+  Placeholder Inference Protocol. Policy sections of CLAUDE.md are never
+  edited without explicit instruction.
 - Never read, edit, or commit binary files without explicit awareness.
   Never commit files over 1MB without confirmation. Verify .gitignore on first session.
 - No hardcoded environment-specific values — URLs, ports, endpoints go in config.

@@ -1,5 +1,5 @@
 # Setup Guide
-<!-- Starter Pack v10.0 -->
+<!-- Starter Pack v10.4 -->
 
 No coding experience required. If you are a developer, skip to
 Developer Quick Setup at the bottom.
@@ -125,6 +125,35 @@ The Captain's Log has everything needed to continue.
 **"The agent is asking me to run commands I don't understand"**
 Ask it: *"Explain what that command does in plain English before I run it."*
 The agent should never ask you to run something without explaining it first.
+
+---
+
+## Generic Agent Path (no CLI required)
+
+If you're using a web-based or IDE agent — Cursor, Windsurf, ChatGPT web,
+Gemini, or any agent without automatic file reading — follow this path
+instead of the CLI instructions above.
+
+**Step 1 — Copy the pack files into your project** (same as the main setup)
+
+**Step 2 — Open your agent and paste this starter prompt:**
+
+```
+Before doing anything else, read these files from my project in this order:
+1. ARCHITECTURE.md
+2. CLAUDE.md
+3. CAPTAINS_LOG.md (most recent entry only, if it exists)
+
+Then follow the session start protocol in ARCHITECTURE.md exactly.
+Do not write any code or make any changes until the protocol is complete.
+```
+
+That's it. The agent takes over from there — same protocols, same behavior,
+regardless of platform.
+
+**If your agent can't read files directly**, paste the contents of
+`ARCHITECTURE.md` and `CLAUDE.md` into the chat manually. They're plain
+text files — you can open them in any text editor, select all, and paste.
 
 ---
 
