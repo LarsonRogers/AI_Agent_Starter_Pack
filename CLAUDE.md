@@ -1,5 +1,5 @@
 # CLAUDE.md
-<!-- Starter Pack v10.4 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v10.5 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents (Claude Code, ChatGPT Codex, and others):**
 > Read files in this exact order before making any changes:
@@ -44,18 +44,20 @@ All instructions apply equally to all agents.
 
 ## What This Project Is
 
-<!-- Replace with a 2-3 sentence description of the project -->
+<!-- ⚠️ REQUIRED PLACEHOLDER — agent fills this during Placeholder Inference Protocol.
+     First coding task cannot begin until this section is complete. -->
 [PROJECT_NAME] is ...
 
 ### License
-<!-- e.g., MIT, GPL-3.0, proprietary -->
+<!-- DEFERRED — fill in when known. e.g., MIT, GPL-3.0, proprietary -->
 
 ---
 
 ## Tech Stack & Constraints
 
-<!-- List the languages, runtimes, and frameworks. Be specific about version
-     constraints — this is what prevents agents from writing incompatible code. -->
+<!-- ⚠️ REQUIRED PLACEHOLDER — agent fills this during Placeholder Inference Protocol.
+     First coding task cannot begin until this table is complete.
+     Be specific about version constraints — this prevents incompatible code. -->
 
 | Technology | Version / Constraint | Notes |
 |-----------|---------------------|-------|
@@ -86,7 +88,9 @@ All instructions apply equally to all agents.
 ```
 
 ### Validation Commands
-<!-- The agent should be able to run these to verify its work. -->
+<!-- ⚠️ REQUIRED PLACEHOLDER — agent fills this during Placeholder Inference Protocol.
+     First coding task cannot begin until at least lint and test commands are set.
+     If a command is genuinely unavailable, agent marks it with: # NOT CONFIGURED -->
 ```bash
 # Lint
 [INSERT LINT COMMAND]           # e.g., npm run lint, ruff check .
@@ -112,7 +116,8 @@ committing.
 
 ## File Structure
 
-<!-- Show the project layout. Mark files the agent should NOT edit. -->
+<!-- ⚠️ REQUIRED PLACEHOLDER — agent fills this during Placeholder Inference Protocol.
+     First coding task cannot begin until this reflects the actual repo layout. -->
 ```
 /                              # repo root
 ├── .claude/
@@ -138,8 +143,22 @@ committing.
 - docs/**                    # Documentation
 - CAPTAINS_LOG.md            # Agent maintains this
 - CHANGELOG.md               # Agent maintains this
-- CLAUDE.md                  # Agent may fill in placeholders
-- ARCHITECTURE.md            # Agent may fill in project-specific sections
+```
+
+**Restricted edits — designated sections only:**
+```
+- CLAUDE.md                  # Placeholder sections only (project name, tech stack,
+                             # validation commands, file structure). Policy sections
+                             # are never edited without explicit user instruction.
+                             # See ARCHITECTURE.md → Hard Guardrails for full rules.
+```
+
+**Hard guardrail — agent must NOT edit without explicit instruction to update the pack:**
+```
+- ARCHITECTURE.md            # Policy file — not editable as a side effect of project work
+- PROTOCOLS.md               # Policy file — same rule
+- AGENTS.md                  # Policy file — same rule
+- TASK_TEMPLATE.md           # Policy file — same rule
 ```
 
 **Human-only or generated — agent must NOT edit:**
@@ -239,7 +258,8 @@ refactor/short-description
 
 ## Task Prompts (for Claude Code, Codex, or any agent)
 
-<!-- Replace with your actual phased tasks. Pattern:
+<!-- DEFERRED — fill in as work is planned. Not required before first session.
+     Pattern:
      - Start with a read-only analysis step
      - One logical change per prompt
      - Git commit between each
@@ -269,6 +289,6 @@ refactor/short-description
 
 ## Related Projects
 
-<!-- Link to upstream, forks, or sibling projects -->
+<!-- DEFERRED — fill in if/when relevant. Not required before first session. -->
 | Project | Relationship |
 |---------|-------------|

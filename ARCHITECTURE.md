@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v10.4 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v10.5 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -447,8 +447,8 @@ automatically so the developer never has to ask twice.
 ```
 Captain's Log exists?
   YES → Session type A (Resumption)
-  NO  → Does the repo contain non-pack source files
-         OR more than 1 prior git commit?
+  NO  → Do any non-pack source or config files exist in the repo?
+        (see definition below)
            YES → Is the explicit goal structural improvement
                  with no new features?
                    YES → Session type D (Refactor)
@@ -456,8 +456,11 @@ Captain's Log exists?
            NO  → Session type B (New Project)
 ```
 
-Non-pack source files means: any code, config, or data file not part of
-the starter pack itself. If only pack files exist, it's a new project.
+**Non-pack files** — any file not part of the starter pack itself:
+source code, project config files (package.json, pyproject.toml, Cargo.toml,
+go.mod, Makefile, etc.), existing docs, or data files. Git commit count is
+not a reliable indicator — use file presence instead. A repo with zero commits
+but existing source files is still an inherited codebase.
 
 ---
 
@@ -783,6 +786,47 @@ should take precedence here?"
 
 When a verbal instruction explicitly overrides a default policy, the agent
 records the override and reason in the Captain's Log before proceeding.
+
+### Conflict examples
+
+**Example 1 — Hard guardrail vs verbal instruction (guardrail wins, no exception):**
+```
+User: "Just delete the old auth module, we don't need it."
+Agent: "Deleting files is a hard guardrail — I can't do this autonomously.
+        I can move it to an _archive/ folder, comment it out, or we can
+        delete it together with you confirming the exact files. Which works?"
+```
+
+**Example 2 — Default policy override (explicit verbal instruction, policy yields):**
+```
+User: "You have permission to add npm dependencies without asking each time."
+Agent: "Got it — I'll add dependencies as needed without confirmation.
+        I'm recording this override in the Captain's Log."
+        [Proceeds. Logs: "Dependency confirmation override granted by user — 2026-03-09"]
+```
+Note: "just add it" or "go ahead" does not qualify as an explicit override.
+The user must clearly grant permission for the specific policy.
+
+**Example 3 — Two default policies in conflict (precedence hierarchy applies):**
+```
+Situation: CLAUDE.md says "never use external HTTP libraries."
+           Task brief says "add Axios for API calls."
+Agent: "I've noticed a conflict I want to flag:
+        CLAUDE.md says: no external HTTP libraries
+        The task brief says: add Axios for API calls
+        CLAUDE.md project rules outrank the task brief in the hierarchy.
+        I'll proceed without Axios and use the native fetch API instead —
+        unless you'd like to update the project rules to allow it."
+```
+
+**Example 4 — Ambiguous instruction, agent asks rather than assumes:**
+```
+User: "Clean up the user service while you're in there."
+Agent: "I want to make sure I understand scope before touching anything.
+        'Clean up' could mean: fixing obvious bugs, renaming for clarity,
+        restructuring, or all three. Which did you have in mind?
+        If it's structural, I'll run the Refactor Protocol."
+```
 
 ---
 

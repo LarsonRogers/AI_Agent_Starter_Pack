@@ -1,5 +1,5 @@
 # PROTOCOLS.md
-<!-- Starter Pack v10.4 — 2026-03-09 -->
+<!-- Starter Pack v10.5 — 2026-03-09 -->
 
 > **For AI coding agents:** This file contains detailed protocols loaded
 > on demand. Read the relevant section when the situation requires it.
@@ -208,23 +208,26 @@ protocols apply.
 The user never manually edits starter pack files. All placeholder substitution
 is handled by the agent on first session.
 
-**Required placeholders** — the agent must resolve these before any work begins:
+**Required placeholders** — marked `⚠️ REQUIRED PLACEHOLDER` in CLAUDE.md.
+The agent must resolve all of these before any coding task begins:
 ```
-[PROJECT_NAME]     — infer from repo name, existing README, or package.json/pyproject.toml
-[Tech Stack table] — infer from files present: package.json, requirements.txt,
-                     Cargo.toml, go.mod, etc.
+[PROJECT_NAME]        — infer from repo name, existing README, or package.json/pyproject.toml
+[Tech Stack table]    — infer from files present: package.json, requirements.txt,
+                        Cargo.toml, go.mod, etc.
 [Validation Commands] — infer from package.json scripts, Makefile, or common
-                        conventions for the detected stack
-[File Structure]   — infer from actual repo layout
+                        conventions for the detected stack. If genuinely unavailable,
+                        mark with: # NOT CONFIGURED
+[File Structure]      — infer from actual repo layout
 ```
 
-**Deferred placeholders** — these are intentional scaffolding, filled in as
-the project develops. The agent does not halt on these:
+**Deferred placeholders** — marked `DEFERRED` in CLAUDE.md. These are intentional
+scaffolding filled as the project develops. The agent never halts on these:
 ```
-[Pattern Name]         — Pattern Registry entries, filled as patterns emerge
-[Task Prompts]         — filled by developer as work is planned
-[Related Projects]     — filled if/when relevant
-[Key Invariants]       — filled as architecture solidifies
+[License]          — filled when known
+[Task Prompts]     — filled by developer as work is planned
+[Related Projects] — filled if/when relevant
+[Pattern Name]     — Pattern Registry entries, filled as patterns emerge
+[Key Invariants]   — filled as architecture solidifies
 ```
 
 **The inference flow:**

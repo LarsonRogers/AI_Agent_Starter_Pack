@@ -1,5 +1,5 @@
 # Setup Guide
-<!-- Starter Pack v10.4 -->
+<!-- Starter Pack v10.5 -->
 
 No coding experience required. If you are a developer, skip to
 Developer Quick Setup at the bottom.
@@ -154,6 +154,53 @@ regardless of platform.
 **If your agent can't read files directly**, paste the contents of
 `ARCHITECTURE.md` and `CLAUDE.md` into the chat manually. They're plain
 text files — you can open them in any text editor, select all, and paste.
+
+---
+
+## Appendix: Opening a Terminal in Your Project Folder
+
+If "open a terminal in your project folder" is unfamiliar, here's exactly
+how to do it on each platform.
+
+**Mac**
+1. Open Finder and navigate to your project folder
+2. Right-click (or Control-click) the folder
+3. Select "New Terminal at Folder"
+   — If you don't see this option: go to System Settings → Privacy & Security
+     → Developer Tools, or open Terminal from Applications → Utilities,
+     then type `cd ` (with a space), drag your project folder into the Terminal
+     window, and press Enter
+
+**Windows**
+1. Open File Explorer and navigate to your project folder
+2. Click in the address bar at the top (where the folder path is shown)
+3. Type `cmd` and press Enter — a terminal opens in that folder
+   — Alternatively: hold Shift and right-click the folder, select
+     "Open PowerShell window here" or "Open command window here"
+
+**Verifying hidden files were copied correctly**
+After copying the pack files, check that the hidden folders are present:
+- Mac: press Cmd+Shift+Period in Finder to show hidden files.
+  You should see `.claude`, `.codex`, and `.github` folders.
+- Windows: in File Explorer, click View → Show → Hidden items.
+  You should see the same three folders.
+
+If any are missing, copy them from the zip again — they're required for
+Claude Code and Codex to pick up their settings automatically.
+
+**Verifying setup worked**
+When you start your first agent session, the agent should:
+1. Greet you and ask two quick questions about your background
+2. Scan the repo and report what it found
+3. Present inferred project details for your confirmation
+4. Wait for your go-ahead before doing anything
+
+If the agent starts writing code immediately without any of the above,
+paste this into the chat:
+```
+Stop. Read AGENTS.md and follow the session start protocol before doing
+anything else.
+```
 
 ---
 
