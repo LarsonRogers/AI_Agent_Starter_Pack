@@ -1,18 +1,19 @@
 # CLAUDE.md
-<!-- Starter Pack v9.0 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v10.0 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents (Claude Code, ChatGPT Codex, and others):**
 > Read files in this exact order before making any changes:
-> 1. `ARCHITECTURE.md` — structural rules, pre-edit protocol, pattern registry
+> 1. `ARCHITECTURE.md` — core rules, guardrails, and behavioral protocols
 > 2. This file (`CLAUDE.md`) — tech stack, style, workflow, task prompts
-> 3. Any supplementary docs listed in the Related Docs table below
+> 3. `PROTOCOLS.md` — load specific sections on demand when situation requires
+> 4. Any supplementary docs listed in the Related Docs table below
 >
 >
-> **Template mode check:** At the start of every session, scan `CLAUDE.md` and
-> `AGENTS.md` for any remaining `[BRACKETED]` or `[PROJECT_NAME]` placeholders.
-> If any are found, halt and report exactly which placeholders remain unfilled
-> before doing anything else. Do not proceed until the developer has filled them
-> in or explicitly confirmed they are intentionally deferred.
+> **Placeholder handling:** The agent handles all placeholder substitution —
+> the user never edits pack files manually. On first session, run the
+> Placeholder Inference Protocol (ARCHITECTURE.md) to infer, confirm, and
+> write all required values. Deferred placeholders (pattern registry, task
+> prompts, related projects) are intentional scaffolding — do not halt on these.
 >
 > **Every new session:** Determine your situation before doing anything else:
 > - **Log exists** → read most recent entry, report status, wait for confirmation

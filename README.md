@@ -1,5 +1,5 @@
 # AI Agent Starter Pack
-<!-- Starter Pack v9.0 -->
+<!-- Starter Pack v10.0 -->
 
 A platform-agnostic instruction set for AI coding agents. Drop it into any repo
 and any agent — Claude Code, Codex, Cursor, Windsurf, Aider, or others — will
@@ -19,7 +19,8 @@ A coding agent that:
 - **Adapts to who you are** — asks two quick questions, picks one of three
   modes (Developer, Technical non-dev, Non-dev), records it, never asks again
 - **Reads before it touches anything** — full codebase assessment before the
-  first line of code is written
+  first line of code is written, loads detailed protocols on demand to stay
+  within context limits
 - **Confirms before it acts** — reformulates your prompts into structured task
   briefs and waits for your approval before starting
 - **Plans cross-cutting changes upfront** — any change touching multiple files
@@ -52,11 +53,12 @@ A coding agent that:
 
 1. Copy all files into your repo root, preserving the `.claude/`, `.codex/`,
    and `.github/` directory structures.
-2. Replace `[PROJECT_NAME]` in `CLAUDE.md` and `AGENTS.md`.
-3. Start your agent session. The agent handles the rest.
+2. Start your agent session. The agent handles everything else.
 
-See `SETUP.md` for a full walkthrough — including instructions for
-non-developers and GitHub Desktop upload steps.
+No manual file editing required. The agent infers your project details from
+the repo, presents them for your confirmation, and fills in the pack files itself.
+
+See `SETUP.md` for a full walkthrough including non-developer instructions.
 
 ---
 
@@ -91,10 +93,17 @@ TASK_TEMPLATE.md            Structured task brief template. The agent uses
                             work. You can also fill it out yourself for
                             precise scope control.
 
-ARCHITECTURE.md             The agent's primary instruction manual.
-                            Session protocols, structural rules, guardrails,
-                            error handling, Captain's Log format, and all
-                            behavioral protocols. Agents read this first.
+ARCHITECTURE.md             The agent's primary instruction manual —
+                            always loaded. Core rules, guardrails, session
+                            protocols, error handling, and behavioral rules.
+
+PROTOCOLS.md                Detailed protocols loaded on demand. Contains:
+                            Inherited Codebase, Refactor, Placeholder
+                            Inference, Context Window, Sensitive Data,
+                            External Research, Knowledge Gap, Validation
+                            Fallback, and Stuck Loop protocols. Agents
+                            read specific sections when the situation
+                            requires — not the whole file every session.
 
 CLAUDE.md                   Project instruction manual — tech stack, code
                             style, validation commands, file structure, and
@@ -161,7 +170,7 @@ pack to catch regressions in agent behavior before they affect real work.
 
 ## Version
 
-This is **Starter Pack v9.0**. The version is recorded in the header of
+This is **Starter Pack v10.0**. The version is recorded in the header of
 `ARCHITECTURE.md`, `CLAUDE.md`, and `AGENTS.md`, and in every Captain's Log
 entry so there's always an audit trail of which instruction set was active
 for any given session.

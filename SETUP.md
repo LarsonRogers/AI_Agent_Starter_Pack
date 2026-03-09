@@ -1,60 +1,55 @@
 # Setup Guide
+<!-- Starter Pack v10.0 -->
 
-This guide walks you through getting started — no coding experience required.
-If you are a developer, skip to the Developer Quick Setup at the bottom.
+No coding experience required. If you are a developer, skip to
+Developer Quick Setup at the bottom.
 
 ---
 
 ## What is this?
 
-This starter pack is a set of instruction files you drop into a code project.
-Once in place, any AI coding agent — Claude, Codex, Cursor, and others — will
-read these files and know how to work on your project safely and consistently.
+A set of instruction files you drop into a code project. Once in place,
+any AI coding agent — Claude, Codex, Cursor, and others — reads these files
+and knows how to work on your project safely and consistently.
 
-Think of it as a rulebook the AI reads before touching anything. It tells the
-agent how to communicate with you, how to save its work, what it is and is not
+Think of it as a rulebook the agent reads before touching anything. It tells
+the agent how to talk to you, how to save its work, what it is and isn't
 allowed to do on its own, and how to hand off to another agent or a human
 developer when needed.
 
 ---
 
-## What you need before starting
+## What you need
 
 **An AI coding agent.** This pack works with:
-- **Claude Code** — Anthropic's coding agent. Install it by running
-  `npm install -g @anthropic-ai/claude-code` in a terminal, or follow the
-  setup guide at https://docs.anthropic.com/claude-code
-- **Codex CLI** — OpenAI's coding agent. Install it by running
-  `npm install -g @openai/codex` in a terminal, or follow the setup guide
-  at https://platform.openai.com/docs/codex
-- **Cursor, Windsurf, or others** — follow their own installation guides,
-  then point them to `ARCHITECTURE.md` and `CLAUDE.md` when starting a session
+- **Claude Code** — install via `npm install -g @anthropic-ai/claude-code`
+  or follow the guide at https://docs.anthropic.com/claude-code
+- **Codex CLI** — install via `npm install -g @openai/codex`
+  or follow the guide at https://platform.openai.com/docs/codex
+- **Cursor, Windsurf, or others** — follow their own installation guides
 
-**A code project.** This can be:
-- A new empty folder where you want to build something
-- An existing project on your computer
-- A project you've downloaded or cloned from the internet
+**A code project.** This can be a new empty folder, an existing project,
+or a project you've downloaded from the internet.
 
-**Git (optional but recommended).** Git is a tool that saves checkpoints of
-your code so you can undo mistakes. The AI agent can explain and handle this
-for you if you're not familiar with it. To install git, visit https://git-scm.com
+**Git (recommended).** Git saves checkpoints of your code so mistakes can
+be undone. The agent handles git for you — you just need it installed.
+Download at https://git-scm.com
 
 ---
 
-## Setup steps
+## Setup — two steps
 
-### Step 1 — Copy the starter pack into your project
+### Step 1 — Copy the starter pack files into your project folder
 
-Copy all the files and folders from this starter pack into the root folder
-of your project (the top-level folder, not inside any subfolder).
+Copy everything from this pack into the root of your project (the top-level
+folder, not inside any subfolder). Your project should now contain:
 
-Your project folder should now contain:
 ```
 your-project/
 ├── ARCHITECTURE.md
 ├── AGENTS.md
 ├── CLAUDE.md
-├── SETUP.md               ← this file
+├── SETUP.md
 ├── TASK_TEMPLATE.md
 ├── README.md
 ├── .claude/
@@ -66,95 +61,78 @@ your-project/
         └── agent-ci.yml
 ```
 
-Note: files and folders starting with `.` may be hidden by default on Mac and
-Windows. That's fine — the agent can still read them.
+Note: files and folders starting with `.` may be hidden by default.
+On Mac: press Cmd+Shift+Period to show hidden files.
+On Windows: View → Show → Hidden items.
 
-### Step 2 — Fill in your project name
-
-Open `CLAUDE.md` and `AGENTS.md` in any text editor (Notepad, TextEdit, or
-VS Code all work). Find every place that says `[PROJECT_NAME]` and replace it
-with the name of your project.
-
-That's the only change you need to make manually. The agent will fill in
-everything else during your first session.
-
-### Step 3 — Enable web search for your agent (recommended)
-
-The agent uses web search to look up documentation and coding references
-before writing code. This makes its output significantly more accurate,
-especially for niche tools and libraries.
-
-- **Claude Code:** web search is already enabled in the included settings file
-- **Codex:** log into your OpenAI account at https://platform.openai.com,
-  go to Settings, and enable web browsing/search if available
-- **Cursor / Windsurf:** check their settings panel for a web search toggle
-
-### Step 4 — Start your agent session
+### Step 2 — Start your agent session
 
 Open a terminal in your project folder and start your agent:
 - Claude Code: type `claude` and press Enter
 - Codex: type `codex` and press Enter
-- Others: follow their startup instructions and point them to `ARCHITECTURE.md`
+- Others: follow their startup instructions, then point them to `ARCHITECTURE.md`
 
-The agent will take it from here. It will:
-1. Ask whether you are a developer or new to coding
-2. Look at what's in your project
-3. Tell you what it found in plain English
-4. Ask you what you want to do before touching anything
+**That's it.** The agent takes it from here. You don't need to edit any files
+manually — the agent will figure out your project details, present them to you
+for confirmation, and fill everything in itself.
 
 ---
 
-## What to expect in your first session
+## What happens in your first session
 
-The agent will ask a quick question or two before doing anything — just to
-understand how much context and explanation is useful to you. There are three
-modes it can work in:
+**1. The agent asks who you are**
+Two quick questions to understand how much explanation is useful to you.
+Answer honestly — it adjusts how it communicates, not what it can do.
+Three modes: Developer, Technical non-dev, Non-dev. It records your answer
+and never asks again.
 
-- **Developer** — technical language, minimal explanation of standard operations
-- **Technical non-dev** — plain English by default, technical terms used when
-  they're the clearest option with a brief explanation, no over-simplification.
-  Good for people who understand concepts but don't code regularly.
-- **Non-dev** — everything explained in plain English, every action described
-  before it happens, maximum guardrails
+**2. The agent figures out your project**
+It scans the repo, infers your project name, tech stack, and other details,
+then presents them to you:
 
-Answer honestly — the agent will pick the right mode and record it so it never
-asks again. You can always say "explain less" or "you can be more technical" to
-adjust mid-project, and it will adapt.
+> *"Here's what I've inferred for this project — confirm or edit any of
+> these before I fill them in: Project name: [X], Language: [Y]..."*
 
-After that, the agent will look through your project, tell you what it found,
-and wait for you to tell it what you want to work on.
+Say "confirmed" to accept, or tell it what to change. No file editing needed.
 
-From there, every task works like this:
-1. You describe what you want in plain language
-2. The agent reflects back what it understood and asks you to confirm
-3. You say yes (or correct it)
-4. The agent does the work, saving checkpoints along the way
-5. The agent tells you what it did in plain English and what's next
+**3. The agent reports what it found**
+If you have an existing codebase, it maps the structure, identifies any
+problem areas, and tells you what it found before touching anything.
+
+**4. You tell it what to work on**
+Describe what you want in plain language. The agent will reflect back what
+it understood and ask you to confirm before starting. From there, it works,
+saves checkpoints, and reports back in plain English after each task.
 
 ---
 
 ## If something goes wrong
 
-The agent is designed to explain failures in plain English and give you clear
-options. You should never see a confusing technical error without an explanation
-of what it means and what to do about it.
+**"The agent says there are unfilled placeholders"**
+This shouldn't happen — the agent fills these in automatically. If it does,
+tell it: *"Run the Placeholder Inference Protocol and present your inferred
+values for my confirmation."*
 
-If the agent seems confused or stuck:
-- Ask it to "summarize where we are and what the current task is"
-- Ask it to "check the captain's log and tell me where we left off"
-- If all else fails, start a new session — the agent will read the captain's
-  log and resume from where things were last stable
+**"The agent seems confused or has lost track"**
+Tell it: *"Check the Captain's Log and tell me where we left off."*
+Or start a fresh session — it will resume from the log automatically.
+
+**"I want to switch to a different agent"**
+Start a new session with the new agent and say:
+*"Read AGENTS.md and follow the session start protocol."*
+The Captain's Log has everything needed to continue.
+
+**"The agent is asking me to run commands I don't understand"**
+Ask it: *"Explain what that command does in plain English before I run it."*
+The agent should never ask you to run something without explaining it first.
 
 ---
 
 ## Developer Quick Setup
 
-1. Copy all files into repo root
-2. Replace `[PROJECT_NAME]` in `CLAUDE.md` and `AGENTS.md`
-3. Fill in Tech Stack table, Validation Commands, File Structure, and Code
-   Style in `CLAUDE.md`
-4. Fill in Project-Specific Architecture and Pattern Registry in `ARCHITECTURE.md`
-5. Add lint/test commands to the `allow` list in `.claude/settings.json`
-6. Adapt `.github/workflows/agent-ci.yml` to your stack
-7. Enable web search in your agent's settings
-8. Run your agent from the repo root — it handles the rest
+1. Copy all files into repo root (preserve `.claude/`, `.codex/`, `.github/`)
+2. Start your agent — it handles placeholder inference and fills in
+   `CLAUDE.md` and `AGENTS.md` from repo context
+3. Enable web search in your agent's settings for best results
+4. Adapt `.github/workflows/agent-ci.yml` to your stack
+5. Add project-specific lint/test commands to `.claude/settings.json` allow list

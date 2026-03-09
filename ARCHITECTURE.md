@@ -1,9 +1,10 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v9.0 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v10.0 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
-> These rules are not negotiable and are not overridden by task prompts.
+> Hard guardrails in this file are non-overridable. Default policies can be
+> unlocked by explicit user instruction. See Guardrails section for the distinction.
 
 ---
 
@@ -152,20 +153,38 @@ more technical" are signals to adjust and re-record the mode).
 These apply in both modes. They define the boundary between what the agent
 handles autonomously and what always requires human confirmation.
 
-### Never do autonomously — always confirm first
+### Hard guardrails — truly non-overridable, no exceptions
+
+These cannot be overridden by any verbal instruction, task brief, or user request.
+If a user asks the agent to bypass these, the agent declines and explains why.
 
 ```
 [ ] Deleting any file (even if it appears unused)
-[ ] Changing any authentication, permissions, or access control logic
 [ ] Modifying environment variables or secrets handling
+[ ] Committing files containing real credentials, API keys, or PII
+[ ] Any operation that cannot be reversed with a git rollback
+[ ] Reproducing sensitive data in logs, commit messages, or documentation
+[ ] Any code involving an external system the agent cannot verify —
+    follow the Knowledge Gap Protocol instead of guessing
+[ ] Editing any starter pack instruction files:
+    ARCHITECTURE.md, PROTOCOLS.md, CLAUDE.md, AGENTS.md, TASK_TEMPLATE.md
+    These may only be modified when explicitly instructed by the user to
+    update the pack itself — never as a side effect of project work
+```
+
+### Default policies — require confirmation, overridable by explicit user instruction
+
+These require confirmation by default but can be unlocked if the user explicitly
+says so (e.g., "you have permission to add dependencies without asking each time").
+The override is recorded in the Captain's Log.
+
+```
+[ ] Changing authentication, permissions, or access control logic
 [ ] Adding any external service, API, or third-party dependency
 [ ] Any database schema change (migrations, drops, renames)
 [ ] Any change to CI/CD configuration or deployment scripts
-[ ] Any operation that cannot be reversed with a git rollback
 [ ] Anything that sends data to an external service
-[ ] Any change the agent is uncertain about — uncertainty is a stop condition
-[ ] Any code involving an external system the agent cannot verify from current
-    docs or web access — follow the Knowledge Gap Protocol instead of guessing
+[ ] Any change the agent is uncertain about — default is to stop and ask
 ```
 
 ### Non-dev mode: additional confirmation requirements
@@ -296,6 +315,40 @@ Next: [suggested next step]
 
 ---
 
+## Environment Awareness
+
+Code must not assume it is running in a specific environment unless that
+environment has been explicitly confirmed.
+
+### Rules
+
+```
+- No hardcoded environment-specific values — URLs, ports, hostnames,
+  database names, API endpoints must come from config or environment variables
+- No dev/debug flags left active in committed code
+  (e.g., debug=True, verbose logging, mock data)
+- No assumptions about file paths that only exist on one machine
+- If the project has multiple environments (dev/staging/prod), changes
+  must be verified safe for all of them before committing
+```
+
+### When environment differences are relevant
+
+If a task involves environment-specific behavior, the agent must:
+1. Ask which environment the change targets
+2. Note any implications for other environments in the Captain's Log
+3. Flag any manual deployment or config steps required as Watch Items
+
+### Environment variables
+
+- All environment-specific values go in `.env` files (already in hard guardrails —
+  never committed)
+- New environment variables introduced by the agent must be documented:
+  - In the Captain's Log (what it is, what it controls, required vs optional)
+  - In a `.env.example` file if one exists in the project
+
+---
+
 ## Plain-English Git Guidance (non-dev mode)
 
 The agent handles all git operations silently in non-dev mode. The user does
@@ -323,138 +376,13 @@ to run a git command directly unless there is no other way.
 
 ### Inherited Codebase (Existing project, no prior log)
 
-This is the case when the starter pack has been dropped into an existing repo
-that was not built with this setup. The codebase exists, but there is no
-`CAPTAINS_LOG.md`, no filled-in `ARCHITECTURE.md`, and no established workflow.
+See `PROTOCOLS.md` → Inherited Codebase Protocol for the full four-phase procedure.
 
-**The agent must not write or change any code until the full assessment is complete.**
-
-#### Phase 1 — Read and Map (no edits)
-
-```
-[ ] 1. Read ARCHITECTURE.md (this file) and CLAUDE.md in full
-[ ] 2. List the entire repo structure — every directory and file
-[ ] 3. Identify and read: entry points, config files, package manifests,
-        dependency lists, any existing README or docs
-[ ] 4. Read the git history — see Git History Reconstruction below
-[ ] 5. Scan for sensitive data — credentials, PII, API keys (see Sensitive
-        Data Handling protocol). Report findings before any other work proceeds.
-[ ] 6. Read the most-changed and most-central source files in full
-[ ] 7. Identify the tech stack — languages, frameworks, runtimes, versions
-```
-
-#### Git History Reconstruction
-
-For inherited codebases, the git history is a low-fidelity Captain's Log that
-already exists. The agent must read and synthesize it into a reconstructed
-`CAPTAINS_LOG.md` before the first live session entry is written.
-
-**How far to go back:**
-The agent judges based on repo size and history depth:
-- Small repo or few commits — read the full history
-- Medium repo — read until the history becomes redundant or pre-dates the
-  current codebase shape (major refactors, renames, or rewrites are a natural
-  stopping point)
-- Large repo with hundreds of commits — focus on: the earliest commits
-  (establish intent), major inflection points (large diffs, branching patterns,
-  commit message tone changes), and the most recent 20-30 commits (current state)
-- In all cases: read diffs for significant commits, not just messages
-
-**Reconstruction commands:**
-```bash
-# Full log with dates and authors
-git log --oneline --all
-
-# Identify high-churn files (signals complexity and problem areas)
-git log --all --format=format: --name-only | sort | uniq -c | sort -rg | head -20
-
-# Read diff for a specific commit
-git show [commit-hash]
-
-# See what changed between two points
-git diff [older-hash] [newer-hash] --stat
-```
-
-**Reconstructed entry format:**
-
-Reconstructed entries use the standard Captain's Log format but are clearly
-marked so any reader — human or agent — knows they were inferred from git
-history rather than written live with full session context:
-
-```markdown
-## [Inferred Phase Name] — [date range: YYYY-MM-DD to YYYY-MM-DD]
-> ⚠️ RECONSTRUCTED — inferred from git history, not written during a live session.
-> Confidence: [High / Medium / Low] — [brief reason, e.g., "clear commit messages"
-> or "sparse commits, intent inferred from diffs"]
-
-**What was built / changed:**
-- `[path/to/file.ext]` — [what changed, inferred from commits and diffs]
-
-**Architectural decisions:**
-- [Any decisions visible from commit messages or structural changes] — WHY: [inferred]
-
-**Codebase state at end of this phase:**
-- [What appeared to be working based on the code at this point in history]
-
-**Watch items / observations:**
-- [Anything notable — abandoned branches, reverted work, sudden direction changes]
-
----
-```
-
-Reconstructed entries are prepended oldest-first so the log reads
-chronologically from bottom (oldest) to top (newest), with the first live
-session entry at the very top.
-
-#### Phase 2 — Assess and Report
-
-After mapping, the agent must produce a written assessment covering:
-
-```
-1. Tech stack — what is confirmed present and at what versions
-2. Inferred architecture — how the code is actually structured
-   (even if poorly — describe what IS there, not what should be there)
-3. Entry points — where execution begins, how requests/events flow
-4. Problem areas — tech debt, dead code, inconsistent patterns,
-   missing error handling, hardcoded values, security concerns
-5. Unknown or unclear areas — anything ambiguous that needs developer input
-6. Dependency health — outdated, deprecated, or abandoned packages
-7. Test coverage — what is tested, what is not, whether tests pass
-```
-
-Do not soften the assessment. If the codebase is in poor shape, say so clearly
-and specifically. The developer needs an honest picture before deciding what to do.
-
-#### Phase 3 — Build Out Project Docs
-
-After the developer has reviewed the assessment:
-
-```
-[ ] 1. Fill in the Project-Specific Architecture section of ARCHITECTURE.md
-        based on what was found — actual structure, not ideal structure
-[ ] 2. Fill in the Pattern Registry with any patterns that exist in the code
-        (including anti-patterns worth flagging)
-[ ] 3. Fill in the Tech Stack table in CLAUDE.md
-[ ] 4. Fill in the File Structure section in CLAUDE.md
-[ ] 5. Finalize CAPTAINS_LOG.md:
-        - Reconstructed entries (from git history) are already present from Phase 1
-        - Prepend a live first-session entry above them documenting:
-            - The state of the codebase as inherited and assessed
-            - Key findings from the assessment
-            - What the developer has decided to do next
-            - Watch items (known risks, problem areas to address)
-        - This live entry is NOT marked as reconstructed — it was written with
-          full session context and developer input
-[ ] 6. Confirm the first task with the developer before writing any code
-```
-
-#### Phase 4 — Confirm and Begin
-
-Only after Phases 1–3 are complete and the developer has confirmed the first task
-should the agent write any code. From this point forward, standard session
-protocols apply.
-
----
+Summary:
+- Phase 1: Read, map, scan for sensitive data, reconstruct Captain's Log from git history
+- Phase 2: Assess and report — architecture, problem areas, tech debt, unknowns
+- Phase 3: Fill in project docs, create/prepend Captain's Log entry
+- Phase 4: Confirm first task, then standard protocols apply
 
 ### First Session (No Captain's Log exists yet)
 
@@ -465,16 +393,25 @@ The agent must:
 [ ] 1. Read ARCHITECTURE.md and CLAUDE.md in full
 [ ] 2. Scan the repo structure — list all files and directories (read only, no edits)
 [ ] 3. Identify entry points, existing patterns, and any code already present
-[ ] 4. Report findings to the developer:
+[ ] 4. Run the Placeholder Inference Protocol (see below) — infer, present,
+        confirm, then write. The user makes no manual edits to pack files.
+[ ] 5. Report findings to the developer:
         - What exists, what is wired up, what appears incomplete
         - Any immediate concerns or inconsistencies observed
-[ ] 5. Create CAPTAINS_LOG.md with an initial entry documenting the starting state
-[ ] 6. Ask the developer to confirm the task before writing any code
+[ ] 6. Create CAPTAINS_LOG.md with an initial entry documenting the starting state
+[ ] 7. Ask the developer to confirm the task before writing any code
 ```
 
-Do not assume a blank repo. Read first, report, confirm, then act.
+Do not assume a blank repo. Read first, infer placeholders, report, confirm, then act.
 
 ---
+
+### Placeholder Inference Protocol
+
+See `PROTOCOLS.md` → Placeholder Inference Protocol for the full procedure.
+
+Summary: Agent scans for placeholders, infers values from repo context, presents
+a confirmation block, writes confirmed values. User never edits pack files manually.
 
 ### Session Resumption (Captain's Log exists)
 
@@ -494,6 +431,16 @@ code is written — the agent must automatically run this protocol and report th
 
 This report is the answer to "where did we leave off?" — the agent delivers it
 automatically so the developer never has to ask twice.
+
+**D — Refactor session (working codebase, goal is structural improvement)**
+See `PROTOCOLS.md` → Refactor Protocol for the full four-phase procedure.
+
+Summary: establish working baseline first (tests must pass), plan incrementally,
+execute one structural change at a time with test verification after each,
+confirm behavioral equivalence at the end. Never refactor and add features
+in the same session.
+
+---
 
 **The Captain's Log is the universal handoff artifact.** It is written to be read
 by humans and by any coding agent on any platform. A session started in Claude Code
@@ -746,44 +693,12 @@ entry are the first thing to address or confirm with the developer.
 
 ---
 
-### Context Window Management
+## Context Window Management
 
-Long sessions accumulate context until the agent begins losing track of earlier
-instructions, decisions, and constraints. This degrades output quality silently
-— the agent won't announce it's forgetting things.
+See `PROTOCOLS.md` → Context Window Management for the full checkpoint procedure.
 
-### Proactive checkpointing
-
-The agent must monitor session length and trigger a checkpoint when:
-- More than 5 tasks have been completed in the current session, OR
-- The session has been running long and the agent notices it is losing
-  track of earlier context, OR
-- The user reports the agent seems confused or inconsistent
-
-### Checkpoint procedure
-
-When a checkpoint is triggered:
-```
-[ ] 1. Complete the current task fully (do not checkpoint mid-task)
-[ ] 2. Run the full Definition of Done checklist
-[ ] 3. Update CAPTAINS_LOG.md with a session summary entry including:
-        - All tasks completed this session
-        - Current codebase state
-        - Confirmed next task
-        - Handoff prompt for next session
-[ ] 4. Notify the user:
-        "This session is getting long and I want to make sure nothing gets
-        lost. I've saved a full checkpoint — [summary of what was done].
-        I'd recommend starting a fresh session for the next task to keep
-        things sharp. The Captain's Log has everything needed to resume."
-[ ] 5. Do not start any new tasks after the checkpoint notification
-```
-
-The user may choose to continue anyway — that is their call. The agent
-notes the choice in the log and continues with reduced confidence warnings
-if it detects context degradation.
-
----
+Rule: after 5 tasks or detected context degradation, complete current task,
+run full checkpoint, update Captain's Log, notify user to start fresh session.
 
 ## Instruction Precedence & Conflict Resolution
 
@@ -824,52 +739,11 @@ the override in the Captain's Log with the reason given.
 
 ## Cross-Cutting Changes & Pre-Flight Plans
 
-A task may legitimately span many files — a rename, a new feature that touches
-every layer, a cross-cutting refactor. Size does not disqualify a task from
-being a single logical change. What matters is that scope is agreed upfront.
+See `PROTOCOLS.md` → Cross-Cutting Changes for the pre-flight plan format.
 
-### When a pre-flight plan is required
-
-A pre-flight plan is required whenever a task will:
-- Touch more than 3 files, OR
-- Cross more than one architectural layer, OR
-- Involve any rename, move, or structural reorganization
-
-### Pre-flight plan format
-
-Before touching any file, the agent produces:
-
-```
-## Pre-flight Plan — [task name]
-
-Files to be modified:
-- `[path/to/file.ext]` — [what changes and why]
-- `[path/to/file.ext]` — [what changes and why]
-
-Files to be created:
-- `[path/to/file.ext]` — [what it is and why it's needed]
-
-Files to be deleted:
-- `[path/to/file.ext]` — [why it's being removed]
-
-Order of changes:
-1. [First change — why this order]
-2. [Second change]
-
-Rollback plan:
-- [How to undo this if something goes wrong]
-
-Files NOT being touched (confirming scope boundary):
-- [Related file that might seem relevant but is out of scope]
-
-Estimated risk: [Low / Medium / High] — [brief reason]
-```
-
-The user must confirm the pre-flight plan before the agent touches anything.
-If the plan changes during execution — a file that wasn't listed needs to be
-touched — the agent stops, updates the plan, and re-confirms before continuing.
-
----
+Rule: any task touching 3+ files or crossing more than one layer requires a
+confirmed pre-flight plan before any file is touched. If the plan changes
+mid-execution, stop, update the plan, re-confirm.
 
 ## Agent Honesty & Self-Correction
 
@@ -912,302 +786,55 @@ correction note.
 
 ## Sensitive Data Handling
 
-### Proactive scan (inherited codebases)
+See `PROTOCOLS.md` → Sensitive Data Handling for scan commands and full procedure.
 
-During Phase 1 of the Inherited Codebase protocol, the agent must scan for
-sensitive data before any other work begins:
-
-```bash
-# Common patterns to scan for
-grep -rn "password\|secret\|api_key\|token\|private_key" . --include="*.py"   --include="*.js" --include="*.ts" --include="*.env" --include="*.json"
-grep -rn "[0-9]{3}-[0-9]{2}-[0-9]{4}" .   # SSN pattern
-grep -rn "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" .  # Email pattern
-```
-
-Report all findings to the user before proceeding. Do not proceed until the
-user has acknowledged the findings and confirmed how to handle them.
-
-### Flag on encounter
-
-During any session, if the agent reads a file and encounters what appears to be:
-- Real credentials or API keys (not placeholders)
-- Personal identifying information (names, emails, phone numbers, addresses)
-- Financial data or account numbers
-- Proprietary business data that appears sensitive
-
-The agent must stop and flag it:
-```
-"I've encountered what looks like sensitive data in [file]:
-[description of what was found — do NOT reproduce the actual data]
-
-I'd recommend [rotating these credentials / anonymizing this data /
-confirming this is intentional] before continuing.
-
-How would you like to proceed?"
-```
-
-### Hard rules — always apply
-
-```
-- Never reproduce sensitive data in the Captain's Log, commit messages,
-  or any generated documentation
-- Never log, print, or output credentials or PII in code unless explicitly
-  required and clearly marked
-- Never commit a file containing real credentials — flag it and stop
-- If in doubt about whether something is sensitive, treat it as sensitive
-```
-
----
+Rules:
+- Inherited repos: proactive scan before any work begins
+- All sessions: flag on encounter, never reproduce in logs or commits
 
 ## Stuck Loop Circuit Breaker
 
-If the agent attempts the same fix and fails, it must escalate — not retry
-the same approach indefinitely.
+See `PROTOCOLS.md` → Stuck Loop Circuit Breaker for the three-strike protocol.
 
-### Three-strike protocol
+Rule: after 3 failed attempts, stop and escalate. Each attempt must use a
+meaningfully different approach. On strike 3, summarize all attempts, diagnose
+root cause, and ask for human input or trigger Knowledge Gap Protocol.
 
-**Strike 1 — first failure:**
-```
-"That approach didn't work. Here's what I tried and why I think it failed:
-[explanation]. I'm going to try a different approach: [what's different]."
-```
+## Binary & Large File Handling
 
-**Strike 2 — second failure:**
-```
-"Second attempt also failed. Here's what I tried this time: [explanation].
-The underlying issue appears to be [diagnosis]. My next approach: [what's
-meaningfully different and why]."
-```
+See `PROTOCOLS.md` → Binary & Large File Handling for the full rules.
 
-**Strike 3 — third failure:**
-```
-"I've made three attempts and haven't resolved this. Here's a summary:
-
-Attempt 1: [what was tried] — failed because [reason]
-Attempt 2: [what was tried] — failed because [reason]
-Attempt 3: [what was tried] — failed because [reason]
-
-The root issue appears to be: [honest diagnosis]
-
-I'm stopping here. Options:
-1. You provide additional context or documentation about [specific thing]
-2. We apply the Knowledge Gap Protocol if this is a documentation problem
-3. We defer this and flag it as a Watch Item for a specialist
-
-Proceeding further without new information would likely make things worse."
-```
-
-After three strikes the agent does not attempt again without new information
-or explicit instruction from the user. The failure is recorded in the
-Captain's Log as a Watch Item with all three attempts documented.
+Rules: never read, edit, or commit binary files without awareness of what they
+are. Never commit files over 1MB without confirmation. Never commit generated
+output. Verify .gitignore on first session.
 
 ---
+
+## Testing Strategy
+
+See `PROTOCOLS.md` → Testing Strategy for full guidance.
+
+Rules: test behavior not implementation. Cover happy path and key failure modes.
+Name tests descriptively. Never mock the thing being tested. If no tests exist,
+flag before any refactor and offer to write a baseline suite first.
+
+---
+
+## Validation Tooling Fallback
+
+See `PROTOCOLS.md` → Validation Tooling Fallback for the full procedure.
+
+Rule: if lint/test/CI commands are missing or unconfigured, report clearly,
+propose alternatives, mark DoD accordingly. Never silently skip validation.
 
 ## External Research Protocol
 
-Before writing any code that involves an external system, SDK, API, framework,
-or platform the agent is not verified-current on, the agent must research it first.
-Do not rely on training data alone — it may be stale, incomplete, or wrong.
-This is especially critical for niche, underdocumented, or version-sensitive systems.
+See `PROTOCOLS.md` → External Research Protocol and Knowledge Gap Protocol.
 
-### When This Triggers
-
-Research is required any time the task involves:
-- A third-party SDK, API, or library
-- A platform with its own scripting or plugin model (DAWs, hardware controllers,
-  game engines, creative tools, etc.)
-- A framework where version differences affect behavior
-- Any system where the agent's knowledge cannot be independently verified
-- Hardware-software integration where protocol details matter
-
-### Research Steps
-
-```
-[ ] 1. Identify every external system relevant to the task
-[ ] 2. For each system, search for:
-        - Official documentation and SDK references
-        - Source repos (GitHub, GitLab, etc.) — read actual code, not just docs
-        - Known version constraints or breaking changes
-        - Community resources: forums, issues, known workarounds
-        - Any existing open-source implementations of similar problems
-[ ] 3. Cross-reference findings — if sources conflict, flag it
-[ ] 4. Document what was found before writing any code (see below)
-[ ] 5. Flag anything that could not be verified — do not silently assume
-```
-
-### Knowledge Gap Protocol
-
-If the agent encounters a task that requires knowledge of an external system,
-SDK, API, or platform and:
-- Web access is unavailable, AND
-- The agent's training data on the subject is absent, sparse, outdated, or
-  unverifiable
-
-The agent must **not guess or proceed on assumptions.** Instead it must
-explicitly declare a knowledge gap and offer the user a path forward.
-
-#### Step 1 — Declare the gap honestly
-
-```
-"I don't have reliable information about [system/API/tool]. My training data
-on this may be outdated or incomplete, and I don't have web access to verify
-it right now. Proceeding without accurate documentation risks producing code
-that won't work or could break things."
-```
-
-Never frame a knowledge gap as confidence. If the agent isn't sure, it says so.
-
-#### Step 2 — Offer three options
-
-Present these options to the user:
-
-```
-I can continue in one of three ways:
-
-1. You find the documentation — point me to the relevant docs, paste in
-   key sections, or share a link I can read, and I'll use that to proceed
-   accurately.
-
-2. I generate a research prompt for you — I'll write a prompt you can paste
-   into Claude.ai, ChatGPT, Perplexity, or any web-enabled AI. It will ask
-   that AI to compile the specific documentation and examples I need. You
-   copy the response back here and I'll use it.
-
-3. I proceed with what I know, clearly flagged — I'll note every assumption
-   I'm making and mark those sections of code with a warning comment so you
-   or a developer can verify them later. Only choose this if the stakes are
-   low and you want to move quickly.
-
-Which would you prefer?
-```
-
-#### Step 3 — Generate the research prompt (if option 2 chosen)
-
-The generated prompt must be specific enough that a web-enabled AI can compile
-exactly what is needed. It should include:
-
-```
-## Research Prompt — [System/Topic] — for [Claude.ai / ChatGPT / Perplexity]
-
-I'm working on a coding project that involves [brief plain-English description
-of what the project does and what problem needs solving].
-
-I need comprehensive, accurate, and current documentation on the following:
-
-**System:** [Name and version if known]
-
-**Specific questions:**
-1. [Precise technical question — e.g., "What Python classes and methods are
-   available in Ableton Live's Remote Script API for handling MIDI input?"]
-2. [Next question]
-3. [Next question]
-
-**What to include in your response:**
-- Official API methods, classes, and their signatures
-- Known version differences or constraints
-- Working code examples where available
-- Links to authoritative sources (official docs, maintained repos, etc.)
-- Any known gotchas, limitations, or common mistakes
-
-**Format:** Please structure your response so it can be copied directly into
-a coding session as a reference document. Use headers and code blocks.
-
-[Optional: paste any relevant existing code here so the AI can tailor
-its response to the specific context]
-```
-
-After generating the prompt, the agent tells the user:
-```
-"Copy that prompt and paste it into [Claude.ai / ChatGPT / Perplexity].
-When you get the response, paste it back here and I'll use it to continue."
-```
-
-#### Step 4 — Receive and use the research
-
-When the user pastes back the compiled documentation:
-- Read it fully before proceeding
-- Record the source and key findings in the Captain's Log under
-  "External research conducted"
-- Flag any gaps or conflicts in the pasted docs before writing code
-- Proceed with the Pre-Edit Protocol as normal
-
-#### Flagging assumed code (option 3)
-
-If the user chooses to proceed on assumptions, every block of code written
-without verified documentation must be marked:
-
-```python
-# ⚠️ UNVERIFIED — written without confirmed documentation for [system/API].
-# Assumption: [what was assumed]
-# Verify before relying on this in production.
-```
-
-These markers must be resolved — either verified and removed, or corrected —
-before the task can be considered complete.
-
----
-
-### Platform-Specific Access
-
-Agents handle web research differently — use whatever is available:
-
-| Agent | Web access |
-|-------|-----------|
-| Claude Code | `WebSearch` tool (already permitted in settings.json) |
-| Codex | Built-in web access if enabled; otherwise request docs from developer |
-| Cursor / Windsurf | Use built-in search or ask developer to paste relevant references |
-| Any agent | If web access is unavailable, explicitly list what docs are needed and ask |
-
-If an agent has no web access and cannot verify external APIs or SDKs,
-it must say so clearly and ask the developer to supply the relevant documentation
-before proceeding. Do not guess at undocumented or version-sensitive behavior.
-
-### Dependency & Security Hygiene
-
-When adding or updating any dependency:
-- Update the lockfile in the same commit (`package-lock.json`, `yarn.lock`,
-  `Pipfile.lock`, `Cargo.lock`, etc.) — never commit a dependency change without it
-- Run a dependency audit before committing:
-  ```bash
-  npm audit --audit-level=high   # Node
-  pip-audit                      # Python
-  cargo audit                    # Rust
-  ```
-- Document the new dependency in the Captain's Log — name, version, purpose,
-  and any security considerations
-- Never introduce a dependency with known high/critical vulnerabilities
-
-When introducing a new external service or API:
-- Document it in the Captain's Log under External Research
-- Note authentication method, data sensitivity, and any rate limits
-- Never hardcode credentials — use environment variables
-
----
-
-### Documenting Research
-
-Findings must be recorded in the Captain's Log entry for the session:
-
-```markdown
-**External research conducted:**
-- [System/SDK name] vX.X — [source URL or repo]
-  Key findings: [what was confirmed, what version constraints apply]
-  Gaps / unverified: [anything that could not be confirmed]
-```
-
-This ensures the next agent session — and any human developer — knows what
-sources the code was based on and where assumptions were made.
-
----
-
-## Pattern Registry Maintenance
-
-When the agent introduces a new pattern — a new way of structuring a module,
-handling errors, managing state, etc. — it must document it in the
-Pattern Registry section below before committing. The registry is a handoff artifact,
-not an afterthought.
-
----
+Rule: before writing code involving any external SDK, API, or platform, research
+current docs first. If web access is unavailable and training data is
+unverifiable, declare the gap and offer three options (user finds docs /
+agent generates research prompt / proceed with flagged assumptions).
 
 ## Pattern Registry
 

@@ -1,125 +1,81 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v9.0 — 2026-03-09 -->
+<!-- Starter Pack v10.0 — 2026-03-09 -->
 
-> **This file exists for ChatGPT Codex compatibility.** Codex reads `AGENTS.md`
-> automatically, just as Claude Code reads `CLAUDE.md`.
->
-> All project instructions live in `CLAUDE.md` — that is the canonical source of
-> truth. This file summarizes the essentials and tells you where to look.
-
-## Core Principles (Always Active)
-
-These apply in every session, every mode, every platform:
-
-- **Guardrails first** — never delete files, touch secrets, change auth logic,
-  add external services, or modify CI/deployment config without explicit
-  human confirmation. Uncertainty is a stop condition — stop and ask.
-- **Confirmed brief before any code** — reformulate every prompt into a task
-  brief, present it, wait for confirmation. No exceptions.
-- **Audience-aware** — check the Captain's Log for recorded audience mode
-  (Developer / Technical non-dev / Non-dev). If none exists, ask two quick
-  orienting questions and record the result. Default to Technical non-dev if
-  uncertain. Adapt communication, autonomy, and error reporting to the mode.
-- **Plain English for non-devs** — no jargon, no raw errors, no silent git
-  operations. Explain before acting. Translate all failures.
-- **Never resolve conflicts silently** — when instructions conflict, surface
-  the conflict, state which rule takes precedence and why, confirm before
-  proceeding. See Instruction Precedence hierarchy in ARCHITECTURE.md.
-- **Pre-flight plan for cross-cutting changes** — any task touching more than
-  3 files or crossing more than one layer requires a confirmed plan before
-  any file is touched.
-- **Honest verification language** — distinguish between confirmed (read the
-  file), believed (training data), and assumed. Never make unmarked assertions
-  about the codebase. Self-correct immediately and transparently when wrong.
-- **Three-strike circuit breaker** — after 3 failed attempts at the same
-  problem, stop and escalate. Do not retry without new information.
-- **Sensitive data** — scan on inherited repos, flag on encounter, never
-  reproduce sensitive data in logs or commit messages.
-- **Context checkpointing** — after 5 tasks or when context feels degraded,
-  checkpoint and recommend a fresh session.
-- **Pack version** — record the current pack version in every Captain's Log
-  entry. Current version is in the header of ARCHITECTURE.md.
-
-See ARCHITECTURE.md for the full protocol on each of these.
+> **This file is the entry point for ChatGPT Codex and any agent that reads
+> `AGENTS.md` automatically.** It is a compatibility shim — not an authority.
+> All instructions, protocols, and rules live in `ARCHITECTURE.md` and `CLAUDE.md`.
+> Do not edit policy here. Update the source files instead.
 
 ---
 
-## Session Start (Run This First, Every Time)
+## Step 1 — Read these files before anything else
 
-Before anything else — before reading instructions, before asking questions,
-before writing any code, determine which of these three situations applies:
+In this exact order:
 
-**A — Resuming an active project (Captain's Log exists)**
-Read `CAPTAINS_LOG.md`. Report to the developer: where the last session ended,
-current codebase state, open watch items, and proposed next step. Wait for
-confirmation before proceeding.
+1. `ARCHITECTURE.md` — core rules, guardrails, and behavioral protocols
+2. `CLAUDE.md` — project-specific stack, style, and task instructions
+3. `CAPTAINS_LOG.md` — most recent entry (if it exists)
+4. `PROTOCOLS.md` — load specific sections on demand (inherited codebase,
+   refactor, research, sensitive data, etc.) — do not read in full every session
 
-**B — First session on a new project (no log, no prior code)**
-Read `ARCHITECTURE.md` and `CLAUDE.md`. Scan the repo. Report findings.
-Create `CAPTAINS_LOG.md` with an initial entry. Confirm the first task
-before writing any code.
-
-**C — Inherited codebase (existing code, no log, starter pack just dropped in)**
-This requires a full assessment before any code is written. Read and map the
-entire repo, reconstruct a Captain's Log from git history (marked as
-reconstructed), assess the architecture, surface problem areas, fill in the
-project-specific sections of `ARCHITECTURE.md` and `CLAUDE.md`, then prepend
-a live assessment entry to the log. See `ARCHITECTURE.md` → Session Protocols
-→ Inherited Codebase for the full four-phase protocol.
-
-Do not skip or abbreviate the assessment phase. The developer needs an honest
-picture of what they have before deciding what to do with it.
+Do not write any code until all three are read and the session start
+protocol in `ARCHITECTURE.md` is complete.
 
 ---
 
-The Captain's Log is the universal handoff artifact — written for humans and
-for any coding agent on any platform. It is what makes it possible to switch
-between Claude, Codex, Cursor, or any other agent without losing context.
+## Step 2 — Determine your session type
+
+Check whether `CAPTAINS_LOG.md` exists:
+
+**A — Log exists** → Session Resumption Protocol (ARCHITECTURE.md)
+**B — No log, new project** → First Session Protocol (ARCHITECTURE.md)
+**C — No log, existing codebase** → Inherited Codebase Protocol (PROTOCOLS.md)
+**D — Refactor session** → Refactor Protocol (PROTOCOLS.md)
 
 ---
 
-## Before Writing Any Code
+## Step 3 — Apply core principles
 
-Read these files in order:
+A condensed reference — full protocols are in `ARCHITECTURE.md`:
 
-1. **`ARCHITECTURE.md`** — Structural rules, pre-edit protocol, and pattern registry.
-   Read this first. These rules override everything else.
-2. **`CLAUDE.md`** — Architecture, constraints, file structure, code style, workflow.
-   This is the instruction manual for the entire project.
-3. Any supplementary docs listed in the Related Docs table in `CLAUDE.md`.
+- Hard guardrails are non-overridable. Default policies require confirmation
+  but can be unlocked by explicit user instruction.
+- Detect audience mode from Captain's Log. If absent, ask two questions.
+  Default to Technical non-dev.
+- Reformulate every prompt into a task brief. Confirm before starting.
+- Never resolve instruction conflicts silently — surface and apply hierarchy.
+- Pre-flight plan required for any change touching 3+ files or layers.
+- Honest verification language on all codebase claims.
+- Three-strike circuit breaker on repeated failures.
+- Scan for sensitive data on inherited repos. Flag on encounter always.
+- Checkpoint after 5 tasks. Append handoff prompt to Captain's Log entry.
+- Record pack version in every Captain's Log entry.
+- Never guess on unknown external systems — Knowledge Gap Protocol.
+- Validation tooling missing? Report, propose, never skip silently.
+- Never edit starter pack files (ARCHITECTURE.md, PROTOCOLS.md, CLAUDE.md,
+  AGENTS.md, TASK_TEMPLATE.md) unless explicitly instructed to update the pack.
+- Never read, edit, or commit binary files without explicit awareness.
+  Never commit files over 1MB without confirmation. Verify .gitignore on first session.
+- No hardcoded environment-specific values — URLs, ports, endpoints go in config.
+  No dev/debug flags in committed code.
+- Tests must verify behavior not implementation. Cover failure modes, not just
+  happy paths. If no tests exist, flag before any refactor.
+
+---
 
 ## Quick Constraints
+<!-- Fill in the hardest project-specific constraints from CLAUDE.md.
+     These are filled in by the agent during the Placeholder Inference Protocol.
+     Do not edit manually. -->
 
-<!-- Copy the hardest constraints from CLAUDE.md here — the rules that would cause
-     immediate breakage if violated. Keep it short. 5-8 bullets max. -->
+- **[Language/runtime]** —
+- **[Files not to edit]** —
+- **[Lint command]** —
+- **[Test command]** —
 
-- **[Language constraint]** — e.g., ES5 only, Python 3.10+, TypeScript strict
-- **[Runtime constraint]** — e.g., no browser APIs in Node, no Node APIs in Max JS
-- **[Formatting]** — e.g., run `npm run lint` after every change
-- **[Testing]** — e.g., run `pytest` after every change, all tests must pass
-- **[Files not to edit]** — e.g., never edit .amxd, package-lock.json, .env
-- **[Session start]** — read `CAPTAINS_LOG.md` first to orient before touching anything
-- **[Git]** — commit after each completed task, imperative mood messages
-- **[Logs]** — update `CAPTAINS_LOG.md` (prepend) and `CHANGELOG.md` (append) after every commit
-- **[Task briefs]** — before starting any task, reformulate the prompt into a
-  task brief (see `TASK_TEMPLATE.md`), present it for confirmation, and wait.
-  Do not begin work on an unconfirmed brief. No exceptions.
-- **[Research]** — before writing code involving any external SDK, API, or platform,
-  research current docs and source repos first. Do not rely on training data alone.
-  Document findings in the Captain's Log.
-- **[Knowledge gaps]** — if web access is unavailable and training data on a system
-  is absent, sparse, or unverifiable, declare the gap honestly. Never guess silently.
-  Offer the user three options: find the docs themselves, receive a generated research
-  prompt to take to a web-enabled AI (Claude.ai, ChatGPT, etc.), or proceed with
-  clearly flagged assumptions. See ARCHITECTURE.md → Knowledge Gap Protocol.
-- **[Comments]** — every file gets a header, every function gets a docstring/JSDoc,
-  every non-obvious decision gets a WHY comment. No magic values. No cryptic names.
-- **[Handoff]** — a human dev must be able to orient in this codebase in under 30 min
+---
 
 ## Project Summary
-
-<!-- 3-4 sentences max. What it is, what it does, what the current task is. -->
+<!-- Filled in by the agent. Do not edit manually. -->
 
 [PROJECT_NAME] is ...
-
-The current task is: [refactoring / feature work / bug fixes / ...]

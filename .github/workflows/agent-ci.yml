@@ -1,0 +1,104 @@
+# .github/workflows/agent-ci.yml
+#
+# CI enforcement for agent-produced code.
+# Runs on every push and pull request.
+# CI green is part of the Definition of Done — the agent must not consider
+# a task complete until this workflow passes.
+#
+# SETUP: Replace the [BRACKETED] commands below with your actual stack.
+# Add or remove jobs as needed. Commit this file to your repo.
+#
+# For non-GitHub CI (GitLab, Bitbucket, CircleCI, etc.): adapt the
+# structure below to your platform's syntax. The job names and intent
+# are platform-agnostic even if the YAML format is not.
+
+name: Agent CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Replace with your language setup and lint command
+      # Examples:
+      #   Node:   actions/setup-node + npm ci + npm run lint
+      #   Python: actions/setup-python + pip install + ruff check .
+      #   Rust:   actions/setup-rust + cargo clippy
+      - name: Set up environment
+        run: echo "Replace this with your environment setup"
+
+      - name: Run linter
+        run: echo "Replace with: npm run lint / ruff check . / cargo clippy / etc."
+
+  format:
+    name: Format check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Examples:
+      #   Node:   npx prettier --check .
+      #   Python: black --check .
+      #   Rust:   cargo fmt --check
+      - name: Check formatting
+        run: echo "Replace with your format check command"
+
+  typecheck:
+    name: Type check
+    runs-on: ubuntu-latest
+    # Remove this job if your stack has no type checker
+    steps:
+      - uses: actions/checkout@v4
+
+      # Examples:
+      #   TypeScript: npx tsc --noEmit
+      #   Python:     mypy .
+      - name: Run type checker
+        run: echo "Replace with your type check command"
+
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Examples:
+      #   Node:   npm ci + npm test
+      #   Python: pip install -r requirements.txt + pytest
+      #   Rust:   cargo test
+      - name: Set up environment
+        run: echo "Replace this with your environment setup"
+
+      - name: Run tests
+        run: echo "Replace with: npm test / pytest / cargo test / etc."
+
+  security:
+    name: Security scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Secret scanning — detects accidentally committed credentials
+      - name: Scan for secrets
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+
+      # Dependency audit — detects vulnerable packages
+      # Examples:
+      #   Node:   npm audit --audit-level=high
+      #   Python: pip-audit
+      #   Rust:   cargo audit
+      - name: Audit dependencies
+        run: echo "Replace with your dependency audit command"
