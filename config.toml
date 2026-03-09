@@ -1,0 +1,20 @@
+# .codex/config.toml — [PROJECT_NAME] project config
+#
+# Codex reads this automatically when you run `codex` from the repo root.
+# See: https://developers.openai.com/codex/config-basic/
+#
+# NOTE: If Codex doesn't pick up this file, copy these settings to
+# your user-level config at ~/.codex/config.toml instead.
+
+# Auto-approve edits and commands. Only prompts on failure.
+approval_policy = "on-failure"
+
+# Allow file writes within the workspace.
+sandbox_mode = "workspace-write"
+
+# Enable network access for git push/pull.
+[sandbox_workspace_write]
+network_access = true
+
+# Read CLAUDE.md as an instruction file (in addition to AGENTS.md).
+project_doc_fallback_filenames = ["CLAUDE.md"]
