@@ -5,14 +5,27 @@ and any agent — Claude Code, Codex, Cursor, Windsurf, Aider, or others — wil
 orient itself, follow consistent architectural rules, and maintain a running
 handoff log so nothing is lost between sessions or platforms.
 
+Works for developers and non-developers alike. The agent detects who it is
+working with and adapts its communication, explanation depth, and confirmation
+behavior accordingly.
+
 ## What You Get
 
 A coding agent that:
+- Asks two quick questions, detects who it's working with, and adapts —
+  three modes: Developer, Technical non-dev (knows concepts, doesn't code
+  daily), and Non-dev. Defaults to Technical non-dev when uncertain.
+  Mode is recorded and persists — never asked again
 - Reads the codebase before touching anything
+- Reformulates your prompts into confirmed task briefs before writing any code
 - Follows consistent rules for code structure, commenting, and git workflow
+- Explains failures in plain English and offers clear options — never leaves
+  you stranded with a cryptic error message
 - Maintains a Captain's Log so any session — human or agent — can pick up
   exactly where the last one left off
 - Produces code that is readable and transferable to a human dev team
+- Enforces guardrails — never deletes files, touches secrets, or makes
+  irreversible changes without explicit confirmation
 
 ## Setup
 
@@ -44,9 +57,21 @@ you an honest report. A live assessment entry is prepended to the top of the
 log. You get a navigable project history and architectural overview before
 a single line is changed.
 
+## Getting Started
+
+See `SETUP.md` for the human bootstrap checklist — fill in project-specific
+placeholders before your first agent session. The agent will detect any
+remaining placeholders and halt until they are resolved.
+
 ## Files
 
 ```
+SETUP.md              — Start here. Human bootstrap checklist — what to fill
+                        in before your first agent session.
+
+TASK_TEMPLATE.md      — Structured task brief template. Use this when giving
+                        tasks to the agent to prevent scope creep and ambiguity.
+
 ARCHITECTURE.md       Agent instruction manual — structural rules, session
                       protocols, handoff and commenting standards, pattern
                       registry, Captain's Log format.
@@ -83,6 +108,16 @@ exactly as written. Do not write any code until the protocol is complete.
 
 The docs handle everything from there. The opening prompt just ensures the
 agent reads before it acts.
+
+---
+
+## Evaluation Harness (recommended practice)
+
+Not included in this pack because it is project-specific, but worth building:
+maintain a small set of benchmark tasks with known expected outcomes and run
+them whenever you update the starter pack instructions. This lets you detect
+regressions in agent behavior — over-editing, missing tests, weak commit
+hygiene, ignoring scope boundaries — before they affect real work.
 
 ---
 

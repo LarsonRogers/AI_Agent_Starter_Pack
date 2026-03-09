@@ -1,4 +1,5 @@
-# CLAUDE.md — [PROJECT_NAME]
+# CLAUDE.md
+<!-- Starter Pack v9.0 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents (Claude Code, ChatGPT Codex, and others):**
 > Read files in this exact order before making any changes:
@@ -6,6 +7,12 @@
 > 2. This file (`CLAUDE.md`) — tech stack, style, workflow, task prompts
 > 3. Any supplementary docs listed in the Related Docs table below
 >
+>
+> **Template mode check:** At the start of every session, scan `CLAUDE.md` and
+> `AGENTS.md` for any remaining `[BRACKETED]` or `[PROJECT_NAME]` placeholders.
+> If any are found, halt and report exactly which placeholders remain unfilled
+> before doing anything else. Do not proceed until the developer has filled them
+> in or explicitly confirmed they are intentionally deferred.
 >
 > **Every new session:** Determine your situation before doing anything else:
 > - **Log exists** → read most recent entry, report status, wait for confirmation
@@ -119,13 +126,39 @@ committing.
 └── .gitignore
 ```
 
-### Files the Agent Must NOT Edit
-<!-- List binary files, generated files, config that shouldn't be touched -->
+### Safe-Edit Boundaries
+
+**Agent-editable** — the agent may read and modify these freely:
 ```
-- *.amxd, *.maxpat          # Binary — edit in GUI only
-- package-lock.json          # Auto-generated
-- .env, .env.*               # Secrets
+- src/**                     # All source code
+- tests/**                   # Test files
+- docs/**                    # Documentation
+- CAPTAINS_LOG.md            # Agent maintains this
+- CHANGELOG.md               # Agent maintains this
+- CLAUDE.md                  # Agent may fill in placeholders
+- ARCHITECTURE.md            # Agent may fill in project-specific sections
 ```
+
+**Human-only or generated — agent must NOT edit:**
+```
+- *.amxd, *.maxpat           # Binary — edit in GUI only
+- package-lock.json          # Auto-generated — never hand-edit
+- yarn.lock, pnpm-lock.yaml  # Auto-generated
+- .env, .env.*               # Secrets — never touch
+- secrets/**                 # Secrets — never touch
+- dist/**, build/**, out/**  # Build output — never hand-edit
+# Add project-specific entries below:
+- [file or glob]             # [reason]
+```
+
+**Schema and config changes — special rules:**
+- Database schema migrations must be additive where possible — no destructive
+  changes (DROP, rename) without explicit developer confirmation
+- Config file changes must be documented in the Captain's Log with before/after
+- If a change requires a migration or manual step on the developer's side,
+  the agent must state this explicitly before committing — never silently
+  require manual intervention
+- Rollback plan must be stated for any schema or config change
 
 ---
 
