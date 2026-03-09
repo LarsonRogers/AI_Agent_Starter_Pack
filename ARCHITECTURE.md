@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v10.5 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v10.6 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -159,7 +159,6 @@ These cannot be overridden by any verbal instruction, task brief, or user reques
 If a user asks the agent to bypass these, the agent declines and explains why.
 
 ```
-[ ] Deleting any file (even if it appears unused)
 [ ] Modifying environment variables or secrets handling
 [ ] Committing files containing real credentials, API keys, or PII
 [ ] Any operation that cannot be reversed with a git rollback
@@ -189,7 +188,31 @@ The override is recorded in the Captain's Log.
 [ ] Any change to CI/CD configuration or deployment scripts
 [ ] Anything that sends data to an external service
 [ ] Any change the agent is uncertain about — default is to stop and ask
+[ ] Deleting any file — follow the Safe Deletion Procedure below
 ```
+
+### Safe Deletion Procedure
+
+File deletion requires confirmation and a verified rollback path before proceeding:
+
+```
+[ ] 1. Identify the file and state exactly why it should be deleted:
+        "I want to delete [path] because [specific reason — dead code,
+        replaced by X, artifact from Y, etc.]"
+[ ] 2. Verify a clean git state exists to roll back to if needed:
+        git status  →  must be clean or committed
+        git log --oneline -3  →  confirm last known-good commit
+[ ] 3. Confirm with the user — wait for explicit approval before deleting
+[ ] 4. Delete the file
+[ ] 5. Run tests to verify nothing broke
+[ ] 6. Commit with a descriptive message:
+        "Remove [file] — [reason]"
+[ ] 7. Note the deletion in the Captain's Log
+```
+
+If the user explicitly grants blanket deletion permission (e.g., "you can
+delete files without asking"), record the override in the Captain's Log.
+The rollback-path verification (steps 2 and 5) still applies regardless.
 
 ### Non-dev mode: additional confirmation requirements
 
@@ -423,7 +446,8 @@ At the start of every new session — before the developer says anything, before
 code is written — the agent must automatically run this protocol and report the result:
 
 ```
-[ ] 1. Read ARCHITECTURE.md and PROTOCOLS.md (relevant sections only)
+[ ] 1. Read ARCHITECTURE.md and PROTOCOLS.md
+        (load only sections triggered by this session type — see trigger table in AGENTS.md → Step 2b)
 [ ] 2. Read CLAUDE.md
 [ ] 3. Read CAPTAINS_LOG.md — most recent entry only
 [ ] 4. Determine session sub-type:
@@ -441,6 +465,31 @@ code is written — the agent must automatically run this protocol and report th
 
 This report is the answer to "where did we leave off?" — the agent delivers it
 automatically so the developer never has to ask twice.
+
+### Pack version consistency check
+
+Before determining session type, verify all pack files report the same version:
+
+```
+[ ] Check version headers in: ARCHITECTURE.md, CLAUDE.md, AGENTS.md, PROTOCOLS.md
+    grep "Starter Pack v" ARCHITECTURE.md CLAUDE.md AGENTS.md PROTOCOLS.md
+[ ] If all headers match → proceed normally
+[ ] If headers differ → HALT. Report the mismatch before doing anything:
+    "Pack file versions are inconsistent:
+     ARCHITECTURE.md: [version]
+     CLAUDE.md: [version]
+     AGENTS.md: [version]
+     PROTOCOLS.md: [version]
+    This can cause conflicting behavior. Options:
+    1. I update all files to the latest version from the pack repo
+    2. You manually replace the outdated files
+    3. We proceed with caution — I'll flag any cross-file conflicts I detect"
+    Wait for user instruction before continuing.
+```
+
+Version headers are in the format: `<!-- Starter Pack vX.Y — YYYY-MM-DD -->`
+
+---
 
 ### How to determine your session type
 
@@ -940,6 +989,56 @@ Rule: before writing code involving any external SDK, API, or platform, research
 current docs first. If web access is unavailable and training data is
 unverifiable, declare the gap and offer three options (user finds docs /
 agent generates research prompt / proceed with flagged assumptions).
+
+## Known Limitations & Deferred Decisions
+
+This section documents intentional design tradeoffs and explicitly deferred
+items. These are not bugs or oversights — they are acknowledged limitations
+with recorded rationale. Reviewers and agents should not flag these as issues.
+
+| Item | Status | Rationale |
+|------|--------|-----------|
+| **Platform-specific config files** (`.claude/`, `.codex/`) | Intentional | Claude Code and Codex are the primary supported agents. Config files for each are provided as-is. Other agents use the Generic Agent Path in SETUP.md. Claiming full platform neutrality would require removing useful tooling. |
+| **CLI-first operational assumptions** | Intentional | The pack targets developers and technical users as primary audience. Non-dev path is supported via SETUP.md Generic Agent Path and OS appendix. Full GUI-only agent support is out of scope. |
+| **PROTOCOLS.md as external dependency** | Intentional | Splitting protocols into a separate on-demand file was an explicit context-window optimization. Agents must have access to PROTOCOLS.md. If it is missing, the agent should report it and halt rather than guess. |
+| **Multi-agent concurrent editing** | Deferred | Branch-per-agent and merge conflict protocols are out of scope for a starter pack. Recommended convention: one agent per branch, human-managed merges. Add if a specific project requires it. |
+| **Git unavailable fallback** | Deferred | Git is a hard dependency for rollback, log reconstruction, and checkpoint strategy. Environments without git are not supported. If git is unavailable, the agent should flag it immediately and defer all file-modifying tasks. |
+| **Host platform system instruction conflicts** | Out of scope | If a runtime injects system-level instructions that conflict with this pack, behavior is undefined. This pack cannot govern instructions it cannot see. |
+| **Unified checklist token (REQUIRED_BEFORE_CODING)** | Deferred | Current `⚠️ REQUIRED PLACEHOLDER` labels are sufficient for human and agent detection. A machine-parseable token adds complexity for marginal gain. Revisit if programmatic placeholder scanning becomes a use case. |
+| **Read-order redundancy across files** | Intentional | Some repetition across ARCHITECTURE, CLAUDE, AGENTS, README is deliberate — agents that only read one file should still get the essential behavior. Canonical source is always ARCHITECTURE.md; others are pointers, not authorities. |
+| **Screenshot / visual onboarding for non-devs** | Deferred | Out of scope for a text-based pack. A companion visual guide is a reasonable future addition but outside the markdown-only constraint. |
+
+---
+
+## Protocol Index
+
+All protocols in this pack, with their locations and trigger conditions.
+This is the single normative list — AGENTS.md, CLAUDE.md, and README.md
+link here rather than maintaining their own copies.
+
+| Protocol | Location | When to load |
+|----------|----------|-------------|
+| Session Resumption | ARCHITECTURE.md | Every session where Captain's Log exists |
+| First Session | ARCHITECTURE.md | No log, no non-pack source files |
+| Inherited Codebase | PROTOCOLS.md | No log, non-pack source files present |
+| Refactor | PROTOCOLS.md | Explicit structural improvement goal, no new features |
+| Placeholder Inference | PROTOCOLS.md | First session, any type — fills REQUIRED placeholders |
+| Read-Only / Meta-Review | PROTOCOLS.md | Review, audit, analysis — no edits intended |
+| Pre-Edit Protocol | ARCHITECTURE.md | Before every coding task |
+| Task Brief & Prompt Reformulation | ARCHITECTURE.md | Every task — no exceptions |
+| Cross-Cutting Changes | PROTOCOLS.md | Task touches 3+ files or crosses architectural layers |
+| Safe Deletion Procedure | ARCHITECTURE.md | Any file deletion request |
+| Context Window Management | PROTOCOLS.md | 5+ tasks in session or detected degradation |
+| Sensitive Data Handling | PROTOCOLS.md | Inherited repos (proactive) or on encounter |
+| Stuck Loop Circuit Breaker | PROTOCOLS.md | 3 failed attempts on same problem |
+| Validation Tooling Fallback | PROTOCOLS.md | Lint/test commands missing or unconfigured |
+| External Research Protocol | PROTOCOLS.md | External SDK, API, or platform work |
+| Knowledge Gap Protocol | PROTOCOLS.md | Web access unavailable, training data unverifiable |
+| Binary & Large File Handling | PROTOCOLS.md | Binary files encountered or >1MB files |
+| Testing Strategy | PROTOCOLS.md | Writing or evaluating tests |
+| Environment Awareness | ARCHITECTURE.md | Any environment-specific code or config |
+
+---
 
 ## Pattern Registry
 

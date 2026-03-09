@@ -1,5 +1,5 @@
 # Setup Guide
-<!-- Starter Pack v10.5 -->
+<!-- Starter Pack v10.6 -->
 
 No coding experience required. If you are a developer, skip to
 Developer Quick Setup at the bottom.
@@ -103,6 +103,76 @@ problem areas, and tells you what it found before touching anything.
 Describe what you want in plain language. The agent will reflect back what
 it understood and ask you to confirm before starting. From there, it works,
 saves checkpoints, and reports back in plain English after each task.
+
+---
+
+## What a good first session looks like
+
+Here is a concrete example of what the agent should say and do in a
+compliant first session on a new project. If yours looks different,
+see "If something goes wrong" below.
+
+---
+
+**You start the session. The agent responds first — unprompted:**
+
+> "Hi! Before I do anything, I need to understand who I'm working with
+> so I can communicate in the most useful way.
+>
+> Two quick questions:
+> 1. Are you a developer, or do you prefer plain English explanations?
+> 2. Have you worked with AI coding agents before?
+>
+> (You can also just say 'developer', 'non-dev', or 'somewhere in between'
+> and I'll calibrate from there.)"
+
+**You say:** "Non-developer, first time using this."
+
+**Agent responds:**
+
+> "Got it — I'll explain everything in plain English and walk you through
+> each step before doing anything. I've recorded that for future sessions
+> so you won't be asked again.
+>
+> Now let me scan the project to understand what we're working with...
+>
+> Here's what I found:
+> - This appears to be a new project — only starter pack files present
+> - No prior work logged
+>
+> Based on the repo name and any files I can see, here's what I've inferred:
+>
+> Project name: [inferred name]
+> Language/runtime: [inferred or 'I couldn't determine this — what are you building with?']
+> Lint command: [inferred or 'not configured yet']
+> Test command: [inferred or 'not configured yet']
+>
+> Say 'confirmed' to accept these, or tell me what to change."
+
+**You say:** "Confirmed."
+
+**Agent responds:**
+
+> "Done — I've filled those in. I've also created a Captain's Log to track
+> our work across sessions.
+>
+> What would you like to work on first? Describe it in plain English and
+> I'll make sure I understand it correctly before starting."
+
+---
+
+**Signs the agent is NOT following the protocol:**
+
+- Starts writing or editing code immediately without asking questions
+- Never presents inferred project details for confirmation
+- Doesn't create a Captain's Log entry
+- Asks you to manually edit any of the pack files
+
+**If any of these happen**, paste this into the chat:
+```
+Stop. Read AGENTS.md and follow the session start protocol from the
+beginning. Do not write any code until the protocol is complete.
+```
 
 ---
 

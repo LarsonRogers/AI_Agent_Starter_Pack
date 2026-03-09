@@ -1,5 +1,5 @@
 # PROTOCOLS.md
-<!-- Starter Pack v10.5 — 2026-03-09 -->
+<!-- Starter Pack v10.6 — 2026-03-09 -->
 
 > **For AI coding agents:** This file contains detailed protocols loaded
 > on demand. Read the relevant section when the situation requires it.
