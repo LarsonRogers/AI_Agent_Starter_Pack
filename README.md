@@ -64,21 +64,8 @@ See `SETUP.md` for a full walkthrough including non-developer instructions.
 
 ## Use Cases
 
-**New project**
-Start a session. The agent bootstraps from scratch — scans the repo, creates
-the Captain's Log, and confirms the first task before writing anything.
-
-**Active project**
-Every session resumes automatically from the Captain's Log. Switch between
-Claude, Codex, Cursor, or any other agent without losing context. The log
-is the handoff.
-
-**Inherited or unmaintained codebase**
-Drop the pack in and start a session. The agent reconstructs a Captain's Log
-from git history (entries marked as reconstructed with confidence ratings),
-runs a full assessment — architecture, problem areas, tech debt, sensitive
-data, dependency health — and gives you an honest report before anything
-is changed.
+Works for new projects, active projects, inherited codebases, and refactors.
+See `SETUP.md` for what happens in each scenario.
 
 ---
 
@@ -133,18 +120,19 @@ AGENTS.md                   Entry point for Codex and other agents. Core
 
 ## Starting a Session
 
-**CLI agents** (Claude Code, Codex CLI)
-Run from the repo root — the agent reads the instruction files automatically
-on startup.
+**CLI agents** (Claude Code, Codex CLI) — run from repo root, agent reads
+instruction files automatically.
 
-**Web-based or IDE agents** (Cursor, Windsurf, ChatGPT Codex web, etc.)
-Paste this as your opening message:
+**Web / IDE agents** (Cursor, Windsurf, ChatGPT web, etc.) — paste this
+as your opening message:
 
 ```
 Before doing anything else, read AGENTS.md at the repo root and follow
 the session start protocol exactly as written. Do not write any code
 until the protocol is complete.
 ```
+
+See `SETUP.md` for troubleshooting and detailed instructions by agent type.
 
 ---
 

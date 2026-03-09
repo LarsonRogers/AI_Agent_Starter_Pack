@@ -3,10 +3,12 @@
 
 > **For AI coding agents (Claude Code, ChatGPT Codex, and others):**
 > Read files in this exact order before making any changes:
+> Canonical read order every session:
 > 1. `ARCHITECTURE.md` — core rules, guardrails, and behavioral protocols
 > 2. This file (`CLAUDE.md`) — tech stack, style, workflow, task prompts
-> 3. `PROTOCOLS.md` — load specific sections on demand when situation requires
-> 4. Any supplementary docs listed in the Related Docs table below
+> 3. `CAPTAINS_LOG.md` — most recent entry only (if it exists)
+> 4. `PROTOCOLS.md` — relevant sections on demand (see trigger table in `AGENTS.md`)
+> 5. Any supplementary docs listed in the Related Docs table below
 >
 >
 > **Placeholder handling:** The agent handles all placeholder substitution —

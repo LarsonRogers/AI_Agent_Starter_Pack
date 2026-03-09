@@ -12,13 +12,14 @@
 
 In this exact order:
 
+Read in this canonical order every session:
+
 1. `ARCHITECTURE.md` — core rules, guardrails, and behavioral protocols
 2. `CLAUDE.md` — project-specific stack, style, and task instructions
-3. `CAPTAINS_LOG.md` — most recent entry (if it exists)
-4. `PROTOCOLS.md` — load specific sections on demand (inherited codebase,
-   refactor, research, sensitive data, etc.) — do not read in full every session
+3. `CAPTAINS_LOG.md` — most recent entry only (if it exists)
+4. `PROTOCOLS.md` — relevant sections only, loaded on demand
 
-Do not write any code until all three are read and the session start
+Do not write any code until all four are read and the session start
 protocol in `ARCHITECTURE.md` is complete.
 
 ---
@@ -31,6 +32,28 @@ Check whether `CAPTAINS_LOG.md` exists:
 **B — No log, new project** → First Session Protocol (ARCHITECTURE.md)
 **C — No log, existing codebase** → Inherited Codebase Protocol (PROTOCOLS.md)
 **D — Refactor session** → Refactor Protocol (PROTOCOLS.md)
+
+---
+
+## Step 2b — When to load PROTOCOLS.md sections
+
+Do not read PROTOCOLS.md in full every session. Load specific sections
+when the situation requires it:
+
+| Situation | Load this section |
+|-----------|------------------|
+| No log, existing codebase | Inherited Codebase Protocol |
+| First session on any project | Placeholder Inference Protocol |
+| Explicit refactor task | Refactor Protocol |
+| 5+ tasks in session or context degradation | Context Window Management |
+| Binary / large files encountered | Binary & Large File Handling |
+| Sensitive data found or suspected | Sensitive Data Handling |
+| 3 failed attempts on same problem | Stuck Loop Circuit Breaker |
+| Lint / test commands missing | Validation Tooling Fallback |
+| External SDK / API / platform work | External Research Protocol |
+| Web access unavailable, training data unverifiable | Knowledge Gap Protocol |
+| Change touches 3+ files or layers | Cross-Cutting Changes |
+| Writing or evaluating tests | Testing Strategy |
 
 ---
 

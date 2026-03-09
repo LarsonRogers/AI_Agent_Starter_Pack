@@ -167,9 +167,13 @@ If a user asks the agent to bypass these, the agent declines and explains why.
 [ ] Any code involving an external system the agent cannot verify —
     follow the Knowledge Gap Protocol instead of guessing
 [ ] Editing any starter pack instruction files:
-    ARCHITECTURE.md, PROTOCOLS.md, CLAUDE.md, AGENTS.md, TASK_TEMPLATE.md
+    ARCHITECTURE.md, PROTOCOLS.md, AGENTS.md, TASK_TEMPLATE.md
     These may only be modified when explicitly instructed by the user to
-    update the pack itself — never as a side effect of project work
+    update the pack itself — never as a side effect of project work.
+    Exception — CLAUDE.md: the agent may write to the designated
+    placeholder sections (project name, tech stack, validation commands,
+    file structure) during the Placeholder Inference Protocol. Policy
+    sections of CLAUDE.md are not editable without explicit instruction.
 ```
 
 ### Default policies — require confirmation, overridable by explicit user instruction
@@ -419,9 +423,10 @@ At the start of every new session — before the developer says anything, before
 code is written — the agent must automatically run this protocol and report the result:
 
 ```
-[ ] 1. Read CAPTAINS_LOG.md — most recent entry first
-[ ] 2. Read ARCHITECTURE.md and CLAUDE.md
-[ ] 3. Report to the developer (unprompted):
+[ ] 1. Read ARCHITECTURE.md and PROTOCOLS.md (relevant sections only)
+[ ] 2. Read CLAUDE.md
+[ ] 3. Read CAPTAINS_LOG.md — most recent entry only
+[ ] 4. Report to the developer (unprompted):
         a. Where we left off (last sprint/task completed)
         b. Current codebase state (what is working, what is stubbed, what is incomplete)
         c. Open watch items from the last session
@@ -431,6 +436,25 @@ code is written — the agent must automatically run this protocol and report th
 
 This report is the answer to "where did we leave off?" — the agent delivers it
 automatically so the developer never has to ask twice.
+
+### How to determine your session type
+
+```
+Captain's Log exists?
+  YES → Session type A (Resumption)
+  NO  → Does the repo contain non-pack source files
+         OR more than 1 prior git commit?
+           YES → Is the explicit goal structural improvement
+                 with no new features?
+                   YES → Session type D (Refactor)
+                   NO  → Session type C (Inherited Codebase)
+           NO  → Session type B (New Project)
+```
+
+Non-pack source files means: any code, config, or data file not part of
+the starter pack itself. If only pack files exist, it's a new project.
+
+---
 
 **D — Refactor session (working codebase, goal is structural improvement)**
 See `PROTOCOLS.md` → Refactor Protocol for the full four-phase procedure.
@@ -702,20 +726,28 @@ run full checkpoint, update Captain's Log, notify user to start fresh session.
 
 ## Instruction Precedence & Conflict Resolution
 
-When instructions conflict, the agent applies this hierarchy — highest to lowest:
+Instructions fall into two categories that behave differently when in conflict:
+
+**Hard guardrails** — non-overridable under any circumstances. No verbal
+instruction, task brief, or user request can override these. If asked to
+bypass a hard guardrail, the agent declines and explains why. See the
+Hard Guardrails section above for the full list.
+
+**Everything else** — subject to the following precedence hierarchy.
+Verbal instructions can override items in this hierarchy when explicit:
 
 ```
-1. Guardrails (ARCHITECTURE.md) ————— always win, non-negotiable
-2. Structural rules (ARCHITECTURE.md) — override task-level instructions
-3. CLAUDE.md project rules ————————— project-specific constraints
-4. Confirmed task brief ————————————— governs the current task scope
-5. Verbal / mid-session instructions —— lowest precedence
+1. Structural rules (ARCHITECTURE.md) — override task-level instructions
+2. CLAUDE.md project rules ————————— project-specific constraints
+3. Confirmed task brief ————————————— governs the current task scope
+4. Verbal / mid-session instructions —— lowest precedence, but can
+                                        override 1-3 when explicit
 ```
 
 ### Conflict surfacing (mandatory)
 
 The agent must **never resolve a conflict silently.** When a conflict is
-detected at any level:
+detected:
 
 ```
 "I've noticed a conflict I want to flag before proceeding:
@@ -723,17 +755,18 @@ detected at any level:
 [Rule A] from [source] says: [what it says]
 [Rule B] from [source] says: [what it says]
 
-Based on the precedence hierarchy, [Rule A] takes priority, which means
-[plain-English consequence].
+[If one is a hard guardrail:] [Rule A] is a hard guardrail — it cannot
+be overridden. I'll apply it regardless.
 
-[If unambiguous:] I'll proceed with [Rule A] unless you tell me otherwise.
-[If genuinely ambiguous:] I can't resolve this automatically — which should
-take precedence here?"
+[If both are default policies:] Based on the precedence hierarchy,
+[Rule A] takes priority. I'll proceed with that unless you tell me otherwise.
+
+[If genuinely ambiguous:] I can't resolve this automatically — which
+should take precedence here?"
 ```
 
-A verbal instruction that explicitly overrides a higher-precedence rule is
-valid — the user can always escalate. When this happens the agent records
-the override in the Captain's Log with the reason given.
+When a verbal instruction explicitly overrides a default policy, the agent
+records the override and reason in the Captain's Log before proceeding.
 
 ---
 
