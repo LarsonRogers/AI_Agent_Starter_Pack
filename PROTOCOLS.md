@@ -1,5 +1,5 @@
 # PROTOCOLS.md — Protocol Index
-<!-- Starter Pack v11.25 — 2026-03-09 -->
+<!-- Starter Pack v11.26 — 2026-03-09 -->
 
 > **For AI coding agents:** This file is a routing index only.
 > Each protocol lives in its own file in the `protocols/` directory.
@@ -15,7 +15,7 @@
 | Protocol file | Load when |
 |---------------|-----------|
 | `protocols/conflict-examples.md` | Surfacing a conflict or verifying conflict behavior |
-| `protocols/edge-cases.md` | Pack files missing, git unavailable, no file-read, placeholder conflicts, CAPTAINS_LOG missing/corrupt |
+| `protocols/edge-cases.md` | Pack files missing, git unavailable, no file-read, no file-write, placeholder conflicts, CAPTAINS_LOG missing/corrupt |
 | `protocols/known-limitations.md` | Auditing the pack — never during normal work |
 | `protocols/read-only.md` | Review, audit, analysis — no edits intended |
 | `protocols/inherited-codebase.md` | No Captain's Log, non-pack source files present |

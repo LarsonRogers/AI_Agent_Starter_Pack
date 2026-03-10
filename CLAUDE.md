@@ -1,5 +1,5 @@
 # CLAUDE.md
-<!-- Starter Pack v11.25 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.26 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents (Claude Code, ChatGPT Codex, and others):**
 > **Meta-review exception:** If the first message is a review, audit, or
@@ -183,8 +183,11 @@ committing.
 ```
 
 **Schema and config changes — special rules:**
-- Database schema migrations must be additive where possible — no destructive
-  changes (DROP, rename) without explicit developer confirmation
+- Database schema migrations must be additive where possible — destructive
+  schema operations (DROP table, destructive column removal) are governed by
+  ARCHITECTURE.md hard guardrails and are never agent-executable regardless
+  of confirmation. Renames and additive-compatible changes require explicit
+  developer confirmation before proceeding.
 - Config file changes must be documented in the Captain's Log with before/after
 - If a change requires a migration or manual step on the developer's side,
   the agent must state this explicitly before committing — never silently

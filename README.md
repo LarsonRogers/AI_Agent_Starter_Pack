@@ -1,5 +1,5 @@
 # AI Agent Starter Pack
-<!-- Starter Pack v11.25 -->
+<!-- Starter Pack v11.26 -->
 
 A platform-agnostic instruction set for AI coding agents. Drop it into any repo
 and any agent — Claude Code, Codex, Cursor, Windsurf, Aider, or others — will
@@ -208,7 +208,7 @@ Before tagging a new pack version, verify:
 
 ## Version
 
-This is **Starter Pack v11.25**. The version is recorded in the header of
+This is **Starter Pack v11.26**. The version is recorded in the header of
 `ARCHITECTURE.md`, `CLAUDE.md`, `AGENTS.md`, `PROTOCOLS.md`, and in every
 Captain's Log entry so there's always an audit trail of which instruction
 set was active for any given session.
