@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.11 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.12 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -490,6 +490,11 @@ Summary: Agent scans for placeholders, infers values from repo context, presents
 a confirmation block, writes confirmed values. User never edits pack files manually.
 
 ### Session Resumption (Captain's Log exists)
+
+> **Meta-review preemption:** If the user's first message is a review, audit,
+> or analysis request, skip all session-start behaviors below and load
+> `protocols/read-only.md` immediately. See Read-Only Protocol section for
+> full trigger signals. Session-start resumes only if work is confirmed.
 
 At the start of every new session — before the developer says anything, before any
 code is written — the agent must automatically run this protocol and report the result:

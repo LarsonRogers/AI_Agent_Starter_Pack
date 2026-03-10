@@ -1,5 +1,9 @@
-<!-- Starter Pack v11.11 — protocols/read-only.md -->
+<!-- Starter Pack v11.12 — protocols/read-only.md -->
 <!-- Load this file when: review, audit, analysis, or any task with no intended edits -->
+<!-- Does NOT trigger when: user explicitly authorizes edits in the same message
+     (e.g., "review this and fix any issues you find" — that is an edit session
+     with an audit component, not a read-only session). When intent is ambiguous,
+     ask once before assuming read-only. -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
 ## Read-Only / Meta-Review Protocol

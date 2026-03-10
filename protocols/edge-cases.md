@@ -1,8 +1,13 @@
-<!-- Starter Pack v11.11 — protocols/edge-cases.md -->
-<!-- Load this file when: pack files missing, git unavailable, no file-read, placeholder conflicts -->
+<!-- Starter Pack v11.12 — protocols/edge-cases.md -->
+<!-- Load this file when: pack files missing, git unavailable, no file-read, placeholder conflicts, CAPTAINS_LOG missing/corrupt -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
 ## Edge-Case Handling
+
+**Does NOT trigger for:** ordinary ambiguity that a single clarifying question
+resolves (e.g., a missing placeholder value where the user can simply provide it).
+Edge-case protocol is for structural failures — missing files, unavailable tools,
+irreconcilable conflicts — not routine clarification needs.
 
 Deterministic action paths for common failure scenarios. Load this section
 when any of the trigger conditions below are encountered.

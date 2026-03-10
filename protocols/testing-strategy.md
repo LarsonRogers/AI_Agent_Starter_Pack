@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.11 — protocols/testing-strategy.md -->
+<!-- Starter Pack v11.12 — protocols/testing-strategy.md -->
 <!-- Load this file when: writing or evaluating tests -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
