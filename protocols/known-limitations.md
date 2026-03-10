@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.19 — protocols/known-limitations.md -->
+<!-- Starter Pack v11.20 — protocols/known-limitations.md -->
 <!-- Load this file when: auditing the pack — never needed during normal agent work -->
 <!-- Does NOT trigger during ordinary coding tasks, code reviews of project code,
      or any session where the goal is writing or modifying project code rather
@@ -40,6 +40,8 @@ with recorded rationale. Reviewers and agents should not flag these as issues.
 | **"Agent uncertain" default-policy rubric** | Considered and declined (further elaboration) | Flagged in v11.3, v11.5, v11.6. Must-ask list and need-not-ask counter-list were added in v11.5. Proposal: add a full low/medium/high uncertainty rubric with examples. Decision: adding more scaffolding to this clause risks making it harder to read and harder to follow consistently. Current two-list structure is sufficient. Do not re-flag unless agent behavior shows measurable over-confirmation or under-confirmation in practice. |
 | **CLAUDE.md scaffolding verbosity in always-loaded file** | Considered and declined (repeated) | Flagged in v11.1, v11.2, v11.3, v11.5, v11.6. Generic naming/formatting/documentation/git scaffolding in CLAUDE.md is always loaded. Proposal: move to optional appendix. Decision: this is project-specific reference material that agents consult during active work. Moving it on-demand would require protocol-loading during tasks that don't currently trigger any protocol. Token overhead (~200–400 tokens) does not justify the workflow complexity. Do not re-flag. |
 | **AGENTS principle duplication / token overhead** | Intentional — load-bearing | AGENTS.md Step 3 mirrors core principles already in ARCHITECTURE.md. This is deliberate: agents that only read AGENTS.md should still have essential behavioral constraints. Accepted tradeoff documented across multiple audit cycles. |
+
+| **Hard guardrail may over-block legitimate destructive operations** | Considered and declined | Flagged v11.19/v11.20. Proposal: add a narrowly scoped exception path for planned destructive migrations (e.g., drop table) when user explicitly authorizes and rollback evidence is confirmed. Decision: forcing a manual handoff on locally-irreversible destructive operations is intentional. The agent cannot verify rollback paths, backup integrity, or downstream effects. User authorization alone is not sufficient justification for an agent to execute irreversible destruction autonomously. The correct path is: agent halts, explains what it needs to do and why it cannot proceed, user executes the destructive step manually or via a purpose-built migration tool. Do not re-flag. |
 
 ---
 
