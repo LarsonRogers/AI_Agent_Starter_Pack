@@ -1,5 +1,5 @@
 # AI Agent Starter Pack
-<!-- Starter Pack v11.8 -->
+<!-- Starter Pack v11.9 -->
 
 A platform-agnostic instruction set for AI coding agents. Drop it into any repo
 and any agent — Claude Code, Codex, Cursor, Windsurf, Aider, or others — will
@@ -196,9 +196,19 @@ pack to catch regressions in agent behavior before they affect real work.
 
 ---
 
+## Release Checklist
+
+Before tagging a new pack version, verify:
+
+- [ ] Pack-file edit exceptions are in sync across ARCHITECTURE.md (hard guardrails),
+      AGENTS.md (Step 3), and CLAUDE.md (safe-edit boundaries)
+- [ ] Protocol Index trigger table in ARCHITECTURE.md matches AGENTS.md mirror row-for-row
+- [ ] All 16 protocol files present: `ls protocols/ | wc -l` returns 16
+- [ ] Version string updated in all pack file headers
+
 ## Version
 
-This is **Starter Pack v11.8**. The version is recorded in the header of
+This is **Starter Pack v11.9**. The version is recorded in the header of
 `ARCHITECTURE.md`, `CLAUDE.md`, `AGENTS.md`, `PROTOCOLS.md`, and in every
 Captain's Log entry so there's always an audit trail of which instruction
 set was active for any given session.

@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.8 — protocols/edge-cases.md -->
+<!-- Starter Pack v11.9 — protocols/edge-cases.md -->
 <!-- Load this file when: pack files missing, git unavailable, no file-read, placeholder conflicts -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 

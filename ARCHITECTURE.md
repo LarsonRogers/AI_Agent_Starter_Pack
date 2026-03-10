@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.8 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.9 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -224,7 +224,7 @@ The override is recorded in the Captain's Log.
 [ ] Any change the agent is uncertain about — default is to stop and ask.
     Minimum uncertainty threshold that triggers this: unknown API behavior
     (undocumented or unverified), any change with auth or permissions impact,
-    any change that touches a schema or data model, any change that could
+    any change that alters schema or data-model behavior or structure, any change that could
     affect external systems.
     Does NOT trigger (resolve by reading codebase patterns, not asking):
     unfamiliar syntax, style choices, naming conventions, formatting,
@@ -1068,7 +1068,7 @@ When the two conflict, this table governs.
 | Testing Strategy | `protocols/testing-strategy.md` | Writing or evaluating tests |
 | Environment Awareness | ARCHITECTURE.md | Any environment-specific code or config |
 | Conflict Resolution Examples | `protocols/conflict-examples.md` | Surfacing a conflict or verifying conflict behavior |
-| Edge-Case Handling | `protocols/edge-cases.md` | Pack files missing, git unavailable, no file-read, placeholder conflicts |
+| Edge-Case Handling | `protocols/edge-cases.md` | Pack files missing, git unavailable, no file-read, placeholder conflicts, CAPTAINS_LOG missing/corrupt |
 | Known Limitations & Deferred Decisions | `protocols/known-limitations.md` | Auditing the pack — never during normal work |
 | Pattern Registry Maintenance | `protocols/pattern-registry.md` | Documenting a new reusable pattern before committing |
 

@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.8 — protocols/read-only.md -->
+<!-- Starter Pack v11.9 — protocols/read-only.md -->
 <!-- Load this file when: review, audit, analysis, or any task with no intended edits -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
@@ -47,7 +47,9 @@ protocol unless the user explicitly requests edits:
         Confirm, or let me know if you'd like me to make changes too."
 [ ] 2. Read the relevant files — do not stage, modify, or create any file
 [ ] 3. Produce the requested analysis, review, or report
-[ ] 4. Deliver findings in the format appropriate to audience mode:
+[ ] 4. Deliver findings in the format appropriate to audience mode.
+        If no audience mode is recorded (e.g. first-message audit with no
+        prior Captain's Log), default to Technical non-dev.
         - Developer: prioritized list, concise, specific file/line references
         - Technical non-dev: plain English with technical detail where useful
         - Non-dev: plain English, options and recommendations, no jargon
