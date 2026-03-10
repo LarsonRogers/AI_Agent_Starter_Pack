@@ -1,5 +1,5 @@
 # Setup Guide
-<!-- Starter Pack v11.18 -->
+<!-- Starter Pack v11.19 -->
 
 No coding experience required. If you are a developer, skip to
 Developer Quick Setup at the bottom.
@@ -89,7 +89,7 @@ your-project/
 │   ├── refactor.md
 │   ├── inherited-codebase.md
 │   ├── placeholder-inference.md
-│   └── ... (16 protocol files total)
+│   └── ... (protocol files — see count verification below)
 ├── SETUP.md
 ├── TASK_TEMPLATE.md
 ├── README.md

@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.18 — protocols/edge-cases.md -->
+<!-- Starter Pack v11.19 — protocols/edge-cases.md -->
 <!-- Load this file when: pack files missing, git unavailable, no file-read, placeholder conflicts, CAPTAINS_LOG missing/corrupt -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
@@ -16,7 +16,7 @@ when any of the trigger conditions below are encountered.
 |-----------|---------------------|
 | **CAPTAINS_LOG.md empty (zero-byte or no entries)** | Treat as corrupt — same behavior as missing. Proceed to session type detection (file-presence rule). Do not attempt to parse or resume from an empty log. |
 | **CAPTAINS_LOG.md missing or corrupt** | Treat as no-log session. Run session type detection (file-presence rule). If non-pack files exist → Inherited Codebase Protocol. If no source files → First Session. Do not attempt to repair a corrupt log — note it and start fresh. |
-| **Single protocol file missing from protocols/** | Halt when the missing protocol is triggered. Report exactly which file is missing: "protocols/[filename].md is missing. I need it to proceed with [situation]. Please restore it from the original pack zip." Do not guess or reconstruct the protocol behavior. If unsure which file is missing, run `ls protocols/` — there should be 16 files. |
+| **Single protocol file missing from protocols/** | Halt when the missing protocol is triggered. Report exactly which file is missing: "protocols/[filename].md is missing. I need it to proceed with [situation]. Please restore it from the original pack zip." Do not guess or reconstruct the protocol behavior. If unsure which file is missing, run `ls protocols/` and compare against the expected count in SETUP.md. |
 | **PROTOCOLS.md missing** | Halt immediately. Report: "PROTOCOLS.md is missing from the repo root. Several required procedures are unavailable. Please restore it from the original pack zip before continuing." Do not attempt to guess or reconstruct protocol behavior. |
 | **ARCHITECTURE.md or CLAUDE.md missing** | Halt immediately. Report which file is missing and ask the user to restore it. These are the primary instruction sources — proceeding without them produces undefined behavior. |
 | **No git installed or git unavailable** | Report clearly what is unavailable: commits, rollbacks, history reconstruction, checkpoint strategy, and refactor protocol all require git. Offer read-only analysis and planning work only. Do not attempt to simulate git with manual file copies. |

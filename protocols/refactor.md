@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.18 — protocols/refactor.md -->
+<!-- Starter Pack v11.19 — protocols/refactor.md -->
 <!-- Load this file when: explicit structural improvement goal with no new features -->
 <!-- Does NOT trigger when: user intent includes any functional change, new feature,
      or behavior modification alongside structural work — that is an edit session

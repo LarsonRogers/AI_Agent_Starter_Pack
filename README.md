@@ -1,5 +1,5 @@
 # AI Agent Starter Pack
-<!-- Starter Pack v11.18 -->
+<!-- Starter Pack v11.19 -->
 
 A platform-agnostic instruction set for AI coding agents. Drop it into any repo
 and any agent — Claude Code, Codex, Cursor, Windsurf, Aider, or others — will
@@ -118,7 +118,7 @@ PROTOCOLS.md                Routing index — lists all available protocol
 
 protocols/                  One file per protocol (~300–1,900 tokens each).
                             Agents load only the file triggered by their
-                            current situation. 16 protocol files covering
+                            current situation. Protocol files covering
                             inherited codebases, refactors, research,
                             sensitive data, testing, and more.
 
@@ -202,13 +202,13 @@ Before tagging a new pack version, verify:
 
 - [ ] Pack-file edit exceptions are in sync across ARCHITECTURE.md (hard guardrails),
       AGENTS.md (Step 3), and CLAUDE.md (safe-edit boundaries)
-- [ ] Protocol Index trigger table in ARCHITECTURE.md matches AGENTS.md mirror row-for-row
+- [ ] Protocol Index trigger table in ARCHITECTURE.md matches AGENTS.md mirror row-for-row for file-backed protocols (AGENTS mirrors protocol files only — session-type entries like Session Resumption are not mirrored and should not be forced into AGENTS)
 - [ ] All 16 protocol files present: `ls protocols/ | wc -l` returns 16
 - [ ] Version string updated in all pack file headers
 
 ## Version
 
-This is **Starter Pack v11.18**. The version is recorded in the header of
+This is **Starter Pack v11.19**. The version is recorded in the header of
 `ARCHITECTURE.md`, `CLAUDE.md`, `AGENTS.md`, `PROTOCOLS.md`, and in every
 Captain's Log entry so there's always an audit trail of which instruction
 set was active for any given session.

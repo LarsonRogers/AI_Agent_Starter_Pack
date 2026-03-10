@@ -1,5 +1,5 @@
 # PROTOCOLS.md — Protocol Index
-<!-- Starter Pack v11.18 — 2026-03-09 -->
+<!-- Starter Pack v11.19 — 2026-03-09 -->
 
 > **For AI coding agents:** This file is a routing index only.
 > Each protocol lives in its own file in the `protocols/` directory.
@@ -33,7 +33,8 @@
 
 ---
 
-> Total protocol content: ~16 files, ~300–1,900 tokens each.
+> Total protocol content: one file per protocol, ~300–1,900 tokens each.
+> Verify count: `ls protocols/ | wc -l` (see SETUP.md for expected number).
 > A typical session loads 1–3 protocols: ~500–4,000 tokens beyond core.
 > Loading this index file costs ~400 tokens. Loading all protocols at once
 > would cost ~11,800 tokens — only do this if explicitly auditing the pack.

@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.18 — protocols/inherited-codebase.md -->
+<!-- Starter Pack v11.19 — protocols/inherited-codebase.md -->
 <!-- Load this file when: no Captain's Log exists and non-pack source files are present -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
@@ -13,7 +13,13 @@ that was not built with this setup. The codebase exists, but there is no
 
 ```
 [ ] 1. Read ARCHITECTURE.md and CLAUDE.md in full
-[ ] 2. List the entire repo structure — every directory and file
+[ ] 2. Map the repo structure:
+        Standard repos: list every directory and file
+        Large repos (100+ directories or 500+ files): summarize top-level
+        structure and key modules first, then expand into areas of highest
+        risk or centrality (entry points, core business logic, shared
+        utilities). Do not attempt a full recursive dump — flag that a
+        staged approach is being used.
 [ ] 3. Identify and read: entry points, config files, package manifests,
         dependency lists, any existing README or docs
 [ ] 4. Read the git history — see Git History Reconstruction below
