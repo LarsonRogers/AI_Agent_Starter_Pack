@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v11.0 — 2026-03-09 -->
+<!-- Starter Pack v11.1 — 2026-03-09 -->
 
 > **This file is the entry point for ChatGPT Codex and any agent that reads
 > `AGENTS.md` automatically.** It contains bootstrapping instructions and a
@@ -18,7 +18,7 @@ Read in this canonical order every session:
 1. `ARCHITECTURE.md` — core rules, guardrails, and behavioral protocols
 2. `CLAUDE.md` — project-specific stack, style, and task instructions
 3. `CAPTAINS_LOG.md` — most recent entry only (if it exists)
-4. `PROTOCOLS.md` — triggered sections only, loaded after the log
+4. `protocols/[triggered-file].md` — one file per triggered situation
    (trigger table: Step 2b below; canonical source: ARCHITECTURE.md → Protocol Index)
 
 This order is authoritative. ARCHITECTURE.md and CLAUDE.md load first so
@@ -35,37 +35,38 @@ Check whether `CAPTAINS_LOG.md` exists:
 
 **A — Log exists** → Session Resumption Protocol (ARCHITECTURE.md)
 **B — No log, new project** → First Session Protocol (ARCHITECTURE.md)
-**C — No log, existing codebase** → Inherited Codebase Protocol (PROTOCOLS.md)
-**D — Refactor session** → Refactor Protocol (PROTOCOLS.md)
+**C — No log, existing codebase** → load `protocols/inherited-codebase.md`
+**D — Refactor session** → load `protocols/refactor.md`
 
 ---
 
-## Step 2b — When to load PROTOCOLS.md sections
+## Step 2b — When to load protocol files
 
-Do not read PROTOCOLS.md in full every session. Load specific sections
+Do not speculatively load protocol files. Load only the file
 when the situation requires it. The canonical Protocol Index with all
 trigger conditions lives in `ARCHITECTURE.md` → Protocol Index.
 
 Quick reference:
 
-| Situation | Load this section |
-|-----------|------------------|
-| No log, existing codebase | Inherited Codebase Protocol |
-| First session on any project | Placeholder Inference Protocol |
-| Explicit refactor task | Refactor Protocol |
-| 5+ tasks in session or context degradation | Context Window Management |
-| Binary / large files encountered | Binary & Large File Handling |
-| Sensitive data found or suspected | Sensitive Data Handling |
-| 3 failed attempts on same problem | Stuck Loop Circuit Breaker |
-| Lint / test commands missing | Validation Tooling Fallback |
-| External SDK / API / platform work | External Research Protocol |
-| Web access unavailable, training data unverifiable | Knowledge Gap Protocol |
-| Change touches 3+ files or layers | Cross-Cutting Changes |
-| Writing or evaluating tests | Testing Strategy |
-| Review / audit / analysis only (no edits) | Read-Only / Meta-Review Protocol |
-| Surfacing a conflict or verifying conflict behavior | Conflict Resolution Examples |
-| Pack files missing, git unavailable, placeholder conflicts | Edge-Case Handling |
-| Auditing the pack for issues | Known Limitations & Deferred Decisions |
+| Situation | Load this file |
+|-----------|---------------|
+| No log, existing codebase | `protocols/inherited-codebase.md` |
+| First session on any project | `protocols/placeholder-inference.md` |
+| Explicit refactor task | `protocols/refactor.md` |
+| 5+ tasks in session or context degradation | `protocols/context-window.md` |
+| Binary / large files encountered | `protocols/binary-files.md` |
+| Sensitive data found or suspected | `protocols/sensitive-data.md` |
+| 3 failed attempts on same problem | `protocols/stuck-loop.md` |
+| Lint / test commands missing | `protocols/validation-fallback.md` |
+| External SDK / API / platform work | `protocols/external-research.md` |
+| Web access unavailable, training data unverifiable | `protocols/external-research.md` |
+| Change touches 3+ files or layers | `protocols/cross-cutting.md` |
+| Writing or evaluating tests | `protocols/testing-strategy.md` |
+| Review / audit / analysis only (no edits) | `protocols/read-only.md` |
+| Surfacing a conflict or verifying conflict behavior | `protocols/conflict-examples.md` |
+| Pack files missing, git unavailable, placeholder conflicts | `protocols/edge-cases.md` |
+| Auditing the pack for issues | `protocols/known-limitations.md` |
+| Documenting a new reusable pattern | `protocols/pattern-registry.md` |
 
 ---
 

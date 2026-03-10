@@ -1,0 +1,20 @@
+<!-- Starter Pack v11.1 — protocols/edge-cases.md -->
+<!-- Load this file when: pack files missing, git unavailable, no file-read, placeholder conflicts -->
+<!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
+
+## Edge-Case Handling
+
+Deterministic action paths for common failure scenarios. Load this section
+when any of the trigger conditions below are encountered.
+
+| Situation | Deterministic action |
+|-----------|---------------------|
+| **CAPTAINS_LOG.md missing or corrupt** | Treat as no-log session. Run session type detection (file-presence rule). If non-pack files exist → Inherited Codebase Protocol. If no source files → First Session. Do not attempt to repair a corrupt log — note it and start fresh. |
+| **PROTOCOLS.md missing** | Halt immediately. Report: "PROTOCOLS.md is missing from the repo root. Several required procedures are unavailable. Please restore it from the original pack zip before continuing." Do not attempt to guess or reconstruct protocol behavior. |
+| **ARCHITECTURE.md or CLAUDE.md missing** | Halt immediately. Report which file is missing and ask the user to restore it. These are the primary instruction sources — proceeding without them produces undefined behavior. |
+| **No git installed or git unavailable** | Report clearly what is unavailable: commits, rollbacks, history reconstruction, checkpoint strategy, and refactor protocol all require git. Offer read-only analysis and planning work only. Do not attempt to simulate git with manual file copies. |
+| **No file-read capability (web/paste-only agent)** | Ask the user to paste AGENTS.md, then ARCHITECTURE.md, then CLAUDE.md in order. Proceed from pasted content. Note that PROTOCOLS.md sections cannot be loaded on demand — flag any triggered protocol as unavailable and describe the gap. |
+| **Partially filled REQUIRED placeholders** | Do not proceed with coding tasks. Report exactly which placeholders remain unfilled. Offer to infer any missing values from repo context, or ask the user directly for values that cannot be inferred. Never assume a placeholder value silently. |
+| **Conflicting inferred placeholder values** | Present all candidates to the user with source for each: "I found two possible project names: 'foo' (from package.json) and 'bar' (from README). Which is correct?" Wait for explicit choice before writing. |
+| **Pack version mismatch detected** | See Pack Version Consistency Check in ARCHITECTURE.md — halt and report. |
+

@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.0 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.1 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -166,7 +166,8 @@ If a user asks the agent to bypass these, the agent declines and explains why.
 [ ] Any code involving an external system the agent cannot verify —
     follow the Knowledge Gap Protocol instead of guessing
 [ ] Editing any starter pack instruction files:
-    ARCHITECTURE.md, PROTOCOLS.md, AGENTS.md, TASK_TEMPLATE.md
+    ARCHITECTURE.md, PROTOCOLS.md, AGENTS.md, TASK_TEMPLATE.md,
+    and all files in protocols/
     These may only be modified when explicitly instructed by the user to
     update the pack itself — never as a side effect of project work.
     Exception — CLAUDE.md: the agent may write to the designated
@@ -403,7 +404,7 @@ to run a git command directly unless there is no other way.
 
 ### Inherited Codebase (Existing project, no prior log)
 
-See `PROTOCOLS.md` → Inherited Codebase Protocol for the full four-phase procedure.
+See `protocols/inherited-codebase.md` for the full four-phase procedure.
 
 Summary:
 - Phase 1: Read, map, scan for sensitive data, reconstruct Captain's Log from git history
@@ -440,7 +441,7 @@ Do not assume a blank repo. Read first, infer placeholders, report, confirm, the
 
 ### Placeholder Inference Protocol
 
-See `PROTOCOLS.md` → Placeholder Inference Protocol for the full procedure.
+See `protocols/placeholder-inference.md` for the full procedure.
 
 Summary: Agent scans for placeholders, infers values from repo context, presents
 a confirmation block, writes confirmed values. User never edits pack files manually.
@@ -454,8 +455,8 @@ code is written — the agent must automatically run this protocol and report th
 [ ] 1. Read ARCHITECTURE.md
 [ ] 2. Read CLAUDE.md
 [ ] 3. Read CAPTAINS_LOG.md — most recent entry only
-[ ] 4. Load triggered PROTOCOLS.md sections based on session context
-        (trigger table: AGENTS.md → Step 2b)
+[ ] 4. Load triggered protocol files based on session context
+        (trigger table: AGENTS.md → Step 2b; files in protocols/)
         - Developer signals refactor intent ("refactor", "restructure",
           "clean up", "reorganize") → load Refactor Protocol
         - Otherwise → no protocols needed yet; load as work requires
@@ -468,9 +469,9 @@ code is written — the agent must automatically run this protocol and report th
 ```
 
 Canonical read order for all session types: ARCHITECTURE.md → CLAUDE.md →
-CAPTAINS_LOG.md → PROTOCOLS.md (triggered sections only). This order ensures
-standing rules are loaded before log context, and protocols are loaded only
-when the session situation requires them.
+CAPTAINS_LOG.md → protocols/[triggered-file].md (loaded only as needed). This order
+ensures standing rules are loaded before log context, and protocols are loaded
+only when the session situation requires them.
 
 This report is the answer to "where did we leave off?" — the agent delivers it
 automatically so the developer never has to ask twice.
@@ -523,7 +524,7 @@ but existing source files is still an inherited codebase.
 ---
 
 **D — Refactor session (working codebase, goal is structural improvement)**
-See `PROTOCOLS.md` → Refactor Protocol for the full four-phase procedure.
+See `protocols/refactor.md` for the full four-phase procedure.
 
 Summary: establish working baseline first (tests must pass), plan incrementally,
 execute one structural change at a time with test verification after each,
@@ -787,7 +788,7 @@ in the most recent entry, load those specific earlier entries to resolve context
 
 ## Context Window Management
 
-See `PROTOCOLS.md` → Context Window Management for the full checkpoint procedure.
+See `protocols/context-window.md` for the full checkpoint procedure.
 
 Rule: after 5 tasks or detected context degradation, complete current task,
 run full checkpoint, update Captain's Log, notify user to start fresh session.
@@ -846,12 +847,12 @@ When a verbal instruction explicitly overrides a default policy, the agent
 records the override and reason in the Captain's Log before proceeding.
 
 
-See `PROTOCOLS.md` → Conflict Resolution Examples for concrete worked examples.
+See `protocols/conflict-examples.md` for concrete worked examples.
 
 
 ## Cross-Cutting Changes & Pre-Flight Plans
 
-See `PROTOCOLS.md` → Cross-Cutting Changes for the pre-flight plan format.
+See `protocols/cross-cutting.md` for the pre-flight plan format.
 
 Rule: any task touching 3+ files or crossing more than one layer requires a
 confirmed pre-flight plan before any file is touched. If the plan changes
@@ -898,7 +899,7 @@ correction note.
 
 ## Sensitive Data Handling
 
-See `PROTOCOLS.md` → Sensitive Data Handling for scan commands and full procedure.
+See `protocols/sensitive-data.md` for scan commands and full procedure.
 
 Rules:
 - Inherited repos: proactive scan before any work begins
@@ -906,7 +907,7 @@ Rules:
 
 ## Stuck Loop Circuit Breaker
 
-See `PROTOCOLS.md` → Stuck Loop Circuit Breaker for the three-strike protocol.
+See `protocols/stuck-loop.md` for the three-strike protocol.
 
 Rule: after 3 failed attempts, stop and escalate. Each attempt must use a
 meaningfully different approach. On strike 3, summarize all attempts, diagnose
@@ -914,7 +915,7 @@ root cause, and ask for human input or trigger Knowledge Gap Protocol.
 
 ## Read-Only / Meta-Review Protocol
 
-See `PROTOCOLS.md` → Read-Only / Meta-Review Protocol for the full procedure.
+See `protocols/read-only.md` for the full procedure.
 
 When a task is analysis, review, or audit only — no edits, no commits.
 Trigger signals: "review", "audit", "assess", "analyze", "explain",
@@ -926,7 +927,7 @@ Confirm read-only mode with the user, deliver findings, end with
 
 ## Binary & Large File Handling
 
-See `PROTOCOLS.md` → Binary & Large File Handling for the full rules.
+See `protocols/binary-files.md` for the full rules.
 
 Rules: never read, edit, or commit binary files without awareness of what they
 are. Never commit files over 1MB without confirmation. Never commit generated
@@ -936,7 +937,7 @@ output. Verify .gitignore on first session.
 
 ## Testing Strategy
 
-See `PROTOCOLS.md` → Testing Strategy for full guidance.
+See `protocols/testing-strategy.md` for full guidance.
 
 Rules: test behavior not implementation. Cover happy path and key failure modes.
 Name tests descriptively. Never mock the thing being tested. If no tests exist,
@@ -946,14 +947,14 @@ flag before any refactor and offer to write a baseline suite first.
 
 ## Validation Tooling Fallback
 
-See `PROTOCOLS.md` → Validation Tooling Fallback for the full procedure.
+See `protocols/validation-fallback.md` for the full procedure.
 
 Rule: if lint/test/CI commands are missing or unconfigured, report clearly,
 propose alternatives, mark DoD accordingly. Never silently skip validation.
 
 ## External Research Protocol
 
-See `PROTOCOLS.md` → External Research Protocol and Knowledge Gap Protocol.
+See `protocols/external-research.md` for External Research and Knowledge Gap protocols.
 
 Rule: before writing code involving any external SDK, API, or platform, research
 current docs first. If web access is unavailable and training data is
@@ -963,7 +964,7 @@ agent generates research prompt / proceed with flagged assumptions).
 
 ## Edge-Case Handling
 
-See `PROTOCOLS.md` → Edge-Case Handling for the full deterministic action table.
+See `protocols/edge-cases.md` for the full deterministic action table.
 
 Loaded automatically when: CAPTAINS_LOG missing/corrupt, any pack file missing,
 git unavailable, no file-read capability, placeholder conflicts.
@@ -972,10 +973,10 @@ git unavailable, no file-read capability, placeholder conflicts.
 
 ## Known Limitations & Deferred Decisions
 
-See `PROTOCOLS.md` → Known Limitations & Deferred Decisions for the full table.
+See `protocols/known-limitations.md` for the full table.
 
 This section documents intentional tradeoffs and explicitly deferred items.
-Reviewers should consult PROTOCOLS.md before flagging items as issues.
+Reviewers should consult `protocols/known-limitations.md` before flagging items as issues.
 
 
 ## Protocol Index
@@ -988,26 +989,27 @@ link here rather than maintaining their own copies.
 |----------|----------|-------------|
 | Session Resumption | ARCHITECTURE.md | Every session where Captain's Log exists |
 | First Session | ARCHITECTURE.md | No log, no non-pack source files |
-| Inherited Codebase | PROTOCOLS.md | No log, non-pack source files present |
-| Refactor | PROTOCOLS.md | Explicit structural improvement goal, no new features |
-| Placeholder Inference | PROTOCOLS.md | First session, any type — fills REQUIRED placeholders |
-| Read-Only / Meta-Review | PROTOCOLS.md | Review, audit, analysis — no edits intended |
+| Inherited Codebase | `protocols/inherited-codebase.md` | No log, non-pack source files present |
+| Refactor | `protocols/refactor.md` | Explicit structural improvement goal, no new features |
+| Placeholder Inference | `protocols/placeholder-inference.md` | First session, any type — fills REQUIRED placeholders |
+| Read-Only / Meta-Review | `protocols/read-only.md` | Review, audit, analysis — no edits intended |
 | Pre-Edit Protocol | ARCHITECTURE.md | Before every coding task |
 | Task Brief & Prompt Reformulation | ARCHITECTURE.md | Every task — no exceptions |
-| Cross-Cutting Changes | PROTOCOLS.md | Task touches 3+ files or crosses architectural layers |
+| Cross-Cutting Changes | `protocols/cross-cutting.md` | Task touches 3+ files or crosses architectural layers |
 | Safe Deletion Procedure | ARCHITECTURE.md | Any file deletion request |
-| Context Window Management | PROTOCOLS.md | 5+ tasks in session or detected degradation |
-| Sensitive Data Handling | PROTOCOLS.md | Inherited repos (proactive) or on encounter |
-| Stuck Loop Circuit Breaker | PROTOCOLS.md | 3 failed attempts on same problem |
-| Validation Tooling Fallback | PROTOCOLS.md | Lint/test commands missing or unconfigured |
-| External Research Protocol | PROTOCOLS.md | External SDK, API, or platform work |
-| Knowledge Gap Protocol | PROTOCOLS.md | Web access unavailable, training data unverifiable |
-| Binary & Large File Handling | PROTOCOLS.md | Binary files encountered or >1MB files |
-| Testing Strategy | PROTOCOLS.md | Writing or evaluating tests |
+| Context Window Management | `protocols/context-window.md` | 5+ tasks in session or detected degradation |
+| Sensitive Data Handling | `protocols/sensitive-data.md` | Inherited repos (proactive) or on encounter |
+| Stuck Loop Circuit Breaker | `protocols/stuck-loop.md` | 3 failed attempts on same problem |
+| Validation Tooling Fallback | `protocols/validation-fallback.md` | Lint/test commands missing or unconfigured |
+| External Research Protocol | `protocols/external-research.md` | External SDK, API, or platform work |
+| Knowledge Gap Protocol | `protocols/external-research.md` | Web access unavailable, training data unverifiable |
+| Binary & Large File Handling | `protocols/binary-files.md` | Binary files encountered or >1MB files |
+| Testing Strategy | `protocols/testing-strategy.md` | Writing or evaluating tests |
 | Environment Awareness | ARCHITECTURE.md | Any environment-specific code or config |
-| Conflict Resolution Examples | PROTOCOLS.md | When surfacing a conflict or verifying conflict behavior |
-| Edge-Case Handling | PROTOCOLS.md | Pack files missing, git unavailable, no file-read, placeholder conflicts |
-| Known Limitations & Deferred Decisions | PROTOCOLS.md | Reviewers auditing the pack; never needed during normal work |
+| Conflict Resolution Examples | `protocols/conflict-examples.md` | Surfacing a conflict or verifying conflict behavior |
+| Edge-Case Handling | `protocols/edge-cases.md` | Pack files missing, git unavailable, no file-read, placeholder conflicts |
+| Known Limitations & Deferred Decisions | `protocols/known-limitations.md` | Auditing the pack — never during normal work |
+| Pattern Registry Maintenance | `protocols/pattern-registry.md` | Documenting a new reusable pattern before committing |
 
 ---
 

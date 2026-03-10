@@ -1,5 +1,5 @@
 # AI Agent Starter Pack
-<!-- Starter Pack v11.0 -->
+<!-- Starter Pack v11.1 -->
 
 A platform-agnostic instruction set for AI coding agents. Drop it into any repo
 and any agent — Claude Code, Codex, Cursor, Windsurf, Aider, or others — will
@@ -12,10 +12,9 @@ confirmation behavior accordingly.
 
 ---
 
-> **Note:** Several agent behaviors reference procedures in `PROTOCOLS.md`.
-> That file must be present in your repo root for full operation. If it is
-> missing, the agent will halt and report it rather than proceeding with
-> undefined behavior.
+> **Note:** This pack requires the `protocols/` folder and `PROTOCOLS.md` to be
+> present in your repo root for full operation. If protocol files are missing,
+> the agent will halt and report it rather than proceeding with undefined behavior.
 
 ## What You Get
 
@@ -86,14 +85,14 @@ If two files appear to conflict on a topic, this table is authoritative:
 | Default policies (what requires confirmation) | `ARCHITECTURE.md` → Default Policies |
 | Verbal override rules | `ARCHITECTURE.md` → Instruction Precedence |
 | Session start read order | `ARCHITECTURE.md` → Session Resumption |
-| Placeholder inference procedure | `PROTOCOLS.md` → Placeholder Inference Protocol |
-| Which PROTOCOLS.md section to load when | `ARCHITECTURE.md` → Protocol Index (canonical); `AGENTS.md` → Step 2b (quick-reference mirror) |
+| Placeholder inference procedure | `protocols/placeholder-inference.md` |
+| Which protocol file to load when | `ARCHITECTURE.md` → Protocol Index (canonical); `AGENTS.md` → Step 2b (quick-reference mirror) |
 | Project-specific tech stack and style | `CLAUDE.md` |
-| All detailed protocols (inherited, refactor, research, etc.) | `PROTOCOLS.md` |
+| All detailed protocols (inherited, refactor, research, etc.) | `protocols/` directory — one file per protocol |
 | Session history and handoff | `CAPTAINS_LOG.md` |
 
 When in doubt: `ARCHITECTURE.md` governs behavior. `CLAUDE.md` governs
-project specifics. `PROTOCOLS.md` governs procedure detail. `AGENTS.md`
+project specifics. The `protocols/` files govern procedure detail. `AGENTS.md`
 governs agent bootstrapping. Everything else is human-facing documentation.
 
 ---
@@ -113,13 +112,15 @@ ARCHITECTURE.md             The agent's primary instruction manual —
                             always loaded. Core rules, guardrails, session
                             protocols, error handling, and behavioral rules.
 
-PROTOCOLS.md                Detailed protocols loaded on demand. Contains:
-                            Inherited Codebase, Refactor, Placeholder
-                            Inference, Context Window, Sensitive Data,
-                            External Research, Knowledge Gap, Validation
-                            Fallback, and Stuck Loop protocols. Agents
-                            read specific sections when the situation
-                            requires — not the whole file every session.
+PROTOCOLS.md                Routing index — lists all available protocol
+                            files with trigger conditions. ~400 tokens.
+                            Points to protocols/ directory.
+
+protocols/                  One file per protocol (~300–1,900 tokens each).
+                            Agents load only the file triggered by their
+                            current situation. 16 protocol files covering
+                            inherited codebases, refactors, research,
+                            sensitive data, testing, and more.
 
 CLAUDE.md                   Project instruction manual — tech stack, code
                             style, validation commands, file structure, and
@@ -197,7 +198,7 @@ pack to catch regressions in agent behavior before they affect real work.
 
 ## Version
 
-This is **Starter Pack v11.0**. The version is recorded in the header of
+This is **Starter Pack v11.1**. The version is recorded in the header of
 `ARCHITECTURE.md`, `CLAUDE.md`, and `AGENTS.md`, and in every Captain's Log
 entry so there's always an audit trail of which instruction set was active
 for any given session.

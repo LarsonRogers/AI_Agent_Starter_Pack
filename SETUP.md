@@ -1,14 +1,14 @@
 # Setup Guide
-<!-- Starter Pack v11.0 -->
+<!-- Starter Pack v11.1 -->
 
 No coding experience required. If you are a developer, skip to
 Developer Quick Setup at the bottom.
 
 ---
 
-> **Note:** This pack includes a file called `PROTOCOLS.md` that contains
-> detailed procedures the agent loads on demand. It must be present in your
-> project folder for full operation — check the file list below.
+> **Note:** This pack includes a `protocols/` folder containing 16 protocol
+> files that the agent loads on demand. The entire folder must be present in
+> your project for full operation — check the file list below.
 
 ## What is this?
 
@@ -62,6 +62,11 @@ your-project/
 ├── AGENTS.md
 ├── CLAUDE.md
 ├── PROTOCOLS.md
+├── protocols/
+│   ├── refactor.md
+│   ├── inherited-codebase.md
+│   ├── placeholder-inference.md
+│   └── ... (16 protocol files total)
 ├── SETUP.md
 ├── TASK_TEMPLATE.md
 ├── README.md
@@ -206,11 +211,12 @@ This shouldn't happen — the agent fills these in automatically. If it does,
 tell it: *"Run the Placeholder Inference Protocol and present your inferred
 values for my confirmation."*
 
-**"The agent says it can't find PROTOCOLS.md or a protocol is missing"**
-PROTOCOLS.md is a required pack file. Check that it was copied into your
-project root alongside ARCHITECTURE.md. If it's missing, copy it from the
-original zip file. Without it, several key agent behaviors are unavailable
-and the agent will halt rather than guess.
+**"The agent says it can't find a protocol file"**
+The `protocols/` folder and `PROTOCOLS.md` are both required. Check that
+the entire `protocols/` folder was copied into your project root. If files
+are missing, copy them from the original zip. Without the protocols folder,
+several key agent behaviors are unavailable and the agent will halt rather
+than guess.
 
 **"The agent seems confused or has lost track"**
 Tell it: *"Check the Captain's Log and tell me where we left off."*
