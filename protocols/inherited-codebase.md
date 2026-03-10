@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.13 — protocols/inherited-codebase.md -->
+<!-- Starter Pack v11.14 — protocols/inherited-codebase.md -->
 <!-- Load this file when: no Captain's Log exists and non-pack source files are present -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 

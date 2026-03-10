@@ -1,5 +1,8 @@
-<!-- Starter Pack v11.13 — protocols/testing-strategy.md -->
+<!-- Starter Pack v11.14 — protocols/testing-strategy.md -->
 <!-- Load this file when: writing or evaluating tests -->
+<!-- Does NOT trigger when: merely reading CI output, reviewing test results
+     without authoring or changing tests, or running an existing test suite
+     as part of the Definition of Done checklist -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
 ## Testing Strategy

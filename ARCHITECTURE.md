@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.13 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.14 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -184,7 +184,7 @@ If a user asks the agent to bypass these, the agent declines and explains why.
     Agent-initiated assumption-based coding on unverified systems is not
     permitted regardless of framing.
 [ ] Editing any starter pack instruction files:
-    ARCHITECTURE.md, PROTOCOLS.md, TASK_TEMPLATE.md,
+    ARCHITECTURE.md, PROTOCOLS.md, AGENTS.md, TASK_TEMPLATE.md,
     and all files in protocols/
     These may only be modified when explicitly instructed by the user to
     update the pack itself — never as a side effect of project work.

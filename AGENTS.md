@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v11.13 — 2026-03-09 -->
+<!-- Starter Pack v11.14 — 2026-03-09 -->
 
 > **This file is the entry point for ChatGPT Codex and any agent that reads
 > `AGENTS.md` automatically.** It contains bootstrapping instructions and a
@@ -45,6 +45,8 @@ Otherwise, check whether `CAPTAINS_LOG.md` exists:
 **B — No log, new project** → First Session Protocol (ARCHITECTURE.md)
 **C — No log, existing codebase** → load `protocols/inherited-codebase.md`
 **D — Refactor session** (only when: no log OR resuming, AND user states explicit structural goal with no new features) → load `protocols/refactor.md`
+  Note: when no log exists AND the codebase is inherited AND the goal is explicitly
+  structural-only, D takes precedence over C. When intent is ambiguous, default to C.
 
 ---
 
@@ -68,7 +70,7 @@ Quick reference:
 | Lint / test commands missing | `protocols/validation-fallback.md` |
 | External SDK / API / platform work | `protocols/external-research.md` |
 | Web access unavailable, training data unverifiable | `protocols/external-research.md` |
-| Change touches 3+ files or layers | `protocols/cross-cutting.md` |
+| Change touches 3+ files or layers, or involves rename/move/structural reorganization | `protocols/cross-cutting.md` |
 | Writing or evaluating tests | `protocols/testing-strategy.md` |
 | Review / audit / analysis only (no edits) | `protocols/read-only.md` |
 | Surfacing a conflict or verifying conflict behavior | `protocols/conflict-examples.md` |

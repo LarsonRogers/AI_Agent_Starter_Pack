@@ -1,5 +1,5 @@
 # CLAUDE.md
-<!-- Starter Pack v11.13 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.14 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents (Claude Code, ChatGPT Codex, and others):**
 > Read files in this exact order before making any changes:
@@ -24,7 +24,7 @@
 > - **No log, existing codebase** → full assessment first (read, map, report, fill in
 >   project docs, create log) before any code is written
 >
-> See `ARCHITECTURE.md` → Session Protocols for the full protocol for each case.
+> See `ARCHITECTURE.md` → "How to determine your session type" for the full decision flow and session protocols.
 >
 > Do not write any code until all steps are complete.
 > Claude Code reads this file automatically. Codex agents: see also `AGENTS.md`.
