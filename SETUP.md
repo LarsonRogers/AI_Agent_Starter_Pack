@@ -1,5 +1,5 @@
 # Setup Guide
-<!-- Starter Pack v11.16 -->
+<!-- Starter Pack v11.17 -->
 
 No coding experience required. If you are a developer, skip to
 Developer Quick Setup at the bottom.
@@ -289,7 +289,7 @@ parts and tell the agent "more coming — wait for all parts" between each paste
 **If your agent can't read files directly**, paste the contents of
 `AGENTS.md` into the chat manually. It's a short file — open it in any
 text editor, select all, and paste. The agent will then ask you for
-`ARCHITECTURE.md` and `CLAUDE.md` if it needs them.
+`ARCHITECTURE.md` and `CLAUDE.md` — it will need them next.
 If your chat has a character or size limit, send the files one at a time
 in this order: `AGENTS.md` first, then `ARCHITECTURE.md`, then `CLAUDE.md`.
 Tell the agent "more coming" between pastes so it waits before responding.

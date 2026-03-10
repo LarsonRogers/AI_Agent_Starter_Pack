@@ -1,5 +1,5 @@
 # PROTOCOLS.md — Protocol Index
-<!-- Starter Pack v11.16 — 2026-03-09 -->
+<!-- Starter Pack v11.17 — 2026-03-09 -->
 
 > **For AI coding agents:** This file is a routing index only.
 > Each protocol lives in its own file in the `protocols/` directory.
@@ -21,7 +21,7 @@
 | `protocols/inherited-codebase.md` | No Captain's Log, non-pack source files present |
 | `protocols/placeholder-inference.md` | First session, any type — fills REQUIRED placeholders |
 | `protocols/context-window.md` | 5+ tasks in session or detected context degradation |
-| `protocols/cross-cutting.md` | Task touches 3+ files or crosses architectural layers |
+| `protocols/cross-cutting.md` | Task touches 3+ files, crosses architectural layers, or involves rename/move/structural reorganization |
 | `protocols/sensitive-data.md` | Inherited repos (proactive) or sensitive data encountered |
 | `protocols/stuck-loop.md` | 3 failed attempts on the same problem |
 | `protocols/validation-fallback.md` | Lint, test, or CI commands missing or unconfigured |

@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.16 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.17 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -546,6 +546,14 @@ Before determining session type, verify all pack files report the same version:
     2. You manually replace the outdated files
     3. We proceed with caution — I'll flag any cross-file conflicts I detect"
     Wait for user instruction before continuing.
+    If option 3 is chosen, operate in reduced-trust mode:
+    [ ] Trust only sections present in ALL versions (ignore version-specific additions)
+    [ ] Require explicit user confirmation before any file edit, even normally
+        permitted ones — do not rely on default policies from a potentially
+        outdated file
+    [ ] Log all detected cross-file conflicts in Captain's Log before proceeding
+    [ ] Flag each action with: "Note: operating under version mismatch —
+        confirm this is still the intended behavior"
 ```
 
 Version headers are in the format: `<!-- Starter Pack vX.Y — YYYY-MM-DD -->`
