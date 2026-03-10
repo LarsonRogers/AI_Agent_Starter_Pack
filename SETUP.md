@@ -1,10 +1,14 @@
 # Setup Guide
-<!-- Starter Pack v10.8 -->
+<!-- Starter Pack v11.0 -->
 
 No coding experience required. If you are a developer, skip to
 Developer Quick Setup at the bottom.
 
 ---
+
+> **Note:** This pack includes a file called `PROTOCOLS.md` that contains
+> detailed procedures the agent loads on demand. It must be present in your
+> project folder for full operation — check the file list below.
 
 ## What is this?
 
@@ -83,9 +87,13 @@ Open a terminal in your project folder and start your agent:
 - Codex: type `codex` and press Enter
 - Others: follow their startup instructions, then point them to `ARCHITECTURE.md`
 
-**That's it.** The agent takes it from here. You don't need to edit any files
-manually — the agent will figure out your project details, present them to you
-for confirmation, and fill everything in itself.
+**That's it.** The agent takes it from here. No manual editing of pack
+placeholders required — the agent infers your project details, presents them
+for confirmation, and fills everything in itself.
+
+*Optional advanced config (developers only):* `.claude/settings.json` and
+`.github/workflows/agent-ci.yml` can be manually adapted to your stack after
+the first session, but are not required for normal use.
 
 ---
 
@@ -230,21 +238,19 @@ instead of the CLI instructions above.
 **Step 2 — Open your agent and paste this starter prompt:**
 
 ```
-Before doing anything else, read these files from my project in this order:
-1. ARCHITECTURE.md
-2. CLAUDE.md
-3. CAPTAINS_LOG.md (most recent entry only, if it exists)
-
-Then follow the session start protocol in ARCHITECTURE.md exactly.
-Do not write any code or make any changes until the protocol is complete.
+Before doing anything else, read AGENTS.md at the repo root and follow
+the session start protocol exactly as written. Do not write any code
+or make any changes until the protocol is complete.
 ```
 
 That's it. The agent takes over from there — same protocols, same behavior,
-regardless of platform.
+regardless of platform. `AGENTS.md` is the bootstrap entry point for all
+agents — it will direct the agent to read the other files in the right order.
 
 **If your agent can't read files directly**, paste the contents of
-`ARCHITECTURE.md` and `CLAUDE.md` into the chat manually. They're plain
-text files — you can open them in any text editor, select all, and paste.
+`AGENTS.md` into the chat manually. It's a short file — open it in any
+text editor, select all, and paste. The agent will then ask you for
+`ARCHITECTURE.md` and `CLAUDE.md` if it needs them.
 
 ---
 

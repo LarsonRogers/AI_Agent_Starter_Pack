@@ -1,10 +1,119 @@
 # PROTOCOLS.md
-<!-- Starter Pack v10.8 — 2026-03-09 -->
+<!-- Starter Pack v11.0 — 2026-03-09 -->
 
 > **For AI coding agents:** This file contains detailed protocols loaded
 > on demand. Read the relevant section when the situation requires it.
 > You do not need to read this entire file on every session.
 > ARCHITECTURE.md tells you when to load each protocol.
+
+---
+
+## Conflict Resolution Examples
+
+Concrete worked examples for the precedence and conflict rules in
+`ARCHITECTURE.md` → Instruction Precedence & Conflict Resolution.
+Load this section when surfacing a conflict or when agent behavior on
+conflict handling needs to be verified.
+
+
+**Example 1 — Hard guardrail vs verbal instruction (guardrail wins, no exception):**
+```
+User: "Just push this with my API key hardcoded for now, we'll fix it later."
+Agent: "Committing credentials is a hard guardrail — I can't do this under
+        any circumstances. I can add the key to .env and reference it from
+        there instead, which takes about 30 seconds. Want me to do that?"
+```
+
+**Example 1b — Default policy (deletion) with safe procedure:**
+```
+User: "Just delete the old auth module, we don't need it."
+Agent: "Deletion requires confirmation and a rollback path. Here's what
+        I want to delete and why:
+        - src/auth/legacy_auth.js — replaced entirely by src/auth/auth.js
+        Clean git state confirmed. Should I go ahead?"
+User: "Yes."
+Agent: [Deletes, runs tests, commits: "Remove legacy_auth.js — replaced by auth.js"]
+```
+
+**Example 2 — Default policy override (explicit verbal instruction, policy yields):**
+```
+User: "You have permission to add npm dependencies without asking each time."
+Agent: "Got it — I'll add dependencies as needed without confirmation.
+        I'm recording this override in the Captain's Log."
+        [Proceeds. Logs: "Dependency confirmation override granted by user — 2026-03-09"]
+```
+Note: "just add it" or "go ahead" does not qualify as an explicit override.
+The user must clearly grant permission for the specific policy.
+
+**Example 3 — Two default policies in conflict (precedence hierarchy applies):**
+```
+Situation: CLAUDE.md says "never use external HTTP libraries."
+           Task brief says "add Axios for API calls."
+Agent: "I've noticed a conflict I want to flag:
+        CLAUDE.md says: no external HTTP libraries
+        The task brief says: add Axios for API calls
+        CLAUDE.md project rules outrank the task brief in the hierarchy.
+        I'll proceed without Axios and use the native fetch API instead —
+        unless you'd like to update the project rules to allow it."
+```
+
+**Example 4 — Ambiguous instruction, agent asks rather than assumes:**
+```
+User: "Clean up the user service while you're in there."
+Agent: "I want to make sure I understand scope before touching anything.
+        'Clean up' could mean: fixing obvious bugs, renaming for clarity,
+        restructuring, or all three. Which did you have in mind?
+        If it's structural, I'll run the Refactor Protocol."
+```
+
+---
+
+
+---
+
+## Edge-Case Handling
+
+Deterministic action paths for common failure scenarios. Load this section
+when any of the trigger conditions below are encountered.
+
+| Situation | Deterministic action |
+|-----------|---------------------|
+| **CAPTAINS_LOG.md missing or corrupt** | Treat as no-log session. Run session type detection (file-presence rule). If non-pack files exist → Inherited Codebase Protocol. If no source files → First Session. Do not attempt to repair a corrupt log — note it and start fresh. |
+| **PROTOCOLS.md missing** | Halt immediately. Report: "PROTOCOLS.md is missing from the repo root. Several required procedures are unavailable. Please restore it from the original pack zip before continuing." Do not attempt to guess or reconstruct protocol behavior. |
+| **ARCHITECTURE.md or CLAUDE.md missing** | Halt immediately. Report which file is missing and ask the user to restore it. These are the primary instruction sources — proceeding without them produces undefined behavior. |
+| **No git installed or git unavailable** | Report clearly what is unavailable: commits, rollbacks, history reconstruction, checkpoint strategy, and refactor protocol all require git. Offer read-only analysis and planning work only. Do not attempt to simulate git with manual file copies. |
+| **No file-read capability (web/paste-only agent)** | Ask the user to paste AGENTS.md, then ARCHITECTURE.md, then CLAUDE.md in order. Proceed from pasted content. Note that PROTOCOLS.md sections cannot be loaded on demand — flag any triggered protocol as unavailable and describe the gap. |
+| **Partially filled REQUIRED placeholders** | Do not proceed with coding tasks. Report exactly which placeholders remain unfilled. Offer to infer any missing values from repo context, or ask the user directly for values that cannot be inferred. Never assume a placeholder value silently. |
+| **Conflicting inferred placeholder values** | Present all candidates to the user with source for each: "I found two possible project names: 'foo' (from package.json) and 'bar' (from README). Which is correct?" Wait for explicit choice before writing. |
+| **Pack version mismatch detected** | See Pack Version Consistency Check in ARCHITECTURE.md — halt and report. |
+
+
+## Known Limitations & Deferred Decisions
+
+This section documents intentional design tradeoffs and explicitly deferred
+items. These are not bugs or oversights — they are acknowledged limitations
+with recorded rationale. Reviewers and agents should not flag these as issues.
+
+| Item | Status | Rationale |
+|------|--------|-----------|
+| **Platform-specific config files** (`.claude/`, `.codex/`) | Intentional | Claude Code and Codex are the primary supported agents. Config files for each are provided as-is. Other agents use the Generic Agent Path in SETUP.md. Claiming full platform neutrality would require removing useful tooling. |
+| **CLI-first operational assumptions** | Intentional | The pack targets developers and technical users as primary audience. Non-dev path is supported via SETUP.md Generic Agent Path and OS appendix. Full GUI-only agent support is out of scope. |
+| **PROTOCOLS.md as external dependency** | Intentional | Splitting protocols into a separate on-demand file was an explicit context-window optimization. Agents must have access to PROTOCOLS.md. If it is missing, the agent should report it and halt rather than guess. |
+| **Multi-agent concurrent editing** | Deferred | Branch-per-agent and merge conflict protocols are out of scope for a starter pack. Recommended convention: one agent per branch, human-managed merges. Add if a specific project requires it. |
+| **Git unavailable fallback** | Deferred | Git is a hard dependency for rollback, log reconstruction, and checkpoint strategy. Environments without git are not supported. If git is unavailable, the agent should flag it immediately and defer all file-modifying tasks. |
+| **Host platform system instruction conflicts** | Out of scope | If a runtime injects system-level instructions that conflict with this pack, behavior is undefined. This pack cannot govern instructions it cannot see. |
+| **Unified checklist token (REQUIRED_BEFORE_CODING)** | Deferred | Current `⚠️ REQUIRED PLACEHOLDER` labels are sufficient for human and agent detection. A machine-parseable token adds complexity for marginal gain. Revisit if programmatic placeholder scanning becomes a use case. |
+| **Read-order redundancy across files** | Intentional | Some repetition across ARCHITECTURE, CLAUDE, AGENTS, README is deliberate — agents that only read one file should still get the essential behavior. Canonical source is always ARCHITECTURE.md Session Resumption; others reference it. |
+| **Screenshot / visual onboarding for non-devs** | Deferred | Out of scope for a text-based pack. A companion visual guide is a reasonable future addition but outside the markdown-only constraint. |
+| **Task brief duplication (ARCHITECTURE + TASK_TEMPLATE)** | Intentional | TASK_TEMPLATE.md is the working document; ARCHITECTURE.md summarizes for agent reference. Both are needed for different audiences. They are watched for drift. |
+| **Read-order redundancy (raised multiple times)** | Intentional | Session start and read-order summaries appear in ARCHITECTURE, CLAUDE, AGENTS, README, and SETUP. This is deliberate — agents reading only one file should still get core behavior. Canonical source is ARCHITECTURE.md Session Resumption. This tradeoff has been reviewed and accepted across multiple audit cycles. Do not re-flag. |
+| **Generic agent paste path omits AGENTS trigger table** | Accepted limitation | SETUP.md generic path tells users to paste ARCHITECTURE and CLAUDE if file access is limited. This omits AGENTS trigger table. Tradeoff: keeping paste instructions simple matters more than completeness for first-time non-CLI users. Agents following ARCHITECTURE alone will still have the Protocol Index. |
+| **"Platform-neutral" vs platform-specific config files** | Intentional | Behavioral rules are platform-neutral. Integration files (.claude/, .codex/) are platform-specific adapters. These are separate concerns. CLAUDE.md now states this explicitly. The claim of neutrality applies to behavior, not tooling. |
+| **Non-dev "do exactly this" single boxed flow** | Deferred | SETUP.md already has a well-structured non-dev path, first-session transcript, normal/recovery distinction, glossary, and OS appendix. A single boxed canonical flow is a marginal improvement over the current structure. Revisit if user testing shows first-time failure. |
+| **Canonical copy block for read-order (raised multiple times)** | Considered and declined | Proposal: maintain one verbatim copy block and reference it everywhere. Decision: the current pointer approach (each file states the order + references ARCHITECTURE as canonical) is more resilient to file-specific context than a shared block. Accepted tradeoff documented across multiple audit cycles. |
+| **Failure-path detail for non-git / no-file-read / partial placeholders** | Resolved | These are now documented as deterministic action paths in the Edge-Case Handling table above. No longer a gap. |
+
+---
 
 ---
 

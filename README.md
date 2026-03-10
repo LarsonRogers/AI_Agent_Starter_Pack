@@ -1,5 +1,5 @@
 # AI Agent Starter Pack
-<!-- Starter Pack v10.8 -->
+<!-- Starter Pack v11.0 -->
 
 A platform-agnostic instruction set for AI coding agents. Drop it into any repo
 and any agent — Claude Code, Codex, Cursor, Windsurf, Aider, or others — will
@@ -11,6 +11,11 @@ working with and adapts its communication style, explanation depth, and
 confirmation behavior accordingly.
 
 ---
+
+> **Note:** Several agent behaviors reference procedures in `PROTOCOLS.md`.
+> That file must be present in your repo root for full operation. If it is
+> missing, the agent will halt and report it rather than proceeding with
+> undefined behavior.
 
 ## What You Get
 
@@ -55,8 +60,10 @@ A coding agent that:
    and `.github/` directory structures.
 2. Start your agent session. The agent handles everything else.
 
-No manual file editing required. The agent infers your project details from
-the repo, presents them for your confirmation, and fills in the pack files itself.
+No manual editing of pack placeholders required. The agent infers your project
+details, presents them for confirmation, and fills in the pack files itself.
+Optional: developers can manually adapt `.claude/settings.json` and the CI
+workflow after first session.
 
 See `SETUP.md` for a full walkthrough including non-developer instructions.
 
@@ -190,7 +197,7 @@ pack to catch regressions in agent behavior before they affect real work.
 
 ## Version
 
-This is **Starter Pack v10.8**. The version is recorded in the header of
+This is **Starter Pack v11.0**. The version is recorded in the header of
 `ARCHITECTURE.md`, `CLAUDE.md`, and `AGENTS.md`, and in every Captain's Log
 entry so there's always an audit trail of which instruction set was active
 for any given session.

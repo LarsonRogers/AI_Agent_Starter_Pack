@@ -32,7 +32,12 @@ explicitly and ask for clarification rather than assuming.
 [What is relevant to this task — specific files, functions, prior decisions,
 or Captain's Log entries the agent should be aware of]
 
-**Acceptance criteria**
+**Task type**
+- [ ] Coding task (edits, commits, full DoD applies)
+- [ ] Analysis / read-only (no edits — use lightweight checklist below)
+
+**Acceptance criteria — coding task**
+*(skip this section for analysis/read-only tasks)*
 - [ ] [Specific, verifiable outcome]
 - [ ] [Specific, verifiable outcome]
 - [ ] Lint and tests pass
@@ -40,6 +45,13 @@ or Captain's Log entries the agent should be aware of]
 - [ ] CI green (if configured)
 - [ ] Captain's Log and Changelog updated
 - [ ] If dependencies changed: lockfile committed, audit run
+
+**Acceptance criteria — analysis / read-only task**
+*(skip this section for coding tasks)*
+- [ ] [Specific findings or report delivered]
+- [ ] No files modified or created
+- [ ] Ends with: "No changes were made. Want me to act on any of these findings?"
+- [ ] Captain's Log updated only if user requests it
 
 **Constraints**
 - Do not modify: [files or systems off-limits for this task]
