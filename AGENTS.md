@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v11.2 — 2026-03-09 -->
+<!-- Starter Pack v11.3 — 2026-03-09 -->
 
 > **This file is the entry point for ChatGPT Codex and any agent that reads
 > `AGENTS.md` automatically.** It contains bootstrapping instructions and a
@@ -44,7 +44,7 @@ Otherwise, check whether `CAPTAINS_LOG.md` exists:
 **A — Log exists** → Session Resumption Protocol (ARCHITECTURE.md)
 **B — No log, new project** → First Session Protocol (ARCHITECTURE.md)
 **C — No log, existing codebase** → load `protocols/inherited-codebase.md`
-**D — Refactor session** → load `protocols/refactor.md`
+**D — Refactor session** (only when: no log OR resuming, AND user states explicit structural goal with no new features) → load `protocols/refactor.md`
 
 ---
 
@@ -63,7 +63,7 @@ Quick reference:
 | Explicit refactor task | `protocols/refactor.md` |
 | 5+ tasks in session or context degradation | `protocols/context-window.md` |
 | Binary / large files encountered | `protocols/binary-files.md` |
-| Sensitive data found or suspected | `protocols/sensitive-data.md` |
+| Inherited repos (proactive scan) or sensitive data found/suspected | `protocols/sensitive-data.md` |
 | 3 failed attempts on same problem | `protocols/stuck-loop.md` |
 | Lint / test commands missing | `protocols/validation-fallback.md` |
 | External SDK / API / platform work | `protocols/external-research.md` |
@@ -112,9 +112,9 @@ A condensed reference — full protocols are in `ARCHITECTURE.md`:
 ---
 
 ## Quick Constraints
-<!-- Fill in the hardest project-specific constraints from CLAUDE.md.
-     These are filled in by the agent during the Placeholder Inference Protocol.
-     Do not edit manually. -->
+<!-- Placeholder section — filled in by the agent during Placeholder Inference.
+     Exempt from the pack-file edit guardrail per ARCHITECTURE.md exception.
+     Do not edit manually outside of the Placeholder Inference Protocol. -->
 
 - **[Language/runtime]** —
 - **[Files not to edit]** —

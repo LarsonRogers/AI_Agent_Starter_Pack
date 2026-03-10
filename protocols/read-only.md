@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.2 — protocols/read-only.md -->
+<!-- Starter Pack v11.3 — protocols/read-only.md -->
 <!-- Load this file when: review, audit, analysis, or any task with no intended edits -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
@@ -60,3 +60,18 @@ credentials or PII), honest verification language, hard guardrails.
 ---
 
 ### Inherited Codebase (Existing project, no prior log)
+
+When the task is read-only and no Captain's Log exists, skip the full
+Inherited Codebase Protocol onboarding flow. Instead:
+
+```
+[ ] 1. Read available source files to understand the codebase at a surface level
+[ ] 2. Deliver your analysis or review findings
+[ ] 3. End with: "No changes were made. Want me to act on any of these findings?"
+[ ] 4. If the user confirms they want work done, exit read-only mode and
+       run the Inherited Codebase Protocol (protocols/inherited-codebase.md)
+       before touching any files.
+```
+
+Do not fill placeholders, do not create CAPTAINS_LOG.md, do not run
+audience detection until the user confirms active work is needed.

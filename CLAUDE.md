@@ -1,5 +1,5 @@
 # CLAUDE.md
-<!-- Starter Pack v11.2 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.3 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents (Claude Code, ChatGPT Codex, and others):**
 > Read files in this exact order before making any changes:

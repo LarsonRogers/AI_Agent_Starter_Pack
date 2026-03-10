@@ -1,5 +1,5 @@
 # Setup Guide
-<!-- Starter Pack v11.2 -->
+<!-- Starter Pack v11.3 -->
 
 No coding experience required. If you are a developer, skip to
 Developer Quick Setup at the bottom.
@@ -84,6 +84,10 @@ your-project/
 Note: files and folders starting with `.` may be hidden by default.
 On Mac: press Cmd+Shift+Period to show hidden files.
 On Windows: View → Show → Hidden items.
+
+> **Not comfortable with the terminal?** Skip ahead to
+> **Generic Agent Path** further down this page — it walks you through
+> setup using only copy-paste, no terminal required.
 
 ### Step 2 — Start your agent session
 
@@ -356,11 +360,18 @@ Claude Code and Codex to pick up their settings automatically.
 Run this in your project folder to confirm the full protocols/ directory
 copied correctly:
 
+**Mac / Linux:**
 ```bash
 ls protocols/ | wc -l
 ```
 
-You should see `16`. If the number is lower, copy the protocols/ folder
+**Windows (Command Prompt):**
+```cmd
+dir /b protocols
+```
+Count the lines in the output manually — you should see 16 files.
+
+You should see `16` (or 16 files listed). If the number is lower, copy the protocols/ folder
 from the zip again. A missing protocol file won't cause an immediate error
 but will cause the agent to halt when that protocol is triggered.
 

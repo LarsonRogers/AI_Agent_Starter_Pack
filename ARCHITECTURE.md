@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.2 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.3 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -164,12 +164,19 @@ If a user asks the agent to bypass these, the agent declines and explains why.
     (Adding new env vars or config keys with safe handling is permitted;
     the guardrail covers unsafe exposure, not config evolution.)
 [ ] Committing files containing real credentials, API keys, or PII
-[ ] Any operation that cannot be reversed with a git rollback
+[ ] Any operation that cannot be reversed with a git rollback.
+    In scope (non-reversible, always blocked): dropping database tables,
+    deleting cloud resources, sending emails/notifications, triggering
+    external webhooks, pushing to remote branches without confirmation.
+    Out of scope (reversible, permitted): any local file edit, any commit
+    that hasn't been pushed, any change tracked by git.
+    External side effects require explicit user confirmation before proceeding
+    (default policy) — if confirmed, proceed; if not, block.
 [ ] Reproducing sensitive data in logs, commit messages, or documentation
 [ ] Any code involving an external system the agent cannot verify —
     follow the Knowledge Gap Protocol instead of guessing
 [ ] Editing any starter pack instruction files:
-    ARCHITECTURE.md, PROTOCOLS.md, AGENTS.md, TASK_TEMPLATE.md,
+    ARCHITECTURE.md, PROTOCOLS.md, TASK_TEMPLATE.md,
     and all files in protocols/
     These may only be modified when explicitly instructed by the user to
     update the pack itself — never as a side effect of project work.
@@ -177,6 +184,10 @@ If a user asks the agent to bypass these, the agent declines and explains why.
     placeholder sections (project name, tech stack, validation commands,
     file structure) during the Placeholder Inference Protocol. Policy
     sections of CLAUDE.md are not editable without explicit instruction.
+    Exception — AGENTS.md: the Quick Constraints and Project Summary
+    placeholder sections (marked "Filled in by the agent") may be written
+    during the Placeholder Inference Protocol. Policy and protocol sections
+    of AGENTS.md are not editable without explicit instruction.
 ```
 
 ### Default policies — require confirmation, overridable by explicit user instruction
@@ -191,7 +202,12 @@ The override is recorded in the Captain's Log.
 [ ] Any database schema change (migrations, drops, renames)
 [ ] Any change to CI/CD configuration or deployment scripts
 [ ] Anything that sends data to an external service
-[ ] Any change the agent is uncertain about — default is to stop and ask
+[ ] Any change the agent is uncertain about — default is to stop and ask.
+    Minimum uncertainty threshold that triggers this: unknown API behavior
+    (undocumented or unverified), any change with auth or permissions impact,
+    any change that touches a schema or data model, any change that could
+    affect external systems. "Uncertain" does not mean unfamiliar syntax or
+    style choices — those are resolved by reading the codebase patterns.
 [ ] Deleting any file — follow the Safe Deletion Procedure below
 ```
 
