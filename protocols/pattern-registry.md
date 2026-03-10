@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.6 — protocols/pattern-registry.md -->
+<!-- Starter Pack v11.7 — protocols/pattern-registry.md -->
 <!-- Load this file when: documenting a new reusable pattern before committing -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 

@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.6 — protocols/known-limitations.md -->
+<!-- Starter Pack v11.7 — protocols/known-limitations.md -->
 <!-- Load this file when: auditing the pack — never needed during normal agent work -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
@@ -30,6 +30,10 @@ with recorded rationale. Reviewers and agents should not flag these as issues.
 | **Mixed-intent sequencing rule (audit + edit in one prompt)** | Deferred | Proposal: add a formal transition gate requiring explicit user confirmation before switching from read-only audit to edit mode. Decision: current behavior (read-only until edits explicitly requested) is already deterministic enough for the common case. A formal gate adds friction without meaningfully improving reliability. Revisit if user testing shows mode-switching errors. |
 | **Move verbose templates out of always-loaded ARCHITECTURE.md** | Considered and declined | Flagged across multiple audit cycles (v11.1, v11.2, v11.3, v11.5). Decision: splitting format templates and scaffolding into protocol/appendix files is a moderate architectural change. The token overhead (~300–500 tokens per session) is outweighed by the reliability cost of splitting always-needed reference material into on-demand files. Do not re-flag unless context pressure causes measurable session failures. |
 | **Multi-trigger protocol ordering** | Deferred | When multiple protocol triggers fire simultaneously (e.g., cross-cutting + testing + external-research), load order is unspecified. Proposal: add a deterministic ordering rule. Decision: adding a formal load-order rule creates a new maintenance surface with marginal reliability gain. Current behavior (load all triggered protocols, read in trigger-table order) is sufficient. Revisit if agents demonstrate ordering-dependent failures. |
+
+| **"Agent uncertain" default-policy rubric** | Considered and declined (further elaboration) | Flagged in v11.3, v11.5, v11.6. Must-ask list and need-not-ask counter-list were added in v11.5. Proposal: add a full low/medium/high uncertainty rubric with examples. Decision: adding more scaffolding to this clause risks making it harder to read and harder to follow consistently. Current two-list structure is sufficient. Do not re-flag unless agent behavior shows measurable over-confirmation or under-confirmation in practice. |
+| **CLAUDE.md scaffolding verbosity in always-loaded file** | Considered and declined (repeated) | Flagged in v11.1, v11.2, v11.3, v11.5, v11.6. Generic naming/formatting/documentation/git scaffolding in CLAUDE.md is always loaded. Proposal: move to optional appendix. Decision: this is project-specific reference material that agents consult during active work. Moving it on-demand would require protocol-loading during tasks that don't currently trigger any protocol. Token overhead (~200–400 tokens) does not justify the workflow complexity. Do not re-flag. |
+| **AGENTS principle duplication / token overhead** | Intentional — load-bearing | AGENTS.md Step 3 mirrors core principles already in ARCHITECTURE.md. This is deliberate: agents that only read AGENTS.md should still have essential behavioral constraints. Accepted tradeoff documented across multiple audit cycles. |
 
 ---
 

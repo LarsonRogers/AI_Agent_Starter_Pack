@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.6 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.7 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -1036,8 +1036,10 @@ Reviewers should consult `protocols/known-limitations.md` before flagging items 
 ## Protocol Index
 
 All protocols in this pack, with their locations and trigger conditions.
-This is the single normative list — AGENTS.md, CLAUDE.md, and README.md
-link here rather than maintaining their own copies.
+This is the canonical source for protocol locations and trigger conditions.
+AGENTS.md maintains a quick-reference mirror of the trigger table for fast
+agent lookup — that mirror is intentional and load-bearing, not drift.
+When the two conflict, this table governs.
 
 | Protocol | Location | When to load |
 |----------|----------|-------------|
@@ -1052,7 +1054,7 @@ link here rather than maintaining their own copies.
 | Cross-Cutting Changes | `protocols/cross-cutting.md` | Task touches 3+ files or crosses architectural layers |
 | Safe Deletion Procedure | ARCHITECTURE.md | Any file deletion request |
 | Context Window Management | `protocols/context-window.md` | 5+ tasks in session or detected degradation |
-| Sensitive Data Handling | `protocols/sensitive-data.md` | Inherited repos (proactive) or on encounter |
+| Sensitive Data Handling | `protocols/sensitive-data.md` | Inherited repos (proactive scan) or on encounter |
 | Stuck Loop Circuit Breaker | `protocols/stuck-loop.md` | 3 failed attempts on same problem |
 | Validation Tooling Fallback | `protocols/validation-fallback.md` | Lint/test commands missing or unconfigured |
 | External Research Protocol | `protocols/external-research.md` | External SDK, API, or platform work |

@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.6 — protocols/external-research.md -->
+<!-- Starter Pack v11.7 — protocols/external-research.md -->
 <!-- Load this file when: external SDK, API, or platform work; or web access unavailable (Knowledge Gap) -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
@@ -12,12 +12,19 @@ This is especially critical for niche, underdocumented, or version-sensitive sys
 ### When This Triggers
 
 Research is required any time the task involves:
-- A third-party SDK, API, or library
+- A third-party SDK, API, or library where behavior is version-sensitive,
+  undocumented, or behavior-critical (routine well-known dependencies with
+  stable APIs do not require research — e.g., adding lodash to a JS project)
 - A platform with its own scripting or plugin model (DAWs, hardware controllers,
   game engines, creative tools, etc.)
 - A framework where version differences affect behavior
-- Any system where the agent's knowledge cannot be independently verified
+- Any system where the agent's training knowledge cannot be independently verified
+  or may be outdated
 - Hardware-software integration where protocol details matter
+
+Does NOT trigger for: widely-used stable libraries where the required usage
+is standard and well within the agent's verified knowledge (e.g., standard
+stdlib usage, well-known utility libraries with unchanged APIs).
 
 ### Research Steps
 

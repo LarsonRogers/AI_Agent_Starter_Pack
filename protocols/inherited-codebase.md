@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.6 — protocols/inherited-codebase.md -->
+<!-- Starter Pack v11.7 — protocols/inherited-codebase.md -->
 <!-- Load this file when: no Captain's Log exists and non-pack source files are present -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
@@ -12,7 +12,7 @@ that was not built with this setup. The codebase exists, but there is no
 #### Phase 1 — Read and Map (no edits)
 
 ```
-[ ] 1. Read ARCHITECTURE.md (this file) and CLAUDE.md in full
+[ ] 1. Read ARCHITECTURE.md and CLAUDE.md in full
 [ ] 2. List the entire repo structure — every directory and file
 [ ] 3. Identify and read: entry points, config files, package manifests,
         dependency lists, any existing README or docs

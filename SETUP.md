@@ -1,5 +1,5 @@
 # Setup Guide
-<!-- Starter Pack v11.6 -->
+<!-- Starter Pack v11.7 -->
 
 No coding experience required. If you are a developer, skip to
 Developer Quick Setup at the bottom.
@@ -29,15 +29,28 @@ developer when needed.
 
 ## What you need
 
-**An AI coding agent.** This pack works with:
-- **Claude Code** — install via `npm install -g @anthropic-ai/claude-code`
-  or follow the guide at https://docs.anthropic.com/claude-code
-- **Codex CLI** — install via `npm install -g @openai/codex`
-  or follow the guide at https://platform.openai.com/docs/codex
-- **Cursor, Windsurf, or others** — follow their own installation guides
+> **No terminal?** You don't need one. Skip everything below and go straight
+> to [Generic Agent Path](#generic-agent-path-no-cli-required) — it works
+> entirely through copy-paste in your browser or IDE, no installation required.
 
-**A code project.** This can be a new empty folder, an existing project,
-or a project you've downloaded from the internet.
+---
+
+**If you're using a CLI agent (Claude Code, Codex):**
+
+An AI coding agent — install one:
+- **Claude Code** — `npm install -g @anthropic-ai/claude-code`
+  or follow the guide at https://docs.anthropic.com/claude-code
+- **Codex CLI** — `npm install -g @openai/codex`
+  or follow the guide at https://platform.openai.com/docs/codex
+
+**If you're using an IDE agent (Cursor, Windsurf, or others):**
+
+Follow their own installation guides — no terminal setup required here.
+
+---
+
+**A code project** — a new empty folder, an existing project, or one
+you've downloaded from the internet.
 
 **Git (strongly recommended — required for most agent features).** Git saves
 checkpoints of your code so mistakes can be undone. The agent handles git
@@ -48,8 +61,14 @@ your code. But it cannot make safe commits, roll back mistakes, reconstruct
 history, or run the full checkpoint and refactor workflows. If you're doing
 any active coding work, install git first.
 
-To verify git is installed: open a terminal and type `git --version`.
-If you see a version number, you're good. If not, download from the link above.
+To verify git is installed:
+- **Terminal:** type `git --version` — if you see a version number, you're good
+- **No terminal:** if you installed GitHub Desktop, git is already included.
+  Open GitHub Desktop — if it opens without errors, git is present.
+- **Or:** skip verification and attempt setup; the agent will tell you if git
+  is missing when it first tries to use it.
+
+If git is not installed, download from the link above.
 
 ---
 

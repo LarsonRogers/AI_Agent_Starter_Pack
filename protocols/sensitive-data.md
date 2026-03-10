@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.6 — protocols/sensitive-data.md -->
+<!-- Starter Pack v11.7 — protocols/sensitive-data.md -->
 <!-- Load this file when: inherited repos (proactive scan) or sensitive data encountered -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
