@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.9 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.10 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -988,8 +988,11 @@ resume normal session-start behaviors at that point.
 
 See `protocols/binary-files.md` for the full rules.
 
-Rules: never read, edit, or commit binary files without awareness of what they
-are. Never commit files over 1MB without confirmation. Never commit generated
+Rules: never attempt to text-read or edit files with known binary extensions
+(.jpg, .png, .gif, .webp, .pdf, .zip, .exe, .dmg, .so, .dylib, .amxd,
+.maxpat, .wav, .mp3, .ttf, .woff, and similar). When a binary file must be
+committed, confirm with the user first and verify .gitignore coverage.
+Never commit files over 1MB without confirmation. Never commit generated
 output. Verify .gitignore on first session.
 
 ---

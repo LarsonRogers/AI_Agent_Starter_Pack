@@ -1,5 +1,5 @@
 # Setup Guide
-<!-- Starter Pack v11.9 -->
+<!-- Starter Pack v11.10 -->
 
 No coding experience required. If you are a developer, skip to
 Developer Quick Setup at the bottom.
@@ -285,6 +285,9 @@ agents — it will direct the agent to read the other files in the right order.
 `AGENTS.md` into the chat manually. It's a short file — open it in any
 text editor, select all, and paste. The agent will then ask you for
 `ARCHITECTURE.md` and `CLAUDE.md` if it needs them.
+If your chat has a character or size limit, send the files one at a time
+in this order: `AGENTS.md` first, then `ARCHITECTURE.md`, then `CLAUDE.md`.
+Tell the agent "more coming" between pastes so it waits before responding.
 
 ---
 

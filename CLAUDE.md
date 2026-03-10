@@ -1,5 +1,5 @@
 # CLAUDE.md
-<!-- Starter Pack v11.9 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.10 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents (Claude Code, ChatGPT Codex, and others):**
 > Read files in this exact order before making any changes:
@@ -34,13 +34,7 @@
 > **For the developer:** This is your project instruction manual. `ARCHITECTURE.md`
 > is your structural contract. Together they are the single source of truth.
 
-<!--
-AGENT COMPATIBILITY NOTE:
-- Claude Code: reads CLAUDE.md automatically on session start
-- ChatGPT Codex: reads AGENTS.md automatically, which redirects here
-- Other agents (Cursor, Windsurf, Aider, etc.): should be pointed to this file
-All instructions apply equally to all agents.
--->
+<!-- Agent compatibility: Claude Code reads this automatically; Codex reads AGENTS.md which redirects here; other agents should be pointed to this file. -->
 
 ---
 
@@ -158,6 +152,11 @@ committing.
 **Hard guardrail — agent must NOT edit without explicit instruction to update the pack:**
 ```
 - ARCHITECTURE.md            # Policy file — not editable as a side effect of project work
+                             # Exception: Project-Specific Architecture and Pattern Registry
+                             # sections may be written during Inherited Codebase Protocol
+                             # Phase 3 to document the actual structure of an inherited
+                             # project. Core policy sections are never editable without
+                             # explicit instruction to update the pack itself.
 - PROTOCOLS.md               # Routing index — not editable as a side effect of project work
 - protocols/                  # Protocol files — same rule
 - AGENTS.md                  # Policy file — same rule

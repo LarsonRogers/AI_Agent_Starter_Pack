@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.9 — protocols/refactor.md -->
+<!-- Starter Pack v11.10 — protocols/refactor.md -->
 <!-- Load this file when: explicit structural improvement goal with no new features -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
@@ -10,7 +10,14 @@ feature addition. The agent must treat behavioral equivalence as the definition
 of success.
 
 This is a distinct session type — not a normal task, not an inherited codebase
-assessment. If the user says "refactor this," run this protocol.
+assessment. Structural improvement only — no new features, no behavior changes.
+If the user says "refactor this" with no further context, ask one clarifying
+question before proceeding:
+  "Just to confirm — is this structural cleanup only (no new features or
+   behavior changes), or are there functional improvements you also want?
+   I'll run the full refactor protocol for structural work."
+If the user's intent is clearly structural-only (e.g., "clean up the module
+structure," "extract these services," "no new features"), proceed without asking.
 
 ### Phase 1 — Establish a working baseline (before any changes)
 

@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.9 — protocols/context-window.md -->
+<!-- Starter Pack v11.10 — protocols/context-window.md -->
 <!-- Load this file when: 5+ tasks in session or detected context degradation -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
@@ -7,6 +7,21 @@
 Long sessions accumulate context until the agent begins losing track of earlier
 instructions, decisions, and constraints. This degrades output quality silently
 — the agent won't announce it's forgetting things.
+
+### When this protocol triggers
+
+Triggers when any of these are true:
+- 5 or more tasks completed in the current session
+- Agent re-asks a question already answered this session
+- Agent proposes a change contradicting a confirmed decision
+- Agent re-reads a file it already summarized without new prompting
+- User reports confusion or inconsistency
+
+Does NOT trigger when:
+- Session is short (1–2 tasks) with no degradation signals
+- Agent asks a clarifying question about a new task (normal behavior,
+  not a sign of context loss)
+- User changes direction or scope mid-session (intentional, not degradation)
 
 ### Proactive checkpointing
 

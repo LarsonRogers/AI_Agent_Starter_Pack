@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.9 — protocols/validation-fallback.md -->
+<!-- Starter Pack v11.10 — protocols/validation-fallback.md -->
 <!-- Load this file when: lint, test, or CI commands are missing or unconfigured -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
