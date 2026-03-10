@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.7 — protocols/read-only.md -->
+<!-- Starter Pack v11.8 — protocols/read-only.md -->
 <!-- Load this file when: review, audit, analysis, or any task with no intended edits -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
@@ -38,7 +38,11 @@ protocol unless the user explicitly requests edits:
 ### Protocol
 
 ```
-[ ] 1. Confirm read-only mode with the user before starting:
+[ ] 1. Confirm read-only mode before starting.
+        If the user's opening message explicitly requested review, audit,
+        analysis, or no changes — that request counts as confirmation.
+        No additional confirmation step is required; proceed directly.
+        If ambiguous, ask once:
         "I'll treat this as a read-only review — no edits or commits.
         Confirm, or let me know if you'd like me to make changes too."
 [ ] 2. Read the relevant files — do not stage, modify, or create any file

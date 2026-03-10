@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.7 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.8 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -209,7 +209,12 @@ The override is recorded in the Captain's Log.
 ```
 [ ] Changing authentication, permissions, or access control logic
 [ ] Adding any external service, API, or third-party dependency
-[ ] Any database schema change (migrations, drops, renames)
+[ ] Any database schema change — additive or compatible changes
+    (migrations, renames, adding columns/indexes): default policy,
+    require confirmation, overridable.
+    Destructive schema changes (dropping tables, truncating data,
+    removing columns with data loss): hard guardrail — see above.
+    Never overridable.
 [ ] Any change to CI/CD configuration or deployment scripts
 [ ] Anything that sends data to an external service
 [ ] External side effects that cannot be undone but are not hard-blocked:

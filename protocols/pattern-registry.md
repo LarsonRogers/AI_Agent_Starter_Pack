@@ -1,5 +1,9 @@
-<!-- Starter Pack v11.7 — protocols/pattern-registry.md -->
+<!-- Starter Pack v11.8 — protocols/pattern-registry.md -->
 <!-- Load this file when: documenting a new reusable pattern before committing -->
+<!-- Concrete trigger: same structural approach appears in 2+ files touched this session,
+     OR a new approach replaced a previous one that was causing bugs -->
+<!-- Does NOT trigger: one-off solutions, obvious language idioms, single-use helpers,
+     patterns already present in the Pattern Registry -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
 ## Pattern Registry Maintenance
@@ -20,6 +24,19 @@ Location:     [File path of the canonical example]
 Usage:        [How to apply it — what to do]
 Anti-pattern: [What NOT to do instead — must be specific]
 ```
+
+**When this protocol triggers:**
+- The same structural approach (module layout, error handling, state management,
+  etc.) appears in 2 or more files touched in this session
+- A new approach explicitly replaced a previous one that was causing bugs
+  or confusion — even if only used once so far
+
+**Does NOT trigger when:**
+- The approach is a one-off solution with no obvious reuse potential
+- It is a standard language idiom (e.g., standard error propagation,
+  obvious utility functions)
+- A matching pattern already exists in the Pattern Registry
+- The session touched only one file
 
 **Minimum bar for a pattern to be registered:**
 - It is used or will be used in more than one place, OR
