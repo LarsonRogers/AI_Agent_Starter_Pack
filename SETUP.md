@@ -1,5 +1,5 @@
 # Setup Guide
-<!-- Starter Pack v11.5 -->
+<!-- Starter Pack v11.6 -->
 
 No coding experience required. If you are a developer, skip to
 Developer Quick Setup at the bottom.
@@ -22,6 +22,10 @@ allowed to do on its own, and how to hand off to another agent or a human
 developer when needed.
 
 ---
+
+> **Two paths through this guide:**
+> - **Terminal / CLI users** — follow the steps below in order
+> - **No terminal?** Jump straight to [Generic Agent Path](#generic-agent-path-no-cli-required) — copy-paste only, no command line needed
 
 ## What you need
 
@@ -381,9 +385,9 @@ Count the lines in the output — you should see 16 files listed.
 **No terminal? Use your file explorer instead:**
 Open your project folder, then open the `protocols` subfolder.
 Count the files inside — there should be exactly 16.
-If there are fewer, copy the `protocols/` folder from the zip again. If the number is lower, copy the protocols/ folder
-from the zip again. A missing protocol file won't cause an immediate error
-but will cause the agent to halt when that protocol is triggered.
+If there are fewer, copy the `protocols/` folder from the zip again.
+A missing protocol file won't cause an immediate error but will cause
+the agent to halt when that protocol is triggered.
 
 **Verifying setup worked**
 When you start your first agent session, the agent should:

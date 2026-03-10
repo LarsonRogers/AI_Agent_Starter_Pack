@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.5 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.6 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -175,7 +175,11 @@ If a user asks the agent to bypass these, the agent declines and explains why.
     any commit that hasn't been pushed, any change tracked by git.
 [ ] Reproducing sensitive data in logs, commit messages, or documentation
 [ ] Any code involving an external system the agent cannot verify —
-    follow the Knowledge Gap Protocol instead of guessing
+    follow the Knowledge Gap Protocol instead of guessing.
+    Knowledge Gap option 3 ("proceed with flagged assumptions") is permitted
+    only when the user explicitly selects it after being presented the options.
+    Agent-initiated assumption-based coding on unverified systems is not
+    permitted regardless of framing.
 [ ] Editing any starter pack instruction files:
     ARCHITECTURE.md, PROTOCOLS.md, TASK_TEMPLATE.md,
     and all files in protocols/

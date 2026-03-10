@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.5 — protocols/cross-cutting.md -->
+<!-- Starter Pack v11.6 — protocols/cross-cutting.md -->
 <!-- Load this file when: task touches 3+ files or crosses more than one architectural layer -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
@@ -11,7 +11,7 @@ being a single logical change. What matters is that scope is agreed upfront.
 ### When a pre-flight plan is required
 
 A pre-flight plan is required whenever a task will:
-- Touch more than 3 files, OR
+- Touch 3 or more files, OR
 - Cross more than one architectural layer, OR
 - Involve any rename, move, or structural reorganization
 

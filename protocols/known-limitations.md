@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.5 — protocols/known-limitations.md -->
+<!-- Starter Pack v11.6 — protocols/known-limitations.md -->
 <!-- Load this file when: auditing the pack — never needed during normal agent work -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
@@ -26,6 +26,10 @@ with recorded rationale. Reviewers and agents should not flag these as issues.
 | **Non-dev "do exactly this" single boxed flow** | Deferred | SETUP.md already has a well-structured non-dev path, first-session transcript, normal/recovery distinction, glossary, and OS appendix. A single boxed canonical flow is a marginal improvement over the current structure. Revisit if user testing shows first-time failure. |
 | **Canonical copy block for read-order (raised multiple times)** | Considered and declined | Proposal: maintain one verbatim copy block and reference it everywhere. Decision: the current pointer approach (each file states the order + references ARCHITECTURE as canonical) is more resilient to file-specific context than a shared block. Accepted tradeoff documented across multiple audit cycles. |
 | **Failure-path detail for non-git / no-file-read / partial placeholders** | Resolved | These are now documented as deterministic action paths in the Edge-Case Handling table above. No longer a gap. |
+
+| **Mixed-intent sequencing rule (audit + edit in one prompt)** | Deferred | Proposal: add a formal transition gate requiring explicit user confirmation before switching from read-only audit to edit mode. Decision: current behavior (read-only until edits explicitly requested) is already deterministic enough for the common case. A formal gate adds friction without meaningfully improving reliability. Revisit if user testing shows mode-switching errors. |
+| **Move verbose templates out of always-loaded ARCHITECTURE.md** | Considered and declined | Flagged across multiple audit cycles (v11.1, v11.2, v11.3, v11.5). Decision: splitting format templates and scaffolding into protocol/appendix files is a moderate architectural change. The token overhead (~300–500 tokens per session) is outweighed by the reliability cost of splitting always-needed reference material into on-demand files. Do not re-flag unless context pressure causes measurable session failures. |
+| **Multi-trigger protocol ordering** | Deferred | When multiple protocol triggers fire simultaneously (e.g., cross-cutting + testing + external-research), load order is unspecified. Proposal: add a deterministic ordering rule. Decision: adding a formal load-order rule creates a new maintenance surface with marginal reliability gain. Current behavior (load all triggered protocols, read in trigger-table order) is sufficient. Revisit if agents demonstrate ordering-dependent failures. |
 
 ---
 

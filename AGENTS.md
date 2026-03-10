@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v11.5 — 2026-03-09 -->
+<!-- Starter Pack v11.6 — 2026-03-09 -->
 
 > **This file is the entry point for ChatGPT Codex and any agent that reads
 > `AGENTS.md` automatically.** It contains bootstrapping instructions and a
@@ -102,6 +102,15 @@ A condensed reference — full protocols are in `ARCHITECTURE.md`:
   stack, validation commands, file structure) may be written during the
   Placeholder Inference Protocol. Policy sections of CLAUDE.md are never
   edited without explicit instruction.
+  Exception — AGENTS.md: the Quick Constraints and Project Summary placeholder
+  sections (marked "Filled in by the agent") may be written during the
+  Placeholder Inference Protocol. Policy and protocol sections of AGENTS.md
+  are not editable without explicit instruction.
+  Exception — ARCHITECTURE.md: the Project-Specific Architecture and Pattern
+  Registry sections may be written during the Inherited Codebase Protocol
+  (Phase 3). Core policy sections of ARCHITECTURE.md are never editable
+  without explicit instruction to update the pack itself.
+  Canonical rule source: ARCHITECTURE.md → Hard guardrails.
 - Never read, edit, or commit binary files without explicit awareness.
   Never commit files over 1MB without confirmation. Verify .gitignore on first session.
 - No hardcoded environment-specific values — URLs, ports, endpoints go in config.

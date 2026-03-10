@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.5 — protocols/external-research.md -->
+<!-- Starter Pack v11.6 — protocols/external-research.md -->
 <!-- Load this file when: external SDK, API, or platform work; or web access unavailable (Knowledge Gap) -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
@@ -76,6 +76,9 @@ I can continue in one of three ways:
    I'm making and mark those sections of code with a warning comment so you
    or a developer can verify them later. Only choose this if the stakes are
    low and you want to move quickly.
+   Note: this option is only available when you select it explicitly. The
+   agent may not choose option 3 on its own — doing so would violate the
+   hard guardrail on unverified external-system code in ARCHITECTURE.md.
 
 Which would you prefer?
 ```

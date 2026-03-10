@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.5 — protocols/conflict-examples.md -->
+<!-- Starter Pack v11.6 — protocols/conflict-examples.md -->
 <!-- Load this file when: surfacing a conflict or verifying conflict-handling behavior -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
