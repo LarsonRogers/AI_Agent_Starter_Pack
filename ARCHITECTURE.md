@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.24 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.25 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -925,6 +925,10 @@ See `protocols/cross-cutting.md` for the pre-flight plan format.
 Rule: any task touching 3+ files or crossing more than one layer requires a
 confirmed pre-flight plan before any file is touched. If the plan changes
 mid-execution, stop, update the plan, re-confirm.
+Exception: purely mechanical single-layer changes (e.g., docs-only updates
+across multiple files, pure renames with no logic changes) do not require
+pre-flight planning — consistent with protocols/cross-cutting.md non-trigger
+examples.
 
 ## Agent Honesty & Self-Correction
 
@@ -1088,7 +1092,7 @@ When the two conflict, this table governs.
 | Testing Strategy | `protocols/testing-strategy.md` | Writing or evaluating tests |
 | Environment Awareness | ARCHITECTURE.md | Any environment-specific code or config |
 | Conflict Resolution Examples | `protocols/conflict-examples.md` | Surfacing a conflict or verifying conflict behavior |
-| Edge-Case Handling | `protocols/edge-cases.md` | Pack files missing, git unavailable, no file-read, placeholder conflicts, CAPTAINS_LOG missing/corrupt |
+| Edge-Case Handling | `protocols/edge-cases.md` | Pack files missing, git unavailable, no file-read, no file-write, placeholder conflicts, CAPTAINS_LOG missing/corrupt |
 | Known Limitations & Deferred Decisions | `protocols/known-limitations.md` | Auditing the pack — never during normal work |
 | Pattern Registry Maintenance | `protocols/pattern-registry.md` | Documenting a new reusable pattern before committing |
 
