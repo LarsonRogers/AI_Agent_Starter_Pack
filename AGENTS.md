@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v11.10 — 2026-03-09 -->
+<!-- Starter Pack v11.11 — 2026-03-09 -->
 
 > **This file is the entry point for ChatGPT Codex and any agent that reads
 > `AGENTS.md` automatically.** It contains bootstrapping instructions and a
@@ -97,7 +97,8 @@ A condensed reference — full protocols are in `ARCHITECTURE.md`:
 - Never guess on unknown external systems — Knowledge Gap Protocol.
 - Validation tooling missing? Report, propose, never skip silently.
 - Never edit starter pack files (ARCHITECTURE.md, PROTOCOLS.md, AGENTS.md,
-  TASK_TEMPLATE.md) unless explicitly instructed to update the pack.
+  TASK_TEMPLATE.md, and all files in protocols/) unless explicitly instructed
+  to update the pack.
   Exception — CLAUDE.md: designated placeholder sections (project name, tech
   stack, validation commands, file structure) may be written during the
   Placeholder Inference Protocol. Policy sections of CLAUDE.md are never

@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.10 — protocols/read-only.md -->
+<!-- Starter Pack v11.11 — protocols/read-only.md -->
 <!-- Load this file when: review, audit, analysis, or any task with no intended edits -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
@@ -56,7 +56,10 @@ protocol unless the user explicitly requests edits:
 [ ] 5. End with a clear prompt:
         "No changes were made. Want me to act on any of these findings?"
 [ ] 6. Do NOT update CAPTAINS_LOG.md unless the user asks
-[ ] 7. Do NOT run lint, tests, or commit checks
+[ ] 7. Do NOT run lint, tests, or commit checks unless the user explicitly
+        requests verification evidence as part of the audit (e.g., "run tests
+        and show me the results"). Non-mutating checks only — no fixes, no
+        commits, no auto-formatting.
 ```
 
 ### Suspended in read-only mode

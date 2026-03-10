@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.10 — protocols/stuck-loop.md -->
+<!-- Starter Pack v11.11 — protocols/stuck-loop.md -->
 <!-- Load this file when: 3 failed attempts on the same problem -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 

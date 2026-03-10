@@ -1,5 +1,8 @@
-<!-- Starter Pack v11.10 — protocols/conflict-examples.md -->
+<!-- Starter Pack v11.11 — protocols/conflict-examples.md -->
 <!-- Load this file when: surfacing a conflict or verifying conflict-handling behavior -->
+<!-- Does NOT trigger when: agent needs ordinary clarification on an ambiguous request
+     (no rule conflict involved), or when two instructions address different topics
+     and can both be followed without contradiction -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
 ## Conflict Resolution Examples

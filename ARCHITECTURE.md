@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.10 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.11 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -171,8 +171,11 @@ If a user asks the agent to bypass these, the agent declines and explains why.
     purging logs, backups, or audit trails.
     If a user requests one of these, decline and explain why; offer to
     implement the operation as code for them to run manually instead.
-    Out of scope (reversible, always permitted): any local file edit,
-    any commit that hasn't been pushed, any change tracked by git.
+    Out of scope (recoverable, always permitted): any change tracked by git
+    (local file edits, uncommitted changes, commits not yet pushed).
+    "Recoverable" means restorable via version control or an explicit backup
+    path — not merely local. Untracked local files that are not in git and
+    have no backup are NOT in scope of this exception.
 [ ] Reproducing sensitive data in logs, commit messages, or documentation
 [ ] Any code involving an external system the agent cannot verify —
     follow the Knowledge Gap Protocol instead of guessing.
