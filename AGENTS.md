@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v11.30 — 2026-03-09 -->
+<!-- Starter Pack v11.31 — 2026-03-09 -->
 
 > **This file is the entry point for ChatGPT Codex and any agent that reads
 > `AGENTS.md` automatically.** It contains bootstrapping instructions and a
@@ -129,7 +129,9 @@ A condensed reference — full protocols are in `ARCHITECTURE.md`:
 ## Quick Constraints
 <!-- Placeholder section — filled in by the agent during Placeholder Inference.
      Exempt from the pack-file edit guardrail per ARCHITECTURE.md exception.
-     Do not edit manually outside of the Placeholder Inference Protocol. -->
+     Do not edit manually outside of the Placeholder Inference Protocol.
+     Runtime skip: if these placeholders are already filled, read and apply
+     the values — do not re-run Placeholder Inference. -->
 
 - **[Language/runtime]** —
 - **[Files not to edit]** —

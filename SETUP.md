@@ -1,5 +1,5 @@
 # Setup Guide
-<!-- Starter Pack v11.30 -->
+<!-- Starter Pack v11.31 -->
 
 No coding experience required. If you are a developer, skip to
 Developer Quick Setup at the bottom.
@@ -283,6 +283,9 @@ agents — it will direct the agent to read the other files in the right order.
 If at any point the agent says it needs a specific protocol file (e.g.,
 `protocols/refactor.md`), open that file, copy the full contents, and paste
 it into the chat. The agent will continue from there.
+If the agent does not tell you which file it needs, paste `PROTOCOLS.md`
+next — it contains the full trigger table. The agent can use it to identify
+which protocol file to request.
 If a protocol file is too long to paste in one message, paste it in numbered
 parts and tell the agent "more coming — wait for all parts" between each paste.
 

@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.30 — protocols/external-research.md -->
+<!-- Starter Pack v11.31 — protocols/external-research.md -->
 <!-- Load this file when: external SDK, API, or platform work; or web access unavailable (Knowledge Gap) -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
@@ -6,6 +6,10 @@
 
 Before writing any code that involves an external system, SDK, API, framework,
 or platform the agent is not verified-current on, the agent must research it first.
+"Verified-current" means: the version, behavior, or API surface was explicitly
+confirmed in the current session (via research, user statement, or docs) or is
+recorded in the Captain's Log from a recent session. Training data alone does
+not count as verified-current.
 Do not rely on training data alone — it may be stale, incomplete, or wrong.
 This is especially critical for niche, underdocumented, or version-sensitive systems.
 

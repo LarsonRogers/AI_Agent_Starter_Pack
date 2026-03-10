@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.30 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.31 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -164,6 +164,12 @@ If a user asks the agent to bypass these, the agent declines and explains why.
     (Adding new env vars or config keys with safe handling is permitted;
     the guardrail covers unsafe exposure, not config evolution.)
 [ ] Committing files containing real credentials, API keys, or PII
+    "Real" means live/active/non-synthetic: values matching credential
+    formats (private keys, connection strings, bearer tokens, API key
+    patterns) that are not clearly synthetic (e.g., not example.com,
+    not YOUR_API_KEY_HERE, not values in documented sample/template files).
+    When uncertain, treat as real and flag — see protocols/sensitive-data.md
+    for synthetic-value examples and scanning guidance.
 [ ] Any locally-irreversible destructive operation — non-overridable,
     no exceptions, even if explicitly requested:
     dropping or truncating database tables or collections,
