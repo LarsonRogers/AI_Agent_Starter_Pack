@@ -1,5 +1,5 @@
 # PROTOCOLS.md — Protocol Index
-<!-- Starter Pack v11.20 — 2026-03-09 -->
+<!-- Starter Pack v11.21 — 2026-03-09 -->
 
 > **For AI coding agents:** This file is a routing index only.
 > Each protocol lives in its own file in the `protocols/` directory.

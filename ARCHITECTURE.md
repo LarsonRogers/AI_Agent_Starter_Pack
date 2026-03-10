@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.20 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.21 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -1082,7 +1082,7 @@ When the two conflict, this table governs.
 | Validation Tooling Fallback | `protocols/validation-fallback.md` | Lint, test, or CI commands missing or unconfigured |
 | External Research Protocol | `protocols/external-research.md` | External SDK, API, or platform work |
 | Knowledge Gap Protocol | `protocols/external-research.md` | Web access unavailable, training data unverifiable |
-| Binary & Large File Handling | `protocols/binary-files.md` | Binary files encountered or >1MB files |
+| Binary & Large File Handling | `protocols/binary-files.md` | Binary files encountered or being committed; >1MB size threshold applies at commit-time, not to files merely present in the repo |
 | Testing Strategy | `protocols/testing-strategy.md` | Writing or evaluating tests |
 | Environment Awareness | ARCHITECTURE.md | Any environment-specific code or config |
 | Conflict Resolution Examples | `protocols/conflict-examples.md` | Surfacing a conflict or verifying conflict behavior |
