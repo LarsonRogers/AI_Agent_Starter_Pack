@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.29 — protocols/known-limitations.md -->
+<!-- Starter Pack v11.30 — protocols/known-limitations.md -->
 <!-- Load this file when: auditing the pack — never needed during normal agent work -->
 <!-- Does NOT trigger during ordinary coding tasks, code reviews of project code,
      or any session where the goal is writing or modifying project code rather
@@ -44,6 +44,8 @@ with recorded rationale. Reviewers and agents should not flag these as issues.
 | **Hard guardrail may over-block legitimate destructive operations** | Considered and declined | Flagged v11.19/v11.20. Proposal: add a narrowly scoped exception path for planned destructive migrations (e.g., drop table) when user explicitly authorizes and rollback evidence is confirmed. Decision: forcing a manual handoff on locally-irreversible destructive operations is intentional. The agent cannot verify rollback paths, backup integrity, or downstream effects. User authorization alone is not sufficient justification for an agent to execute irreversible destruction autonomously. The correct path is: agent halts, explains what it needs to do and why it cannot proceed, user executes the destructive step manually or via a purpose-built migration tool. Do not re-flag. |
 
 | **Deferred task-prompt scaffolding in always-loaded CLAUDE.md** | Considered and declined (architectural) | Flagged v11.29. The Task Prompts section in CLAUDE.md contains DEFERRED placeholder blocks that are low-value during active runtime sessions. Proposal: move to an optional appendix or on-demand doc. Decision: this is an architectural change (splitting always-loaded content into on-demand files adds a new protocol-load path and failure surface). Token overhead is modest. Deferred to v12 where always-loaded file structure is being reconsidered. Do not re-flag. |
+
+| **Deferred "Related Projects" scaffold in always-loaded CLAUDE.md** | Considered and declined | Flagged v11.30. The Related Projects section in CLAUDE.md is a DEFERRED placeholder block with low runtime value in most sessions. Proposal: add inline "skip this section" instruction for agents, or move to on-demand doc. Decision: adding a skip instruction adds tokens; moving it is architectural. Token overhead is minimal (one placeholder line). Do not re-flag. |
 
 ---
 

@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.29 — protocols/read-only.md -->
+<!-- Starter Pack v11.30 — protocols/read-only.md -->
 <!-- Load this file when: review, audit, analysis, or any task with no intended edits -->
 <!-- Does NOT trigger when: user explicitly authorizes edits in the same message
      (e.g., "review this and fix any issues you find" — that is an edit session
@@ -33,11 +33,11 @@ protocol unless the user explicitly requests edits:
 "read-only", "no changes", "don't touch anything"
 ```
 
-> **Note:** AGENTS.md carries a minimal trigger set for fast detection
-> ("review", "audit", "assess", "analyze", "what does this do",
-> "read-only", "no changes"). This file is the canonical full list.
-> Both sets are intentional — AGENTS.md is a quick-match filter;
-> this file governs protocol behavior once triggered.
+> **Note:** AGENTS.md carries a fast-match trigger set for first-message
+> detection ("review", "audit", "assess", "analyze", "explain", "summarize",
+> "what does this do", "read-only", "no changes"). This file is the
+> canonical source for protocol behavior once triggered. AGENTS.md is a
+> quick-match filter only — when in doubt, defer to this file.
 
 ### Protocol
 
