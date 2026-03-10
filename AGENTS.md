@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v11.23 — 2026-03-09 -->
+<!-- Starter Pack v11.24 — 2026-03-09 -->
 
 > **This file is the entry point for ChatGPT Codex and any agent that reads
 > `AGENTS.md` automatically.** It contains bootstrapping instructions and a
@@ -35,8 +35,8 @@ protocol in `ARCHITECTURE.md` is complete.
 
 **Meta-review exception — check this first:**
 If the user's first message is clearly a review, audit, or analysis request
-("review", "audit", "assess", "analyze", "what does this do", "read-only",
-"no changes"), skip session-start behaviors and load `protocols/read-only.md`
+("review", "audit", "assess", "analyze", "explain", "summarize",
+"what does this do", "read-only", "no changes"), skip session-start behaviors and load `protocols/read-only.md`
 immediately. Do not run audience detection, placeholder inference, or the
 inherited codebase report. If work is needed after the review, resume
 normal session-start at that point.
@@ -100,9 +100,9 @@ A condensed reference — full protocols are in `ARCHITECTURE.md`:
 - Record pack version in every Captain's Log entry.
 - Never guess on unknown external systems — Knowledge Gap Protocol.
 - Validation tooling missing? Report, propose, never skip silently.
-- Never edit starter pack files (ARCHITECTURE.md, PROTOCOLS.md, AGENTS.md,
-  TASK_TEMPLATE.md, and all files in protocols/) unless explicitly instructed
-  to update the pack.
+- Never edit starter pack files (ARCHITECTURE.md, CLAUDE.md, PROTOCOLS.md,
+  AGENTS.md, TASK_TEMPLATE.md, and all files in protocols/) unless explicitly
+  instructed to update the pack.
   Exception — CLAUDE.md: designated placeholder sections (project name, tech
   stack, validation commands, file structure) may be written during the
   Placeholder Inference Protocol. Policy sections of CLAUDE.md are never
