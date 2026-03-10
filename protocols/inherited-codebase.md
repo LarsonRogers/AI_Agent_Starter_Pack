@@ -1,5 +1,8 @@
-<!-- Starter Pack v11.21 — protocols/inherited-codebase.md -->
+<!-- Starter Pack v11.22 — protocols/inherited-codebase.md -->
 <!-- Load this file when: no Captain's Log exists and non-pack source files are present -->
+<!-- Does NOT trigger when: first message is a read-only audit or meta-review (load
+     protocols/read-only.md instead), or when no non-pack source files are present
+     (that is a first-session with no existing codebase — see session type B). -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
 

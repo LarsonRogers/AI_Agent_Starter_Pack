@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.21 — protocols/external-research.md -->
+<!-- Starter Pack v11.22 — protocols/external-research.md -->
 <!-- Load this file when: external SDK, API, or platform work; or web access unavailable (Knowledge Gap) -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 

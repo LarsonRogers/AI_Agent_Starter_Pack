@@ -1,5 +1,7 @@
-<!-- Starter Pack v11.21 — protocols/placeholder-inference.md -->
+<!-- Starter Pack v11.22 — protocols/placeholder-inference.md -->
 <!-- Load this file when: first session on any project type — fills REQUIRED placeholders -->
+<!-- Does NOT trigger when: a read-only meta-review is active (placeholder inference
+     stays suspended until the review is complete and normal session-start resumes). -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
 ### Placeholder Inference Protocol
