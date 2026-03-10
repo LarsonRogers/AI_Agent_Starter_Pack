@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.33 — protocols/known-limitations.md -->
+<!-- Starter Pack v11.34 — protocols/known-limitations.md -->
 <!-- Load this file when: auditing the pack — never needed during normal agent work -->
 <!-- Does NOT trigger during ordinary coding tasks, code reviews of project code,
      or any session where the goal is writing or modifying project code rather
@@ -46,6 +46,8 @@ with recorded rationale. Reviewers and agents should not flag these as issues.
 | **Deferred task-prompt scaffolding in always-loaded CLAUDE.md** | Considered and declined (architectural) | Flagged v11.29. The Task Prompts section in CLAUDE.md contains DEFERRED placeholder blocks that are low-value during active runtime sessions. Proposal: move to an optional appendix or on-demand doc. Decision: this is an architectural change (splitting always-loaded content into on-demand files adds a new protocol-load path and failure surface). Token overhead is modest. Deferred to v12 where always-loaded file structure is being reconsidered. Do not re-flag. |
 
 | **Deferred "Related Projects" scaffold in always-loaded CLAUDE.md** | Considered and declined | Flagged v11.30. The Related Projects section in CLAUDE.md is a DEFERRED placeholder block with low runtime value in most sessions. Proposal: add inline "skip this section" instruction for agents, or move to on-demand doc. Decision: adding a skip instruction adds tokens; moving it is architectural. Token overhead is minimal (one placeholder line). Do not re-flag. |
+
+| **Always-loaded non-dev git translation table in ARCHITECTURE.md** | Considered and declined | Flagged v11.34. The "Plain-English Git Guidance (non-dev mode)" section is always loaded but low-frequency in developer sessions. Proposal: add runtime-skip instruction at section start. Decision: the section is load-bearing for non-dev users who may encounter git errors at any point in a session — adding a skip instruction adds tokens without saving them in the cases where it matters. Token overhead is modest (~100 tokens). Do not re-flag. |
 
 ---
 

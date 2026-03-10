@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.33 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.34 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -633,6 +633,8 @@ Do not proceed until this checklist is complete and confirmed.
 ## Task Brief & Prompt Reformulation
 
 Before starting any task, the agent must be working from a confirmed task brief.
+Exception: read-only sessions (protocols/read-only.md) are exempt from task-brief
+reformulation — the review request itself is the scope contract.
 
 **If the prompt is already a filled-in task brief:** confirm receipt and proceed
 to the Pre-Edit Protocol.
@@ -996,8 +998,9 @@ root cause, and ask for human input or trigger Knowledge Gap Protocol.
 See `protocols/read-only.md` for the full procedure.
 
 When a task is analysis, review, or audit only — no edits, no commits.
-Trigger signals: "review", "audit", "assess", "analyze", "explain",
-"what does this do", "what's wrong", "check this", "read-only", "no changes."
+Trigger signals: "review", "audit", "assess", "analyze", "explain", "summarize",
+"what does this do", "what's wrong", "check this", "look at this",
+"read-only", "no changes", "don't touch anything".
 An explicit audit/review/no-changes request counts as confirmation —
 no additional confirmation turn needed. If intent is ambiguous, ask once.
 Deliver findings, end with
@@ -1023,7 +1026,10 @@ Rules: never attempt to text-read or edit files with known binary extensions
 .maxpat, .wav, .mp3, .ttf, .woff, and similar). When a binary file must be
 committed, confirm with the user first and verify .gitignore coverage.
 Never commit files over 1MB without confirmation. Never commit generated
-output. Verify .gitignore on first session.
+output — exception: if the repository already tracks generated artifacts
+by established convention and the user explicitly confirms intent, proceed
+(see protocols/binary-files.md for full exception criteria).
+Verify .gitignore on first session.
 
 ---
 
