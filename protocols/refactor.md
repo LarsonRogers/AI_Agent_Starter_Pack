@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.12 — protocols/refactor.md -->
+<!-- Starter Pack v11.13 — protocols/refactor.md -->
 <!-- Load this file when: explicit structural improvement goal with no new features -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 

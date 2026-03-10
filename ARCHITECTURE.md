@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.12 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.13 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -978,7 +978,9 @@ See `protocols/read-only.md` for the full procedure.
 When a task is analysis, review, or audit only — no edits, no commits.
 Trigger signals: "review", "audit", "assess", "analyze", "explain",
 "what does this do", "what's wrong", "check this", "read-only", "no changes."
-Confirm read-only mode with the user, deliver findings, end with
+An explicit audit/review/no-changes request counts as confirmation —
+no additional confirmation turn needed. If intent is ambiguous, ask once.
+Deliver findings, end with
 "No changes were made. Want me to act on any of these findings?"
 
 **Meta-review exception — skip session-start behaviors:**
