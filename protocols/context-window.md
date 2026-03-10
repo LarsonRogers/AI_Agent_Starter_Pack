@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.3 — protocols/context-window.md -->
+<!-- Starter Pack v11.5 — protocols/context-window.md -->
 <!-- Load this file when: 5+ tasks in session or detected context degradation -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 

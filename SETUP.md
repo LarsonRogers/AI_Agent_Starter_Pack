@@ -1,5 +1,5 @@
 # Setup Guide
-<!-- Starter Pack v11.3 -->
+<!-- Starter Pack v11.5 -->
 
 No coding experience required. If you are a developer, skip to
 Developer Quick Setup at the bottom.
@@ -85,9 +85,10 @@ Note: files and folders starting with `.` may be hidden by default.
 On Mac: press Cmd+Shift+Period to show hidden files.
 On Windows: View → Show → Hidden items.
 
-> **Not comfortable with the terminal?** Skip ahead to
-> **Generic Agent Path** further down this page — it walks you through
-> setup using only copy-paste, no terminal required.
+> **Not comfortable with the terminal or command line?**
+> You don't need to be. Skip to **[Generic Agent Path](#generic-agent-path-no-cli-required)**
+> further down this page — it uses only copy-paste in your browser or IDE.
+> The steps below are for developers using Claude Code or Codex CLI.
 
 ### Step 2 — Start your agent session
 
@@ -268,6 +269,11 @@ text editor, select all, and paste. The agent will then ask you for
 
 Terms the pack uses that may be unfamiliar:
 
+**CLI (Command Line Interface)** — A text-based way to interact with your
+computer by typing commands into a terminal window. Many developer tools are
+CLI-only. If this is unfamiliar, use the Generic Agent Path instead — it
+requires no CLI.
+
 **Git** — A tool that saves snapshots of your code over time, like a detailed
 undo history. Each snapshot is called a "commit." If something breaks, you
 can roll back to any previous snapshot. The agent handles git for you.
@@ -360,18 +366,22 @@ Claude Code and Codex to pick up their settings automatically.
 Run this in your project folder to confirm the full protocols/ directory
 copied correctly:
 
-**Mac / Linux:**
+**Mac / Linux (terminal):**
 ```bash
 ls protocols/ | wc -l
 ```
+You should see `16`.
 
 **Windows (Command Prompt):**
 ```cmd
 dir /b protocols
 ```
-Count the lines in the output manually — you should see 16 files.
+Count the lines in the output — you should see 16 files listed.
 
-You should see `16` (or 16 files listed). If the number is lower, copy the protocols/ folder
+**No terminal? Use your file explorer instead:**
+Open your project folder, then open the `protocols` subfolder.
+Count the files inside — there should be exactly 16.
+If there are fewer, copy the `protocols/` folder from the zip again. If the number is lower, copy the protocols/ folder
 from the zip again. A missing protocol file won't cause an immediate error
 but will cause the agent to halt when that protocol is triggered.
 

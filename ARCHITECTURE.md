@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.3 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.5 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -164,14 +164,15 @@ If a user asks the agent to bypass these, the agent declines and explains why.
     (Adding new env vars or config keys with safe handling is permitted;
     the guardrail covers unsafe exposure, not config evolution.)
 [ ] Committing files containing real credentials, API keys, or PII
-[ ] Any operation that cannot be reversed with a git rollback.
-    In scope (non-reversible, always blocked): dropping database tables,
-    deleting cloud resources, sending emails/notifications, triggering
-    external webhooks, pushing to remote branches without confirmation.
-    Out of scope (reversible, permitted): any local file edit, any commit
-    that hasn't been pushed, any change tracked by git.
-    External side effects require explicit user confirmation before proceeding
-    (default policy) — if confirmed, proceed; if not, block.
+[ ] Any locally-irreversible destructive operation — non-overridable,
+    no exceptions, even if explicitly requested:
+    dropping or truncating database tables or collections,
+    deleting cloud resources or storage buckets,
+    purging logs, backups, or audit trails.
+    If a user requests one of these, decline and explain why; offer to
+    implement the operation as code for them to run manually instead.
+    Out of scope (reversible, always permitted): any local file edit,
+    any commit that hasn't been pushed, any change tracked by git.
 [ ] Reproducing sensitive data in logs, commit messages, or documentation
 [ ] Any code involving an external system the agent cannot verify —
     follow the Knowledge Gap Protocol instead of guessing
@@ -188,6 +189,11 @@ If a user asks the agent to bypass these, the agent declines and explains why.
     placeholder sections (marked "Filled in by the agent") may be written
     during the Placeholder Inference Protocol. Policy and protocol sections
     of AGENTS.md are not editable without explicit instruction.
+    Exception — ARCHITECTURE.md Project-Specific Architecture and Pattern
+    Registry sections: the agent may write these during the Inherited Codebase
+    Protocol (Phase 3) to document the actual structure of an inherited project.
+    Core policy sections of ARCHITECTURE.md are never editable without explicit
+    instruction to update the pack itself.
 ```
 
 ### Default policies — require confirmation, overridable by explicit user instruction
@@ -202,12 +208,18 @@ The override is recorded in the Captain's Log.
 [ ] Any database schema change (migrations, drops, renames)
 [ ] Any change to CI/CD configuration or deployment scripts
 [ ] Anything that sends data to an external service
+[ ] External side effects that cannot be undone but are not hard-blocked:
+    sending emails/notifications, triggering webhooks, pushing to remote
+    branches. Require explicit user confirmation before proceeding;
+    once confirmed, proceed and note in Captain's Log.
 [ ] Any change the agent is uncertain about — default is to stop and ask.
     Minimum uncertainty threshold that triggers this: unknown API behavior
     (undocumented or unverified), any change with auth or permissions impact,
     any change that touches a schema or data model, any change that could
-    affect external systems. "Uncertain" does not mean unfamiliar syntax or
-    style choices — those are resolved by reading the codebase patterns.
+    affect external systems.
+    Does NOT trigger (resolve by reading codebase patterns, not asking):
+    unfamiliar syntax, style choices, naming conventions, formatting,
+    choosing between two equivalent implementations.
 [ ] Deleting any file — follow the Safe Deletion Procedure below
 ```
 
@@ -476,8 +488,11 @@ code is written — the agent must automatically run this protocol and report th
 [ ] 3. Read CAPTAINS_LOG.md — most recent entry only
 [ ] 4. Load triggered protocol files based on session context
         (trigger table: AGENTS.md → Step 2b; files in protocols/)
-        - Developer signals refactor intent ("refactor", "restructure",
-          "clean up", "reorganize") → load Refactor Protocol
+        - Developer signals refactor intent:
+          Unambiguous ("refactor", "restructure") → load Refactor Protocol
+          Ambiguous ("clean up", "reorganize") → ask "Did you mean a
+          structural refactor (no new features), or general tidying while
+          working?" before loading the protocol
         - Otherwise → no protocols needed yet; load as work requires
 [ ] 5. Report to the developer (unprompted):
         a. Where we left off (last sprint/task completed)

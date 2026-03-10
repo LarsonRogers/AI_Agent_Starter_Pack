@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.3 — protocols/read-only.md -->
+<!-- Starter Pack v11.5 — protocols/read-only.md -->
 <!-- Load this file when: review, audit, analysis, or any task with no intended edits -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
@@ -28,6 +28,12 @@ protocol unless the user explicitly requests edits:
 "what does this do", "what's wrong", "check this", "look at this",
 "read-only", "no changes", "don't touch anything"
 ```
+
+> **Note:** AGENTS.md carries a minimal trigger set for fast detection
+> ("review", "audit", "assess", "analyze", "what does this do",
+> "read-only", "no changes"). This file is the canonical full list.
+> Both sets are intentional — AGENTS.md is a quick-match filter;
+> this file governs protocol behavior once triggered.
 
 ### Protocol
 

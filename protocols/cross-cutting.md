@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.3 — protocols/cross-cutting.md -->
+<!-- Starter Pack v11.5 — protocols/cross-cutting.md -->
 <!-- Load this file when: task touches 3+ files or crosses more than one architectural layer -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 

@@ -1,5 +1,5 @@
 # CLAUDE.md
-<!-- Starter Pack v11.3 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.5 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents (Claude Code, ChatGPT Codex, and others):**
 > Read files in this exact order before making any changes:
@@ -161,6 +161,9 @@ committing.
 - PROTOCOLS.md               # Routing index — not editable as a side effect of project work
 - protocols/                  # Protocol files — same rule
 - AGENTS.md                  # Policy file — same rule
+                             # Exception: Quick Constraints and Project Summary
+                             # placeholder sections may be written during
+                             # Placeholder Inference Protocol (see ARCHITECTURE.md)
 - TASK_TEMPLATE.md           # Policy file — same rule
 ```
 
