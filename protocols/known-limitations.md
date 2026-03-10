@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.28 — protocols/known-limitations.md -->
+<!-- Starter Pack v11.29 — protocols/known-limitations.md -->
 <!-- Load this file when: auditing the pack — never needed during normal agent work -->
 <!-- Does NOT trigger during ordinary coding tasks, code reviews of project code,
      or any session where the goal is writing or modifying project code rather
@@ -15,7 +15,7 @@ with recorded rationale. Reviewers and agents should not flag these as issues.
 |------|--------|-----------|
 | **Platform-specific config files** (`.claude/`, `.codex/`) | Intentional | Claude Code and Codex are the primary supported agents. Config files for each are provided as-is. Other agents use the Generic Agent Path in SETUP.md. Claiming full platform neutrality would require removing useful tooling. |
 | **CLI-first operational assumptions** | Intentional | The pack targets developers and technical users as primary audience. Non-dev path is supported via SETUP.md Generic Agent Path and OS appendix. Full GUI-only agent support is out of scope. |
-| **PROTOCOLS.md as external dependency** | Intentional | Splitting protocols into a separate on-demand file was an explicit context-window optimization. Agents must have access to PROTOCOLS.md. If it is missing, the agent should report it and halt rather than guess. |
+| **PROTOCOLS.md as external dependency** | Intentional | Splitting protocols into a separate on-demand file was an explicit context-window optimization. Agents must have access to PROTOCOLS.md. If it is missing from the repo entirely, the agent should report it and halt rather than guess. This is distinct from a protocol file being inaccessible at runtime in a paste-only/no-file-read session — in that case, the agent should ask the user to paste the file; if the user cannot, proceed with best-effort interpretation per protocols/edge-cases.md. Do not conflate repo-missing with runtime-inaccessible. |
 | **Multi-agent concurrent editing** | Deferred | Branch-per-agent and merge conflict protocols are out of scope for a starter pack. Recommended convention: one agent per branch, human-managed merges. Add if a specific project requires it. |
 | **Git unavailable fallback** | Deferred | Git is a hard dependency for rollback, log reconstruction, and checkpoint strategy. Environments without git are not supported. If git is unavailable, the agent should flag it immediately and defer all file-modifying tasks. |
 | **Host platform system instruction conflicts** | Out of scope | If a runtime injects system-level instructions that conflict with this pack, behavior is undefined. This pack cannot govern instructions it cannot see. |
@@ -42,6 +42,8 @@ with recorded rationale. Reviewers and agents should not flag these as issues.
 | **AGENTS principle duplication / token overhead** | Intentional — load-bearing | AGENTS.md Step 3 mirrors core principles already in ARCHITECTURE.md. This is deliberate: agents that only read AGENTS.md should still have essential behavioral constraints. Accepted tradeoff documented across multiple audit cycles. |
 
 | **Hard guardrail may over-block legitimate destructive operations** | Considered and declined | Flagged v11.19/v11.20. Proposal: add a narrowly scoped exception path for planned destructive migrations (e.g., drop table) when user explicitly authorizes and rollback evidence is confirmed. Decision: forcing a manual handoff on locally-irreversible destructive operations is intentional. The agent cannot verify rollback paths, backup integrity, or downstream effects. User authorization alone is not sufficient justification for an agent to execute irreversible destruction autonomously. The correct path is: agent halts, explains what it needs to do and why it cannot proceed, user executes the destructive step manually or via a purpose-built migration tool. Do not re-flag. |
+
+| **Deferred task-prompt scaffolding in always-loaded CLAUDE.md** | Considered and declined (architectural) | Flagged v11.29. The Task Prompts section in CLAUDE.md contains DEFERRED placeholder blocks that are low-value during active runtime sessions. Proposal: move to an optional appendix or on-demand doc. Decision: this is an architectural change (splitting always-loaded content into on-demand files adds a new protocol-load path and failure surface). Token overhead is modest. Deferred to v12 where always-loaded file structure is being reconsidered. Do not re-flag. |
 
 ---
 

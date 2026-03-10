@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.28 — protocols/binary-files.md -->
+<!-- Starter Pack v11.29 — protocols/binary-files.md -->
 <!-- Load this file when: binary or large files (>1MB) encountered or committed -->
 <!-- Does NOT trigger when: listing or displaying filenames/paths only (no content
      read or edit attempted), reading directory trees, or checking file sizes
@@ -27,7 +27,11 @@ Generated files:  dist/, build/, __pycache__/, *.pyc, node_modules/
 [ ] Never attempt to read or parse binary files as text
 [ ] Never stage or commit binary files unless explicitly instructed
 [ ] Never stage or commit files over 1MB without confirming with the user
-[ ] Never commit generated or compiled output — these belong in .gitignore
+[ ] Never commit generated or compiled output — these belong in .gitignore.
+    Exception: if the repository already tracks generated artifacts by established
+    convention (e.g., vendored codegen, static-site deploy branch, pre-built SDK),
+    and the user explicitly confirms that committing is intentional, proceed.
+    Flag the exception clearly in the commit message.
 [ ] If a binary file needs to change, flag it:
     "This file ([name]) is a binary — it needs to be edited in [tool],
     not in code. I can't modify it directly."
