@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.15 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.16 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -1069,12 +1069,12 @@ When the two conflict, this table governs.
 | Read-Only / Meta-Review | `protocols/read-only.md` | Review, audit, analysis — no edits intended |
 | Pre-Edit Protocol | ARCHITECTURE.md | Before every coding task |
 | Task Brief & Prompt Reformulation | ARCHITECTURE.md | Every task — no exceptions |
-| Cross-Cutting Changes | `protocols/cross-cutting.md` | Task touches 3+ files or crosses architectural layers |
+| Cross-Cutting Changes | `protocols/cross-cutting.md` | Task touches 3+ files, crosses architectural layers, or involves rename/move/structural reorganization |
 | Safe Deletion Procedure | ARCHITECTURE.md | Any file deletion request |
 | Context Window Management | `protocols/context-window.md` | 5+ tasks in session or detected degradation |
 | Sensitive Data Handling | `protocols/sensitive-data.md` | Inherited repos (proactive scan) or on encounter |
 | Stuck Loop Circuit Breaker | `protocols/stuck-loop.md` | 3 failed attempts on same problem |
-| Validation Tooling Fallback | `protocols/validation-fallback.md` | Lint/test commands missing or unconfigured |
+| Validation Tooling Fallback | `protocols/validation-fallback.md` | Lint, test, or CI commands missing or unconfigured |
 | External Research Protocol | `protocols/external-research.md` | External SDK, API, or platform work |
 | Knowledge Gap Protocol | `protocols/external-research.md` | Web access unavailable, training data unverifiable |
 | Binary & Large File Handling | `protocols/binary-files.md` | Binary files encountered or >1MB files |

@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.15 — protocols/cross-cutting.md -->
+<!-- Starter Pack v11.16 — protocols/cross-cutting.md -->
 <!-- Load this file when: task touches 3+ files or crosses more than one architectural layer -->
 <!-- Does NOT trigger when: changes are purely mechanical in a single layer
      (e.g., a docs-only update across 3 files, a pure rename in one module

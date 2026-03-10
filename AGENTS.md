@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v11.15 — 2026-03-09 -->
+<!-- Starter Pack v11.16 — 2026-03-09 -->
 
 > **This file is the entry point for ChatGPT Codex and any agent that reads
 > `AGENTS.md` automatically.** It contains bootstrapping instructions and a
@@ -67,7 +67,7 @@ Quick reference:
 | Binary / large files encountered | `protocols/binary-files.md` |
 | Inherited repos (proactive scan) or on encounter | `protocols/sensitive-data.md` |
 | 3 failed attempts on same problem | `protocols/stuck-loop.md` |
-| Lint / test commands missing | `protocols/validation-fallback.md` |
+| Lint, test, or CI commands missing or unconfigured | `protocols/validation-fallback.md` |
 | External SDK / API / platform work | `protocols/external-research.md` |
 | Web access unavailable, training data unverifiable | `protocols/external-research.md` |
 | Change touches 3+ files or layers, or involves rename/move/structural reorganization | `protocols/cross-cutting.md` |
@@ -114,7 +114,8 @@ A condensed reference — full protocols are in `ARCHITECTURE.md`:
   (Phase 3). Core policy sections of ARCHITECTURE.md are never editable
   without explicit instruction to update the pack itself.
   Canonical rule source: ARCHITECTURE.md → Hard guardrails.
-- Never read, edit, or commit binary files without explicit awareness.
+- Never attempt to text-read or edit files with known binary extensions —
+  see `protocols/binary-files.md` for the full extension list and rules.
   Never commit files over 1MB without confirmation. Verify .gitignore on first session.
 - No hardcoded environment-specific values — URLs, ports, endpoints go in config.
   No dev/debug flags in committed code.
