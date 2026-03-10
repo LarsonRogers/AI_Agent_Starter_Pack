@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v11.17 — 2026-03-09 -->
+<!-- Starter Pack v11.18 — 2026-03-09 -->
 
 > **This file is the entry point for ChatGPT Codex and any agent that reads
 > `AGENTS.md` automatically.** It contains bootstrapping instructions and a
@@ -11,7 +11,9 @@
 
 ## Step 1 — Read these files before anything else
 
-In this exact order:
+> **Before starting Step 1:** check the meta-review exception in Step 2.
+> If the first message is a review/audit request, load `protocols/read-only.md`
+> immediately instead of running this read order.
 
 Read in this canonical order every session:
 

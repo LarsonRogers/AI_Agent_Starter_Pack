@@ -1,5 +1,8 @@
-<!-- Starter Pack v11.17 — protocols/known-limitations.md -->
+<!-- Starter Pack v11.18 — protocols/known-limitations.md -->
 <!-- Load this file when: auditing the pack — never needed during normal agent work -->
+<!-- Does NOT trigger during ordinary coding tasks, code reviews of project code,
+     or any session where the goal is writing or modifying project code rather
+     than reviewing the starter pack itself. -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
 ## Known Limitations & Deferred Decisions

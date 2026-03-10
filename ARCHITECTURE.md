@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.17 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.18 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -1053,10 +1053,7 @@ git unavailable, no file-read capability, placeholder conflicts.
 
 ## Known Limitations & Deferred Decisions
 
-See `protocols/known-limitations.md` for the full table.
-
-This section documents intentional tradeoffs and explicitly deferred items.
-Reviewers should consult `protocols/known-limitations.md` before flagging items as issues.
+See `protocols/known-limitations.md` — consult before flagging any item as an issue.
 
 
 ## Protocol Index
