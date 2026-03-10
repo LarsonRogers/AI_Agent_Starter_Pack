@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.1 — protocols/binary-files.md -->
+<!-- Starter Pack v11.2 — protocols/binary-files.md -->
 <!-- Load this file when: binary or large files (>1MB) encountered or committed -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 

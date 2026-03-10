@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v11.1 — 2026-03-09 -->
+<!-- Starter Pack v11.2 — 2026-03-09 -->
 
 > **This file is the entry point for ChatGPT Codex and any agent that reads
 > `AGENTS.md` automatically.** It contains bootstrapping instructions and a
@@ -31,7 +31,15 @@ protocol in `ARCHITECTURE.md` is complete.
 
 ## Step 2 — Determine your session type
 
-Check whether `CAPTAINS_LOG.md` exists:
+**Meta-review exception — check this first:**
+If the user's first message is clearly a review, audit, or analysis request
+("review", "audit", "assess", "analyze", "what does this do", "read-only",
+"no changes"), skip session-start behaviors and load `protocols/read-only.md`
+immediately. Do not run audience detection, placeholder inference, or the
+inherited codebase report. If work is needed after the review, resume
+normal session-start at that point.
+
+Otherwise, check whether `CAPTAINS_LOG.md` exists:
 
 **A — Log exists** → Session Resumption Protocol (ARCHITECTURE.md)
 **B — No log, new project** → First Session Protocol (ARCHITECTURE.md)

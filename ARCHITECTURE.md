@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.1 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.2 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -159,7 +159,10 @@ These cannot be overridden by any verbal instruction, task brief, or user reques
 If a user asks the agent to bypass these, the agent declines and explains why.
 
 ```
-[ ] Modifying environment variables or secrets handling
+[ ] Unsafely handling secrets — committing credentials, API keys, or PII
+    in any form, or removing/bypassing existing secrets-protection mechanisms.
+    (Adding new env vars or config keys with safe handling is permitted;
+    the guardrail covers unsafe exposure, not config evolution.)
 [ ] Committing files containing real credentials, API keys, or PII
 [ ] Any operation that cannot be reversed with a git rollback
 [ ] Reproducing sensitive data in logs, commit messages, or documentation
@@ -790,6 +793,13 @@ in the most recent entry, load those specific earlier entries to resolve context
 
 See `protocols/context-window.md` for the full checkpoint procedure.
 
+**Measurable degradation indicators** — trigger checkpoint if any of these appear:
+- Agent re-asks a question already answered earlier in the session
+- Agent proposes a change that contradicts a confirmed decision
+- Agent re-reads a file it already summarized without new prompting
+- Agent loses track of the active task scope (proposes out-of-scope changes)
+- 5+ tasks completed since last checkpoint
+
 Rule: after 5 tasks or detected context degradation, complete current task,
 run full checkpoint, update Captain's Log, notify user to start fresh session.
 
@@ -922,6 +932,15 @@ Trigger signals: "review", "audit", "assess", "analyze", "explain",
 "what does this do", "what's wrong", "check this", "read-only", "no changes."
 Confirm read-only mode with the user, deliver findings, end with
 "No changes were made. Want me to act on any of these findings?"
+
+**Meta-review exception — skip session-start behaviors:**
+If the user's first message is clearly a review or audit request (matches
+trigger signals above), skip audience detection, placeholder inference, and
+the inherited codebase onboarding report. Load `protocols/read-only.md`
+immediately and operate in read-only mode from the first response.
+Session-start behaviors exist to set up active work — they are unnecessary
+friction when no changes will be made. If the review reveals work is needed,
+resume normal session-start behaviors at that point.
 
 ---
 

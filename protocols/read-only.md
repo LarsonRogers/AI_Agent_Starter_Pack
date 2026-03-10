@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.1 — protocols/read-only.md -->
+<!-- Starter Pack v11.2 — protocols/read-only.md -->
 <!-- Load this file when: review, audit, analysis, or any task with no intended edits -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 

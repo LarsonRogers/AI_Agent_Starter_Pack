@@ -1,5 +1,5 @@
 # Setup Guide
-<!-- Starter Pack v11.1 -->
+<!-- Starter Pack v11.2 -->
 
 No coding experience required. If you are a developer, skip to
 Developer Quick Setup at the bottom.
@@ -330,15 +330,39 @@ how to do it on each platform.
    — Alternatively: hold Shift and right-click the folder, select
      "Open PowerShell window here" or "Open command window here"
 
+**Linux**
+1. Open your file manager and navigate to your project folder
+2. Right-click the folder and select "Open Terminal Here"
+   — On Ubuntu/GNOME: this option appears directly in the right-click menu
+   — On other distros: if not available, open Terminal from your applications
+     menu, then type `cd ` (with a space), drag the folder into the terminal
+     window, and press Enter
+   — Alternatively from any terminal: `cd /path/to/your/project`
+
 **Verifying hidden files were copied correctly**
 After copying the pack files, check that the hidden folders are present:
 - Mac: press Cmd+Shift+Period in Finder to show hidden files.
   You should see `.claude`, `.codex`, and `.github` folders.
 - Windows: in File Explorer, click View → Show → Hidden items.
   You should see the same three folders.
+- Linux: hidden folders start with `.` — run `ls -la` in your terminal
+  to see them, or enable "Show Hidden Files" in your file manager (usually
+  Ctrl+H).
 
 If any are missing, copy them from the zip again — they're required for
 Claude Code and Codex to pick up their settings automatically.
+
+**Verifying all protocol files are present**
+Run this in your project folder to confirm the full protocols/ directory
+copied correctly:
+
+```bash
+ls protocols/ | wc -l
+```
+
+You should see `16`. If the number is lower, copy the protocols/ folder
+from the zip again. A missing protocol file won't cause an immediate error
+but will cause the agent to halt when that protocol is triggered.
 
 **Verifying setup worked**
 When you start your first agent session, the agent should:
