@@ -1,5 +1,9 @@
-<!-- Starter Pack v11.14 — protocols/refactor.md -->
+<!-- Starter Pack v11.15 — protocols/refactor.md -->
 <!-- Load this file when: explicit structural improvement goal with no new features -->
+<!-- Does NOT trigger when: user intent includes any functional change, new feature,
+     or behavior modification alongside structural work — that is an edit session
+     with structural components, not a pure refactor. When intent is ambiguous,
+     the protocol requires asking one clarifying question before proceeding. -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
 ## Refactor Protocol

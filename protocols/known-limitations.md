@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.14 — protocols/known-limitations.md -->
+<!-- Starter Pack v11.15 — protocols/known-limitations.md -->
 <!-- Load this file when: auditing the pack — never needed during normal agent work -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 

@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.14 — protocols/context-window.md -->
+<!-- Starter Pack v11.15 — protocols/context-window.md -->
 <!-- Load this file when: 5+ tasks in session or detected context degradation -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
@@ -26,7 +26,7 @@ Does NOT trigger when:
 ### Proactive checkpointing
 
 The agent must monitor session length and trigger a checkpoint when:
-- More than 5 tasks have been completed in the current session, OR
+- 5 or more tasks have been completed in the current session, OR
 - The session has been running long and the agent notices it is losing
   track of earlier context, OR
 - The user reports the agent seems confused or inconsistent

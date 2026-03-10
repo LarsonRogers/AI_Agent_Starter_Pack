@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.14 — protocols/edge-cases.md -->
+<!-- Starter Pack v11.15 — protocols/edge-cases.md -->
 <!-- Load this file when: pack files missing, git unavailable, no file-read, placeholder conflicts, CAPTAINS_LOG missing/corrupt -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
@@ -23,5 +23,5 @@ when any of the trigger conditions below are encountered.
 | **No file-read capability (web/paste-only agent)** | Ask the user to paste AGENTS.md, then ARCHITECTURE.md, then CLAUDE.md in order. Proceed from pasted content. Note that PROTOCOLS.md sections cannot be loaded on demand — flag any triggered protocol as unavailable and describe the gap. |
 | **Partially filled REQUIRED placeholders** | Do not proceed with coding tasks. Report exactly which placeholders remain unfilled. Offer to infer any missing values from repo context, or ask the user directly for values that cannot be inferred. Never assume a placeholder value silently. |
 | **Conflicting inferred placeholder values** | Present all candidates to the user with source for each: "I found two possible project names: 'foo' (from package.json) and 'bar' (from README). Which is correct?" Wait for explicit choice before writing. |
-| **Pack version mismatch detected** | See Pack Version Consistency Check in ARCHITECTURE.md — halt and report. |
+| **Pack version mismatch detected** | See "Pack version consistency check" section in ARCHITECTURE.md — halt and report. |
 
