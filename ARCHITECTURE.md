@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.26 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.27 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -1053,7 +1053,8 @@ agent generates research prompt / proceed with flagged assumptions).
 See `protocols/edge-cases.md` for the full deterministic action table.
 
 Loaded automatically when: CAPTAINS_LOG missing/corrupt, any pack file missing,
-git unavailable, no file-read capability, placeholder conflicts.
+git unavailable, no file-read capability, no file-write capability,
+placeholder conflicts.
 
 
 
