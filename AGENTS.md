@@ -1,11 +1,11 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v11.35 — 2026-03-09 -->
+<!-- Starter Pack v11.36 — 2026-03-09 -->
 
 > **This file is the entry point for ChatGPT Codex and any agent that reads
 > `AGENTS.md` automatically.** It contains bootstrapping instructions and a
 > condensed reference — but `ARCHITECTURE.md` and `CLAUDE.md` are the
 > authoritative sources for all rules and protocols. If this file conflicts
-> with either of those, the other file wins. Do not edit policy here.
+> if conflicts arise, ARCHITECTURE.md governs. Do not edit policy here.
 
 ---
 
