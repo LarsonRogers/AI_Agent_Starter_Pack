@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.32 — protocols/stuck-loop.md -->
+<!-- Starter Pack v11.33 — protocols/stuck-loop.md -->
 <!-- Load this file when: 3 failed attempts on the same problem -->
 <!-- Does NOT trigger when: failures involve distinct root causes, distinct tasks,
      or different parts of the codebase — "same problem" means the same specific

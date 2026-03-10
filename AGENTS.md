@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v11.32 — 2026-03-09 -->
+<!-- Starter Pack v11.33 — 2026-03-09 -->
 
 > **This file is the entry point for ChatGPT Codex and any agent that reads
 > `AGENTS.md` automatically.** It contains bootstrapping instructions and a
@@ -36,10 +36,14 @@ protocol in `ARCHITECTURE.md` is complete.
 **Meta-review exception — check this first:**
 If the user's first message is clearly a review, audit, or analysis request
 ("review", "audit", "assess", "analyze", "explain", "summarize",
-"what does this do", "read-only", "no changes"), skip session-start behaviors and load `protocols/read-only.md`
-immediately. Do not run audience detection, placeholder inference, or the
-inherited codebase report. If work is needed after the review, resume
-normal session-start at that point.
+"what does this do", "what's wrong", "check this", "look at this",
+"read-only", "no changes", "don't touch anything"), skip session-start
+behaviors and load `protocols/read-only.md` immediately. Do not run audience
+detection, placeholder inference, or the inherited codebase report. If work
+is needed after the review, resume normal session-start at that point.
+If the first message is evaluative in tone but does not match any keyword
+above, ask one question before proceeding: "It looks like you may want a
+review — should I analyze only, or also make changes?" Then route accordingly.
 Does NOT trigger when: the same message explicitly requests edits or
 implementation alongside the review (e.g., "audit this, then fix it") —
 in that case run normal session-start and treat the review as the first task.
