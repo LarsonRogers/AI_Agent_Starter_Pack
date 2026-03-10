@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.22 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.23 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -184,7 +184,7 @@ If a user asks the agent to bypass these, the agent declines and explains why.
     Agent-initiated assumption-based coding on unverified systems is not
     permitted regardless of framing.
 [ ] Editing any starter pack instruction files:
-    ARCHITECTURE.md, PROTOCOLS.md, AGENTS.md, TASK_TEMPLATE.md,
+    ARCHITECTURE.md, CLAUDE.md, PROTOCOLS.md, AGENTS.md, TASK_TEMPLATE.md,
     and all files in protocols/
     These may only be modified when explicitly instructed by the user to
     update the pack itself — never as a side effect of project work.
@@ -554,6 +554,8 @@ Before determining session type, verify all pack files report the same version:
     [ ] Log all detected cross-file conflicts in Captain's Log before proceeding
     [ ] Flag each action with: "Note: operating under version mismatch —
         confirm this is still the intended behavior"
+    Reduced-trust mode ends when all pack files are synchronized to the
+    same version (user completes option 1 or 2), or when the session ends.
 ```
 
 Version headers are in the format: `<!-- Starter Pack vX.Y — YYYY-MM-DD -->`

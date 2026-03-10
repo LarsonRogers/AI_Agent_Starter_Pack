@@ -1,7 +1,11 @@
 # CLAUDE.md
-<!-- Starter Pack v11.22 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.23 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents (Claude Code, ChatGPT Codex, and others):**
+> **Meta-review exception:** If the first message is a review, audit, or
+> analysis request, load `protocols/read-only.md` immediately instead of
+> running this read order. Resume normal read order after the review if
+> edits are subsequently requested.
 > Read files in this exact order before making any changes:
 > Canonical read order every session:
 > 1. `ARCHITECTURE.md` — core rules, guardrails, and behavioral protocols
