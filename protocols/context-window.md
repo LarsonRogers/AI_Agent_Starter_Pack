@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.27 — protocols/context-window.md -->
+<!-- Starter Pack v11.28 — protocols/context-window.md -->
 <!-- Load this file when: 5+ tasks in session or detected context degradation -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
@@ -22,6 +22,9 @@ Does NOT trigger when:
 - Agent asks a clarifying question about a new task (normal behavior,
   not a sign of context loss)
 - User changes direction or scope mid-session (intentional, not degradation)
+- Agent re-reads a file for deeper analysis of the current task (legitimate
+  deep-dive, not a sign of context loss — only counts as a degradation signal
+  if the agent re-reads without apparent reason or repeats a summary it already gave)
 
 ### Proactive checkpointing
 

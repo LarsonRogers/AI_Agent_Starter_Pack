@@ -1,5 +1,5 @@
 # AI Agent Starter Pack
-<!-- Starter Pack v11.27 -->
+<!-- Starter Pack v11.28 -->
 
 A platform-agnostic instruction set for AI coding agents. Drop it into any repo
 and any agent — Claude Code, Codex, Cursor, Windsurf, Aider, or others — will
@@ -184,7 +184,7 @@ Instructions are plain markdown — any agent that can read files can follow the
 |-------|-------------|
 | Claude Code | `CLAUDE.md` (auto-read on session start) |
 | Codex CLI | `AGENTS.md` (auto-read on session start) |
-| Cursor, Windsurf, Aider, others | Point to `ARCHITECTURE.md` then `CLAUDE.md` |
+| Cursor, Windsurf, Aider, others | Paste `AGENTS.md` as the starter prompt — it bootstraps the full read order |
 
 ---
 
@@ -208,7 +208,7 @@ Before tagging a new pack version, verify:
 
 ## Version
 
-This is **Starter Pack v11.27**. The version is recorded in the header of
+This is **Starter Pack v11.28**. The version is recorded in the header of
 `ARCHITECTURE.md`, `CLAUDE.md`, `AGENTS.md`, `PROTOCOLS.md`, and in every
 Captain's Log entry so there's always an audit trail of which instruction
 set was active for any given session.
