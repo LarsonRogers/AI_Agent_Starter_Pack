@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.34 — protocols/known-limitations.md -->
+<!-- Starter Pack v11.35 — protocols/known-limitations.md -->
 <!-- Load this file when: auditing the pack — never needed during normal agent work -->
 <!-- Does NOT trigger during ordinary coding tasks, code reviews of project code,
      or any session where the goal is writing or modifying project code rather

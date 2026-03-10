@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.34 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.35 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -204,9 +204,11 @@ If a user asks the agent to bypass these, the agent declines and explains why.
     of AGENTS.md are not editable without explicit instruction.
     Exception — ARCHITECTURE.md Project-Specific Architecture and Pattern
     Registry sections: the agent may write these during the Inherited Codebase
-    Protocol (Phase 3) to document the actual structure of an inherited project.
-    Core policy sections of ARCHITECTURE.md are never editable without explicit
-    instruction to update the pack itself.
+    Protocol (Phase 3) to document the actual structure of an inherited project,
+    AND may add entries to the Pattern Registry section whenever
+    protocols/pattern-registry.md is triggered (new reusable pattern before
+    committing). Core policy sections of ARCHITECTURE.md are never editable
+    without explicit instruction to update the pack itself.
 ```
 
 ### Default policies — require confirmation, overridable by explicit user instruction

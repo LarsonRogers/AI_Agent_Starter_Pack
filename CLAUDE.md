@@ -1,5 +1,5 @@
 # CLAUDE.md
-<!-- Starter Pack v11.34 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.35 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents (Claude Code, ChatGPT Codex, and others):**
 > **Meta-review exception:** If the first message is a review, audit, or
@@ -158,9 +158,10 @@ committing.
 - ARCHITECTURE.md            # Policy file — not editable as a side effect of project work
                              # Exception: Project-Specific Architecture and Pattern Registry
                              # sections may be written during Inherited Codebase Protocol
-                             # Phase 3 to document the actual structure of an inherited
-                             # project. Core policy sections are never editable without
-                             # explicit instruction to update the pack itself.
+                             # Phase 3, AND Pattern Registry entries may be added whenever
+                             # protocols/pattern-registry.md is triggered. Core policy
+                             # sections are never editable without explicit instruction
+                             # to update the pack itself.
 - PROTOCOLS.md               # Routing index — not editable as a side effect of project work
 - protocols/                  # Protocol files — same rule
 - AGENTS.md                  # Policy file — same rule

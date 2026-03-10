@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v11.34 — 2026-03-09 -->
+<!-- Starter Pack v11.35 — 2026-03-09 -->
 
 > **This file is the entry point for ChatGPT Codex and any agent that reads
 > `AGENTS.md` automatically.** It contains bootstrapping instructions and a
@@ -120,8 +120,10 @@ A condensed reference — full protocols are in `ARCHITECTURE.md`:
   are not editable without explicit instruction.
   Exception — ARCHITECTURE.md: the Project-Specific Architecture and Pattern
   Registry sections may be written during the Inherited Codebase Protocol
-  (Phase 3). Core policy sections of ARCHITECTURE.md are never editable
-  without explicit instruction to update the pack itself.
+  (Phase 3), AND Pattern Registry entries may be added whenever
+  protocols/pattern-registry.md is triggered. Core policy sections of
+  ARCHITECTURE.md are never editable without explicit instruction to
+  update the pack itself.
   Canonical rule source: ARCHITECTURE.md → Hard guardrails.
 - Never attempt to text-read or edit files with known binary extensions —
   see `protocols/binary-files.md` for the full extension list and rules.
