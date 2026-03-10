@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v11.31 — 2026-03-09 -->
+<!-- Starter Pack v11.32 — 2026-03-09 -->
 
 > **This file is the entry point for ChatGPT Codex and any agent that reads
 > `AGENTS.md` automatically.** It contains bootstrapping instructions and a
@@ -40,6 +40,9 @@ If the user's first message is clearly a review, audit, or analysis request
 immediately. Do not run audience detection, placeholder inference, or the
 inherited codebase report. If work is needed after the review, resume
 normal session-start at that point.
+Does NOT trigger when: the same message explicitly requests edits or
+implementation alongside the review (e.g., "audit this, then fix it") —
+in that case run normal session-start and treat the review as the first task.
 
 Otherwise, check whether `CAPTAINS_LOG.md` exists:
 

@@ -1,5 +1,5 @@
 # CLAUDE.md
-<!-- Starter Pack v11.31 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.32 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents (Claude Code, ChatGPT Codex, and others):**
 > **Meta-review exception:** If the first message is a review, audit, or
@@ -166,7 +166,9 @@ committing.
 - AGENTS.md                  # Policy file — same rule
                              # Exception: Quick Constraints and Project Summary
                              # placeholder sections may be written during
-                             # Placeholder Inference Protocol (see ARCHITECTURE.md)
+                             # Placeholder Inference Protocol (see ARCHITECTURE.md).
+                             # Policy and protocol sections of AGENTS.md are
+                             # not editable without explicit instruction.
 - TASK_TEMPLATE.md           # Policy file — same rule
 ```
 
