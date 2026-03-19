@@ -1,5 +1,5 @@
 # Setup Guide
-<!-- Starter Pack v11.36 -->
+<!-- Starter Pack v11.37 -->
 
 No coding experience required. If you are a developer, skip to
 Developer Quick Setup at the bottom.
@@ -268,6 +268,8 @@ Gemini, or any agent without automatic file reading — follow this path
 instead of the CLI instructions above.
 
 **Step 1 — Copy the pack files into your project** (same as the main setup)
+
+> ⚠️ Include hidden folders — make sure `.claude/`, `.codex/`, and `.github/` copied over. Most file browsers hide these by default. If unsure, see the hidden-file check in the appendix below.
 
 **Step 2 — Open your agent and paste this starter prompt:**
 
