@@ -1,5 +1,5 @@
 # CLAUDE.md
-<!-- Starter Pack v11.37 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.36 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents (Claude Code, ChatGPT Codex, and others):**
 > **Meta-review exception:** If the first message is a review, audit, or
@@ -13,7 +13,10 @@
 > 3. `CAPTAINS_LOG.md` — most recent entry only (if it exists)
 > 4. `protocols/[triggered-file].md` — one file per triggered situation, loaded after the log
 >    (trigger table: `AGENTS.md` → Step 2b; canonical source: `ARCHITECTURE.md` → Protocol Index)
-> 5. Any supplementary docs listed in the Related Docs table below
+>
+> **On-demand only (not part of canonical session read order):** Any supplementary docs
+> listed in the Related Docs table below are human reference material — load only if
+> explicitly relevant to the task at hand.
 >
 >
 > **Placeholder handling:** The agent handles all placeholder substitution —

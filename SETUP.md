@@ -1,5 +1,5 @@
 # Setup Guide
-<!-- Starter Pack v11.37 -->
+<!-- Starter Pack v11.36 -->
 
 No coding experience required. If you are a developer, skip to
 Developer Quick Setup at the bottom.
@@ -269,8 +269,6 @@ instead of the CLI instructions above.
 
 **Step 1 — Copy the pack files into your project** (same as the main setup)
 
-> ⚠️ Include hidden folders — make sure `.claude/`, `.codex/`, and `.github/` copied over. Most file browsers hide these by default. If unsure, see the hidden-file check in the appendix below.
-
 **Step 2 — Open your agent and paste this starter prompt:**
 
 ```
@@ -298,6 +296,10 @@ text editor, select all, and paste. The agent will then ask you for
 If your chat has a character or size limit, send the files one at a time
 in this order: `AGENTS.md` first, then `ARCHITECTURE.md`, then `CLAUDE.md`.
 Tell the agent "more coming" between pastes so it waits before responding.
+
+**Resuming a previous session?** If your project already has a `CAPTAINS_LOG.md`,
+paste the most recent entry (the top entry) after `CLAUDE.md`. The agent needs it
+to restore audience mode, last-task context, and watch items from the prior session.
 
 ---
 
@@ -423,7 +425,7 @@ the agent to halt when that protocol is triggered.
 
 **Verifying setup worked**
 When you start your first agent session, the agent should:
-1. Greet you and ask two quick questions about your background
+1. Greet you and ask one or two questions about your background (second question only if the first answer is ambiguous)
 2. Scan the repo and report what it found
 3. Present inferred project details for your confirmation
 4. Wait for your go-ahead before doing anything

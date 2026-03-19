@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.37 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.36 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -1094,7 +1094,7 @@ When the two conflict, this table governs.
 | Placeholder Inference | `protocols/placeholder-inference.md` | First session, any type — fills REQUIRED placeholders |
 | Read-Only / Meta-Review | `protocols/read-only.md` | Review, audit, analysis — no edits intended |
 | Pre-Edit Protocol | ARCHITECTURE.md | Before every coding task |
-| Task Brief & Prompt Reformulation | ARCHITECTURE.md | Every task — no exceptions |
+| Task Brief & Prompt Reformulation | ARCHITECTURE.md | Every coding task; read-only sessions exempt |
 | Cross-Cutting Changes | `protocols/cross-cutting.md` | Task touches 3+ files, crosses architectural layers, or involves rename/move/structural reorganization |
 | Safe Deletion Procedure | ARCHITECTURE.md | Any file deletion request |
 | Context Window Management | `protocols/context-window.md` | 5+ tasks in session or detected degradation |

@@ -1,5 +1,5 @@
 # AI Agent Starter Pack
-<!-- Starter Pack v11.37 -->
+<!-- Starter Pack v11.36 -->
 
 A platform-agnostic instruction set for AI coding agents. Drop it into any repo
 and any agent — Claude Code, Codex, Cursor, Windsurf, Aider, or others — will
@@ -20,7 +20,7 @@ confirmation behavior accordingly.
 
 A coding agent that:
 
-- **Adapts to who you are** — asks two quick questions, picks one of three
+- **Adapts to who you are** — asks one or two questions (second only if the first answer is ambiguous), picks one of three
   modes (Developer, Technical non-dev, Non-dev), records it, never asks again
 - **Reads before it touches anything** — full codebase assessment before the
   first line of code is written, loads detailed protocols on demand to stay
@@ -84,7 +84,7 @@ If two files appear to conflict on a topic, this table is authoritative:
 | Hard guardrails (what agent can never do) | `ARCHITECTURE.md` → Hard Guardrails |
 | Default policies (what requires confirmation) | `ARCHITECTURE.md` → Default Policies |
 | Verbal override rules | `ARCHITECTURE.md` → Instruction Precedence |
-| Session start read order | `ARCHITECTURE.md` → "How to determine your session type" |
+| Session start read order | `ARCHITECTURE.md` → "Canonical Read Order" section |
 | Placeholder inference procedure | `protocols/placeholder-inference.md` |
 | Which protocol file to load when | `ARCHITECTURE.md` → Protocol Index (canonical); `AGENTS.md` → Step 2b (quick-reference mirror) |
 | Project-specific tech stack and style | `CLAUDE.md` |
@@ -208,7 +208,7 @@ Before tagging a new pack version, verify:
 
 ## Version
 
-This is **Starter Pack v11.37**. The version is recorded in the header of
+This is **Starter Pack v11.36**. The version is recorded in the header of
 `ARCHITECTURE.md`, `CLAUDE.md`, `AGENTS.md`, `PROTOCOLS.md`, and in every
 Captain's Log entry so there's always an audit trail of which instruction
 set was active for any given session.
