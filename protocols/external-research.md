@@ -8,8 +8,9 @@ Before writing any code that involves an external system, SDK, API, framework,
 or platform the agent is not verified-current on, the agent must research it first.
 "Verified-current" means: the version, behavior, or API surface was explicitly
 confirmed in the current session (via research, user statement, or docs) or is
-recorded in the Captain's Log from a recent session. Training data alone does
-not count as verified-current.
+recorded in the Captain's Log from a prior session — provided the logged version
+or API surface has not changed since that entry (if uncertain, re-verify).
+Training data alone does not count as verified-current.
 Do not rely on training data alone — it may be stale, incomplete, or wrong.
 This is especially critical for niche, underdocumented, or version-sensitive systems.
 

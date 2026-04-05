@@ -4,8 +4,8 @@
 > **This file is the entry point for ChatGPT Codex and any agent that reads
 > `AGENTS.md` automatically.** It contains bootstrapping instructions and a
 > condensed reference — but `ARCHITECTURE.md` and `CLAUDE.md` are the
-> authoritative sources for all rules and protocols. If this file conflicts
-> if conflicts arise, ARCHITECTURE.md governs. Do not edit policy here.
+> authoritative sources for all rules and protocols. If conflicts arise,
+> ARCHITECTURE.md governs. Do not edit policy here.
 
 ---
 
