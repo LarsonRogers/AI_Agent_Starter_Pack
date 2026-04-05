@@ -1,5 +1,5 @@
 # Setup Guide
-<!-- Starter Pack v11.48 -->
+<!-- Starter Pack v11.49 -->
 
 No coding experience required. If you are a developer, skip to
 Developer Quick Setup at the bottom.
@@ -420,8 +420,10 @@ Count the lines in the output — you should see 16 files listed.
 Open your project folder, then open the `protocols` subfolder.
 Count the files inside — there should be exactly 16.
 If there are fewer, copy the `protocols/` folder from the zip again.
-A missing protocol file won't cause an immediate error but will cause
-the agent to halt when that protocol is triggered.
+A single missing protocol file will cause the agent to halt when that
+protocol is triggered. Multiple missing files will cause an immediate
+halt at startup regardless of trigger state. Either way, the agent
+cannot proceed — restore the full `protocols/` folder from the zip.
 
 **Verifying setup worked**
 When you start your first agent session, the agent should:

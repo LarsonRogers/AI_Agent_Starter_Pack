@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v11.48 — 2026-03-09 -->
+<!-- Starter Pack v11.49 — 2026-03-09 -->
 
 > **This file is the entry point for ChatGPT Codex and any agent that reads
 > `AGENTS.md` automatically.** It contains bootstrapping instructions and a
@@ -77,7 +77,7 @@ Quick reference:
 | Inherited repos (proactive scan) or on encounter | `protocols/sensitive-data.md` |
 | 3 failed attempts on same problem | `protocols/stuck-loop.md` |
 | Lint, test, or CI commands missing or unconfigured | `protocols/validation-fallback.md` |
-| External SDK / API / platform work | `protocols/external-research.md` |
+| External SDK, API, platform, or framework work where behavior is version-sensitive or unverifiable | `protocols/external-research.md` |
 | Web access unavailable, training data unverifiable | `protocols/external-research.md` |
 | Task touches 3+ files, crosses architectural layers, or involves rename/move/structural reorganization | `protocols/cross-cutting.md` |
 | Writing or evaluating tests | `protocols/testing-strategy.md` |
@@ -95,12 +95,13 @@ A condensed reference — full protocols are in `ARCHITECTURE.md`:
 
 - Hard guardrails are non-overridable. Default policies require confirmation
   but can be unlocked by explicit user instruction.
-- Detect audience mode from Captain's Log. If absent, ask two questions.
-  Default to Technical non-dev.
+- Detect audience mode from Captain's Log. If absent, ask one question;
+  follow up only if the answer is ambiguous. Default to Technical non-dev.
 - Reformulate every coding prompt into a task brief. Confirm before starting.
   (Read-only sessions are exempt — the review request is the scope contract.)
 - Never resolve instruction conflicts silently — surface and apply hierarchy.
-- Pre-flight plan required for any change touching 3+ files or layers.
+- Pre-flight plan required for any change touching 3+ files, crossing
+  architectural layers, or involving rename/move/structural reorganization.
 - Honest verification language on all codebase claims.
 - Three-strike circuit breaker on repeated failures.
 - Scan for sensitive data on inherited repos. Flag on encounter always.

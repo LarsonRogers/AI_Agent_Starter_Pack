@@ -1,5 +1,5 @@
 # PROTOCOLS.md — Protocol Index
-<!-- Starter Pack v11.48 — 2026-03-09 -->
+<!-- Starter Pack v11.49 — 2026-03-09 -->
 
 > **For AI coding agents:** This file is a routing index only.
 > Each protocol lives in its own file in the `protocols/` directory.
@@ -25,7 +25,7 @@
 | `protocols/sensitive-data.md` | Inherited repos (proactive) or sensitive data encountered |
 | `protocols/stuck-loop.md` | 3 failed attempts on the same problem |
 | `protocols/validation-fallback.md` | Lint, test, or CI commands missing or unconfigured |
-| `protocols/external-research.md` | External SDK, API, or platform work |
+| `protocols/external-research.md` | External SDK, API, platform, or framework work where behavior is version-sensitive or unverifiable |
 | `protocols/external-research.md` | Web access unavailable, training data unverifiable |
 | `protocols/pattern-registry.md` | Same structural approach in 2+ files touched this session, or a new approach replaced one causing bugs/confusion |
 | `protocols/refactor.md` | Explicit structural improvement, no new features |
