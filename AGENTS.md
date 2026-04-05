@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v11.44 — 2026-03-09 -->
+<!-- Starter Pack v11.45 — 2026-03-09 -->
 
 > **This file is the entry point for ChatGPT Codex and any agent that reads
 > `AGENTS.md` automatically.** It contains bootstrapping instructions and a
@@ -127,7 +127,7 @@ A condensed reference — full protocols are in `ARCHITECTURE.md`:
   update the pack itself.
   Canonical rule source: ARCHITECTURE.md → Hard guardrails.
 - Never attempt to text-read or edit files with known binary extensions —
-  see `protocols/binary-files.md` for the full extension list and rules.
+  see `protocols/binary-files.md` for extension rules and examples.
   Never commit files over 1MB without confirmation. Verify .gitignore on first session.
 - No hardcoded environment-specific values — URLs, ports, endpoints go in config.
   No dev/debug flags in committed code.

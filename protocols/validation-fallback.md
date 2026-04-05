@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.44 — protocols/validation-fallback.md -->
+<!-- Starter Pack v11.45 — protocols/validation-fallback.md -->
 <!-- Load this file when: lint, test, or CI commands are missing or unconfigured -->
 <!-- Does NOT trigger when: tooling is configured but temporarily inaccessible
      (e.g., CI is down, network issue) — the commands exist, the environment is

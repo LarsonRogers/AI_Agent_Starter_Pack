@@ -1,5 +1,5 @@
 # PROTOCOLS.md — Protocol Index
-<!-- Starter Pack v11.44 — 2026-03-09 -->
+<!-- Starter Pack v11.45 — 2026-03-09 -->
 
 > **For AI coding agents:** This file is a routing index only.
 > Each protocol lives in its own file in the `protocols/` directory.
@@ -29,7 +29,7 @@
 | `protocols/external-research.md` | Web access unavailable, training data unverifiable |
 | `protocols/pattern-registry.md` | Documenting a new reusable pattern before committing |
 | `protocols/refactor.md` | Explicit structural improvement, no new features |
-| `protocols/binary-files.md` | Binary or large files (>1MB) encountered or committed |
+| `protocols/binary-files.md` | Binary files encountered or being committed; >1MB threshold applies at commit-time |
 | `protocols/testing-strategy.md` | Writing or evaluating tests |
 
 ---
