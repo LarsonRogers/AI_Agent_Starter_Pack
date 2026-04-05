@@ -1,5 +1,5 @@
 # Setup Guide
-<!-- Starter Pack v11.42 -->
+<!-- Starter Pack v11.43 -->
 
 No coding experience required. If you are a developer, skip to
 Developer Quick Setup at the bottom.

@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.42 — protocols/placeholder-inference.md -->
+<!-- Starter Pack v11.43 — protocols/placeholder-inference.md -->
 <!-- Load this file when: first session on any project type — fills REQUIRED placeholders -->
 <!-- Does NOT trigger when: a read-only meta-review is active (placeholder inference
      stays suspended until the review is complete and normal session-start resumes). -->

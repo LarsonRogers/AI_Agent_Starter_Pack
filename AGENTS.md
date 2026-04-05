@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v11.42 — 2026-03-09 -->
+<!-- Starter Pack v11.43 — 2026-03-09 -->
 
 > **This file is the entry point for ChatGPT Codex and any agent that reads
 > `AGENTS.md` automatically.** It contains bootstrapping instructions and a
@@ -84,7 +84,7 @@ Quick reference:
 | Review / audit / analysis only (no edits) | `protocols/read-only.md` |
 | Surfacing a conflict or verifying conflict behavior | `protocols/conflict-examples.md` |
 | Pack files missing, git unavailable, no file-read, no file-write, placeholder conflicts, CAPTAINS_LOG missing/corrupt | `protocols/edge-cases.md` |
-| Auditing the pack for issues | `protocols/known-limitations.md` |
+| Auditing the pack for issues *(audit-only — skip during active coding)* | `protocols/known-limitations.md` |
 | Same structural approach appears in 2+ touched files, or a new reusable pattern before committing, or a new approach replaced one that was causing bugs/confusion | `protocols/pattern-registry.md` |
 
 ---

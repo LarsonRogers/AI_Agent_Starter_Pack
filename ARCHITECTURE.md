@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.42 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.43 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -228,6 +228,10 @@ The override is recorded in the Captain's Log.
     Never overridable.
 [ ] Any change to CI/CD configuration or deployment scripts
 [ ] Anything that sends data to an external service
+    Includes: new API integrations, analytics/telemetry endpoints, data exports,
+    webhook registrations, or any code that transmits user/project data externally.
+    Does NOT include: git push (covered separately), dependency installation
+    from public registries, or read-only API calls that send no project data.
 [ ] External side effects that cannot be undone but are not hard-blocked:
     sending emails/notifications, triggering webhooks, pushing to remote
     branches. Require explicit user confirmation before proceeding;
@@ -631,7 +635,7 @@ and report the results:
 
 ```
 [ ] 0. Confirm a task brief has been approved by the developer (see Task Brief
-        & Prompt Reformulation above) — do not proceed without one
+        & Prompt Reformulation below) — do not proceed without one
 [ ] 1. Read CAPTAINS_LOG.md — orient to where the last session ended
 [ ] 2. List all files relevant to the task (read only, no edits)
 [ ] 3. Identify existing patterns used in those files (naming, structure, data flow)
