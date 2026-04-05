@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.40 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.42 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -268,6 +268,12 @@ The override relaxes step 3 (per-file confirmation) only. Steps 1, 2, 5,
 6, and 7 remain mandatory: the agent must still identify each file and
 reason before deleting, verify rollback state, run tests, commit with a
 descriptive message, and log the deletion.
+
+**Untracked files with no backup:** If the target file is not tracked by git
+and has no external backup, do not delete it. Instead, inform the user that
+the file cannot be recovered if deleted and offer to back it up first (e.g.,
+copy to a backup directory or `git add` it) before proceeding. This applies
+regardless of blanket deletion overrides.
 
 ### Non-dev mode: additional confirmation requirements
 

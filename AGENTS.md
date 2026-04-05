@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v11.40 — 2026-03-09 -->
+<!-- Starter Pack v11.42 — 2026-03-09 -->
 
 > **This file is the entry point for ChatGPT Codex and any agent that reads
 > `AGENTS.md` automatically.** It contains bootstrapping instructions and a
@@ -85,7 +85,7 @@ Quick reference:
 | Surfacing a conflict or verifying conflict behavior | `protocols/conflict-examples.md` |
 | Pack files missing, git unavailable, no file-read, no file-write, placeholder conflicts, CAPTAINS_LOG missing/corrupt | `protocols/edge-cases.md` |
 | Auditing the pack for issues | `protocols/known-limitations.md` |
-| Same structural approach appears in 2+ touched files, or a new reusable pattern before committing | `protocols/pattern-registry.md` |
+| Same structural approach appears in 2+ touched files, or a new reusable pattern before committing, or a new approach replaced one that was causing bugs/confusion | `protocols/pattern-registry.md` |
 
 ---
 
@@ -97,7 +97,8 @@ A condensed reference — full protocols are in `ARCHITECTURE.md`:
   but can be unlocked by explicit user instruction.
 - Detect audience mode from Captain's Log. If absent, ask two questions.
   Default to Technical non-dev.
-- Reformulate every prompt into a task brief. Confirm before starting.
+- Reformulate every coding prompt into a task brief. Confirm before starting.
+  (Read-only sessions are exempt — the review request is the scope contract.)
 - Never resolve instruction conflicts silently — surface and apply hierarchy.
 - Pre-flight plan required for any change touching 3+ files or layers.
 - Honest verification language on all codebase claims.
