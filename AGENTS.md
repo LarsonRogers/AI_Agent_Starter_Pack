@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v11.46 — 2026-03-09 -->
+<!-- Starter Pack v11.47 — 2026-03-09 -->
 
 > **This file is the entry point for ChatGPT Codex and any agent that reads
 > `AGENTS.md` automatically.** It contains bootstrapping instructions and a
@@ -73,7 +73,7 @@ Quick reference:
 | First session on any project (except active read-only/meta-review) | `protocols/placeholder-inference.md` |
 | Explicit refactor task | `protocols/refactor.md` |
 | 5+ tasks in session or context degradation | `protocols/context-window.md` |
-| Binary or large files (>1MB) encountered or being committed (size threshold applies at commit-time) | `protocols/binary-files.md` |
+| Binary or large files encountered or being committed; >1MB size threshold applies at commit-time, not to files merely present in the repo | `protocols/binary-files.md` |
 | Inherited repos (proactive scan) or on encounter | `protocols/sensitive-data.md` |
 | 3 failed attempts on same problem | `protocols/stuck-loop.md` |
 | Lint, test, or CI commands missing or unconfigured | `protocols/validation-fallback.md` |

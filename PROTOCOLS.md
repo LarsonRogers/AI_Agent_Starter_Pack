@@ -1,5 +1,5 @@
 # PROTOCOLS.md — Protocol Index
-<!-- Starter Pack v11.46 — 2026-03-09 -->
+<!-- Starter Pack v11.47 — 2026-03-09 -->
 
 > **For AI coding agents:** This file is a routing index only.
 > Each protocol lives in its own file in the `protocols/` directory.
@@ -27,7 +27,7 @@
 | `protocols/validation-fallback.md` | Lint, test, or CI commands missing or unconfigured |
 | `protocols/external-research.md` | External SDK, API, or platform work |
 | `protocols/external-research.md` | Web access unavailable, training data unverifiable |
-| `protocols/pattern-registry.md` | Documenting a new reusable pattern before committing |
+| `protocols/pattern-registry.md` | Same structural approach in 2+ files touched this session, or a new approach replaced one causing bugs/confusion |
 | `protocols/refactor.md` | Explicit structural improvement, no new features |
 | `protocols/binary-files.md` | Binary files encountered or being committed; >1MB threshold applies at commit-time |
 | `protocols/testing-strategy.md` | Writing or evaluating tests |

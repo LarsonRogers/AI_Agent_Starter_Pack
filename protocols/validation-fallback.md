@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.46 — protocols/validation-fallback.md -->
+<!-- Starter Pack v11.47 — protocols/validation-fallback.md -->
 <!-- Load this file when: lint, test, or CI commands are missing or unconfigured -->
 <!-- Does NOT trigger when: tooling is configured but temporarily inaccessible
      (e.g., CI is down, network issue) — the commands exist, the environment is
@@ -22,7 +22,8 @@ unavailable (common in inherited repos or early-stage projects):
         - "Lint: skipped — not configured (flagged for setup)"
         - Never silently skip a validation step without noting it
 [ ] 4. If CI is inaccessible from the agent environment (offline, no credentials):
-        - Note it in the Captain's Log
+        - Note it in the Captain's Log (in read-only mode, report in-chat
+          instead — do not update the log unless the user requests it)
         - Treat local test pass as the DoD gate
         - Flag CI verification as a Watch Item for the next human-accessible session
 ```

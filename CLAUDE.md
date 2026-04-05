@@ -1,5 +1,5 @@
 # CLAUDE.md
-<!-- Starter Pack v11.46 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.47 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents (Claude Code, ChatGPT Codex, and others):**
 > **Meta-review exception:** If the first message is a review, audit, or
@@ -181,8 +181,12 @@ committing.
 - *.amxd, *.maxpat           # Binary — edit in GUI only
 - package-lock.json          # Auto-generated — never hand-edit
 - yarn.lock, pnpm-lock.yaml  # Auto-generated
-- .env, .env.*               # Secrets — never touch
+- .env, .env.local, .env.production  # Credential-bearing — never touch
 - secrets/**                 # Secrets — never touch
+  # Note: .env.example, .env.template, and non-secret config schema files
+  # (e.g., adding a new key with a placeholder value) ARE safe to edit —
+  # the restriction covers files containing real credentials, not config
+  # evolution. See ARCHITECTURE.md hard guardrails for the full rule.
 - dist/**, build/**, out/**  # Build output — never hand-edit
 # Add project-specific entries below:
 - [file or glob]             # [reason]

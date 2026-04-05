@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.46 — protocols/read-only.md -->
+<!-- Starter Pack v11.47 — protocols/read-only.md -->
 <!-- Load this file when: review, audit, analysis, or any task with no intended edits -->
 <!-- Does NOT trigger when: user explicitly authorizes edits in the same message
      (e.g., "review this and fix any issues you find" — that is an edit session
@@ -66,7 +66,9 @@ protocol unless the user explicitly requests edits:
         and show me the results"). Non-mutating checks only — no fixes, no
         commits, no auto-formatting. If requested checks are unavailable or
         unconfigured, invoke protocols/validation-fallback.md rather than
-        silently skipping or improvising.
+        silently skipping or improvising. In read-only mode, report all
+        fallback findings in-chat only — do not update the Captain's Log
+        or Definition of Done unless the user explicitly requests it.
 ```
 
 ### Suspended in read-only mode
