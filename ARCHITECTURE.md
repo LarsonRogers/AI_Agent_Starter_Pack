@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.43 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.44 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -1044,7 +1044,11 @@ See `protocols/binary-files.md` for the full rules.
 
 Rules: never attempt to text-read or edit files with known binary extensions
 (.jpg, .png, .gif, .webp, .pdf, .zip, .exe, .dmg, .so, .dylib, .amxd,
-.maxpat, .wav, .mp3, .ttf, .woff, and similar). When a binary file must be
+.maxpat, .wav, .mp3, .ttf, .woff, .woff2, .otf, .eot, .ico, .bmp, .tiff,
+.flac, .ogg, .mp4, .mov, .avi, .sqlite, .db, .tar, .gz, .7z, .rar, .jar,
+.class, .o, .a, .lib, .dll, .psd, .ai, .sketch, .fig).
+For extensions not on this list, consult `protocols/binary-files.md` — do not
+guess. When a binary file must be
 committed, confirm with the user first and verify .gitignore coverage.
 Never commit files over 1MB without confirmation. Never commit generated
 output — exception: if the repository already tracks generated artifacts
@@ -1147,14 +1151,6 @@ Purpose:     [What problem this pattern solves]
 Location:    [Where to find the canonical example]
 Usage:       [How to apply it]
 Anti-pattern: [What NOT to do instead]
-```
-
-### [Pattern Name]
-```
-Purpose:
-Location:
-Usage:
-Anti-pattern:
 ```
 
 ---
