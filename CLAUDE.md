@@ -1,5 +1,5 @@
 # CLAUDE.md
-<!-- Starter Pack v11.36 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.39 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents (Claude Code, ChatGPT Codex, and others):**
 > **Meta-review exception:** If the first message is a review, audit, or
@@ -296,7 +296,7 @@ refactor/short-description
 
 ## Related Docs
 
-<!-- Link to supplementary docs if they exist -->
+<!-- Human reference only — agents can skip this table at runtime (files already loaded via read order) -->
 | Doc | Purpose |
 |-----|---------|
 | `ARCHITECTURE.md` | **Read first** — structural rules, pre-edit protocol, pattern registry |

@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.36 — protocols/sensitive-data.md -->
+<!-- Starter Pack v11.39 — protocols/sensitive-data.md -->
 <!-- Load this file when: inherited repos (proactive scan) or sensitive data encountered -->
 <!-- Does NOT trigger when: values are obviously synthetic (e.g., "example.com",
      "YOUR_API_KEY_HERE", "foo@bar.com", hardcoded test fixtures with no real
@@ -15,7 +15,13 @@ sensitive data before any other work begins:
 
 ```bash
 # Common patterns to scan for
-grep -rn "password\|secret\|api_key\|token\|private_key" . --include="*.py"   --include="*.js" --include="*.ts" --include="*.env" --include="*.json"
+# NOTE: file types below are baseline examples — expand based on the repo stack.
+# Also scan: *.yaml, *.yml, *.toml, *.sh, *.bash, *.pem, *.key, *.cfg, *.ini,
+# *.conf, *.rb, *.go, *.php, Dockerfile, docker-compose.yml, and any config files.
+grep -rn "password\|secret\|api_key\|token\|private_key" . \\
+  --include="*.py" --include="*.js" --include="*.ts" \\
+  --include="*.env" --include="*.json" --include="*.yaml" --include="*.yml" \\
+  --include="*.toml" --include="*.sh" --include="*.pem" --include="*.cfg"
 grep -rn "[0-9]{3}-[0-9]{2}-[0-9]{4}" .   # SSN pattern
 grep -rn "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" .  # Email pattern
 ```

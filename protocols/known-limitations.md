@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.36 — protocols/known-limitations.md -->
+<!-- Starter Pack v11.39 — protocols/known-limitations.md -->
 <!-- Load this file when: auditing the pack — never needed during normal agent work -->
 <!-- Does NOT trigger during ordinary coding tasks, code reviews of project code,
      or any session where the goal is writing or modifying project code rather
@@ -48,6 +48,9 @@ with recorded rationale. Reviewers and agents should not flag these as issues.
 | **Deferred "Related Projects" scaffold in always-loaded CLAUDE.md** | Considered and declined | Flagged v11.30. The Related Projects section in CLAUDE.md is a DEFERRED placeholder block with low runtime value in most sessions. Proposal: add inline "skip this section" instruction for agents, or move to on-demand doc. Decision: adding a skip instruction adds tokens; moving it is architectural. Token overhead is minimal (one placeholder line). Do not re-flag. |
 
 | **Always-loaded non-dev git translation table in ARCHITECTURE.md** | Considered and declined | Flagged v11.34. The "Plain-English Git Guidance (non-dev mode)" section is always loaded but low-frequency in developer sessions. Proposal: add runtime-skip instruction at section start. Decision: the section is load-bearing for non-dev users who may encounter git errors at any point in a session — adding a skip instruction adds tokens without saving them in the cases where it matters. Token overhead is modest (~100 tokens). Do not re-flag. |
+
+| **Version header format standardization across all pack files** | Considered and declined (deferred to v12) | Flagged v11.39. Pack defines a universal header format but several files use variants and TASK_TEMPLATE.md has no header. Full standardization is Medium effort and touches file structure decisions deferred to v12. Interim: README authority matrix now points to "Session Resumption" section. Do not re-flag before v12. |
+| **Compress version-mismatch script in ARCHITECTURE.md** | Considered and declined | Flagged v11.39. Handler is load-bearing for bootstrap failure recovery — compressing risks precision loss. Token overhead is modest. Do not re-flag. |
 
 ---
 

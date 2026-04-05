@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.36 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.39 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -264,7 +264,10 @@ File deletion requires confirmation and a verified rollback path before proceedi
 
 If the user explicitly grants blanket deletion permission (e.g., "you can
 delete files without asking"), record the override in the Captain's Log.
-The rollback-path verification (steps 2 and 5) still applies regardless.
+The override relaxes step 3 (per-file confirmation) only. Steps 1, 2, 5,
+6, and 7 remain mandatory: the agent must still identify each file and
+reason before deleting, verify rollback state, run tests, commit with a
+descriptive message, and log the deletion.
 
 ### Non-dev mode: additional confirmation requirements
 
