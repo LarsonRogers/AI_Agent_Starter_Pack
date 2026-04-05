@@ -1,5 +1,5 @@
 # AI Agent Starter Pack
-<!-- Starter Pack v11.45 -->
+<!-- Starter Pack v11.46 -->
 
 A platform-agnostic instruction set for AI coding agents. Drop it into any repo
 and any agent — Claude Code, Codex, Cursor, Windsurf, Aider, or others — will
@@ -33,8 +33,9 @@ A coding agent that:
   platform can pick up exactly where the last session left off
 - **Generates handoff prompts** — ready-to-paste prompt appended to every log
   entry for switching between Claude, Codex, Cursor, or any other agent
-- **Enforces guardrails** — never deletes files, touches secrets, changes auth
-  logic, or makes irreversible changes without explicit confirmation
+- **Enforces guardrails** — by default requires explicit confirmation for file
+  deletion (see Safe Deletion Procedure), never touches secrets, changes auth
+  logic, or makes irreversible changes without confirmation
 - **Surfaces conflicts** — when instructions conflict, states which rule wins
   and why, never resolves silently
 - **Translates errors** — explains failures in plain English with clear options,
@@ -208,7 +209,7 @@ Before tagging a new pack version, verify:
 
 ## Version
 
-This is **Starter Pack v11.45**. The version is recorded in the header of
+This is **Starter Pack v11.46**. The version is recorded in the header of
 `ARCHITECTURE.md`, `CLAUDE.md`, `AGENTS.md`, `PROTOCOLS.md`, and in every
 Captain's Log entry so there's always an audit trail of which instruction
 set was active for any given session.

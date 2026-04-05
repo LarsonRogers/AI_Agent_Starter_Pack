@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.45 — protocols/external-research.md -->
+<!-- Starter Pack v11.46 — protocols/external-research.md -->
 <!-- Load this file when: external SDK, API, or platform work; or web access unavailable (Knowledge Gap) -->
 <!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
 
@@ -28,8 +28,9 @@ Research is required any time the task involves:
 - Hardware-software integration where protocol details matter
 
 Does NOT trigger for: widely-used stable libraries where the required usage
-is standard and well within the agent's verified knowledge (e.g., standard
-stdlib usage, well-known utility libraries with unchanged APIs).
+is standard and the version has been explicitly confirmed this session or in
+a prior Captain's Log entry with no known breaking changes since that entry
+(e.g., standard stdlib usage, well-known utility libraries with unchanged APIs).
 
 ### Research Steps
 
