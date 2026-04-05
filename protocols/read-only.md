@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.39 — protocols/read-only.md -->
+<!-- Starter Pack v11.40 — protocols/read-only.md -->
 <!-- Load this file when: review, audit, analysis, or any task with no intended edits -->
 <!-- Does NOT trigger when: user explicitly authorizes edits in the same message
      (e.g., "review this and fix any issues you find" — that is an edit session
@@ -64,7 +64,9 @@ protocol unless the user explicitly requests edits:
 [ ] 7. Do NOT run lint, tests, or commit checks unless the user explicitly
         requests verification evidence as part of the audit (e.g., "run tests
         and show me the results"). Non-mutating checks only — no fixes, no
-        commits, no auto-formatting.
+        commits, no auto-formatting. If requested checks are unavailable or
+        unconfigured, invoke protocols/validation-fallback.md rather than
+        silently skipping or improvising.
 ```
 
 ### Suspended in read-only mode

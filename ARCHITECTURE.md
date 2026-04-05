@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.39 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.40 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -540,7 +540,13 @@ automatically so the developer never has to ask twice.
 
 ### Pack version consistency check
 
-Before determining session type, verify all pack files report the same version:
+Before determining session type, verify all pack files report the same version.
+Exception: in meta-review / read-only mode, the version-consistency check is
+optional — the session makes no writes, so a mismatch cannot corrupt state.
+If a mismatch is found during a read-only session, include it in the audit
+findings but do not halt or exit read-only mode.
+
+For all other session types:
 
 ```
 [ ] Check version headers in: ARCHITECTURE.md, CLAUDE.md, AGENTS.md, PROTOCOLS.md

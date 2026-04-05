@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v11.39 — 2026-03-09 -->
+<!-- Starter Pack v11.40 — 2026-03-09 -->
 
 > **This file is the entry point for ChatGPT Codex and any agent that reads
 > `AGENTS.md` automatically.** It contains bootstrapping instructions and a
@@ -79,7 +79,7 @@ Quick reference:
 | Lint, test, or CI commands missing or unconfigured | `protocols/validation-fallback.md` |
 | External SDK / API / platform work | `protocols/external-research.md` |
 | Web access unavailable, training data unverifiable | `protocols/external-research.md` |
-| Change touches 3+ files or layers, or involves rename/move/structural reorganization | `protocols/cross-cutting.md` |
+| Task touches 3+ files, crosses architectural layers, or involves rename/move/structural reorganization | `protocols/cross-cutting.md` |
 | Writing or evaluating tests | `protocols/testing-strategy.md` |
 | Review / audit / analysis only (no edits) | `protocols/read-only.md` |
 | Surfacing a conflict or verifying conflict behavior | `protocols/conflict-examples.md` |
