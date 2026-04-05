@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.47 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.48 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -256,7 +256,9 @@ File deletion requires confirmation and a verified rollback path before proceedi
         "I want to delete [path] because [specific reason — dead code,
         replaced by X, artifact from Y, etc.]"
 [ ] 2. Verify a clean git state exists to roll back to if needed:
-        git status  →  must be clean or committed
+        git status  →  working tree must be clean (no uncommitted changes).
+        If dirty: commit or stash all pending changes before proceeding.
+        Do not delete files from a dirty working tree.
         git log --oneline -3  →  confirm last known-good commit
 [ ] 3. Confirm with the user — wait for explicit approval before deleting
 [ ] 4. Delete the file
@@ -594,6 +596,8 @@ Version headers are in the format: `<!-- Starter Pack vX.Y — YYYY-MM-DD -->`
 ```
 Captain's Log exists?
   YES → Session type A (Resumption)
+        If user states explicit structural goal with no new features →
+        also load protocols/refactor.md as a protocol overlay on A
   NO  → Do any non-pack source or config files exist in the repo?
         (see definition below)
            YES → Is the explicit goal structural improvement
@@ -602,6 +606,11 @@ Captain's Log exists?
                    NO  → Session type C (Inherited Codebase)
            NO  → Session type B (New Project)
 ```
+
+Note: Refactor (D) is a standalone session type only when no log exists.
+When a log exists, refactor is a protocol overlay on Resumption (A) — the
+agent runs normal resumption startup and additionally loads
+`protocols/refactor.md`. See Session Resumption Protocol step 4 above.
 
 **Non-pack files** — any file not part of the starter pack itself:
 source code, project config files (package.json, pyproject.toml, Cargo.toml,
