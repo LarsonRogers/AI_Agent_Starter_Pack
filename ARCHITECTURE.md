@@ -1,5 +1,5 @@
 # ARCHITECTURE.md
-<!-- Starter Pack v11.49 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.50 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents:** Read this file before reading `CLAUDE.md`.
 > Read both before writing a single line of code.
@@ -1123,7 +1123,7 @@ When the two conflict, this table governs.
 | First Session | ARCHITECTURE.md | No log, no non-pack source files |
 | Inherited Codebase | `protocols/inherited-codebase.md` | No log, non-pack source files present |
 | Refactor | `protocols/refactor.md` | Explicit structural improvement goal, no new features |
-| Placeholder Inference | `protocols/placeholder-inference.md` | First session, any type — fills REQUIRED placeholders |
+| Placeholder Inference | `protocols/placeholder-inference.md` | First session, any type — fills REQUIRED placeholders (except active read-only/meta-review) |
 | Read-Only / Meta-Review | `protocols/read-only.md` | Review, audit, analysis — no edits intended |
 | Pre-Edit Protocol | ARCHITECTURE.md | Before every coding task |
 | Task Brief & Prompt Reformulation | ARCHITECTURE.md | Every coding task; read-only sessions exempt |
