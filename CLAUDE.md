@@ -1,5 +1,5 @@
 # CLAUDE.md
-<!-- Starter Pack v11.50 — 2026-03-09 --> — [PROJECT_NAME]
+<!-- Starter Pack v11.51 — 2026-03-09 --> — [PROJECT_NAME]
 
 > **For AI coding agents (Claude Code, ChatGPT Codex, and others):**
 > **Meta-review exception:** If the first message is a review, audit, or
