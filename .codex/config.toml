@@ -23,5 +23,10 @@ sandbox_mode = "workspace-write"
 [sandbox_workspace_write]
 network_access = true
 
-# Read CLAUDE.md as an instruction file (in addition to AGENTS.md).
+# Fallback instruction filenames — checked ONLY in directories where
+# AGENTS.md is absent. This pack ships AGENTS.md at the repo root, so the
+# fallback never fires there: Codex reads AGENTS.md alone, NOT CLAUDE.md
+# "in addition". This entry only lets subdirectories without their own
+# AGENTS.md pick up a CLAUDE.md instead. Do not rely on it to feed CLAUDE.md
+# content to Codex — anything both tools need belongs in AGENTS.md.
 project_doc_fallback_filenames = ["CLAUDE.md"]

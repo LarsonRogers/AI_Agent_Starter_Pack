@@ -14,17 +14,33 @@ During Phase 1 of the Inherited Codebase protocol, the agent must scan for
 sensitive data before any other work begins:
 
 ```bash
-# Common patterns to scan for
+# Common patterns to scan for. All patterns use grep -E (extended regex) —
+# plain grep treats {n} and + literally and silently matches nothing.
 # NOTE: file types below are baseline examples — expand based on the repo stack.
-# Also scan: *.yaml, *.yml, *.toml, *.sh, *.bash, *.pem, *.key, *.cfg, *.ini,
-# *.conf, *.rb, *.go, *.php, Dockerfile, docker-compose.yml, and any config files.
-grep -rn "password\|secret\|api_key\|token\|private_key" . \\
-  --include="*.py" --include="*.js" --include="*.ts" \\
-  --include="*.env" --include="*.json" --include="*.yaml" --include="*.yml" \\
+# Also scan: *.bash, *.key, *.ini, *.conf, *.rb, *.go, *.php, Dockerfile,
+# docker-compose.yml, and any config files.
+
+# 1. Credential-bearing variable names
+grep -rnEi "password|secret|api_key|apikey|token|private_key" . \
+  --include="*.py" --include="*.js" --include="*.ts" \
+  --include="*.env" --include="*.json" --include="*.yaml" --include="*.yml" \
   --include="*.toml" --include="*.sh" --include="*.pem" --include="*.cfg"
-grep -rn "[0-9]{3}-[0-9]{2}-[0-9]{4}" .   # SSN pattern
-grep -rn "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" .  # Email pattern
+
+# 2. SSN pattern
+grep -rnE "[0-9]{3}-[0-9]{2}-[0-9]{4}" .
+
+# 3. Email pattern
+grep -rnE "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" .
+
+# 4. Known API-key formats (AWS, GitHub, Slack, Stripe) — keys are dangerous
+#    even when the variable holding them is innocently named
+grep -rnE "AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9]{36}|xox[baprs]-[A-Za-z0-9-]{10,}|sk_(live|test)_[A-Za-z0-9]{10,}" .
 ```
+
+**Verify the scan can fail before trusting a clean result:** plant a synthetic
+SSN (`123-45-6789`), email, and AWS-format key (`AKIA` + 16 chars) in a scratch
+file, confirm all four patterns above match it, then delete the scratch file.
+A scan that cannot catch a planted secret proves nothing when it reports clean.
 
 Report all findings to the user before proceeding. Do not proceed until the
 user has acknowledged the findings and confirmed how to handle them.
