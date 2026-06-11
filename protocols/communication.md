@@ -3,9 +3,9 @@
      audience mode is Non-dev or Technical non-dev; or any error/progress report must
      be delivered to a non-developer. -->
 <!-- Does NOT trigger when: audience mode is Developer and no error translation or
-     expanded progress reporting is needed — the core summary in ARCHITECTURE.md
+     expanded progress reporting is needed — the core summary in AGENTS.md
      is sufficient for developer sessions. -->
-<!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
+<!-- Do not load unless triggered — see AGENTS.md → Protocol Index -->
 
 ## Audience Detection & Communication Modes
 
@@ -55,10 +55,11 @@ Two exchanges maximum. Map the response:
 When uncertain, default to **Technical non-dev** — the most adaptive mode and
 the easiest to adjust from.
 
-Record the mode in the development log's first entry. Every subsequent session
-reads it from the log — do not ask again unless the user requests a change
-("explain less" / "you can be more technical" are signals to adjust and
-re-record).
+Record the mode in two places: **AGENTS.md → Part 2 → Audience Mode** (the
+always-on fact every session reads at start, in both harnesses) and the
+development log's first entry (the audit trail). Do not ask again unless the
+user requests a change ("explain less" / "you can be more technical" are
+signals to adjust — update the AGENTS.md field and note the change in the log).
 
 ### Mode behaviors
 

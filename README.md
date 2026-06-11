@@ -77,25 +77,13 @@ See `SETUP.md` for what happens in each scenario.
 
 ---
 
-## Authority Matrix
+## Authority
 
-If two files appear to conflict on a topic, this table is authoritative:
-
-| Topic | Authoritative source |
-|-------|---------------------|
-| Hard guardrails (what agent can never do) | `ARCHITECTURE.md` → Hard Guardrails |
-| Default policies (what requires confirmation) | `ARCHITECTURE.md` → Default Policies |
-| Verbal override rules | `ARCHITECTURE.md` → Instruction Precedence |
-| Session start read order | `ARCHITECTURE.md` → "Session Resumption" section (contains canonical read order) |
-| Placeholder inference procedure | `protocols/placeholder-inference.md` |
-| Which protocol file to load when | `ARCHITECTURE.md` → Protocol Index (canonical); `AGENTS.md` → Step 2b (quick-reference mirror) |
-| Project-specific tech stack and style | `CLAUDE.md` |
-| All detailed protocols (inherited, refactor, research, etc.) | `protocols/` directory — one file per protocol |
-| Session history and handoff | `CAPTAINS_LOG.md` |
-
-When in doubt: `ARCHITECTURE.md` governs behavior. `CLAUDE.md` governs
-project specifics. The `protocols/` files govern procedure detail. `AGENTS.md`
-governs agent bootstrapping. Everything else is human-facing documentation.
+`AGENTS.md` is the single source of truth — policy (Part 1) and project
+specifics (Part 2). If two files appear to conflict, the Authority Matrix
+in `AGENTS.md` is authoritative. `CLAUDE.md` is only the Claude Code import
+shim; `protocols/` files govern procedure detail; everything else is
+human-facing documentation.
 
 ---
 
@@ -110,13 +98,15 @@ TASK_TEMPLATE.md            Structured task brief template. The agent uses
                             work. You can also fill it out yourself for
                             precise scope control.
 
-ARCHITECTURE.md             The agent's primary instruction manual —
-                            always loaded. Core rules, guardrails, session
-                            protocols, error handling, and behavioral rules.
+AGENTS.md                   THE single source of truth — always loaded by
+                            both harnesses (Codex directly; Claude Code via
+                            the CLAUDE.md import). Part 1: guardrails,
+                            policies, session protocols, Protocol Index,
+                            Authority Matrix. Part 2: project specifics,
+                            agent-maintained as a bounded living summary.
 
-PROTOCOLS.md                Routing index — lists all available protocol
-                            files with trigger conditions. ~400 tokens.
-                            Points to protocols/ directory.
+PROTOCOLS.md                Routing copy of the Protocol Index for
+                            paste-only sessions. AGENTS.md is canonical.
 
 protocols/                  One file per protocol (~300–1,900 tokens each).
                             Agents load only the file triggered by their
@@ -124,15 +114,9 @@ protocols/                  One file per protocol (~300–1,900 tokens each).
                             inherited codebases, refactors, research,
                             sensitive data, testing, and more.
 
-CLAUDE.md                   Project instruction manual — tech stack, code
-                            style, validation commands, file structure, and
-                            git workflow. Filled in by the agent on first
-                            session.
-
-AGENTS.md                   Entry point for Codex and other agents. Core
-                            principles, session start protocol, and quick
-                            constraints. Points to ARCHITECTURE.md and
-                            CLAUDE.md for full detail.
+CLAUDE.md                   Claude Code import shim — `@AGENTS.md` plus
+                            Claude-specific mechanics only. No project
+                            content lives here.
 
 .claude/settings.json       Claude Code permissions — auto-approves edits
                             and common commands, denies destructive ops
@@ -184,9 +168,9 @@ Instructions are plain markdown — any agent that can read files can follow the
 
 | Agent | Entry point |
 |-------|-------------|
-| Claude Code | `CLAUDE.md` (auto-read on session start) |
+| Claude Code | `CLAUDE.md` (auto-read; imports `AGENTS.md` at launch) |
 | Codex CLI | `AGENTS.md` (auto-read on session start) |
-| Cursor, Windsurf, Aider, others | Paste `AGENTS.md` as the starter prompt — it bootstraps the full read order |
+| Other agents (best-effort) | Paste `AGENTS.md` — it is self-contained |
 
 ---
 
@@ -202,15 +186,15 @@ pack to catch regressions in agent behavior before they affect real work.
 
 Before tagging a new pack version, verify:
 
-- [ ] Pack-file edit exceptions are in sync across ARCHITECTURE.md (hard guardrails),
-      AGENTS.md (Step 3), and CLAUDE.md (safe-edit boundaries)
-- [ ] Protocol Index trigger table in ARCHITECTURE.md matches AGENTS.md mirror row-for-row for file-backed protocols (AGENTS mirrors protocol files only — session-type entries like Session Resumption are not mirrored and should not be forced into AGENTS)
+- [ ] PROTOCOLS.md routing copy matches AGENTS.md → Protocol Index for
+      file-backed protocols
 - [ ] All 21 protocol files present: `ls protocols/ | wc -l` returns 21
-- [ ] Version string updated in all pack file headers
+- [ ] Version string updated in all pack file headers (AGENTS.md, CLAUDE.md,
+      PROTOCOLS.md)
 
 ## Version
 
 This is **Starter Pack v11.51**. The version is recorded in the header of
-`ARCHITECTURE.md`, `CLAUDE.md`, `AGENTS.md`, `PROTOCOLS.md`, and in every
-Captain's Log entry so there's always an audit trail of which instruction
-set was active for any given session.
+`AGENTS.md`, `CLAUDE.md`, `PROTOCOLS.md`, and in every development log entry
+so there's always an audit trail of which instruction set was active for any
+given session.

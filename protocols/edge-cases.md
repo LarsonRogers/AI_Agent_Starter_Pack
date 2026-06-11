@@ -1,6 +1,6 @@
 <!-- Starter Pack v11.51 — protocols/edge-cases.md -->
 <!-- Load this file when: pack files missing, git unavailable, no file-read, no file-write, placeholder conflicts, CAPTAINS_LOG missing/corrupt -->
-<!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
+<!-- Do not load unless triggered — see AGENTS.md → Protocol Index -->
 
 ## Edge-Case Handling
 
@@ -21,11 +21,11 @@ when any of the trigger conditions below are encountered.
 | **Multiple protocol files missing from protocols/** | Halt immediately regardless of trigger state. Report all missing files by listing what is present vs expected: "The following protocol files are missing: [list]. The pack may have been copied incompletely. Please restore the full protocols/ directory from the original pack zip before continuing." Do not attempt to work around missing protocols or proceed with partial coverage. |
 | **PROTOCOLS.md present but unreadable** | Treat as missing — same halt behavior. Report: "PROTOCOLS.md exists but could not be read ([reason]: permission denied, binary encoding, or non-UTF-8 content). Please check file permissions and encoding, or restore it from the original pack zip before continuing." Do not attempt to reconstruct routing behavior from partial content. |
 | **PROTOCOLS.md missing** | Halt immediately. Report: "PROTOCOLS.md is missing from the repo root. Several required procedures are unavailable. Please restore it from the original pack zip before continuing." Do not attempt to guess or reconstruct protocol behavior. |
-| **AGENTS.md missing** | For Codex and agents that auto-load AGENTS.md: halt and report "AGENTS.md is missing. This file is required as the bootstrap entry point for this agent. Please restore it from the original pack zip." For Claude Code and agents that load ARCHITECTURE.md directly: missing AGENTS.md is not a startup blocker — proceed normally and note the missing file in the session log. |
-| **ARCHITECTURE.md or CLAUDE.md missing** | Halt immediately. Report which file is missing and ask the user to restore it. These are the primary instruction sources — proceeding without them produces undefined behavior. |
+| **AGENTS.md missing** | Halt immediately, all agents. AGENTS.md is the single source of truth — policy and project specifics. Report: "AGENTS.md is missing. It is the primary instruction source; proceeding without it produces undefined behavior. Please restore it from the original pack zip." |
+| **CLAUDE.md missing** | Claude Code only: CLAUDE.md is the import shim that loads AGENTS.md — without it Claude Code starts with no pack instructions. Halt and ask the user to restore it from the original pack zip (it is a few lines; do not reconstruct it yourself — that would be a pack-file edit). Codex and other agents: not a blocker — note the missing file in the session log and proceed. |
 | **No git installed or git unavailable** | Report clearly what is unavailable: commits, rollbacks, history reconstruction, checkpoint strategy, and refactor protocol all require git. Offer read-only analysis and planning work only. Do not attempt to simulate git with manual file copies. |
 | **No file-write capability (read works, writes fail)** | Pivot immediately to analysis and planning mode only. Do not attempt edits or commits — report each intended change as: "I would do X — please execute this manually or switch to a write-capable environment." Continue providing analysis, review, and task planning. Notify the user at session start: "I can read and analyze but cannot write files in this environment. I will describe all changes for you to apply manually." |
-| **No file-read capability (web/paste-only agent)** | Ask the user to paste AGENTS.md, then ARCHITECTURE.md, then CLAUDE.md in order. If CAPTAINS_LOG.md exists, ask the user to paste the most recent entry (top entry only) after CLAUDE.md — this restores audience mode and prior-session context. Proceed from pasted content. When a protocol is triggered, ask the user to paste the relevant `protocols/[filename].md` file directly — this is the supported path in paste-only sessions. If the user cannot provide the protocol file, flag the gap clearly: state which protocol was triggered, what behavior it governs, and that you will proceed with best-effort interpretation based on ARCHITECTURE.md guardrails only. Do not halt the session solely because a protocol file could not be loaded via file-read. |
+| **No file-read capability (web/paste-only agent)** | Ask the user to paste AGENTS.md (the single source of truth — policy and project specifics in one file). If CAPTAINS_LOG.md exists, ask the user to paste the most recent entry (top entry only) after it — this restores audience mode and prior-session context. Proceed from pasted content. When a protocol is triggered, ask the user to paste the relevant `protocols/[filename].md` file directly — this is the supported path in paste-only sessions. If the user cannot provide the protocol file, flag the gap clearly: state which protocol was triggered, what behavior it governs, and that you will proceed with best-effort interpretation based on AGENTS.md guardrails only. Do not halt the session solely because a protocol file could not be loaded via file-read. |
 | **Partially filled REQUIRED placeholders** | Do not proceed with coding tasks. Report exactly which placeholders remain unfilled. Offer to infer any missing values from repo context, or ask the user directly for values that cannot be inferred. Never assume a placeholder value silently. |
 | **Conflicting inferred placeholder values** | Present all candidates to the user with source for each: "I found two possible project names: 'foo' (from package.json) and 'bar' (from README). Which is correct?" Wait for explicit choice before writing. |
 | **Pack version mismatch detected** | Halt and report — full procedure below. |
@@ -33,8 +33,8 @@ when any of the trigger conditions below are encountered.
 ## Pack Version Mismatch Handler
 
 Version headers are in the format: `<!-- Starter Pack vX.Y — YYYY-MM-DD -->`.
-The check itself runs at session start (see ARCHITECTURE.md → Session
-protocols): `grep "Starter Pack v" ARCHITECTURE.md CLAUDE.md AGENTS.md PROTOCOLS.md`.
+The check itself runs at session start (see AGENTS.md → Session Start):
+`grep "Starter Pack v" AGENTS.md CLAUDE.md PROTOCOLS.md`.
 Exception: in read-only / meta-review sessions the check is optional — the
 session makes no writes, so a mismatch cannot corrupt state. If found during a
 read-only session, include it in the findings but do not halt.
@@ -43,9 +43,8 @@ For all other session types, if headers differ → HALT. Report before doing any
 
 ```
 "Pack file versions are inconsistent:
- ARCHITECTURE.md: [version]
- CLAUDE.md: [version]
  AGENTS.md: [version]
+ CLAUDE.md: [version]
  PROTOCOLS.md: [version]
 This can cause conflicting behavior. Options:
 1. I update all files to the latest version from the pack repo

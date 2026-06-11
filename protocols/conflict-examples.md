@@ -3,12 +3,12 @@
 <!-- Does NOT trigger when: agent needs ordinary clarification on an ambiguous request
      (no rule conflict involved), or when two instructions address different topics
      and can both be followed without contradiction -->
-<!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
+<!-- Do not load unless triggered — see AGENTS.md → Protocol Index -->
 
 ## Conflict Resolution Examples
 
 Concrete worked examples for the precedence and conflict rules in
-`ARCHITECTURE.md` → Instruction Precedence & Conflict Resolution.
+`AGENTS.md` → Instruction Precedence & Conflict Resolution.
 Load this section when surfacing a conflict or when agent behavior on
 conflict handling needs to be verified.
 
@@ -44,12 +44,12 @@ The user must clearly grant permission for the specific policy.
 
 **Example 3 — Two default policies in conflict (precedence hierarchy applies):**
 ```
-Situation: CLAUDE.md says "never use external HTTP libraries."
-           Task brief says "add Axios for API calls."
+Situation: Project rules (AGENTS.md → Part 2) say "never use external
+           HTTP libraries." Task brief says "add Axios for API calls."
 Agent: "I've noticed a conflict I want to flag:
-        CLAUDE.md says: no external HTTP libraries
+        The project rules say: no external HTTP libraries
         The task brief says: add Axios for API calls
-        CLAUDE.md project rules outrank the task brief in the hierarchy.
+        Project rules outrank the task brief in the hierarchy.
         I'll proceed without Axios and use the native fetch API instead —
         unless you'd like to update the project rules to allow it."
 ```

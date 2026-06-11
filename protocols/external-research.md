@@ -1,6 +1,6 @@
 <!-- Starter Pack v11.51 — protocols/external-research.md -->
 <!-- Load this file when: external SDK, API, or platform work; or web access unavailable (Knowledge Gap) -->
-<!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
+<!-- Do not load unless triggered — see AGENTS.md → Protocol Index -->
 
 ## External Research Protocol
 
@@ -91,7 +91,7 @@ I can continue in one of three ways:
    low and you want to move quickly.
    Note: this option is only available when you select it explicitly. The
    agent may not choose option 3 on its own — doing so would violate the
-   hard guardrail on unverified external-system code in ARCHITECTURE.md.
+   hard guardrail on unverified external-system code in AGENTS.md.
 
 Which would you prefer?
 ```

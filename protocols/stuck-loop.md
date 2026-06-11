@@ -3,7 +3,7 @@
 <!-- Does NOT trigger when: failures involve distinct root causes, distinct tasks,
      or different parts of the codebase — "same problem" means the same specific
      goal or failing operation, not merely the same general area of work -->
-<!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
+<!-- Do not load unless triggered — see AGENTS.md → Protocol Index -->
 
 ## Stuck Loop Circuit Breaker
 

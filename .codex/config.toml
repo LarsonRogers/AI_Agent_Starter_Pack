@@ -16,7 +16,7 @@ sandbox_mode = "workspace-write"
 # NOTE: network_access = true enables outbound network from the sandbox,
 # but Codex web search/browsing capability is controlled separately in your
 # OpenAI account settings — enable it there if you want the agent to research
-# SDKs, docs, and external APIs (recommended — see ARCHITECTURE.md →
+# SDKs, docs, and external APIs (recommended — see AGENTS.md →
 # External Research Protocol).
 # Other agents (Cursor, Windsurf, Aider) manage web access through their own
 # UI settings — this file does not control them.

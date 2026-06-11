@@ -81,7 +81,6 @@ folder, not inside any subfolder). Your project should now contain:
 
 ```
 your-project/
-├── ARCHITECTURE.md
 ├── AGENTS.md
 ├── CLAUDE.md
 ├── PROTOCOLS.md
@@ -118,7 +117,7 @@ On Windows: View → Show → Hidden items.
 Open a terminal in your project folder and start your agent:
 - Claude Code: type `claude` and press Enter
 - Codex: type `codex` and press Enter
-- Others: follow their startup instructions, then point them to `ARCHITECTURE.md`
+- Others: follow their startup instructions, then point them to `AGENTS.md`
 
 **That's it.** The agent takes it from here. No manual editing of pack
 placeholders required — the agent infers your project details, presents them
@@ -290,12 +289,10 @@ If a protocol file is too long to paste in one message, paste it in numbered
 parts and tell the agent "more coming — wait for all parts" between each paste.
 
 **If your agent can't read files directly**, paste the contents of
-`AGENTS.md` into the chat manually. It's a short file — open it in any
-text editor, select all, and paste. The agent will then ask you for
-`ARCHITECTURE.md` and `CLAUDE.md` — it will need them next.
-If your chat has a character or size limit, send the files one at a time
-in this order: `AGENTS.md` first, then `ARCHITECTURE.md`, then `CLAUDE.md`.
-Tell the agent "more coming" between pastes so it waits before responding.
+`AGENTS.md` into the chat manually — open it in any text editor, select all,
+and paste. It is self-contained: policy and project details in one file.
+If your chat has a character or size limit, paste it in numbered parts and
+tell the agent "more coming — wait for all parts" between pastes.
 
 **Resuming a previous session?** If your project already has a `CAPTAINS_LOG.md`,
 paste the most recent entry (the top entry) after `CLAUDE.md`. The agent needs it
@@ -445,7 +442,7 @@ anything else.
 
 1. Copy all files into repo root (preserve `.claude/`, `.codex/`, `.github/`)
 2. Start your agent — it handles placeholder inference and fills in
-   `CLAUDE.md` and `AGENTS.md` from repo context
+   `AGENTS.md` → Part 2 from repo context
 3. Enable web search in your agent's settings for best results
 4. Adapt `.github/workflows/agent-ci.yml` to your stack
 5. Add project-specific lint/test commands to `.claude/settings.json` allow list

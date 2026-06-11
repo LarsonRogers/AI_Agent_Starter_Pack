@@ -3,19 +3,20 @@
 <!-- Does NOT trigger when: first message is a read-only audit or meta-review (load
      protocols/read-only.md instead), or when no non-pack source files are present
      (that is a first-session with no existing codebase — see session type B). -->
-<!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
+<!-- Do not load unless triggered — see AGENTS.md → Protocol Index -->
 
 
 This is the case when the starter pack has been dropped into an existing repo
 that was not built with this setup. The codebase exists, but there is no
-`CAPTAINS_LOG.md`, no filled-in `ARCHITECTURE.md`, and no established workflow.
+`CAPTAINS_LOG.md`, no filled-in project sections in `AGENTS.md`, and no
+established workflow.
 
 **The agent must not write or change any code until the full assessment is complete.**
 
 #### Phase 1 — Read and Map (no edits)
 
 ```
-[ ] 1. Read ARCHITECTURE.md and CLAUDE.md in full
+[ ] 1. Read AGENTS.md in full (Part 1 policy and Part 2 project sections)
 [ ] 2. Map the repo structure:
         Standard repos: list every directory and file
         Large repos (100+ directories or 500+ files): summarize top-level
@@ -119,12 +120,14 @@ and specifically. The developer needs an honest picture before deciding what to 
 After the developer has reviewed the assessment:
 
 ```
-[ ] 1. Fill in the Project-Specific Architecture section of ARCHITECTURE.md
+[ ] 1. Fill in AGENTS.md → Part 2 → Project-Specific Architecture
         based on what was found — actual structure, not ideal structure
-[ ] 2. Fill in the Pattern Registry with any patterns that exist in the code
-        (including anti-patterns worth flagging)
-[ ] 3. Fill in the Tech Stack table in CLAUDE.md
-[ ] 4. Fill in the File Structure section in CLAUDE.md
+        (bounded living summary, hard cap 60 lines)
+[ ] 2. Fill in AGENTS.md → Part 2 → Pattern Registry with any patterns that
+        exist in the code, including anti-patterns worth flagging
+        (bounded living summary, hard cap 40 lines)
+[ ] 3. Fill in AGENTS.md → Part 2 → Tech Stack table
+[ ] 4. Fill in AGENTS.md → Part 2 → File Structure section
 [ ] 5. Finalize CAPTAINS_LOG.md:
         - Reconstructed entries (from git history) are already present from Phase 1
         - Prepend a live first-session entry above them documenting:

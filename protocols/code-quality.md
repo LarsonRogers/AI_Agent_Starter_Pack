@@ -3,7 +3,7 @@
      standards, and readability requirements apply to every coding task. -->
 <!-- Does NOT trigger when: the session is read-only/analysis, or the task is
      docs-only with no code changes. -->
-<!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
+<!-- Do not load unless triggered — see AGENTS.md → Protocol Index -->
 
 ## Universal Structural Rules
 

@@ -27,6 +27,13 @@
       "Bash(tree *)",
       "WebSearch"
     ],
+    "ask": [
+      "Edit(AGENTS.md)",
+      "Edit(CLAUDE.md)",
+      "Edit(PROTOCOLS.md)",
+      "Edit(TASK_TEMPLATE.md)",
+      "Edit(protocols/**)"
+    ],
     "deny": [
       "Bash(rm -rf *)",
       "Bash(sudo *)",

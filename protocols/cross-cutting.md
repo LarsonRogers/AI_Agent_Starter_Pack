@@ -4,7 +4,7 @@
      (e.g., a docs-only update across 3 files, a pure rename in one module
      with no logic changes), or when all affected files are trivially related
      and no coordination risk exists across layers. -->
-<!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
+<!-- Do not load unless triggered — see AGENTS.md → Protocol Index -->
 
 ## Cross-Cutting Changes & Pre-Flight Plans
 

@@ -4,7 +4,7 @@
      or behavior modification alongside structural work — that is an edit session
      with structural components, not a pure refactor. When intent is ambiguous,
      the protocol requires asking one clarifying question before proceeding. -->
-<!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
+<!-- Do not load unless triggered — see AGENTS.md → Protocol Index -->
 
 ## Refactor Protocol
 
@@ -55,7 +55,7 @@ structure," "extract these services," "no new features"), proceed without asking
 [ ] 2. Define the target structure — what it should look like after
 [ ] 3. Break into the smallest possible sequential steps — each step
         must leave the code in a working state
-[ ] 4. Present the plan as a pre-flight plan (ARCHITECTURE.md →
+[ ] 4. Present the plan as a pre-flight plan (AGENTS.md →
         Cross-Cutting Changes) — confirm before starting
 [ ] 5. Explicitly list what will NOT change:
         - Public interfaces / function signatures (unless agreed)

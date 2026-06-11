@@ -2,7 +2,7 @@
 <!-- Load this file when: writing, reconstructing, or formatting a development log
      entry or changelog entry (every committed task, checkpoints, handoffs,
      inherited-codebase reconstruction). -->
-<!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
+<!-- Do not load unless triggered — see AGENTS.md → Protocol Index -->
 
 ## Captain's Log — Entry Format & Maintenance
 
@@ -42,7 +42,7 @@ read the log and continue work without accessing any chat history.
 **Agent/Platform:** [e.g., Claude Code, Codex — for audit trail]
 **Audience mode:** [Developer / Technical non-dev / Non-dev — only required in
 first entry, persists across sessions until user requests a change]
-**Pack version:** [e.g., v11.51 — from the header of ARCHITECTURE.md]
+**Pack version:** [e.g., v11.51 — from the header of AGENTS.md]
 
 **Handoff prompt for next session:**
 ```

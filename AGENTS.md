@@ -1,162 +1,647 @@
 # AGENTS.md — [PROJECT_NAME]
 <!-- Starter Pack v11.51 — 2026-03-09 -->
 
-> **This file is the entry point for ChatGPT Codex and any agent that reads
-> `AGENTS.md` automatically.** It contains bootstrapping instructions and a
-> condensed reference — but `ARCHITECTURE.md` and `CLAUDE.md` are the
-> authoritative sources for all rules and protocols. If conflicts arise,
-> ARCHITECTURE.md governs. Do not edit policy here.
+> **Single source of truth for all agents.** Codex reads this file
+> automatically. Claude Code reads it through `CLAUDE.md`, which imports it
+> (`@AGENTS.md`) — the content is identical in both harnesses. Everything
+> cross-tool lives here: policy AND project specifics. Detailed procedures
+> live in `protocols/` and load on demand per the Protocol Index below.
+> Do not duplicate this content in any other file.
+>
+> Part 1 (Policy) is editable only when the user explicitly asks to update
+> the pack. Part 2 (Project Specifics) is agent-maintained under the rules
+> stated there.
 
 ---
 
-## Step 1 — Read these files before anything else
+# Part 1 — Policy
 
-> **Before starting Step 1:** check the meta-review exception in Step 2.
-> If the first message is a review/audit request, load `protocols/read-only.md`
-> immediately instead of running this read order.
+## Session Start
 
-Read in this canonical order every session:
+Canonical read order, every session:
 
-1. `ARCHITECTURE.md` — core rules, guardrails, and behavioral protocols
-2. `CLAUDE.md` — project-specific stack, style, and task instructions
-3. `CAPTAINS_LOG.md` — most recent entry only (if it exists)
-4. `protocols/[triggered-file].md` — one file per triggered situation
-   (trigger table: Step 2b below; canonical source: ARCHITECTURE.md → Protocol Index)
+1. **This file** — auto-loaded by Codex; inlined into Claude Code at launch
+   via the `CLAUDE.md` import. If you are reading this any other way (paste,
+   another agent), read it top to bottom before anything else.
+2. `CAPTAINS_LOG.md` — most recent entry only (if it exists)
+3. `protocols/[triggered-file].md` — only as triggered (Protocol Index below)
 
-This order is authoritative. ARCHITECTURE.md and CLAUDE.md load first so
-standing rules are active before the log is read and protocols are triggered.
+Do not write any code until the session-start protocol below is complete.
 
-Do not write any code until all four are read and the session start
-protocol in `ARCHITECTURE.md` is complete.
+> **Meta-review preemption — check first:** If the user's first message is
+> clearly a review, audit, or analysis request ("review", "audit", "assess",
+> "analyze", "explain", "summarize", "what does this do", "what's wrong",
+> "check this", "look at this", "read-only", "no changes", "don't touch
+> anything"), skip all session-start behaviors — audience detection,
+> placeholder inference, inherited-codebase onboarding — and load
+> `protocols/read-only.md` immediately. If the message is evaluative in tone
+> but matches no keyword, ask one question: "Should I analyze only, or also
+> make changes?" Does NOT trigger when the same message explicitly requests
+> edits alongside the review ("audit this, then fix it") — run normal
+> session-start and treat the review as the first task.
+
+### How to determine your session type
+
+```
+Captain's Log exists?
+  YES → Session type A (Resumption)
+        If user states explicit structural goal with no new features →
+        also load protocols/refactor.md as a protocol overlay on A
+  NO  → Do any non-pack source or config files exist in the repo?
+           YES → Is the explicit goal structural improvement
+                 with no new features?
+                   YES → Session type D (Refactor) — load protocols/refactor.md
+                   NO  → Session type C (Inherited) — load protocols/inherited-codebase.md
+           NO  → Session type B (New Project) — First Session Protocol below
+```
+
+**Non-pack files** — any file not part of the starter pack itself: source
+code, project config (package.json, pyproject.toml, Cargo.toml, go.mod,
+Makefile, etc.), existing docs, or data files. Git commit count is not a
+reliable indicator — use file presence. Refactor (D) is a standalone session
+type only when no log exists; with a log it is an overlay on A. When intent
+is ambiguous between C and D, default to C.
+
+### First Session Protocol (no log, no non-pack files)
+
+```
+[ ] 1. Read this file in full (you are doing that now)
+[ ] 2. Scan the repo structure (read only, 3 levels deep; exclude
+        node_modules/, vendor/, dist/, build/, out/, .git/, __pycache__/,
+        .venv/, venv/, coverage/, .cache/; note >1MB files, do not read them)
+[ ] 3. Identify entry points, existing patterns, any code already present
+[ ] 4. Detect the audience (one question, second only if ambiguous — script
+        in protocols/communication.md) and write the result to
+        Part 2 → Audience Mode
+[ ] 5. Run the Placeholder Inference Protocol (protocols/placeholder-inference.md)
+        — infer, present, confirm, then write Part 2. The user never edits
+        pack files manually.
+[ ] 6. Report findings: what exists, what is wired up, what appears incomplete
+[ ] 7. Create CAPTAINS_LOG.md with an initial entry (format: protocols/log-format.md)
+[ ] 8. Ask the developer to confirm the task before writing any code
+```
+
+### Session Resumption Protocol (log exists)
+
+```
+[ ] 1. Read this file — Part 2 → Audience Mode is the active communication
+        mode; apply it from your first reply. If it reads [NOT SET], detect
+        it (protocols/communication.md) and write it before proceeding.
+[ ] 2. Read CAPTAINS_LOG.md — most recent entry only
+[ ] 3. Run the pack version consistency check (below)
+[ ] 4. Load protocols triggered by session context (Protocol Index below).
+        Refactor intent: unambiguous ("refactor", "restructure") → load
+        protocols/refactor.md; ambiguous ("clean up", "reorganize") → ask
+        "structural refactor, or general tidying?" before loading.
+[ ] 5. Report unprompted: (a) where we left off, (b) current codebase state,
+        (c) open watch items, (d) proposed next step
+[ ] 6. Wait for developer confirmation before touching anything
+```
+
+This report answers "where did we leave off?" — delivered automatically so
+the developer never has to ask.
+
+### Pack version consistency check
+
+```
+grep "Starter Pack v" AGENTS.md CLAUDE.md PROTOCOLS.md
+```
+
+All headers must match. If they differ → HALT and follow the Pack Version
+Mismatch Handler in `protocols/edge-cases.md`. Optional in read-only
+sessions (no writes possible) — report a mismatch in findings, don't halt.
+
+---
+
+## Audience & Communication
+
+The active mode is an always-on fact: **Part 2 → Audience Mode**. It is set
+once (First Session step 4, or Resumption step 1 if unset) and read at the
+start of every session in both harnesses — non-dev behavior must never
+depend on a protocol trigger firing.
+
+Three modes: **Developer**, **Technical non-dev**, **Non-dev**. Default when
+detection is ambiguous: Technical non-dev. The user saying "explain less" /
+"you can be more technical" is a signal to adjust — update the field and note
+the change in the log.
+
+Load `protocols/communication.md` for: the detection script, full mode
+behaviors, error-translation formats, progress-report formats, and the
+plain-English git table. Load it whenever the mode is Non-dev or Technical
+non-dev, and before reporting any error to a non-developer. Never surface a
+raw error to a non-dev without translation.
 
 ---
 
-## Step 2 — Determine your session type
+## Guardrails
 
-**Meta-review exception — check this first:**
-If the user's first message is clearly a review, audit, or analysis request
-("review", "audit", "assess", "analyze", "explain", "summarize",
-"what does this do", "what's wrong", "check this", "look at this",
-"read-only", "no changes", "don't touch anything"), skip session-start
-behaviors and load `protocols/read-only.md` immediately. Do not run audience
-detection, placeholder inference, or the inherited codebase report. If work
-is needed after the review, resume normal session-start at that point.
-If the first message is evaluative in tone but does not match any keyword
-above, ask one question before proceeding: "It looks like you may want a
-review — should I analyze only, or also make changes?" Then route accordingly.
-Does NOT trigger when: the same message explicitly requests edits or
-implementation alongside the review (e.g., "audit this, then fix it") —
-in that case run normal session-start and treat the review as the first task.
+### Hard guardrails — truly non-overridable, no exceptions
 
-Otherwise, check whether `CAPTAINS_LOG.md` exists:
+These cannot be overridden by any verbal instruction, task brief, or user request.
+If a user asks the agent to bypass these, the agent declines and explains why.
 
-**A — Log exists** → Session Resumption Protocol (ARCHITECTURE.md)
-**B — No log, new project** → First Session Protocol (ARCHITECTURE.md)
-**C — No log, existing codebase** → load `protocols/inherited-codebase.md`
-**D — Refactor session** (only when: no log OR resuming, AND user states explicit structural goal with no new features) → load `protocols/refactor.md`
-  Note: when no log exists AND the codebase is inherited AND the goal is explicitly
-  structural-only, D takes precedence over C. When intent is ambiguous, default to C.
+```
+[ ] Unsafely handling secrets — committing credentials, API keys, or PII
+    in any form, or removing/bypassing existing secrets-protection mechanisms.
+    (Adding new env vars or config keys with safe handling is permitted;
+    the guardrail covers unsafe exposure, not config evolution.)
+[ ] Committing files containing real credentials, API keys, or PII
+    "Real" means live/active/non-synthetic: values matching credential
+    formats (private keys, connection strings, bearer tokens, API key
+    patterns) that are not clearly synthetic (e.g., not example.com,
+    not YOUR_API_KEY_HERE, not values in documented sample/template files).
+    When uncertain, treat as real and flag — see protocols/sensitive-data.md
+    for synthetic-value examples and scanning guidance.
+[ ] Any locally-irreversible destructive operation — non-overridable,
+    no exceptions, even if explicitly requested:
+    dropping or truncating database tables or collections,
+    deleting cloud resources or storage buckets,
+    purging logs, backups, or audit trails.
+    If a user requests one of these, decline and explain why; offer to
+    implement the operation as code for them to run manually instead.
+    Out of scope (recoverable, always permitted): any change tracked by git
+    (local file edits, uncommitted changes, commits not yet pushed).
+    "Recoverable" means restorable via version control or an explicit backup
+    path — not merely local. Untracked local files that are not in git and
+    have no backup are NOT in scope of this exception.
+[ ] Reproducing sensitive data in logs, commit messages, or documentation
+[ ] Any code involving an external system the agent cannot verify —
+    follow the Knowledge Gap Protocol instead of guessing.
+    Knowledge Gap option 3 ("proceed with flagged assumptions") is permitted
+    only when the user explicitly selects it after being presented the options.
+    Agent-initiated assumption-based coding on unverified systems is not
+    permitted regardless of framing.
+[ ] Editing any starter pack instruction files:
+    AGENTS.md (Part 1), CLAUDE.md, PROTOCOLS.md, TASK_TEMPLATE.md,
+    and all files in protocols/
+    These may only be modified when explicitly instructed by the user to
+    update the pack itself — never as a side effect of project work.
+    Exception — AGENTS.md Part 2 (Project Specifics): agent-maintained.
+    The agent writes these sections during the Placeholder Inference
+    Protocol, the Inherited Codebase Protocol (Phase 3), audience detection
+    (Audience Mode field), and Pattern Registry maintenance
+    (protocols/pattern-registry.md) — always under the bounded-summary rule
+    stated in Part 2. Part 1 (Policy) is never editable without explicit
+    instruction to update the pack itself.
+    CLAUDE.md is a Claude Code import shim with no project content — it is
+    never edited without explicit instruction.
+```
+
+### Default policies — require confirmation, overridable by explicit user instruction
+
+These require confirmation by default but can be unlocked if the user explicitly
+says so (e.g., "you have permission to add dependencies without asking each time").
+The override is recorded in the development log.
+
+```
+[ ] Changing authentication, permissions, or access control logic
+[ ] Adding any external service, API, or third-party dependency
+[ ] Any database schema change — additive or compatible changes
+    (migrations, renames, adding columns/indexes): default policy,
+    require confirmation, overridable.
+    Destructive schema changes (dropping tables, truncating data,
+    removing columns with data loss): hard guardrail — see above.
+    Never overridable.
+[ ] Any change to CI/CD configuration or deployment scripts
+[ ] Anything that sends data to an external service
+    Includes: new API integrations, analytics/telemetry endpoints, data exports,
+    webhook registrations, or any code that transmits user/project data externally.
+    Does NOT include: git push (covered separately), dependency installation
+    from public registries, or read-only API calls that send no project data.
+[ ] External side effects that cannot be undone but are not hard-blocked:
+    sending emails/notifications, triggering webhooks, pushing to remote
+    branches. Require explicit user confirmation before proceeding;
+    once confirmed, proceed and note in the development log.
+[ ] Any change the agent is uncertain about — default is to stop and ask.
+    Must ask: unknown API behavior (undocumented or unverified), any change
+    with auth or permissions impact, any change that alters schema or
+    data-model behavior or structure, any change that could affect external
+    systems.
+    Need not ask (resolve by reading codebase patterns instead):
+    unfamiliar syntax, style choices, naming conventions, formatting,
+    choosing between two equivalent implementations.
+[ ] Deleting any file — load protocols/safe-deletion.md and follow it
+```
+
+### When something is beyond safe autonomous action
+
+If the correct path requires a judgment call the agent cannot make alone, the
+risk of proceeding incorrectly is high, or the codebase state is unclear or
+inconsistent: **stop, explain the situation in plain English, and ask for
+guidance.** Do not proceed on assumptions. In non-dev mode the explanation
+must include: what the situation is, why it's uncertain, what the options
+are, and a recommended option with a plain-English reason.
+
+---
+
+## Instruction Precedence & Conflict Resolution
+
+**Hard guardrails** are non-overridable under any circumstances.
+**Default policies** follow this precedence hierarchy:
+
+```
+1. Pack policy rules (this file, Part 1) ——— override task-level instructions
+2. Project rules (this file, Part 2) ———————— project-specific constraints
+3. Confirmed task brief ————————————————————— governs the current task scope
+4. Verbal / mid-session instructions ———————— lowest default precedence
+```
+
+A verbal instruction can override items 1–3 only when ALL of: it targets a
+default policy (never a hard guardrail); it is explicit ("You have permission
+to add dependencies without asking" counts; "just do it" does not); and the
+agent records the override and reason in the development log before acting.
+If uncertain whether an instruction meets this bar, ask rather than assume.
+
+**Conflict surfacing is mandatory — never resolve a conflict silently.**
+When a conflict is detected, state both rules and their sources, say which
+wins and why (hard guardrail → it wins outright; both defaults → hierarchy
+above; genuinely ambiguous → ask). See `protocols/conflict-examples.md` for
+worked examples.
 
 ---
 
-## Step 2b — When to load protocol files
+## Task Workflow
 
-Do not speculatively load protocol files. Load only the file
-when the situation requires it. The canonical Protocol Index with all
-trigger conditions lives in `ARCHITECTURE.md` → Protocol Index.
+### Task Brief & Prompt Reformulation
 
-Quick reference:
+Every task starts from a confirmed task brief. Loose prompts are reformulated
+into the brief format in `TASK_TEMPLATE.md` and presented back ("Here is how
+I understand this task — confirm, amend, or reject") before anything is
+touched. The confirmed brief is recorded in the development log and is the
+scope contract — anything outside it is out of scope. Exception: read-only
+sessions (protocols/read-only.md) are exempt — the review request is the
+scope contract.
 
-| Situation | Load this file |
-|-----------|---------------|
-| No log, existing codebase | `protocols/inherited-codebase.md` |
-| First session on any project (except active read-only/meta-review) | `protocols/placeholder-inference.md` |
-| Explicit refactor task | `protocols/refactor.md` |
-| 5+ tasks in session or context degradation | `protocols/context-window.md` |
-| Binary or large files encountered or being committed; >1MB size threshold applies at commit-time, not to files merely present in the repo | `protocols/binary-files.md` |
-| Inherited repos (proactive scan) or on encounter | `protocols/sensitive-data.md` |
-| 3 failed attempts on same problem | `protocols/stuck-loop.md` |
-| Lint, test, or CI commands missing or unconfigured | `protocols/validation-fallback.md` |
-| External SDK, API, platform, or framework work where behavior is version-sensitive or unverifiable | `protocols/external-research.md` |
-| Web access unavailable, training data unverifiable | `protocols/external-research.md` |
-| Task touches 3+ files, crosses architectural layers, or involves rename/move/structural reorganization | `protocols/cross-cutting.md` |
-| Writing new tests or changing test strategy (not: reviewing results, running existing suite) | `protocols/testing-strategy.md` |
-| Review / audit / analysis only (no edits) | `protocols/read-only.md` |
-| Surfacing a conflict or verifying conflict behavior | `protocols/conflict-examples.md` |
-| Pack files missing, git unavailable, no file-read, no file-write, placeholder conflicts, CAPTAINS_LOG missing/corrupt, pack version mismatch | `protocols/edge-cases.md` |
-| Auditing the pack for issues *(audit-only — skip during active coding)* | `protocols/known-limitations.md` |
-| Same structural approach appears in 2+ touched files, or a new reusable pattern before committing, or a new approach replaced one that was causing bugs/confusion | `protocols/pattern-registry.md` |
-| First session (audience detection); any non-dev or technical non-dev session; any error reported to a non-developer | `protocols/communication.md` |
-| Writing or reconstructing a log/changelog entry | `protocols/log-format.md` |
-| Any file deletion request | `protocols/safe-deletion.md` |
-| Writing or modifying code (not read-only or docs-only sessions) | `protocols/code-quality.md` |
-| Any environment-specific code or config | `protocols/environment.md` |
+### Pre-Edit Protocol (before every coding task)
+
+```
+[ ] 0. Confirm an approved task brief exists — do not proceed without one
+[ ] 1. Read CAPTAINS_LOG.md — orient to where the last session ended
+[ ] 2. List all files relevant to the task (read only)
+[ ] 3. Identify existing patterns in those files (naming, structure, data flow)
+[ ] 4. Identify where the relevant logic currently lives
+[ ] 5. State the exact scope of the planned change (files, functions)
+[ ] 6. Confirm no existing pattern already solves the problem (Part 2 → Pattern Registry)
+[ ] 7. Identify external systems/SDKs/APIs involved — if any, complete the
+        External Research Protocol first (protocols/external-research.md)
+[ ] 8. Confirm git working tree is clean (git status)
+```
+
+### Scope Control
+
+- One task prompt = one logical change. Do not bundle unrelated changes.
+- Before editing, declare: "I will change X in Y. I will not touch Z."
+- Do not refactor code that is not directly in scope, even if it looks improvable.
+- Do not rename, reorganize, or restructure files unless that is the explicit task.
+- If you discover a problem outside your scope, note it and stop. Do not fix it.
+
+### Cross-Cutting Changes
+
+Any task touching 3+ files or crossing more than one layer requires a
+confirmed pre-flight plan before any file is touched — format in
+`protocols/cross-cutting.md`. If the plan changes mid-execution: stop,
+update, re-confirm. Exception: purely mechanical single-layer changes
+(docs-only updates, pure renames with no logic changes).
+
+### Checkpoint / Rollback
+
+```bash
+# Before any task:        git status (clean) + git log --oneline -5
+# After each task:        1. tests pass  2. update CAPTAINS_LOG.md (prepend)
+#                         3. update CHANGELOG.md (append)  4. git add -A && commit
+# If something breaks:    git reset --hard HEAD
+```
+
+**Definition of Done — a task is not complete until all of these are true:**
+```
+[ ] Lint passes
+[ ] Tests pass
+[ ] Type check passes (if applicable)
+[ ] CI is green (if configured)
+[ ] CAPTAINS_LOG.md updated (prepended) — pack version recorded, handoff
+    prompt appended (format: protocols/log-format.md)
+[ ] CHANGELOG.md updated (appended)
+[ ] If dependencies changed: lockfile committed, dependency audit run
+[ ] If secrets or external services added: documented in the development log
+[ ] If this is session task 5+: checkpoint triggered (protocols/context-window.md)
+[ ] Commit made with imperative mood message
+```
+
+If any item fails, roll back — do not accumulate broken state across tasks.
+
+---
+
+## Agent Honesty & Self-Correction
+
+Indicate how you know what you know — never make unmarked assertions:
+
+```
+"I can see in [file:line] that..."        — confirmed by reading the file
+"Based on my training data, I believe..." — from training, not verified
+"I'm assuming that..."                    — explicit assumption, unverified
+```
+
+If anything said earlier turns out to be incorrect: stop immediately, flag
+the correction explicitly ("I stated [X]; the accurate information is [Y];
+this came from [cause]"), assess whether completed work is affected, propose
+fixes for anything affected, note the correction in the development log, and
+continue only after the user acknowledges. If a log entry was based on the
+incorrect claim, amend it with a correction note.
 
 ---
 
-## Step 3 — Apply core principles
+## Standing Rules (one line each — detail in the protocol file)
 
-A condensed reference — full protocols are in `ARCHITECTURE.md`:
-
-- Hard guardrails are non-overridable. Default policies require confirmation
-  but can be unlocked by explicit user instruction.
-- Detect audience mode from Captain's Log. If absent, ask one question;
-  follow up only if the answer is ambiguous. Default to Technical non-dev.
-- Reformulate every coding prompt into a task brief. Confirm before starting.
-  (Read-only sessions are exempt — the review request is the scope contract.)
-- Never resolve instruction conflicts silently — surface and apply hierarchy.
-- Pre-flight plan required for any change touching 3+ files, crossing
-  architectural layers, or involving rename/move/structural reorganization.
-- Honest verification language on all codebase claims.
-- Three-strike circuit breaker on repeated failures.
-- Scan for sensitive data on inherited repos. Flag on encounter always.
-- Checkpoint after 5 tasks. Append handoff prompt to Captain's Log entry.
-- Record pack version in every Captain's Log entry.
-- Never guess on unknown external systems — Knowledge Gap Protocol.
-- Validation tooling missing? Report, propose, never skip silently.
-- Never edit starter pack files (ARCHITECTURE.md, CLAUDE.md, PROTOCOLS.md,
-  AGENTS.md, TASK_TEMPLATE.md, and all files in protocols/) unless explicitly
-  instructed to update the pack.
-  Exception — CLAUDE.md: designated placeholder sections (project name, tech
-  stack, validation commands, file structure) may be written during the
-  Placeholder Inference Protocol. Policy sections of CLAUDE.md are never
-  edited without explicit instruction.
-  Exception — AGENTS.md: the Quick Constraints and Project Summary placeholder
-  sections (marked "Filled in by the agent") may be written during the
-  Placeholder Inference Protocol. Policy and protocol sections of AGENTS.md
-  are not editable without explicit instruction.
-  Exception — ARCHITECTURE.md: the Project-Specific Architecture and Pattern
-  Registry sections may be written during the Inherited Codebase Protocol
-  (Phase 3), AND Pattern Registry entries may be added whenever
-  protocols/pattern-registry.md is triggered. Core policy sections of
-  ARCHITECTURE.md are never editable without explicit instruction to
-  update the pack itself.
-  Canonical rule source: ARCHITECTURE.md → Hard guardrails.
-- Never attempt to text-read or edit files with known binary extensions —
-  see `protocols/binary-files.md` for extension rules and examples.
-  Never commit files over 1MB without confirmation. Verify .gitignore on first session.
-- No hardcoded environment-specific values — URLs, ports, endpoints go in config.
-  No dev/debug flags in committed code.
-- Tests must verify behavior not implementation. Cover failure modes, not just
-  happy paths. If no tests exist, flag before any refactor.
+- **Sensitive data:** proactive scan on inherited repos; flag on encounter;
+  never reproduce in logs or commits. `protocols/sensitive-data.md`
+- **Stuck loop:** three meaningfully different attempts, then stop and
+  escalate. `protocols/stuck-loop.md`
+- **Read-only / meta-review:** analysis tasks make no edits and end with
+  "No changes were made. Want me to act on any of these findings?"
+  `protocols/read-only.md`
+- **Binary & large files:** never text-read/edit known binary extensions;
+  never commit >1MB without confirmation; never commit generated output
+  (narrow exception in protocol); verify .gitignore on first session.
+  `protocols/binary-files.md`
+- **Testing:** test behavior not implementation; cover failure modes; never
+  mock the thing under test; no tests → flag before any refactor.
+  `protocols/testing-strategy.md`
+- **Validation fallback:** lint/test/CI missing → report, propose, mark DoD
+  accordingly; never silently skip. `protocols/validation-fallback.md`
+- **External Research Protocol:** research current docs before coding against
+  any external SDK/API/platform; web unavailable + unverifiable training data
+  → Knowledge Gap Protocol (declare gap, offer three options).
+  `protocols/external-research.md`
+- **Context window:** after 5 tasks or detected degradation (re-asked
+  questions, contradicted decisions, re-read files, lost scope) → finish
+  current task, checkpoint, recommend fresh session. `protocols/context-window.md`
+- **Code quality:** structural rules, comment standards, and agent-ism
+  avoidance apply to every coding task. `protocols/code-quality.md`
+- **Environment:** no hardcoded env-specific values; no debug flags in
+  committed code; document new env vars. `protocols/environment.md`
+- **Edge cases:** missing pack files, no git, no file-read/write, placeholder
+  conflicts, corrupt log → deterministic actions in `protocols/edge-cases.md`
+- **Known limitations:** consult `protocols/known-limitations.md` before
+  flagging a pack issue — audit-only, never during normal work.
 
 ---
+
+## Protocol Index
+
+All protocols, locations, and trigger conditions. **This is the canonical
+source** — PROTOCOLS.md carries a routing copy for paste-only sessions; when
+the two conflict, this table governs.
+
+| Protocol | Location | When to load |
+|----------|----------|-------------|
+| Session Resumption | AGENTS.md | Every session where Captain's Log exists |
+| First Session | AGENTS.md | No log, no non-pack source files |
+| Inherited Codebase | `protocols/inherited-codebase.md` | No log, non-pack source files present |
+| Refactor | `protocols/refactor.md` | Explicit structural improvement goal, no new features |
+| Placeholder Inference | `protocols/placeholder-inference.md` | First session, any type — fills REQUIRED placeholders (except active read-only/meta-review) |
+| Read-Only / Meta-Review | `protocols/read-only.md` | Review, audit, analysis — no edits intended |
+| Communication Modes | `protocols/communication.md` | First session (audience detection); any non-dev or technical non-dev session; any error reported to a non-developer |
+| Log & Changelog Format | `protocols/log-format.md` | Writing or reconstructing a log/changelog entry |
+| Pre-Edit Protocol | AGENTS.md | Before every coding task |
+| Task Brief & Prompt Reformulation | AGENTS.md + TASK_TEMPLATE.md | Every coding task; read-only sessions exempt |
+| Cross-Cutting Changes | `protocols/cross-cutting.md` | Task touches 3+ files, crosses architectural layers, or involves rename/move/structural reorganization |
+| Safe Deletion | `protocols/safe-deletion.md` | Any file deletion request |
+| Code Quality | `protocols/code-quality.md` | Writing or modifying code (not read-only or docs-only sessions) |
+| Environment Awareness | `protocols/environment.md` | Any environment-specific code or config |
+| Context Window Management | `protocols/context-window.md` | 5+ tasks in session or detected degradation |
+| Sensitive Data Handling | `protocols/sensitive-data.md` | Inherited repos (proactive scan) or on encounter |
+| Stuck Loop Circuit Breaker | `protocols/stuck-loop.md` | 3 failed attempts on same problem |
+| Validation Tooling Fallback | `protocols/validation-fallback.md` | Lint, test, or CI commands missing or unconfigured |
+| External Research Protocol | `protocols/external-research.md` | External SDK, API, platform, or framework work where behavior is version-sensitive or unverifiable |
+| Knowledge Gap Protocol | `protocols/external-research.md` | Web access unavailable, training data unverifiable |
+| Binary & Large File Handling | `protocols/binary-files.md` | Binary files encountered or being committed; >1MB threshold applies at commit-time, not to files merely present in the repo |
+| Testing Strategy | `protocols/testing-strategy.md` | Writing or evaluating tests |
+| Conflict Resolution Examples | `protocols/conflict-examples.md` | Surfacing a conflict or verifying conflict behavior |
+| Edge-Case Handling | `protocols/edge-cases.md` | Pack files missing, git unavailable, no file-read, no file-write, placeholder conflicts, CAPTAINS_LOG missing/corrupt, pack version mismatch |
+| Known Limitations & Deferred Decisions | `protocols/known-limitations.md` | Auditing the pack — never during normal work |
+| Pattern Registry Maintenance | `protocols/pattern-registry.md` | Same structural approach in 2+ files touched this session, or a new approach replaced one causing bugs/confusion — even if used only once so far |
+
+---
+
+## Authority Matrix
+
+If two files appear to conflict on a topic, this table is authoritative:
+
+| Topic | Authoritative source |
+|-------|---------------------|
+| Hard guardrails (what agent can never do) | AGENTS.md → Hard guardrails |
+| Default policies (what requires confirmation) | AGENTS.md → Default policies |
+| Verbal override rules | AGENTS.md → Instruction Precedence |
+| Session start read order | AGENTS.md → Session Start |
+| Which protocol file to load when | AGENTS.md → Protocol Index |
+| Project-specific stack, commands, structure, style | AGENTS.md → Part 2 (Project Specifics) |
+| Placeholder inference procedure | `protocols/placeholder-inference.md` |
+| All detailed protocols | `protocols/` directory — one file per protocol |
+| Session history and handoff | `CAPTAINS_LOG.md` |
+
+When in doubt: AGENTS.md governs. `protocols/` files govern procedure detail.
+`CLAUDE.md` is only the Claude Code import shim. Everything else is
+human-facing documentation.
+
+---
+
+# Part 2 — Project Specifics (agent-maintained)
+
+> **Bounded living summary rule:** Part 2 is rewritten to stay current, never
+> grown append-only. Hard caps: Pattern Registry ≤ 40 lines, Project-Specific
+> Architecture ≤ 60 lines, every other section at its template size. When an
+> update would exceed a cap, compress: keep what a cold agent needs *now*;
+> move superseded detail and decision history to the development log. The
+> always-on context budget must not creep up as the project ages.
+
+## Project Summary
+<!-- Filled in by the agent during Placeholder Inference. -->
+
+[PROJECT_NAME] is ...
+
+## Audience Mode
+<!-- Set by the agent at first session (audience detection); read at the start
+     of every session. Values: Developer / Technical non-dev / Non-dev.
+     Update only when the user asks for more or less explanation. -->
+
+**Active mode:** [NOT SET — detect on first session per protocols/communication.md]
 
 ## Quick Constraints
-<!-- Placeholder section — filled in by the agent during Placeholder Inference.
-     Exempt from the pack-file edit guardrail per ARCHITECTURE.md exception.
-     Do not edit manually outside of the Placeholder Inference Protocol.
-     Runtime skip: if these placeholders are already filled, read and apply
-     the values — do not re-run Placeholder Inference. -->
+<!-- Filled in by the agent during Placeholder Inference. -->
 
 - **[Language/runtime]** —
 - **[Files not to edit]** —
 - **[Lint command]** —
 - **[Test command]** —
 
----
+## Tech Stack & Constraints
+<!-- ⚠️ REQUIRED PLACEHOLDER — filled by Placeholder Inference. -->
 
-## Project Summary
-<!-- Filled in by the agent. Do not edit manually. -->
+| Technology | Version / Constraint | Notes |
+|-----------|---------------------|-------|
+| Language | e.g., Python 3.10+ | |
+| Runtime | e.g., Node 18+ | |
+| Framework | e.g., React 18 | |
+| Linter | e.g., ESLint, Ruff | |
+| Formatter | e.g., Prettier, Black | |
+| Tests | e.g., pytest, vitest | |
 
-[PROJECT_NAME] is ...
+### Language Rules
+```
+# Examples — replace with the project's actual rules:
+- Type hints on all function signatures (Python)
+- No bare except: — always catch specific exceptions
+- ES6+, strict mode, no var (JavaScript)
+# General:
+- No hardcoded secrets, API keys, or passwords
+- No TODO/FIXME in committed code without a linked issue
+```
+
+## Validation Commands
+<!-- ⚠️ REQUIRED PLACEHOLDER — filled by Placeholder Inference.
+     If genuinely unavailable, mark: # NOT CONFIGURED -->
+
+```bash
+# Lint
+[INSERT LINT COMMAND]           # e.g., npm run lint, ruff check .
+
+# Format check
+[INSERT FORMAT COMMAND]         # e.g., npx prettier --check ., black --check .
+
+# Type check (if applicable)
+[INSERT TYPE CHECK COMMAND]     # e.g., npx tsc --noEmit, mypy .
+
+# Test
+[INSERT TEST COMMAND]           # e.g., npm test, pytest
+
+# Build (if applicable)
+[INSERT BUILD COMMAND]          # e.g., npm run build, make
+```
+
+**Rule: Run lint and tests after every change.** If a command is configured
+above, run it after each edit and fix errors before committing.
+
+## File Structure
+<!-- ⚠️ REQUIRED PLACEHOLDER — filled by Placeholder Inference from the
+     actual repo layout. -->
+
+```
+/                              # repo root
+├── .claude/settings.json      # Claude Code permissions (enforcement layer)
+├── .codex/config.toml         # Codex config (enforcement layer)
+├── AGENTS.md                  # THIS FILE — single source of truth
+├── CLAUDE.md                  # Claude Code import shim
+├── protocols/                 # On-demand procedures
+├── src/                       # source code
+├── tests/                     # test files
+└── docs/                      # documentation
+```
+
+## Safe-Edit Boundaries
+
+**Agent-editable** — read and modify freely:
+```
+- src/**, tests/**, docs/**
+- CAPTAINS_LOG.md, CHANGELOG.md   # agent maintains these
+- AGENTS.md Part 2                # under the bounded-summary rule
+```
+
+**Restricted — explicit user instruction required:**
+```
+- AGENTS.md Part 1, CLAUDE.md, PROTOCOLS.md, TASK_TEMPLATE.md, protocols/
+  (pack policy — see Hard guardrails)
+```
+
+**Human-only or generated — never edit:**
+```
+- package-lock.json, yarn.lock, pnpm-lock.yaml   # auto-generated
+- .env, .env.local, .env.production, secrets/**  # credential-bearing
+  (.env.example / .env.template and non-secret config schema ARE safe to edit)
+- dist/**, build/**, out/**                      # build output
+- *.amxd, *.maxpat and other binaries            # edit in their GUI tools
+# Add project-specific entries below:
+- [file or glob]             # [reason]
+```
+
+**Schema and config changes:** additive where possible; destructive schema
+operations are hard-guardrailed (never agent-executable); renames and
+additive changes need explicit confirmation. Config changes documented in
+the development log with before/after. Any required manual step is stated
+before committing — never silently required. Rollback plan stated for any
+schema or config change.
+
+## Code Style
+<!-- Filled in by the agent (inferred from the codebase or chosen with the
+     user). Generic guidance lives in protocols/code-quality.md — record
+     only project-specific decisions here. -->
+
+```
+Files:          [snake_case.py / kebab-case.tsx / ...]
+Functions:      [camelCase / snake_case]
+Classes:        PascalCase
+Constants:      UPPER_SNAKE_CASE
+Indentation:    [2 spaces / 4 spaces / tabs]
+Line length:    [80 / 100 / 120] max
+Quotes:         [single / double]
+Semicolons:     [required / omitted] (JS)
+```
+
+## Git Workflow
+
+```bash
+# Branch naming: feature/short-description, fix/short-description,
+#                refactor/short-description
+# Commit messages — imperative mood, concise:
+#   "Add mode routing lookup table"        good
+#   "Added stuff"                          bad
+# Commit after each logical change (each completed task), not after each file.
+```
+
+## Task Prompts
+<!-- DEFERRED — seeded by the developer or by the product-definition
+     protocol as work is planned. -->
+
+1. ...
+
+## Related Docs & Projects
+<!-- DEFERRED — filled if/when relevant. -->
+
+| Doc / Project | Purpose / Relationship |
+|---------------|------------------------|
+| `README.md` | Human-facing pack documentation |
+| `SETUP.md` | Human bootstrap walkthrough |
+
+## Pattern Registry
+<!-- Agent-maintained. HARD CAP: 40 lines. Check here before implementing
+     anything; if a pattern exists, use it. Template and trigger rules:
+     protocols/pattern-registry.md. When over cap: compress, keep current
+     patterns, move history to the development log. -->
+
+### [Pattern Name]
+```
+Purpose:      [What problem this pattern solves]
+Location:     [Where to find the canonical example]
+Usage:        [How to apply it]
+Anti-pattern: [What NOT to do instead]
+```
+
+## Project-Specific Architecture
+<!-- Agent-maintained (Inherited Codebase Phase 3, or as the project takes
+     shape). HARD CAP: 60 lines. Describe what IS there, not what should be.
+     When over cap: compress to current structure + key invariants; move
+     superseded detail to the development log. -->
+
+### Directory Structure & Ownership
+```
+[actual structure]
+```
+
+### Data Flow
+```
+[how data moves through the system]
+```
+
+### Key Invariants
+```
+- [rules that, if broken, cause system-level failures]
+```

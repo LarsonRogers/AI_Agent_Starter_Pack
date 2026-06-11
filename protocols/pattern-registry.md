@@ -4,7 +4,7 @@
      OR a new approach replaced a previous one that was causing bugs -->
 <!-- Does NOT trigger: one-off solutions, obvious language idioms, single-use helpers,
      patterns already present in the Pattern Registry -->
-<!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
+<!-- Do not load unless triggered — see AGENTS.md → Protocol Index -->
 
 ## Pattern Registry Maintenance
 
@@ -13,7 +13,12 @@ handling errors, managing state, etc. — it must document it in the
 Pattern Registry before committing. The registry is a handoff artifact,
 not an afterthought.
 
-**Target location:** `ARCHITECTURE.md` → Pattern Registry section.
+**Target location:** `AGENTS.md` → Part 2 → Pattern Registry section.
+
+**Bounded living summary — HARD CAP 40 lines.** The registry is rewritten to
+stay current, never grown append-only. If adding a pattern would exceed the
+cap, compress: merge or drop superseded patterns and move their history to
+the development log. Always-on context must not grow as the project ages.
 
 **Required template — use exactly this format, one block per pattern:**
 

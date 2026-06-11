@@ -4,7 +4,7 @@
      read or edit attempted), reading directory trees, or checking file sizes
      without opening file content. Size threshold (>1MB) applies to files being
      committed — not to files merely present in the repo. -->
-<!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
+<!-- Do not load unless triggered — see AGENTS.md → Protocol Index -->
 
 ## Binary & Large File Handling
 

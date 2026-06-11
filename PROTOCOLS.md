@@ -6,7 +6,7 @@
 > Load only the file triggered by your current situation.
 > Do not load protocol files speculatively — see trigger conditions below.
 > The canonical trigger table with full conditions is in
-> `ARCHITECTURE.md` → Protocol Index.
+> `AGENTS.md` → Protocol Index.
 
 ---
 

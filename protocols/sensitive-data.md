@@ -4,7 +4,7 @@
      "YOUR_API_KEY_HERE", "foo@bar.com", hardcoded test fixtures with no real
      credentials), or when the file is a documented sample/template with
      placeholder values only -->
-<!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
+<!-- Do not load unless triggered — see AGENTS.md → Protocol Index -->
 
 ## Sensitive Data Handling
 

@@ -4,7 +4,7 @@
      (e.g., "review this and fix any issues you find" — that is an edit session
      with an audit component, not a read-only session). When intent is ambiguous,
      ask once before assuming read-only. -->
-<!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
+<!-- Do not load unless triggered — see AGENTS.md → Protocol Index -->
 
 ## Read-Only / Meta-Review Protocol
 

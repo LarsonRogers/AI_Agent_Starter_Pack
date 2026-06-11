@@ -4,7 +4,7 @@
      (e.g., CI is down, network issue) — the commands exist, the environment is
      the problem. Also does NOT trigger when commands are present and running
      but tests are failing — that is a test failure, not missing tooling. -->
-<!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
+<!-- Do not load unless triggered — see AGENTS.md → Protocol Index -->
 
 ## Validation Tooling Fallback
 

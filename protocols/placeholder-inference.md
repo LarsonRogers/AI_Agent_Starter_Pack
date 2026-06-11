@@ -2,14 +2,14 @@
 <!-- Load this file when: first session on any project type — fills REQUIRED placeholders -->
 <!-- Does NOT trigger when: a read-only meta-review is active (placeholder inference
      stays suspended until the review is complete and normal session-start resumes). -->
-<!-- Do not load unless triggered — see ARCHITECTURE.md → Protocol Index -->
+<!-- Do not load unless triggered — see AGENTS.md → Protocol Index -->
 
 ### Placeholder Inference Protocol
 
 The user never manually edits starter pack files. All placeholder substitution
 is handled by the agent on first session.
 
-**Required placeholders** — marked `⚠️ REQUIRED PLACEHOLDER` in CLAUDE.md.
+**Required placeholders** — marked `⚠️ REQUIRED PLACEHOLDER` in AGENTS.md → Part 2.
 The agent must resolve all of these before any coding task begins:
 ```
 [PROJECT_NAME]        — infer from repo name, existing README, or package.json/pyproject.toml
@@ -21,8 +21,9 @@ The agent must resolve all of these before any coding task begins:
 [File Structure]      — infer from actual repo layout
 ```
 
-**Deferred placeholders** — marked `DEFERRED` in CLAUDE.md. These are intentional
-scaffolding filled as the project develops. The agent never halts on these:
+**Deferred placeholders** — marked `DEFERRED` in AGENTS.md → Part 2. These are
+intentional scaffolding filled as the project develops. The agent never halts
+on these:
 ```
 [License]          — filled when known
 [Task Prompts]     — filled by developer as work is planned
@@ -50,7 +51,9 @@ scaffolding filled as the project develops. The agent never halts on these:
 
         Say "confirmed" to accept all, or tell me which to change.
 
-[ ] 5. Write confirmed values into CLAUDE.md and AGENTS.md
+[ ] 5. Write confirmed values into AGENTS.md → Part 2 (the only file that
+        holds project specifics — CLAUDE.md is an import shim and is never
+        written during inference)
 [ ] 6. Note any Required placeholders that could not be inferred — ask
         the user directly for those only
 [ ] 7. Proceed — do not halt on Deferred placeholders
