@@ -170,7 +170,7 @@ Agents handle web research differently — use whatever is available:
 |-------|-----------|
 | Claude Code | `WebSearch` tool (already permitted in settings.json) |
 | Codex | Built-in web access if enabled; otherwise request docs from developer |
-| Cursor / Windsurf | Use built-in search or ask developer to paste relevant references |
+| OpenCode | `webfetch` tool (permitted in opencode.json) |
 | Any agent | If web access is unavailable, explicitly list what docs are needed and ask |
 
 If an agent has no web access and cannot verify external APIs or SDKs,

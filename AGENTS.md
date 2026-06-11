@@ -1,9 +1,10 @@
 # AGENTS.md — [PROJECT_NAME]
 <!-- Starter Pack v11.51 — 2026-03-09 -->
 
-> **Single source of truth for all agents.** Codex reads this file
-> automatically. Claude Code reads it through `CLAUDE.md`, which imports it
-> (`@AGENTS.md`) — the content is identical in both harnesses. Everything
+> **Single source of truth for all agents.** Codex and OpenCode read this
+> file automatically. Claude Code reads it through `CLAUDE.md`, which imports
+> it (`@AGENTS.md`) — the content is identical in all three harnesses, and
+> this file is fully self-contained (no imports to expand). Everything
 > cross-tool lives here: policy AND project specifics. Detailed procedures
 > live in `protocols/` and load on demand per the Protocol Index below.
 > Do not duplicate this content in any other file.
@@ -529,6 +530,7 @@ above, run it after each edit and fix errors before committing.
 /                              # repo root
 ├── .claude/settings.json      # Claude Code permissions (enforcement layer)
 ├── .codex/config.toml         # Codex config (enforcement layer)
+├── opencode.json              # OpenCode permissions (enforcement layer)
 ├── AGENTS.md                  # THIS FILE — single source of truth
 ├── CLAUDE.md                  # Claude Code import shim
 ├── protocols/                 # On-demand procedures

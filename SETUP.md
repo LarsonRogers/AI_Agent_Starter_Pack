@@ -35,7 +35,7 @@ developer when needed.
 
 ---
 
-**If you're using a CLI agent (Claude Code, Codex):**
+**If you're using a CLI agent (Claude Code, Codex, OpenCode):**
 
 An AI coding agent — install one:
 - **Claude Code** — `npm install -g @anthropic-ai/claude-code`
@@ -94,6 +94,7 @@ your-project/
 ├── README.md
 ├── CAPTAINS_LOG.md        ← created by agent on first session
 ├── CHANGELOG.md           ← created by agent after first commit
+├── opencode.json
 ├── .claude/
 │   └── settings.json
 ├── .codex/
@@ -117,6 +118,7 @@ On Windows: View → Show → Hidden items.
 Open a terminal in your project folder and start your agent:
 - Claude Code: type `claude` and press Enter
 - Codex: type `codex` and press Enter
+- OpenCode: type `opencode` and press Enter
 - Others: follow their startup instructions, then point them to `AGENTS.md`
 
 **That's it.** The agent takes it from here. No manual editing of pack

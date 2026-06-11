@@ -1,10 +1,10 @@
 # AI Agent Starter Pack
 <!-- Starter Pack v11.51 -->
 
-A platform-agnostic instruction set for AI coding agents. Drop it into any repo
-and any agent — Claude Code, Codex, Cursor, Windsurf, Aider, or others — will
-orient itself, follow consistent rules, and maintain a running handoff log so
-nothing is lost between sessions or platforms.
+An instruction set for AI coding agents. Drop it into any repo and any
+supported agent — Claude Code, Codex, OpenCode first-class; others
+best-effort — will orient itself, follow consistent rules, and maintain a
+running handoff log so nothing is lost between sessions or platforms.
 
 Works for developers and non-developers alike. The agent detects who it's
 working with and adapts its communication style, explanation depth, and
@@ -126,6 +126,10 @@ CLAUDE.md                   Claude Code import shim — `@AGENTS.md` plus
                             permissions, instruction file references, and
                             web access notes.
 
+opencode.json               OpenCode config — permission rules that ask
+                            before pack-file edits and deny dangerous
+                            commands and secret-file edits.
+
 .github/workflows/
   agent-ci.yml              CI template — lint, format, type check, tests,
                             secret scanning, dependency audit. Adapt to
@@ -170,6 +174,7 @@ Instructions are plain markdown — any agent that can read files can follow the
 |-------|-------------|
 | Claude Code | `CLAUDE.md` (auto-read; imports `AGENTS.md` at launch) |
 | Codex CLI | `AGENTS.md` (auto-read on session start) |
+| OpenCode | `AGENTS.md` (auto-read on session start) |
 | Other agents (best-effort) | Paste `AGENTS.md` — it is self-contained |
 
 ---
