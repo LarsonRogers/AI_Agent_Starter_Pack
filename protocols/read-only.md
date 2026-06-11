@@ -54,27 +54,27 @@ protocol unless the user explicitly requests edits:
 [ ] 3. Produce the requested analysis, review, or report
 [ ] 4. Deliver findings in the format appropriate to audience mode.
         If no audience mode is recorded (e.g. first-message audit with no
-        prior Captain's Log), default to Technical non-dev.
+        prior decision log), default to Technical non-dev.
         - Developer: prioritized list, concise, specific file/line references
         - Technical non-dev: plain English with technical detail where useful
         - Non-dev: plain English, options and recommendations, no jargon
 [ ] 5. End with a clear prompt:
         "No changes were made. Want me to act on any of these findings?"
-[ ] 6. Do NOT update CAPTAINS_LOG.md unless the user asks
+[ ] 6. Do NOT update DECISION_LOG.md or HANDOFF.md unless the user asks
 [ ] 7. Do NOT run lint, tests, or commit checks unless the user explicitly
         requests verification evidence as part of the audit (e.g., "run tests
         and show me the results"). Non-mutating checks only — no fixes, no
         commits, no auto-formatting. If requested checks are unavailable or
         unconfigured, invoke protocols/validation-fallback.md rather than
         silently skipping or improvising. In read-only mode, report all
-        fallback findings in-chat only — do not update the Captain's Log
+        fallback findings in-chat only — do not update the decision log
         or Definition of Done unless the user explicitly requests it.
 ```
 
 ### Suspended in read-only mode
 
 Pre-edit protocol, task brief / scope contract, Definition of Done checklist,
-checkpoint / rollback strategy, Captain's Log update (unless requested).
+checkpoint / rollback strategy, decision log / handoff update (unless requested).
 
 ### Still active in read-only mode
 
@@ -85,7 +85,7 @@ credentials or PII), honest verification language, hard guardrails.
 
 ### Inherited Codebase (Existing project, no prior log)
 
-When the task is read-only and no Captain's Log exists, skip the full
+When the task is read-only and no decision log exists, skip the full
 Inherited Codebase Protocol onboarding flow. Instead:
 
 ```
@@ -97,5 +97,5 @@ Inherited Codebase Protocol onboarding flow. Instead:
        before touching any files.
 ```
 
-Do not fill placeholders, do not create CAPTAINS_LOG.md, do not run
+Do not fill placeholders, do not create DECISION_LOG.md, do not run
 audience detection until the user confirms active work is needed.

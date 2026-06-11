@@ -22,7 +22,7 @@ unavailable (common in inherited repos or early-stage projects):
         - "Lint: skipped — not configured (flagged for setup)"
         - Never silently skip a validation step without noting it
 [ ] 4. If CI is inaccessible from the agent environment (offline, no credentials):
-        - Note it in the Captain's Log (in read-only mode, report in-chat
+        - Note it in the decision log (in read-only mode, report in-chat
           instead — do not update the log unless the user requests it)
         - Treat local test pass as the DoD gate
         - Flag CI verification as a Watch Item for the next human-accessible session

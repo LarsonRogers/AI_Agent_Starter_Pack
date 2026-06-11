@@ -36,7 +36,7 @@ Agent: [Deletes, runs tests, commits: "Remove legacy_auth.js — replaced by aut
 ```
 User: "You have permission to add npm dependencies without asking each time."
 Agent: "Got it — I'll add dependencies as needed without confirmation.
-        I'm recording this override in the Captain's Log."
+        I'm recording this override in the decision log."
         [Proceeds. Logs: "Dependency confirmation override granted by user — 2026-03-09"]
 ```
 Note: "just add it" or "go ahead" does not qualify as an explicit override.

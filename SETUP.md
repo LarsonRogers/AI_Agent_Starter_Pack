@@ -92,8 +92,8 @@ your-project/
 ├── SETUP.md
 ├── TASK_TEMPLATE.md
 ├── README.md
-├── CAPTAINS_LOG.md        ← created by agent on first session
-├── CHANGELOG.md           ← created by agent after first commit
+├── DECISION_LOG.md        ← created by agent on first session (append-only)
+├── HANDOFF.md             ← created by agent; overwritten after every task
 ├── BACKLOG.md             ← created by agent (product definition)
 ├── RUNBOOK.md             ← created by agent when the app first runs
 ├── opencode.json
@@ -202,8 +202,8 @@ see "If something goes wrong" below.
 
 **Agent responds:**
 
-> "Done — I've filled those in. I've also created a Captain's Log to track
-> our work across sessions.
+> "Done — I've filled those in. I've also created a decision log and a
+> handoff file to track our work across sessions.
 >
 > What would you like to work on first? Describe it in plain English and
 > I'll make sure I understand it correctly before starting."
@@ -216,7 +216,7 @@ see "If something goes wrong" below.
 - Asks one or two questions about your background before doing anything
 - Scans the repo and reports what it found
 - Presents inferred project details for confirmation before filling them in
-- Creates a Captain's Log entry
+- Creates a decision log entry
 - Waits for your go-ahead before writing any code
 
 ---
@@ -224,7 +224,7 @@ see "If something goes wrong" below.
 **✗ Recovery path — agent is non-compliant if it:**
 - Starts writing or editing code immediately without asking questions
 - Never presents inferred project details for confirmation
-- Doesn't create a Captain's Log entry
+- Doesn't create a decision log entry
 - Asks you to manually edit any of the pack files
 
 **If any of these happen**, paste this into the chat to reset:
@@ -249,13 +249,13 @@ original zip. Without the protocols folder, several key agent behaviors
 are unavailable and the agent will halt rather than guess.
 
 **"The agent seems confused or has lost track"**
-Tell it: *"Check the Captain's Log and tell me where we left off."*
+Tell it: *"Check HANDOFF.md and tell me where we left off."*
 Or start a fresh session — it will resume from the log automatically.
 
 **"I want to switch to a different agent"**
 Start a new session with the new agent and say:
 *"Read AGENTS.md and follow the session start protocol."*
-The Captain's Log has everything needed to continue.
+HANDOFF.md and the decision log have everything needed to continue.
 
 **"The agent is asking me to run commands I don't understand"**
 Ask it: *"Explain what that command does in plain English before I run it."*
@@ -297,9 +297,10 @@ and paste. It is self-contained: policy and project details in one file.
 If your chat has a character or size limit, paste it in numbered parts and
 tell the agent "more coming — wait for all parts" between pastes.
 
-**Resuming a previous session?** If your project already has a `CAPTAINS_LOG.md`,
-paste the most recent entry (the top entry) after `CLAUDE.md`. The agent needs it
-to restore audience mode, last-task context, and watch items from the prior session.
+**Resuming a previous session?** If your project already has a `HANDOFF.md`,
+paste it after `AGENTS.md` — it restores last-task context, the next task, and
+watch items. (Projects from older pack versions may have a `CAPTAINS_LOG.md`
+instead — paste its top entry and the agent will migrate it.)
 
 ---
 

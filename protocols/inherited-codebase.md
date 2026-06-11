@@ -1,5 +1,5 @@
 <!-- Starter Pack v11.51 — protocols/inherited-codebase.md -->
-<!-- Load this file when: no Captain's Log exists and non-pack source files are present -->
+<!-- Load this file when: no decision log exists and non-pack source files are present -->
 <!-- Does NOT trigger when: first message is a read-only audit or meta-review (load
      protocols/read-only.md instead), or when no non-pack source files are present
      (that is a first-session with no existing codebase — see session type B). -->
@@ -8,7 +8,7 @@
 
 This is the case when the starter pack has been dropped into an existing repo
 that was not built with this setup. The codebase exists, but there is no
-`CAPTAINS_LOG.md`, no filled-in project sections in `AGENTS.md`, and no
+`DECISION_LOG.md`, no filled-in project sections in `AGENTS.md`, and no
 established workflow.
 
 **The agent must not write or change any code until the full assessment is complete.**
@@ -35,9 +35,9 @@ established workflow.
 
 #### Git History Reconstruction
 
-For inherited codebases, the git history is a low-fidelity Captain's Log that
-already exists. The agent must read and synthesize it into a reconstructed
-`CAPTAINS_LOG.md` before the first live session entry is written.
+For inherited codebases, the git history is a low-fidelity decision log that
+already exists. The agent must read and synthesize it into reconstructed
+`DECISION_LOG.md` entries before the first live entry is written.
 
 **How far to go back:**
 The agent judges based on repo size and history depth:
@@ -67,34 +67,11 @@ git diff [older-hash] [newer-hash] --stat
 
 **Reconstructed entry format:**
 
-Reconstructed entries use the standard Captain's Log format but are clearly
-marked so any reader — human or agent — knows they were inferred from git
-history rather than written live with full session context:
-
-```markdown
-## [Inferred Phase Name] — [date range: YYYY-MM-DD to YYYY-MM-DD]
-> ⚠️ RECONSTRUCTED — inferred from git history, not written during a live session.
-> Confidence: [High / Medium / Low] — [brief reason, e.g., "clear commit messages"
-> or "sparse commits, intent inferred from diffs"]
-
-**What was built / changed:**
-- `[path/to/file.ext]` — [what changed, inferred from commits and diffs]
-
-**Architectural decisions:**
-- [Any decisions visible from commit messages or structural changes] — WHY: [inferred]
-
-**Codebase state at end of this phase:**
-- [What appeared to be working based on the code at this point in history]
-
-**Watch items / observations:**
-- [Anything notable — abandoned branches, reverted work, sudden direction changes]
-
----
-```
-
-Reconstructed entries are prepended oldest-first so the log reads
-chronologically from bottom (oldest) to top (newest), with the first live
-session entry at the very top.
+Reconstructed entries use the standard DECISION_LOG.md entry format with a
+RECONSTRUCTED marker (full spec: protocols/log-format.md → Inherited
+codebases). Appended oldest-first, so reconstruction and live entries form
+one chronological append-only stream — the first live entry simply follows
+at the bottom.
 
 #### Phase 2 — Assess and Report
 
@@ -128,15 +105,16 @@ After the developer has reviewed the assessment:
         (bounded living summary, hard cap 40 lines)
 [ ] 3. Fill in AGENTS.md → Part 2 → Tech Stack table
 [ ] 4. Fill in AGENTS.md → Part 2 → File Structure section
-[ ] 5. Finalize CAPTAINS_LOG.md:
+[ ] 5. Finalize DECISION_LOG.md and create HANDOFF.md:
         - Reconstructed entries (from git history) are already present from Phase 1
-        - Prepend a live first-session entry above them documenting:
+        - Append a live first-session entry after them documenting:
             - The state of the codebase as inherited and assessed
             - Key findings from the assessment
             - What the developer has decided to do next
             - Watch items (known risks, problem areas to address)
         - This live entry is NOT marked as reconstructed — it was written with
           full session context and developer input
+        - Create HANDOFF.md from the live entry (protocols/log-format.md)
 [ ] 6. Confirm the first task with the developer before writing any code
 ```
 

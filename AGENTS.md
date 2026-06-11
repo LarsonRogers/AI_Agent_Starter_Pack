@@ -21,11 +21,13 @@
 
 Canonical read order, every session:
 
-1. **This file** — auto-loaded by Codex; inlined into Claude Code at launch
-   via the `CLAUDE.md` import. If you are reading this any other way (paste,
-   another agent), read it top to bottom before anything else.
-2. `CAPTAINS_LOG.md` — most recent entry only (if it exists)
-3. `protocols/[triggered-file].md` — only as triggered (Protocol Index below)
+1. **This file** — auto-loaded by Codex and OpenCode; inlined into Claude
+   Code at launch via the `CLAUDE.md` import. If you are reading this any
+   other way (paste, another agent), read it top to bottom first.
+2. `HANDOFF.md` — the where-are-we snapshot (if it exists)
+3. `DECISION_LOG.md` — read from the bottom, only as far as needed
+   (format and rules: protocols/log-format.md)
+4. `protocols/[triggered-file].md` — only as triggered (Protocol Index below)
 
 Do not write any code until the session-start protocol below is complete.
 
@@ -44,7 +46,8 @@ Do not write any code until the session-start protocol below is complete.
 ### How to determine your session type
 
 ```
-Captain's Log exists?
+DECISION_LOG.md exists? (or legacy CAPTAINS_LOG.md — migrate per
+protocols/log-format.md)
   YES → Session type A (Resumption)
         If user states explicit structural goal with no new features →
         also load protocols/refactor.md as a protocol overlay on A
@@ -83,7 +86,8 @@ is ambiguous between C and D, default to C.
         — infer, present, confirm, then write Part 2. The user never edits
         pack files manually. (Skip values already set by product definition.)
 [ ] 6. Report findings: what exists, what is wired up, what appears incomplete
-[ ] 7. Create CAPTAINS_LOG.md with an initial entry (format: protocols/log-format.md)
+[ ] 7. Create DECISION_LOG.md (first entry) and HANDOFF.md
+        (formats: protocols/log-format.md)
 [ ] 8. Ask the developer to confirm the task before writing any code
 ```
 
@@ -93,7 +97,10 @@ is ambiguous between C and D, default to C.
 [ ] 1. Read this file — Part 2 → Audience Mode is the active communication
         mode; apply it from your first reply. If it reads [NOT SET], detect
         it (protocols/communication.md) and write it before proceeding.
-[ ] 2. Read CAPTAINS_LOG.md — most recent entry only
+[ ] 2. Read HANDOFF.md — last task, confirmed next task, open watch items.
+        Missing but DECISION_LOG.md exists → regenerate it from the log tail
+        (protocols/log-format.md). Then read DECISION_LOG.md from the bottom
+        only as far as needed.
 [ ] 3. Run the pack version consistency check (below)
 [ ] 4. Load protocols triggered by session context (Protocol Index below).
         Refactor intent: unambiguous ("refactor", "restructure") → load
@@ -282,7 +289,7 @@ scope contract.
 
 ```
 [ ] 0. Confirm an approved task brief exists — do not proceed without one
-[ ] 1. Read CAPTAINS_LOG.md — orient to where the last session ended
+[ ] 1. Read HANDOFF.md — orient to where the last session ended
 [ ] 2. List all files relevant to the task (read only)
 [ ] 3. Identify existing patterns in those files (naming, structure, data flow)
 [ ] 4. Identify where the relevant logic currently lives
@@ -313,8 +320,8 @@ update, re-confirm. Exception: purely mechanical single-layer changes
 
 ```bash
 # Before any task:        git status (clean) + git log --oneline -5
-# After each task:        1. tests pass  2. update CAPTAINS_LOG.md (prepend)
-#                         3. update CHANGELOG.md (append)  4. git add -A && commit
+# After each task:        1. tests pass  2. append DECISION_LOG.md entry
+#                         3. overwrite HANDOFF.md  4. git add -A && commit
 # If something breaks:    git reset --hard HEAD
 ```
 
@@ -324,9 +331,9 @@ update, re-confirm. Exception: purely mechanical single-layer changes
 [ ] Tests pass
 [ ] Type check passes (if applicable)
 [ ] CI is green (if configured)
-[ ] CAPTAINS_LOG.md updated (prepended) — pack version recorded, handoff
-    prompt appended (format: protocols/log-format.md)
-[ ] CHANGELOG.md updated (appended)
+[ ] DECISION_LOG.md entry appended + HANDOFF.md overwritten
+    (formats: protocols/log-format.md) — no separate changelog; one write
+    per task
 [ ] If dependencies changed: lockfile committed, dependency audit run
 [ ] If secrets or external services added: documented in the development log
 [ ] User has seen it run — per protocols/run-demo.md (FULL demo on backlog-item
@@ -410,7 +417,7 @@ row. A mismatch in either direction is an error.
 
 | Protocol | Location | When to load |
 |----------|----------|-------------|
-| Session Resumption | AGENTS.md | Every session where Captain's Log exists |
+| Session Resumption | AGENTS.md | Every session where DECISION_LOG.md exists |
 | First Session | AGENTS.md | No log, no non-pack source files |
 | Product Definition | `protocols/product-definition.md` | First session type B where the user has an idea, not a codebase (empty folder or stack unknown to user) |
 | Run & Demo | `protocols/run-demo.md` | Closing any coding task (DoD demo gate); backlog item completed; run steps changed |
@@ -420,7 +427,7 @@ row. A mismatch in either direction is an error.
 | Placeholder Inference | `protocols/placeholder-inference.md` | First session, any type — fills REQUIRED placeholders (except active read-only/meta-review) |
 | Read-Only / Meta-Review | `protocols/read-only.md` | Review, audit, analysis — no edits intended |
 | Communication Modes | `protocols/communication.md` | First session (audience detection); any non-dev or technical non-dev session; any error reported to a non-developer |
-| Log & Changelog Format | `protocols/log-format.md` | Writing or reconstructing a log/changelog entry |
+| Decision Log & Handoff Format | `protocols/log-format.md` | Writing a log entry or handoff; reconstructing history; migrating a legacy CAPTAINS_LOG.md |
 | Pre-Edit Protocol | AGENTS.md | Before every coding task |
 | Task Brief & Prompt Reformulation | AGENTS.md + TASK_TEMPLATE.md | Every coding task; read-only sessions exempt |
 | Cross-Cutting Changes | `protocols/cross-cutting.md` | Task touches 3+ files, crosses architectural layers, or involves rename/move/structural reorganization |
@@ -436,7 +443,7 @@ row. A mismatch in either direction is an error.
 | Binary & Large File Handling | `protocols/binary-files.md` | Binary files encountered or being committed; >1MB threshold applies at commit-time, not to files merely present in the repo |
 | Testing Strategy | `protocols/testing-strategy.md` | Writing or evaluating tests |
 | Conflict Resolution Examples | `protocols/conflict-examples.md` | Surfacing a conflict or verifying conflict behavior |
-| Edge-Case Handling | `protocols/edge-cases.md` | Pack files missing, git unavailable, no file-read, no file-write, placeholder conflicts, CAPTAINS_LOG missing/corrupt, pack version mismatch |
+| Edge-Case Handling | `protocols/edge-cases.md` | Pack files missing, git unavailable, no file-read, no file-write, placeholder conflicts, DECISION_LOG missing/corrupt, pack version mismatch |
 | Known Limitations & Deferred Decisions | `protocols/known-limitations.md` | Auditing the pack — never during normal work |
 | Pattern Registry Maintenance | `protocols/pattern-registry.md` | Same structural approach in 2+ files touched this session, or a new approach replaced one causing bugs/confusion — even if used only once so far |
 
@@ -456,7 +463,8 @@ If two files appear to conflict on a topic, this table is authoritative:
 | Project-specific stack, commands, structure, style | AGENTS.md → Part 2 (Project Specifics) |
 | Placeholder inference procedure | `protocols/placeholder-inference.md` |
 | All detailed protocols | `protocols/` directory — one file per protocol |
-| Session history and handoff | `CAPTAINS_LOG.md` |
+| Current state & next task | `HANDOFF.md` (overwritten per task) |
+| Session history and decisions | `DECISION_LOG.md` (append-only) |
 
 When in doubt: AGENTS.md governs. `protocols/` files govern procedure detail.
 `CLAUDE.md` is only the Claude Code import shim. Everything else is
@@ -562,7 +570,8 @@ above, run it after each edit and fix errors before committing.
 **Agent-editable** — read and modify freely:
 ```
 - src/**, tests/**, docs/**
-- CAPTAINS_LOG.md, CHANGELOG.md   # agent maintains these
+- DECISION_LOG.md (append-only), HANDOFF.md (overwrite),
+  BACKLOG.md, RUNBOOK.md          # agent maintains these
 - AGENTS.md Part 2                # under the bounded-summary rule
 ```
 

@@ -40,7 +40,7 @@ When a checkpoint is triggered:
 ```
 [ ] 1. Complete the current task fully (do not checkpoint mid-task)
 [ ] 2. Run the full Definition of Done checklist
-[ ] 3. Update CAPTAINS_LOG.md with a session summary entry including:
+[ ] 3. Append a DECISION_LOG.md checkpoint entry and overwrite HANDOFF.md with:
         - All tasks completed this session
         - Current codebase state
         - Confirmed next task
@@ -49,7 +49,7 @@ When a checkpoint is triggered:
         "This session is getting long and I want to make sure nothing gets
         lost. I've saved a full checkpoint — [summary of what was done].
         I'd recommend starting a fresh session for the next task to keep
-        things sharp. The Captain's Log has everything needed to resume."
+        things sharp. HANDOFF.md has everything needed to resume."
 [ ] 5. Do not start any new tasks after the checkpoint notification
 ```
 

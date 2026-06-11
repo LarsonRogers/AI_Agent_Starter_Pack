@@ -35,12 +35,12 @@ structure," "extract these services," "no new features"), proceed without asking
         after refactoring without a safety net. Options:
         1. I write basic tests first (recommended — separate task)
         2. We proceed carefully with manual verification checkpoints
-        3. We note this as a known risk in the Captain's Log and proceed"
+        3. We note this as a known risk in the decision log and proceed"
         Wait for user decision before continuing.
 [ ] 3. Record the baseline commit:
         git add -A
         git commit -m "Baseline: pre-refactor, all tests passing"
-        Note this commit hash in the Captain's Log — this is the rollback point
+        Note this commit hash in the decision log — this is the rollback point
 [ ] 4. Document current behavior: note what the code does, what inputs produce
         what outputs, any edge cases visible in tests or comments
 ```
@@ -73,7 +73,7 @@ structure," "extract these services," "no new features"), proceed without asking
         - Roll back the failing change: git reset --hard HEAD~1
         - Diagnose why it broke before trying again (three-strike rule applies)
 [ ] 4. Never refactor and add features in the same step — if a
-        feature opportunity is spotted, note it as a Watch Item and
+        feature opportunity is spotted, note it as a watch item and
         continue with structural changes only
 [ ] 5. Commit messages during refactor follow this format:
         "Refactor: [what structural change was made]"
@@ -89,7 +89,7 @@ After all refactor steps are complete:
 [ ] 2. Compare behavior against the baseline documentation from Phase 1
 [ ] 3. If any behavior changed that wasn't intended, treat it as a bug
         introduced by the refactor and fix it before closing the task
-[ ] 4. Record in the Captain's Log:
+[ ] 4. Record in the DECISION_LOG.md entry:
         - What was refactored and why
         - What structural changes were made
         - Confirmation that tests pass
@@ -102,7 +102,7 @@ After all refactor steps are complete:
 If the refactor goes sideways and cannot be cleanly resolved:
 
 ```bash
-# Find the baseline commit hash (recorded in Captain's Log)
+# Find the baseline commit hash (recorded in the decision log)
 git log --oneline
 
 # Roll back to known-good baseline

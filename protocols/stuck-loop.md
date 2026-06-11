@@ -45,7 +45,7 @@ Proceeding further without new information would likely make things worse."
 
 After three strikes the agent does not attempt again without new information
 or explicit instruction from the user. The failure is recorded in the
-Captain's Log as a Watch Item with all three attempts documented.
+decision log as a watch item (and carried in HANDOFF.md) with all three attempts documented.
 
 ---
 

@@ -30,10 +30,12 @@ A coding agent that:
   briefs and waits for your approval before starting
 - **Plans cross-cutting changes upfront** — any change touching multiple files
   or layers requires a confirmed pre-flight plan
-- **Maintains a Captain's Log** — running handoff document so any agent on any
-  platform can pick up exactly where the last session left off
-- **Generates handoff prompts** — ready-to-paste prompt appended to every log
-  entry for switching between Claude, Codex, Cursor, or any other agent
+- **Maintains an append-only decision log** — structured entries (what, why,
+  state, watch items) so any agent on any platform can trace how the project
+  got here
+- **Keeps a one-page handoff current** — HANDOFF.md is overwritten after every
+  task with where-we-are and a ready-to-paste resume prompt for switching
+  between agents
 - **Enforces guardrails** — by default requires explicit confirmation for file
   deletion (see Safe Deletion Procedure), requires explicit confirmation for
   auth/access-control changes, never unsafely handles secrets, and never executes irreversible destructive operations (dropping tables,
@@ -137,13 +139,14 @@ opencode.json               OpenCode config — permission rules that ask
 
 --- Agent-created files (not present until first session) ---
 
-CAPTAINS_LOG.md             Created on first session. Running handoff log,
-                            newest entry first. Enables any agent on any
-                            platform to resume where the last session ended.
+DECISION_LOG.md             Created on first session. Append-only structured
+                            log — one compact entry per task: what changed,
+                            decisions + why, state deltas, watch items. A
+                            human changelog can be generated from it.
 
-CHANGELOG.md                Created after first commit. Appended after every
-                            committed task — what changed, why, and any
-                            decisions made.
+HANDOFF.md                  Overwritten after every task. Where-we-are
+                            snapshot + resume prompt — the first thing a
+                            new session reads after AGENTS.md.
 
 BACKLOG.md                  Created by the product-definition protocol.
                             Ordered user-visible outcomes; completing an

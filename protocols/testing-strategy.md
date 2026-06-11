@@ -61,7 +61,7 @@ as a separate task before structural changes begin.
 Some code is genuinely hard to test automatically — hardware interfaces,
 GUI interactions, real-time audio, external APIs in development. In these cases:
 
-1. Note why automated testing is limited in the Captain's Log
+1. Note why automated testing is limited in the decision log
 2. Document manual verification steps that stand in for automated tests
 3. Isolate the untestable code to minimize how much depends on it
 

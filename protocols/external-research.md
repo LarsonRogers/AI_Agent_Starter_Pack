@@ -8,7 +8,7 @@ Before writing any code that involves an external system, SDK, API, framework,
 or platform the agent is not verified-current on, the agent must research it first.
 "Verified-current" means: the version, behavior, or API surface was explicitly
 confirmed in the current session (via research, user statement, or docs) or is
-recorded in the Captain's Log from a prior session — provided the logged version
+recorded in the decision log from a prior session — provided the logged version
 or API surface has not changed since that entry (if uncertain, re-verify).
 Training data alone does not count as verified-current.
 Do not rely on training data alone — it may be stale, incomplete, or wrong.
@@ -29,7 +29,7 @@ Research is required any time the task involves:
 
 Does NOT trigger for: widely-used stable libraries where the required usage
 is standard and the version has been explicitly confirmed this session or in
-a prior Captain's Log entry with no known breaking changes since that entry
+a prior decision log entry with no known breaking changes since that entry
 (e.g., standard stdlib usage, well-known utility libraries with unchanged APIs).
 
 ### Research Steps
@@ -141,7 +141,7 @@ When you get the response, paste it back here and I'll use it to continue."
 
 When the user pastes back the compiled documentation:
 - Read it fully before proceeding
-- Record the source and key findings in the Captain's Log under
+- Record the source and key findings in the decision log under
   "External research conducted"
 - Flag any gaps or conflicts in the pasted docs before writing code
 - Proceed with the Pre-Edit Protocol as normal
@@ -188,12 +188,12 @@ When adding or updating any dependency:
   pip-audit                      # Python
   cargo audit                    # Rust
   ```
-- Document the new dependency in the Captain's Log — name, version, purpose,
+- Document the new dependency in the decision log — name, version, purpose,
   and any security considerations
 - Never introduce a dependency with known high/critical vulnerabilities
 
 When introducing a new external service or API:
-- Document it in the Captain's Log under External Research
+- Document it in the decision log under External Research
 - Note authentication method, data sensitivity, and any rate limits
 - Never hardcode credentials — use environment variables
 
@@ -201,7 +201,7 @@ When introducing a new external service or API:
 
 ### Documenting Research
 
-Findings must be recorded in the Captain's Log entry for the session:
+Findings must be recorded in the DECISION_LOG.md entry for the session:
 
 ```markdown
 **External research conducted:**

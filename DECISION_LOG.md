@@ -1,0 +1,45 @@
+# Decision Log — AI Agent Starter Pack (pack development)
+<!-- PACK-DEV ARTIFACT: this log tracks development of the pack itself.
+     It is NOT a template. Do not copy it into deployed projects — agents
+     create a fresh DECISION_LOG.md per project (see protocols/log-format.md). -->
+
+## [2026-06-11] Audit of pack v11.51 — Claude Code
+- Did: read-only audit (inventory, accuracy pass vs official docs, lifecycle map); no files changed
+- Decisions: refactor approved on branch `revised` — WHY: always-on context ~16k tokens vs vendor 200-line guidance; broken security scan; CI false-green; missing lifecycle endpoints; AGENTS.md/CLAUDE.md source-of-truth inversion
+- State: findings + 8-commit plan approved by user
+
+## [2026-06-11] Fix broken gates and delete orphan configs (4110746) — Claude Code
+- Did: protocols/sensitive-data.md scan rewritten (grep -E, single-`\` continuations, API-key formats); agent-ci.yml placeholder jobs exit 1; trufflehog pinned v3.95.5, base/head omitted, fetch-depth 0; .codex/config.toml fallback comment corrected; .gitignore added; root settings.json + config.toml deleted (orphans)
+- Decisions: every gate must be demonstrated failing before trusted — WHY: shipped scan matched 0/4 planted secrets while reporting clean
+- State: scan catches 4/4 planted secrets; unconfigured CI exits non-zero
+
+## [2026-06-11] Split ARCHITECTURE.md into core + protocols (78d7394) — Claude Code
+- Did: ARCHITECTURE.md 1,194→463 lines; new protocols: communication, log-format, safe-deletion, code-quality, environment; version-mismatch handler moved to edge-cases.md; protocol count 16→21
+- State: all cross-referenced headings still resolve; zero broken paths
+
+## [2026-06-11] AGENTS.md single source of truth (4df0b96) — Claude Code
+- Did: AGENTS.md = Part 1 policy + Part 2 project specifics; CLAUDE.md → @AGENTS.md shim; ARCHITECTURE.md deleted, full reference sweep (zero dangling); Authority Matrix moved from README; ask-rules added to .claude/settings.json
+- Decisions: Part 2 = bounded living summary (Pattern Registry ≤40 lines, Project-Specific Architecture ≤60) — WHY: always-on budget must not grow with project age. Audience Mode = always-on Part 2 field — WHY: non-dev mode must not depend on a trigger firing
+- State: always-on ~7.6k tokens (was ~16k)
+- Watch: .claude/settings.json ask-rule prompt could not fire mid-session (rules load at session start) — verify in a fresh Claude Code session
+
+## [2026-06-11] OpenCode third harness + read-deny fix (2e09597, 1c1179f) — Claude Code
+- Did: opencode.json (per-path edit-ask on pack files, read+edit deny on .env*/secrets/**, bash denies, webfetch allow); harness lists updated; permission-limits note in sensitive-data.md
+- Decisions: opencode.json is defense-in-depth, not a boundary — WHY: bash-side reads (cat .env) bypass read-deny in all harness configs; real boundary = secrets out of repo
+- Watch: opencode.json edit-ask prompt unverifiable from Claude Code — verify live in an OpenCode session
+
+## [2026-06-11] Lifecycle endpoints + hardened deploy gate (088e6de, 61d4b8f) — Claude Code
+- Did: protocols/product-definition.md (idea→brief→recommended stack→BACKLOG.md, item 1 = walking skeleton); protocols/run-demo.md (RUNBOOK.md + DoD "user has seen it run", full demo on backlog completion, user-only deferral); protocols/deployment.md (opt-in, two-signal escalate-only sensitivity gate, concrete verified teardown)
+- Decisions: demo gate cannot be self-deferred by the agent — WHY: gate exists for the user's eyes, not the agent's confidence. Deploy gate combines user declaration + agent assessment, either escalates — WHY: false negative = privileged data on a public URL
+- State: gate logic executed against test cases; all failure paths demonstrated
+
+## [2026-06-11] Single trigger table (bba81ce) — Claude Code
+- Did: PROTOCOLS.md deleted; AGENTS.md Protocol Index is the only table; edge-cases re-keyed; hardcoded counts replaced by ls-vs-index comparison (bidirectional: missing + orphan)
+- Decisions: completeness check derives from the index, not a count — WHY: counts go stale; the index is the list
+- State: 24 indexed = 24 on disk; check demonstrated failing both directions
+
+## [2026-06-11] Breadcrumb mechanism: DECISION_LOG + HANDOFF (this commit) — Claude Code
+- Did: protocols/log-format.md rewritten as the DECISION_LOG.md/HANDOFF.md spec (append-only + overwritten handoff); CHANGELOG.md retired (generate from log if needed); read order now AGENTS.md → HANDOFF.md → log tail; CAPTAINS_LOG migration path; full reference sweep across AGENTS.md, 10 protocols, SETUP, README, TASK_TEMPLATE; this file and HANDOFF.md created for pack development itself
+- Decisions: append-only oldest-first — WHY: prepend rewrites the file top every task (merge conflicts, no cheap tail read); reconstruction and live entries now form one chronological stream
+- Watch: known-limitations.md is currently indexed as a triggerable protocol and counted in the 24 — move to pack-dev space outside protocols/ in commit 7/8 and drop its index row
+- Watch: DECISION_LOG.md + HANDOFF.md in the pack repo are pack-dev artifacts (like known-limitations.md) — exclude from deployed-project copies in the commit 7/8 distribution work

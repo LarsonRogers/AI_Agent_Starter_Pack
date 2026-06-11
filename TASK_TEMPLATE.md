@@ -14,7 +14,7 @@ you must reformulate it before doing any work.
 4. Wait for explicit confirmation. Do not begin work on a rejected or
    unanswered brief.
 5. Once confirmed, the brief becomes the log entry for this task — record
-   it in CAPTAINS_LOG.md under the session entry before starting work.
+   it in the DECISION_LOG.md entry for this task before starting work.
 
 The reformulation step is not optional. It exists to surface mismatches between
 what the developer asked and what the agent understood, before any code is written.
@@ -30,7 +30,7 @@ explicitly and ask for clarification rather than assuming.
 
 **Context**
 [What is relevant to this task — specific files, functions, prior decisions,
-or Captain's Log entries the agent should be aware of]
+or DECISION_LOG.md entries the agent should be aware of]
 
 **Task type**
 - [ ] Coding task (edits, commits, full DoD applies)
@@ -43,7 +43,7 @@ or Captain's Log entries the agent should be aware of]
 - [ ] Lint and tests pass
 - [ ] Type check passes (if applicable)
 - [ ] CI green (if configured)
-- [ ] Captain's Log and Changelog updated
+- [ ] Decision log entry appended, HANDOFF.md overwritten
 - [ ] If dependencies changed: lockfile committed, audit run
 
 **Acceptance criteria — analysis / read-only task**
@@ -51,7 +51,7 @@ or Captain's Log entries the agent should be aware of]
 - [ ] [Specific findings or report delivered]
 - [ ] No files modified or created
 - [ ] Ends with: "No changes were made. Want me to act on any of these findings?"
-- [ ] Captain's Log updated only if user requests it
+- [ ] Decision log updated only if user requests it
 
 **Constraints**
 - Do not modify: [files or systems off-limits for this task]
@@ -70,7 +70,7 @@ List these and wait for answers before proceeding if they affect the approach.]
 - [Question, if any]
 
 **References**
-- [Relevant file paths, Captain's Log entry dates, external docs]
+- [Relevant file paths, DECISION_LOG.md entry dates, external docs]
 
 ---
 
