@@ -205,7 +205,7 @@ Before tagging a new pack version, verify:
 - [ ] Pack-file edit exceptions are in sync across ARCHITECTURE.md (hard guardrails),
       AGENTS.md (Step 3), and CLAUDE.md (safe-edit boundaries)
 - [ ] Protocol Index trigger table in ARCHITECTURE.md matches AGENTS.md mirror row-for-row for file-backed protocols (AGENTS mirrors protocol files only — session-type entries like Session Resumption are not mirrored and should not be forced into AGENTS)
-- [ ] All 16 protocol files present: `ls protocols/ | wc -l` returns 16
+- [ ] All 21 protocol files present: `ls protocols/ | wc -l` returns 21
 - [ ] Version string updated in all pack file headers
 
 ## Version

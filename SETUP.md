@@ -6,7 +6,7 @@ Developer Quick Setup at the bottom.
 
 ---
 
-> **Note:** This pack includes a `protocols/` folder containing 16 protocol
+> **Note:** This pack includes a `protocols/` folder containing 21 protocol
 > files that the agent loads on demand. The entire folder must be present in
 > your project for full operation — check the file list below.
 
@@ -408,17 +408,17 @@ copied correctly:
 ```bash
 ls protocols/ | wc -l
 ```
-You should see `16`.
+You should see `21`.
 
 **Windows (Command Prompt):**
 ```cmd
 dir /b protocols
 ```
-Count the lines in the output — you should see 16 files listed.
+Count the lines in the output — you should see 21 files listed.
 
 **No terminal? Use your file explorer instead:**
 Open your project folder, then open the `protocols` subfolder.
-Count the files inside — there should be exactly 16.
+Count the files inside — there should be exactly 21.
 If there are fewer, copy the `protocols/` folder from the zip again.
 A single missing protocol file will cause the agent to halt when that
 protocol is triggered. Multiple missing files will cause an immediate

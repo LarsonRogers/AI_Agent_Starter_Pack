@@ -31,11 +31,16 @@
 | `protocols/refactor.md` | Explicit structural improvement, no new features |
 | `protocols/binary-files.md` | Binary files encountered or being committed; >1MB threshold applies at commit-time |
 | `protocols/testing-strategy.md` | Writing or evaluating tests |
+| `protocols/communication.md` | First session (audience detection); any non-dev or technical non-dev session; any error reported to a non-developer |
+| `protocols/log-format.md` | Writing or reconstructing a log/changelog entry |
+| `protocols/safe-deletion.md` | Any file deletion request |
+| `protocols/code-quality.md` | Writing or modifying code (not read-only or docs-only sessions) |
+| `protocols/environment.md` | Any environment-specific code or config |
 
 ---
 
-> Total protocol content: one file per protocol, ~300–1,900 tokens each.
+> Total protocol content: one file per protocol, ~300–2,300 tokens each.
 > Verify count: `ls protocols/ | wc -l` (see SETUP.md for expected number).
 > A typical session loads 1–3 protocols: ~500–4,000 tokens beyond core.
-> Loading this index file costs ~400 tokens. Loading all protocols at once
-> would cost ~11,800 tokens — only do this if explicitly auditing the pack.
+> Loading all protocols at once is only appropriate when explicitly
+> auditing the pack.

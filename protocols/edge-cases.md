@@ -28,5 +28,45 @@ when any of the trigger conditions below are encountered.
 | **No file-read capability (web/paste-only agent)** | Ask the user to paste AGENTS.md, then ARCHITECTURE.md, then CLAUDE.md in order. If CAPTAINS_LOG.md exists, ask the user to paste the most recent entry (top entry only) after CLAUDE.md — this restores audience mode and prior-session context. Proceed from pasted content. When a protocol is triggered, ask the user to paste the relevant `protocols/[filename].md` file directly — this is the supported path in paste-only sessions. If the user cannot provide the protocol file, flag the gap clearly: state which protocol was triggered, what behavior it governs, and that you will proceed with best-effort interpretation based on ARCHITECTURE.md guardrails only. Do not halt the session solely because a protocol file could not be loaded via file-read. |
 | **Partially filled REQUIRED placeholders** | Do not proceed with coding tasks. Report exactly which placeholders remain unfilled. Offer to infer any missing values from repo context, or ask the user directly for values that cannot be inferred. Never assume a placeholder value silently. |
 | **Conflicting inferred placeholder values** | Present all candidates to the user with source for each: "I found two possible project names: 'foo' (from package.json) and 'bar' (from README). Which is correct?" Wait for explicit choice before writing. |
-| **Pack version mismatch detected** | See "Pack version consistency check" section in ARCHITECTURE.md — halt and report. |
+| **Pack version mismatch detected** | Halt and report — full procedure below. |
+
+## Pack Version Mismatch Handler
+
+Version headers are in the format: `<!-- Starter Pack vX.Y — YYYY-MM-DD -->`.
+The check itself runs at session start (see ARCHITECTURE.md → Session
+protocols): `grep "Starter Pack v" ARCHITECTURE.md CLAUDE.md AGENTS.md PROTOCOLS.md`.
+Exception: in read-only / meta-review sessions the check is optional — the
+session makes no writes, so a mismatch cannot corrupt state. If found during a
+read-only session, include it in the findings but do not halt.
+
+For all other session types, if headers differ → HALT. Report before doing anything:
+
+```
+"Pack file versions are inconsistent:
+ ARCHITECTURE.md: [version]
+ CLAUDE.md: [version]
+ AGENTS.md: [version]
+ PROTOCOLS.md: [version]
+This can cause conflicting behavior. Options:
+1. I update all files to the latest version from the pack repo
+2. You manually replace the outdated files
+3. We proceed with caution — I'll flag any cross-file conflicts I detect"
+```
+
+Wait for user instruction before continuing.
+
+If option 3 is chosen, operate in reduced-trust mode:
+
+```
+[ ] Trust only sections present in ALL versions (ignore version-specific additions)
+[ ] Require explicit user confirmation before any file edit, even normally
+    permitted ones — do not rely on default policies from a potentially
+    outdated file
+[ ] Log all detected cross-file conflicts in the development log before proceeding
+[ ] Flag each action with: "Note: operating under version mismatch —
+    confirm this is still the intended behavior"
+```
+
+Reduced-trust mode ends when all pack files are synchronized to the same
+version (user completes option 1 or 2), or when the session ends.
 

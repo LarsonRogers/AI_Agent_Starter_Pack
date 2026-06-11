@@ -83,9 +83,14 @@ Quick reference:
 | Writing new tests or changing test strategy (not: reviewing results, running existing suite) | `protocols/testing-strategy.md` |
 | Review / audit / analysis only (no edits) | `protocols/read-only.md` |
 | Surfacing a conflict or verifying conflict behavior | `protocols/conflict-examples.md` |
-| Pack files missing, git unavailable, no file-read, no file-write, placeholder conflicts, CAPTAINS_LOG missing/corrupt | `protocols/edge-cases.md` |
+| Pack files missing, git unavailable, no file-read, no file-write, placeholder conflicts, CAPTAINS_LOG missing/corrupt, pack version mismatch | `protocols/edge-cases.md` |
 | Auditing the pack for issues *(audit-only — skip during active coding)* | `protocols/known-limitations.md` |
 | Same structural approach appears in 2+ touched files, or a new reusable pattern before committing, or a new approach replaced one that was causing bugs/confusion | `protocols/pattern-registry.md` |
+| First session (audience detection); any non-dev or technical non-dev session; any error reported to a non-developer | `protocols/communication.md` |
+| Writing or reconstructing a log/changelog entry | `protocols/log-format.md` |
+| Any file deletion request | `protocols/safe-deletion.md` |
+| Writing or modifying code (not read-only or docs-only sessions) | `protocols/code-quality.md` |
+| Any environment-specific code or config | `protocols/environment.md` |
 
 ---
 
