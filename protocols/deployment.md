@@ -15,7 +15,21 @@ when the user asks "how do I show this to someone?" — but the user chooses.
 
 ### Step 0 — Data-sensitivity gate (BEFORE any deploy step)
 
-Answer from what the app actually does, not from intentions:
+Two independent signals, and **either can only ESCALATE, never downgrade**:
+agent inference alone must not clear this gate, because the dangerous case
+is a generic-looking app holding privileged content the agent cannot infer —
+a false negative puts privileged data on a public URL.
+
+**Signal 1 — user declaration.** Ask directly, before anything else:
+
+```
+"Before we put this online: will this app store or handle any confidential,
+personal, or privileged information — about you or about anyone else?
+If you're not sure, say so — unsure counts as yes for this check."
+```
+
+**Signal 2 — agent assessment.** Independently, from what the app actually
+does (code, schema, stored data), not from intentions:
 
 ```
 Does the app collect, store, process, or display ANY of:
@@ -26,7 +40,16 @@ Does the app collect, store, process, or display ANY of:
 - content the user has not explicitly agreed to make public
 ```
 
-**If YES to any, or UNCERTAIN → HALT.**
+**Combination rule (escalate-only):**
+
+```
+User says yes or unsure        → HALT, regardless of the agent's assessment
+Agent flags any item/uncertain → HALT, even if the user said no — state
+                                 exactly what was flagged and where
+Both signals clean             → proceed to Step 1, record both in the log
+```
+
+**On HALT:**
 
 ```
 "Before I help put this online: the app handles [specific data]. Once
@@ -43,11 +66,9 @@ review has happened."
 
 Do not proceed on "it's fine, go ahead" alone if the data involves people
 other than the user — restate what is at stake once, then require the
-explicit confirmation. Record the gate outcome (what data, who reviewed,
-what was confirmed) in the development log before any deploy command runs.
-
-**If NO to all → proceed to Step 1.** Record the assessment ("no
-sensitive data: app stores only [X]") in the development log.
+explicit confirmation. Record the gate outcome (both signals, what data,
+who reviewed, what was confirmed) in the development log before any deploy
+command runs.
 
 ### Step 1 — Choose the simplest viable target
 
@@ -73,10 +94,28 @@ sensitive data: app stores only [X]") in the development log.
 
 ### Step 3 — Record and extend the runbook
 
-- Add a `## Deployed version` section to RUNBOOK.md: the URL, how to
-  redeploy, how to take it DOWN (deletion path is mandatory — the user must
-  always know how to turn it off).
-- Development log entry: provider, what was deployed, gate outcome,
-  redeploy/teardown steps.
+Add a `## Deployed version` section to RUNBOOK.md. The teardown path is
+mandatory and must be **concrete commands with a verification step** — prose
+like "delete the project in the dashboard" is not a teardown path. Written
+at deploy time, for the actual provider and project name, e.g.:
+
+```markdown
+## Deployed version
+- Live at: https://[project].example.app
+- Redeploy: `[provider] deploy --prod`        (run from the project folder)
+
+## Take it down
+1. `[provider] remove [project-name] --yes`   (or the provider's exact
+   dashboard path written step-by-step if no CLI exists)
+2. Verify it is actually gone: open https://[project].example.app —
+   you should get "not found". If the page still loads, the teardown
+   FAILED — tell the agent.
+```
+
+The verification step is the point: a teardown that cannot be confirmed
+failed is not a teardown path. Before recording the deploy as complete, the
+agent fills in the real commands (no placeholders left) and the development
+log entry records: provider, what was deployed, both gate signals and
+outcome, redeploy command, teardown command + verification result location.
 
 ---
