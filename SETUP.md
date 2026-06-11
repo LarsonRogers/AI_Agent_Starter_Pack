@@ -6,8 +6,9 @@ Developer Quick Setup at the bottom.
 
 ---
 
-> **Note:** This pack includes a `protocols/` folder containing 24 protocol
-> files that the agent loads on demand. The entire folder must be present in
+> **Note:** This pack includes a `protocols/` folder of protocol files the
+> agent loads on demand (the authoritative list is the Protocol Index in
+> `AGENTS.md`). The entire folder must be present in
 > your project for full operation — check the file list below.
 
 ## What is this?
@@ -83,7 +84,6 @@ folder, not inside any subfolder). Your project should now contain:
 your-project/
 ├── AGENTS.md
 ├── CLAUDE.md
-├── PROTOCOLS.md
 ├── protocols/
 │   ├── refactor.md
 │   ├── inherited-codebase.md
@@ -243,11 +243,10 @@ tell it: *"Run the Placeholder Inference Protocol and present your inferred
 values for my confirmation."*
 
 **"The agent says it can't find a protocol file"**
-The `protocols/` folder and `PROTOCOLS.md` are both required. Check that
-the entire `protocols/` folder was copied into your project root. If files
-are missing, copy them from the original zip. Without the protocols folder,
-several key agent behaviors are unavailable and the agent will halt rather
-than guess.
+The `protocols/` folder is required. Check that the entire folder was
+copied into your project root. If files are missing, copy them from the
+original zip. Without the protocols folder, several key agent behaviors
+are unavailable and the agent will halt rather than guess.
 
 **"The agent seems confused or has lost track"**
 Tell it: *"Check the Captain's Log and tell me where we left off."*
@@ -286,9 +285,9 @@ agents — it will direct the agent to read the other files in the right order.
 If at any point the agent says it needs a specific protocol file (e.g.,
 `protocols/refactor.md`), open that file, copy the full contents, and paste
 it into the chat. The agent will continue from there.
-If the agent does not tell you which file it needs, paste `PROTOCOLS.md`
-next — it contains the full trigger table. The agent can use it to identify
-which protocol file to request.
+If the agent does not tell you which file it needs, point it at the
+Protocol Index table inside `AGENTS.md` (which it already has) — that table
+maps every situation to the protocol file to request.
 If a protocol file is too long to paste in one message, paste it in numbered
 parts and tell the agent "more coming — wait for all parts" between each paste.
 
@@ -402,25 +401,26 @@ If any are missing, copy them from the zip again — they're required for
 Claude Code and Codex to pick up their settings automatically.
 
 **Verifying all protocol files are present**
-Run this in your project folder to confirm the full protocols/ directory
-copied correctly:
+The authoritative list lives in the Protocol Index table inside `AGENTS.md`
+— every `protocols/...` file named there must exist in your `protocols/`
+folder. (No hardcoded count to check: the index IS the list, so it can't
+go stale.)
 
-**Mac / Linux (terminal):**
+**Terminal:**
 ```bash
-ls protocols/ | wc -l
+ls protocols/
 ```
-You should see `24`.
-
-**Windows (Command Prompt):**
-```cmd
-dir /b protocols
-```
-Count the lines in the output — you should see 24 files listed.
+Compare the output against the file names in the AGENTS.md Protocol Index.
 
 **No terminal? Use your file explorer instead:**
-Open your project folder, then open the `protocols` subfolder.
-Count the files inside — there should be exactly 24.
-If there are fewer, copy the `protocols/` folder from the zip again.
+Open `AGENTS.md` in any text editor, find the "Protocol Index" table, and
+check that every file it names exists in the `protocols` subfolder.
+
+**Easiest of all:** just ask the agent in your first session —
+*"Compare the protocols folder against your Protocol Index and tell me if
+anything is missing."*
+
+If anything is missing, copy the `protocols/` folder from the zip again.
 A single missing protocol file will cause the agent to halt when that
 protocol is triggered. Multiple missing files will cause an immediate
 halt at startup regardless of trigger state. Either way, the agent

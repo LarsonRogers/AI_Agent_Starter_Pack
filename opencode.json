@@ -11,7 +11,6 @@
       "*": "allow",
       "AGENTS.md": "ask",
       "CLAUDE.md": "ask",
-      "PROTOCOLS.md": "ask",
       "TASK_TEMPLATE.md": "ask",
       "protocols/**": "ask",
       ".env": "deny",

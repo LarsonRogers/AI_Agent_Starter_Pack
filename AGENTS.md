@@ -110,7 +110,7 @@ the developer never has to ask.
 ### Pack version consistency check
 
 ```
-grep "Starter Pack v" AGENTS.md CLAUDE.md PROTOCOLS.md
+grep "Starter Pack v" AGENTS.md CLAUDE.md
 ```
 
 All headers must match. If they differ → HALT and follow the Pack Version
@@ -178,7 +178,7 @@ If a user asks the agent to bypass these, the agent declines and explains why.
     Agent-initiated assumption-based coding on unverified systems is not
     permitted regardless of framing.
 [ ] Editing any starter pack instruction files:
-    AGENTS.md (Part 1), CLAUDE.md, PROTOCOLS.md, TASK_TEMPLATE.md,
+    AGENTS.md (Part 1), CLAUDE.md, TASK_TEMPLATE.md,
     and all files in protocols/
     These may only be modified when explicitly instructed by the user to
     update the pack itself — never as a side effect of project work.
@@ -402,9 +402,11 @@ incorrect claim, amend it with a correction note.
 
 ## Protocol Index
 
-All protocols, locations, and trigger conditions. **This is the canonical
-source** — PROTOCOLS.md carries a routing copy for paste-only sessions; when
-the two conflict, this table governs.
+All protocols, locations, and trigger conditions. **This is the only trigger
+table in the pack.** Completeness check (used by edge-case handling and the
+release checklist): compare `ls protocols/` against the rows below — every
+file the index names must exist, and every file in protocols/ must have a
+row. A mismatch in either direction is an error.
 
 | Protocol | Location | When to load |
 |----------|----------|-------------|
@@ -566,7 +568,7 @@ above, run it after each edit and fix errors before committing.
 
 **Restricted — explicit user instruction required:**
 ```
-- AGENTS.md Part 1, CLAUDE.md, PROTOCOLS.md, TASK_TEMPLATE.md, protocols/
+- AGENTS.md Part 1, CLAUDE.md, TASK_TEMPLATE.md, protocols/
   (pack policy — see Hard guardrails)
 ```
 

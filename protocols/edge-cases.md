@@ -16,11 +16,9 @@ when any of the trigger conditions below are encountered.
 |-----------|---------------------|
 | **CAPTAINS_LOG.md empty (zero-byte or no entries)** | Treat as corrupt — same behavior as missing. Proceed to session type detection (file-presence rule). Do not attempt to parse or resume from an empty log. |
 | **CAPTAINS_LOG.md missing or corrupt** | Treat as no-log session. A log is "corrupt" when any of the following is true: (1) the file cannot be read or decoded as UTF-8, (2) no valid entry delimiter (`---` or `## Session`) is found in the first 200 lines, or (3) the top entry lacks both a date line and a session-type line. Example: a file containing only HTML tags or binary gibberish is corrupt; a file with a truncated but parseable top entry is not — resume from what is readable. Run session type detection (file-presence rule). If non-pack files exist → Inherited Codebase Protocol. If no source files → First Session. Do not attempt to repair a corrupt log — note it and start fresh. |
-| **Single protocol file missing from protocols/** | Halt when the missing protocol is triggered. Report exactly which file is missing: "protocols/[filename].md is missing. I need it to proceed with [situation]. Please restore it from the original pack zip." Do not guess or reconstruct the protocol behavior. If unsure which file is missing, run `ls protocols/` and compare against the expected count in SETUP.md. |
+| **Single protocol file missing from protocols/** | Halt when the missing protocol is triggered. Report exactly which file is missing: "protocols/[filename].md is missing. I need it to proceed with [situation]. Please restore it from the original pack zip." Do not guess or reconstruct the protocol behavior. To find what is missing, run `ls protocols/` and compare against the Protocol Index in AGENTS.md — every file the index names must exist. |
 | **Protocol file present but unreadable** | Treat as missing — same halt/report behavior as "Single protocol file missing." A file is "unreadable" when it exists on disk but cannot be opened or decoded (e.g., permission denied, binary encoding, non-UTF-8 content). Report: "protocols/[filename].md exists but could not be read ([reason]). Please check file permissions and encoding, or restore it from the original pack zip." Do not attempt best-effort inference from a partially readable file. |
-| **Multiple protocol files missing from protocols/** | Halt immediately regardless of trigger state. Report all missing files by listing what is present vs expected: "The following protocol files are missing: [list]. The pack may have been copied incompletely. Please restore the full protocols/ directory from the original pack zip before continuing." Do not attempt to work around missing protocols or proceed with partial coverage. |
-| **PROTOCOLS.md present but unreadable** | Treat as missing — same halt behavior. Report: "PROTOCOLS.md exists but could not be read ([reason]: permission denied, binary encoding, or non-UTF-8 content). Please check file permissions and encoding, or restore it from the original pack zip before continuing." Do not attempt to reconstruct routing behavior from partial content. |
-| **PROTOCOLS.md missing** | Halt immediately. Report: "PROTOCOLS.md is missing from the repo root. Several required procedures are unavailable. Please restore it from the original pack zip before continuing." Do not attempt to guess or reconstruct protocol behavior. |
+| **Multiple protocol files missing from protocols/** | Halt immediately regardless of trigger state. Report all missing files by comparing `ls protocols/` against the Protocol Index in AGENTS.md: "The following protocol files named in the Protocol Index are missing: [list]. The pack may have been copied incompletely. Please restore the full protocols/ directory from the original pack zip before continuing." Do not attempt to work around missing protocols or proceed with partial coverage. |
 | **AGENTS.md missing** | Halt immediately, all agents. AGENTS.md is the single source of truth — policy and project specifics. Report: "AGENTS.md is missing. It is the primary instruction source; proceeding without it produces undefined behavior. Please restore it from the original pack zip." |
 | **CLAUDE.md missing** | Claude Code only: CLAUDE.md is the import shim that loads AGENTS.md — without it Claude Code starts with no pack instructions. Halt and ask the user to restore it from the original pack zip (it is a few lines; do not reconstruct it yourself — that would be a pack-file edit). Codex and other agents: not a blocker — note the missing file in the session log and proceed. |
 | **No git installed or git unavailable** | Report clearly what is unavailable: commits, rollbacks, history reconstruction, checkpoint strategy, and refactor protocol all require git. Offer read-only analysis and planning work only. Do not attempt to simulate git with manual file copies. |
@@ -34,7 +32,7 @@ when any of the trigger conditions below are encountered.
 
 Version headers are in the format: `<!-- Starter Pack vX.Y — YYYY-MM-DD -->`.
 The check itself runs at session start (see AGENTS.md → Session Start):
-`grep "Starter Pack v" AGENTS.md CLAUDE.md PROTOCOLS.md`.
+`grep "Starter Pack v" AGENTS.md CLAUDE.md`.
 Exception: in read-only / meta-review sessions the check is optional — the
 session makes no writes, so a mismatch cannot corrupt state. If found during a
 read-only session, include it in the findings but do not halt.
@@ -45,7 +43,6 @@ For all other session types, if headers differ → HALT. Report before doing any
 "Pack file versions are inconsistent:
  AGENTS.md: [version]
  CLAUDE.md: [version]
- PROTOCOLS.md: [version]
 This can cause conflicting behavior. Options:
 1. I update all files to the latest version from the pack repo
 2. You manually replace the outdated files

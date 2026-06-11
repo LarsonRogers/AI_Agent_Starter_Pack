@@ -10,7 +10,7 @@
   rules to this file** — they belong in AGENTS.md so Codex and Claude Code
   read identical instructions.
 - `.claude/settings.json` is the Claude-side enforcement layer: it asks
-  before any edit to AGENTS.md, CLAUDE.md, PROTOCOLS.md, TASK_TEMPLATE.md,
+  before any edit to AGENTS.md, CLAUDE.md, TASK_TEMPLATE.md,
   or `protocols/**` (the pack-file hard guardrail, enforced by the harness),
   and denies reads of `.env*` and `secrets/**`.
 - If Claude-specific, path-scoped guidance is ever needed, put it in

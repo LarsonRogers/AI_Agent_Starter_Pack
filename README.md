@@ -12,9 +12,10 @@ confirmation behavior accordingly.
 
 ---
 
-> **Note:** This pack requires the `protocols/` folder and `PROTOCOLS.md` to be
-> present in your repo root for full operation. If protocol files are missing,
-> the agent will halt and report it rather than proceeding with undefined behavior.
+> **Note:** This pack requires the `protocols/` folder to be present in your
+> repo root for full operation. If protocol files named in the AGENTS.md
+> Protocol Index are missing, the agent will halt and report it rather than
+> proceeding with undefined behavior.
 
 ## What You Get
 
@@ -104,9 +105,6 @@ AGENTS.md                   THE single source of truth — always loaded by
                             policies, session protocols, Protocol Index,
                             Authority Matrix. Part 2: project specifics,
                             agent-maintained as a bounded living summary.
-
-PROTOCOLS.md                Routing copy of the Protocol Index for
-                            paste-only sessions. AGENTS.md is canonical.
 
 protocols/                  One file per protocol (~300–1,900 tokens each).
                             Agents load only the file triggered by their
@@ -201,15 +199,13 @@ pack to catch regressions in agent behavior before they affect real work.
 
 Before tagging a new pack version, verify:
 
-- [ ] PROTOCOLS.md routing copy matches AGENTS.md → Protocol Index for
-      file-backed protocols
-- [ ] All 24 protocol files present: `ls protocols/ | wc -l` returns 24
-- [ ] Version string updated in all pack file headers (AGENTS.md, CLAUDE.md,
-      PROTOCOLS.md)
+- [ ] `ls protocols/` matches the AGENTS.md → Protocol Index exactly: every
+      indexed file exists, no protocols/ file is missing from the index
+- [ ] Version string updated in all pack file headers (AGENTS.md, CLAUDE.md)
 
 ## Version
 
 This is **Starter Pack v11.51**. The version is recorded in the header of
-`AGENTS.md`, `CLAUDE.md`, `PROTOCOLS.md`, and in every development log entry
-so there's always an audit trail of which instruction set was active for any
-given session.
+`AGENTS.md`, `CLAUDE.md`, and in every development log entry so there's
+always an audit trail of which instruction set was active for any given
+session.

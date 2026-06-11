@@ -30,7 +30,6 @@
     "ask": [
       "Edit(AGENTS.md)",
       "Edit(CLAUDE.md)",
-      "Edit(PROTOCOLS.md)",
       "Edit(TASK_TEMPLATE.md)",
       "Edit(protocols/**)"
     ],
