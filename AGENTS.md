@@ -74,9 +74,14 @@ is ambiguous between C and D, default to C.
 [ ] 4. Detect the audience (one question, second only if ambiguous — script
         in protocols/communication.md) and write the result to
         Part 2 → Audience Mode
+[ ] 4b. If the project is an idea rather than a codebase — empty or
+        near-empty folder, or the user cannot answer stack questions —
+        run protocols/product-definition.md (product brief → recommended
+        stack → seeded BACKLOG.md) before continuing. Never assume a stack
+        is inferable from an idea.
 [ ] 5. Run the Placeholder Inference Protocol (protocols/placeholder-inference.md)
         — infer, present, confirm, then write Part 2. The user never edits
-        pack files manually.
+        pack files manually. (Skip values already set by product definition.)
 [ ] 6. Report findings: what exists, what is wired up, what appears incomplete
 [ ] 7. Create CAPTAINS_LOG.md with an initial entry (format: protocols/log-format.md)
 [ ] 8. Ask the developer to confirm the task before writing any code
@@ -324,6 +329,9 @@ update, re-confirm. Exception: purely mechanical single-layer changes
 [ ] CHANGELOG.md updated (appended)
 [ ] If dependencies changed: lockfile committed, dependency audit run
 [ ] If secrets or external services added: documented in the development log
+[ ] User has seen it run — per protocols/run-demo.md (FULL demo on backlog-item
+    completion or user-visible change; quick re-confirm otherwise; only the
+    user may defer, and the deferral is logged with a watch item)
 [ ] If this is session task 5+: checkpoint triggered (protocols/context-window.md)
 [ ] Commit made with imperative mood message
 ```
@@ -380,6 +388,11 @@ incorrect claim, amend it with a correction note.
   avoidance apply to every coding task. `protocols/code-quality.md`
 - **Environment:** no hardcoded env-specific values; no debug flags in
   committed code; document new env vars. `protocols/environment.md`
+- **Run & demo:** maintain RUNBOOK.md from the first runnable state; a task
+  is not done until the user has seen it run (or verifiably could —
+  `protocols/run-demo.md`).
+- **Deployment:** opt-in only — never proposed as the default path; the
+  data-sensitivity gate runs before any deploy step. `protocols/deployment.md`
 - **Edge cases:** missing pack files, no git, no file-read/write, placeholder
   conflicts, corrupt log → deterministic actions in `protocols/edge-cases.md`
 - **Known limitations:** consult `protocols/known-limitations.md` before
@@ -397,6 +410,9 @@ the two conflict, this table governs.
 |----------|----------|-------------|
 | Session Resumption | AGENTS.md | Every session where Captain's Log exists |
 | First Session | AGENTS.md | No log, no non-pack source files |
+| Product Definition | `protocols/product-definition.md` | First session type B where the user has an idea, not a codebase (empty folder or stack unknown to user) |
+| Run & Demo | `protocols/run-demo.md` | Closing any coding task (DoD demo gate); backlog item completed; run steps changed |
+| Deployment | `protocols/deployment.md` | User explicitly asks to deploy/publish/share — opt-in only, never default |
 | Inherited Codebase | `protocols/inherited-codebase.md` | No log, non-pack source files present |
 | Refactor | `protocols/refactor.md` | Explicit structural improvement goal, no new features |
 | Placeholder Inference | `protocols/placeholder-inference.md` | First session, any type — fills REQUIRED placeholders (except active read-only/meta-review) |

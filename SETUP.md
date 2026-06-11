@@ -6,7 +6,7 @@ Developer Quick Setup at the bottom.
 
 ---
 
-> **Note:** This pack includes a `protocols/` folder containing 21 protocol
+> **Note:** This pack includes a `protocols/` folder containing 24 protocol
 > files that the agent loads on demand. The entire folder must be present in
 > your project for full operation — check the file list below.
 
@@ -94,6 +94,8 @@ your-project/
 ├── README.md
 ├── CAPTAINS_LOG.md        ← created by agent on first session
 ├── CHANGELOG.md           ← created by agent after first commit
+├── BACKLOG.md             ← created by agent (product definition)
+├── RUNBOOK.md             ← created by agent when the app first runs
 ├── opencode.json
 ├── .claude/
 │   └── settings.json
@@ -407,17 +409,17 @@ copied correctly:
 ```bash
 ls protocols/ | wc -l
 ```
-You should see `21`.
+You should see `24`.
 
 **Windows (Command Prompt):**
 ```cmd
 dir /b protocols
 ```
-Count the lines in the output — you should see 21 files listed.
+Count the lines in the output — you should see 24 files listed.
 
 **No terminal? Use your file explorer instead:**
 Open your project folder, then open the `protocols` subfolder.
-Count the files inside — there should be exactly 21.
+Count the files inside — there should be exactly 24.
 If there are fewer, copy the `protocols/` folder from the zip again.
 A single missing protocol file will cause the agent to halt when that
 protocol is triggered. Multiple missing files will cause an immediate

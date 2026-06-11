@@ -146,6 +146,14 @@ CAPTAINS_LOG.md             Created on first session. Running handoff log,
 CHANGELOG.md                Created after first commit. Appended after every
                             committed task — what changed, why, and any
                             decisions made.
+
+BACKLOG.md                  Created by the product-definition protocol.
+                            Ordered user-visible outcomes; completing an
+                            item triggers a full demo.
+
+RUNBOOK.md                  Created when the app first becomes runnable.
+                            Plain-English "how to run this" — kept current
+                            in the same commit as any run-step change.
 ```
 
 ---
@@ -195,7 +203,7 @@ Before tagging a new pack version, verify:
 
 - [ ] PROTOCOLS.md routing copy matches AGENTS.md → Protocol Index for
       file-backed protocols
-- [ ] All 21 protocol files present: `ls protocols/ | wc -l` returns 21
+- [ ] All 24 protocol files present: `ls protocols/ | wc -l` returns 24
 - [ ] Version string updated in all pack file headers (AGENTS.md, CLAUDE.md,
       PROTOCOLS.md)
 

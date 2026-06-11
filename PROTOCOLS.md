@@ -36,6 +36,9 @@
 | `protocols/safe-deletion.md` | Any file deletion request |
 | `protocols/code-quality.md` | Writing or modifying code (not read-only or docs-only sessions) |
 | `protocols/environment.md` | Any environment-specific code or config |
+| `protocols/product-definition.md` | First session where the user has an idea, not a codebase |
+| `protocols/run-demo.md` | Closing any coding task (DoD demo gate); backlog item completed; run steps changed |
+| `protocols/deployment.md` | User explicitly asks to deploy/publish/share — opt-in only |
 
 ---
 
