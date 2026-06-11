@@ -70,6 +70,9 @@ is ambiguous between C and D, default to C.
 
 ```
 [ ] 1. Read this file in full (you are doing that now)
+[ ] 1b. If the folder is not a git repository (`git status` fails), run
+        `git init` — this is the agent's job, never the user's — and note
+        it in the first log entry
 [ ] 2. Scan the repo structure (read only, 3 levels deep; exclude
         node_modules/, vendor/, dist/, build/, out/, .git/, __pycache__/,
         .venv/, venv/, coverage/, .cache/; note >1MB files, do not read them)
@@ -402,8 +405,6 @@ incorrect claim, amend it with a correction note.
   data-sensitivity gate runs before any deploy step. `protocols/deployment.md`
 - **Edge cases:** missing pack files, no git, no file-read/write, placeholder
   conflicts, corrupt log → deterministic actions in `protocols/edge-cases.md`
-- **Known limitations:** consult `protocols/known-limitations.md` before
-  flagging a pack issue — audit-only, never during normal work.
 
 ---
 
@@ -444,7 +445,6 @@ row. A mismatch in either direction is an error.
 | Testing Strategy | `protocols/testing-strategy.md` | Writing or evaluating tests |
 | Conflict Resolution Examples | `protocols/conflict-examples.md` | Surfacing a conflict or verifying conflict behavior |
 | Edge-Case Handling | `protocols/edge-cases.md` | Pack files missing, git unavailable, no file-read, no file-write, placeholder conflicts, DECISION_LOG missing/corrupt, pack version mismatch |
-| Known Limitations & Deferred Decisions | `protocols/known-limitations.md` | Auditing the pack — never during normal work |
 | Pattern Registry Maintenance | `protocols/pattern-registry.md` | Same structural approach in 2+ files touched this session, or a new approach replaced one causing bugs/confusion — even if used only once so far |
 
 ---
@@ -512,17 +512,6 @@ human-facing documentation.
 | Linter | e.g., ESLint, Ruff | |
 | Formatter | e.g., Prettier, Black | |
 | Tests | e.g., pytest, vitest | |
-
-### Language Rules
-```
-# Examples — replace with the project's actual rules:
-- Type hints on all function signatures (Python)
-- No bare except: — always catch specific exceptions
-- ES6+, strict mode, no var (JavaScript)
-# General:
-- No hardcoded secrets, API keys, or passwords
-- No TODO/FIXME in committed code without a linked issue
-```
 
 ## Validation Commands
 <!-- ⚠️ REQUIRED PLACEHOLDER — filled by Placeholder Inference.
@@ -600,20 +589,16 @@ before committing — never silently required. Rollback plan stated for any
 schema or config change.
 
 ## Code Style
-<!-- Filled in by the agent (inferred from the codebase or chosen with the
-     user). Generic guidance lives in protocols/code-quality.md — record
-     only project-specific decisions here. -->
+<!-- DEFERRED placeholder — default: the chosen stack's standard conventions
+     (PEP 8, Prettier defaults, gofmt, etc.). The agent records only
+     deviations and language rules here as they are decided — inferred from
+     the codebase (inherited projects) or set with the stack choice (new
+     projects). Generic code-quality rules live in protocols/code-quality.md
+     and are NOT repeated here. -->
 
-```
-Files:          [snake_case.py / kebab-case.tsx / ...]
-Functions:      [camelCase / snake_case]
-Classes:        PascalCase
-Constants:      UPPER_SNAKE_CASE
-Indentation:    [2 spaces / 4 spaces / tabs]
-Line length:    [80 / 100 / 120] max
-Quotes:         [single / double]
-Semicolons:     [required / omitted] (JS)
-```
+- Default: stack-standard conventions — record only deviations below
+- No TODO/FIXME in committed code without a linked issue
+- [naming/formatting/language rule, only if it deviates from stack default]
 
 ## Git Workflow
 

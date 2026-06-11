@@ -61,7 +61,9 @@ A coding agent that:
 ## Setup
 
 1. Copy all files into your repo root, preserving the `.claude/`, `.codex/`,
-   and `.github/` directory structures.
+   and `.github/` directory structures — **excluding the `pack-dev/`
+   directory** (the pack's own development artifacts; never part of a
+   project).
 2. Start your agent session. The agent handles everything else.
 
 No manual editing of pack placeholders required. The agent infers your project
@@ -136,6 +138,11 @@ opencode.json               OpenCode config — permission rules that ask
   agent-ci.yml              CI template — lint, format, type check, tests,
                             secret scanning, dependency audit. Adapt to
                             your stack before use.
+
+pack-dev/                   Pack development artifacts (known-limitations
+                            ledger, the pack's own decision log + handoff).
+                            NOT copied into projects — the whole directory
+                            is excluded from distribution.
 
 --- Agent-created files (not present until first session) ---
 

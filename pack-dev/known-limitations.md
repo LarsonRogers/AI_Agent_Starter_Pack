@@ -1,9 +1,7 @@
-<!-- Starter Pack v11.51 — protocols/known-limitations.md -->
-<!-- Load this file when: auditing the pack — never needed during normal agent work -->
-<!-- Does NOT trigger during ordinary coding tasks, code reviews of project code,
-     or any session where the goal is writing or modifying project code rather
-     than reviewing the starter pack itself. -->
-<!-- Do not load unless triggered — see AGENTS.md → Protocol Index -->
+<!-- Starter Pack v11.51 — pack-dev/known-limitations.md -->
+<!-- PACK-DEV ARTIFACT: consulted only when auditing or developing the pack
+     itself. Lives outside protocols/ on purpose — it is not a triggerable
+     protocol and is not copied into deployed projects (see pack-dev/README.md). -->
 
 ## Known Limitations & Deferred Decisions
 

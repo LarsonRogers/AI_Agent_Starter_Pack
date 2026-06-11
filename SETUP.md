@@ -38,11 +38,20 @@ developer when needed.
 
 **If you're using a CLI agent (Claude Code, Codex, OpenCode):**
 
-An AI coding agent — install one:
+**First: Node.js.** All three agents install via `npm`, which comes with
+Node.js. Check whether you have it: open a terminal and type
+`node --version`. If you see a version number, you're set. If you see an
+error, install Node.js (the LTS version) from https://nodejs.org, then
+close and reopen your terminal.
+
+Then install an AI coding agent — one of:
 - **Claude Code** — `npm install -g @anthropic-ai/claude-code`
   or follow the guide at https://docs.anthropic.com/claude-code
 - **Codex CLI** — `npm install -g @openai/codex`
   or follow the guide at https://platform.openai.com/docs/codex
+- **OpenCode** — `npm install -g opencode-ai`
+  (or `curl -fsSL https://opencode.ai/install | bash` on Mac/Linux)
+  — guide at https://opencode.ai/docs
 
 **If you're using an IDE agent (Cursor, Windsurf, or others):**
 
@@ -56,6 +65,9 @@ you've downloaded from the internet.
 **Git (strongly recommended — required for most agent features).** Git saves
 checkpoints of your code so mistakes can be undone. The agent handles git
 for you — you just need it installed. Download at https://git-scm.com
+You never need to run git commands yourself: if your project folder isn't
+a git repository yet, the agent initializes one at the start of the first
+session — that's the agent's job, not yours.
 
 Without git: the agent can still read, analyze, and answer questions about
 your code. But it cannot make safe commits, roll back mistakes, reconstruct
@@ -73,12 +85,21 @@ If git is not installed, download from the link above.
 
 ---
 
-## Setup — two steps
+## Setup — three steps
+
+### Step 0 — Get the pack
+
+Download the starter pack from
+**[PACK DISTRIBUTION POINT — maintainer: fill in your release page or
+download link]** and unzip it somewhere you can find it.
 
 ### Step 1 — Copy the starter pack files into your project folder
 
 Copy everything from this pack into the root of your project (the top-level
-folder, not inside any subfolder). Your project should now contain:
+folder, not inside any subfolder) — **except the `pack-dev/` folder, if
+present. Never copy `pack-dev/`**: it is the pack's own development history
+(its decision log, handoff, and known-limitations ledger), not part of your
+project. Everything else is yours. Your project should now contain:
 
 ```
 your-project/

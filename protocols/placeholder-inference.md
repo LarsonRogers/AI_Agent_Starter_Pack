@@ -9,33 +9,53 @@
 The user never manually edits starter pack files. All placeholder substitution
 is handled by the agent on first session.
 
-**Required placeholders** — marked `⚠️ REQUIRED PLACEHOLDER` in AGENTS.md → Part 2.
-The agent must resolve all of these before any coding task begins:
+Every bracketed placeholder in AGENTS.md → Part 2 belongs to exactly one
+bucket below. An unclassified placeholder is a pack bug — flag it when
+auditing, never improvise a category at runtime.
+
+**Required placeholders** — the agent must resolve all of these before any
+coding task begins:
 ```
-[PROJECT_NAME]        — infer from repo name, existing README, or package.json/pyproject.toml
-[Tech Stack table]    — infer from files present: package.json, requirements.txt,
-                        Cargo.toml, go.mod, etc.
+[PROJECT_NAME] / Project Summary — infer from repo name, existing README,
+                        or package.json/pyproject.toml; for idea-stage
+                        projects, set by the product-definition protocol
+[Quick Constraints]   — language/runtime, files not to edit, lint + test
+                        commands (one-line versions of the sections below)
+[Tech Stack table]    — infer from files present: package.json,
+                        requirements.txt, Cargo.toml, go.mod, etc.; for
+                        idea-stage projects, set by product definition
 [Validation Commands] — infer from package.json scripts, Makefile, or common
-                        conventions for the detected stack. If genuinely unavailable,
-                        mark with: # NOT CONFIGURED
+                        conventions for the detected stack. If genuinely
+                        unavailable, mark with: # NOT CONFIGURED
 [File Structure]      — infer from actual repo layout
 ```
 
-**Deferred placeholders** — marked `DEFERRED` in AGENTS.md → Part 2. These are
-intentional scaffolding filled as the project develops. The agent never halts
-on these:
+**Deferred placeholders** — intentional scaffolding filled as the project
+develops. The agent never halts on these:
 ```
-[License]          — filled when known
-[Task Prompts]     — filled by developer as work is planned
-[Related Projects] — filled if/when relevant
-[Pattern Name]     — Pattern Registry entries, filled as patterns emerge
-[Key Invariants]   — filled as architecture solidifies
+[Code Style]          — default: the chosen stack's standard conventions;
+                        record only deviations, as they are decided
+[Task Prompts]        — seeded by the product-definition protocol (BACKLOG.md)
+                        or by the developer as work is planned
+[Related Docs & Projects] — filled if/when relevant
+[Pattern Name]        — Pattern Registry entries, filled as patterns emerge
+                        (bounded, cap 40 lines)
+[Key Invariants] / Project-Specific Architecture — filled as architecture
+                        solidifies (bounded, cap 60 lines)
+```
+
+**Set by other protocols — NOT resolved by inference (do not ask for these):**
+```
+Audience Mode         — set by audience detection at session start
+                        (protocols/communication.md)
+BACKLOG.md contents   — set by the product-definition protocol
 ```
 
 **The inference flow:**
 ```
-[ ] 1. Scan all pack files for [BRACKETED] placeholders
-[ ] 2. Categorize each as Required or Deferred (see above)
+[ ] 1. Scan AGENTS.md → Part 2 for [BRACKETED] placeholders
+[ ] 2. Categorize each as Required, Deferred, or set-by-other-protocol
+        (see above) — every placeholder must land in exactly one bucket
 [ ] 3. For each Required placeholder, infer the most likely value from
         the repo contents, file names, and any existing documentation
 [ ] 4. Present inferred values to the user in a single confirmation block:
