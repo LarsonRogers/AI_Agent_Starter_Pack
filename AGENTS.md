@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v11.51 — 2026-03-09 -->
+<!-- Starter Pack v12.0 — 2026-06-11 -->
 
 > **Single source of truth for all agents.** Codex and OpenCode read this
 > file automatically. Claude Code reads it through `CLAUDE.md`, which imports
@@ -442,7 +442,7 @@ row. A mismatch in either direction is an error.
 | External Research Protocol | `protocols/external-research.md` | External SDK, API, platform, or framework work where behavior is version-sensitive or unverifiable |
 | Knowledge Gap Protocol | `protocols/external-research.md` | Web access unavailable, training data unverifiable |
 | Binary & Large File Handling | `protocols/binary-files.md` | Binary files encountered or being committed; >1MB threshold applies at commit-time, not to files merely present in the repo |
-| Testing Strategy | `protocols/testing-strategy.md` | Writing or evaluating tests |
+| Testing Strategy | `protocols/testing-strategy.md` | Writing or evaluating tests (not: reviewing results or running an existing suite) |
 | Conflict Resolution Examples | `protocols/conflict-examples.md` | Surfacing a conflict or verifying conflict behavior |
 | Edge-Case Handling | `protocols/edge-cases.md` | Pack files missing, git unavailable, no file-read, no file-write, placeholder conflicts, DECISION_LOG missing/corrupt, pack version mismatch |
 | Pattern Registry Maintenance | `protocols/pattern-registry.md` | Same structural approach in 2+ files touched this session, or a new approach replaced one causing bugs/confusion — even if used only once so far |

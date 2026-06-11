@@ -1,5 +1,5 @@
-<!-- Starter Pack v11.51 — protocols/testing-strategy.md -->
-<!-- Load this file when: writing or evaluating tests -->
+<!-- Starter Pack v12.0 — protocols/testing-strategy.md -->
+<!-- Load this file when: writing or evaluating tests (not: reviewing results or running an existing suite) -->
 <!-- Does NOT trigger when: merely reading CI output, reviewing test results
      without authoring or changing tests, or running an existing test suite
      as part of the Definition of Done checklist -->

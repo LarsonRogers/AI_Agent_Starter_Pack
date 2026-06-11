@@ -1,5 +1,5 @@
 # AI Agent Starter Pack
-<!-- Starter Pack v11.51 -->
+<!-- Starter Pack v12.0 — 2026-06-11 -->
 
 An instruction set for AI coding agents. Drop it into any repo and any
 supported agent — Claude Code, Codex, OpenCode first-class; others
@@ -168,8 +168,9 @@ RUNBOOK.md                  Created when the app first becomes runnable.
 
 ## Starting a Session
 
-**CLI agents** (Claude Code, Codex CLI) — run from repo root, agent reads
-instruction files automatically.
+**CLI agents** (Claude Code, Codex, OpenCode) — run from repo root, agent
+reads instruction files automatically (Codex and OpenCode read AGENTS.md
+directly; Claude Code reads it through the CLAUDE.md import).
 
 **Web / IDE agents** (Cursor, Windsurf, ChatGPT web, etc.) — paste this
 as your opening message:
@@ -215,7 +216,7 @@ Before tagging a new pack version, verify:
 
 ## Version
 
-This is **Starter Pack v11.51**. The version is recorded in the header of
+This is **Starter Pack v12.0**. The version is recorded in the header of
 `AGENTS.md`, `CLAUDE.md`, and in every development log entry so there's
 always an audit trail of which instruction set was active for any given
 session.

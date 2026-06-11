@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.51 — pack-dev/known-limitations.md -->
+<!-- Starter Pack v12.0 — pack-dev/known-limitations.md -->
 <!-- PACK-DEV ARTIFACT: consulted only when auditing or developing the pack
      itself. Lives outside protocols/ on purpose — it is not a triggerable
      protocol and is not copied into deployed projects (see pack-dev/README.md). -->
@@ -15,7 +15,7 @@ when the pack was restructured around AGENTS.md as the single source of truth.
 
 | Item | Status | Rationale |
 |------|--------|-----------|
-| **Platform-specific config files** (`.claude/`, `.codex/`) | Intentional | Claude Code and Codex are the first-class supported agents. Config files for each are enforcement adapters; behavior rules live once in AGENTS.md. |
+| **Platform-specific config files** (`.claude/`, `.codex/`, `opencode.json`) | Intentional | Claude Code, Codex, and OpenCode are the first-class supported agents. Config files for each are enforcement adapters; behavior rules live once in AGENTS.md. |
 | **CLI-first operational assumptions** | Intentional | The pack targets developers and technical users as the operating environment; non-devs are supported as users through SETUP.md and the communication protocol, not through GUI-only tooling. |
 | **Multi-agent concurrent editing** | Deferred | Branch-per-agent and merge conflict protocols are out of scope for a starter pack. Recommended convention: one agent per branch, human-managed merges. Add if a specific project requires it. |
 | **Git unavailable fallback** | Deferred | Git is a hard dependency for rollback, log reconstruction, and checkpoint strategy. Environments without git are not supported. If git is unavailable, the agent flags it immediately and defers all file-modifying tasks. |
@@ -31,5 +31,5 @@ when the pack was restructured around AGENTS.md as the single source of truth.
 | **Multi-trigger protocol ordering** | Deferred | When multiple protocol triggers fire simultaneously, load order is unspecified. A formal load-order rule creates a new maintenance surface with marginal reliability gain. Current behavior (load all triggered protocols, read in trigger-table order) is sufficient. Revisit if agents demonstrate ordering-dependent failures. |
 | **"Agent uncertain" default-policy rubric** | Considered and declined (further elaboration) | Must-ask list and need-not-ask counter-list exist in the default policies. A full low/medium/high uncertainty rubric would make the clause harder to read and follow. Do not re-flag unless agent behavior shows measurable over- or under-confirmation in practice. |
 | **Hard guardrail may over-block legitimate destructive operations** | Considered and declined | Forcing a manual handoff on locally-irreversible destructive operations is intentional. The agent cannot verify rollback paths, backup integrity, or downstream effects. User authorization alone is not sufficient justification for an agent to execute irreversible destruction autonomously. Do not re-flag. |
-| **Version header format standardization across all pack files** | Deferred to v12 finalization | Several files use header variants and TASK_TEMPLATE.md has no header. Standardize when the v12 layout settles. |
+| **Version header format standardization across all pack files** | Resolved — v12.0 | Root files use `<!-- Starter Pack vX.Y — YYYY-MM-DD -->`; protocol files keep the file-identifying variant (`<!-- Starter Pack vX.Y — protocols/<file>.md -->`), which is intentional — it preserves provenance when a protocol is pasted into a chat in isolation. TASK_TEMPLATE.md now carries a header. |
 | **Binary/generated artifact exception uses subjective "established convention" wording** | Considered and declined | Defining objective criteria would over-specify a judgment call intentionally left to agent + user confirmation. The explicit confirmation requirement is the safety net. Do not re-flag. |

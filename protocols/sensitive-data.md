@@ -1,4 +1,4 @@
-<!-- Starter Pack v11.51 — protocols/sensitive-data.md -->
+<!-- Starter Pack v12.0 — protocols/sensitive-data.md -->
 <!-- Load this file when: inherited repos (proactive scan) or sensitive data encountered -->
 <!-- Does NOT trigger when: values are obviously synthetic (e.g., "example.com",
      "YOUR_API_KEY_HERE", "foo@bar.com", hardcoded test fixtures with no real
@@ -7,6 +7,16 @@
 <!-- Do not load unless triggered — see AGENTS.md → Protocol Index -->
 
 ## Sensitive Data Handling
+
+**Scope — read before trusting a clean result:** this protocol catches KNOWN
+credential and PII formats (the patterns below). It does not and cannot
+detect arbitrary confidential or privileged content — business plans, client
+documents, unmarked personal data, anything sensitive by context rather than
+by format. A clean scan must never be read as "no privileged data present."
+Privileged or confidential material must be kept out of the repo entirely;
+the scan is a tripwire for accidents, not a clearance mechanism. (See also
+"Permission-rule limits" below: harness read-deny rules are defense-in-depth,
+not a boundary.)
 
 ### Proactive scan (inherited codebases)
 

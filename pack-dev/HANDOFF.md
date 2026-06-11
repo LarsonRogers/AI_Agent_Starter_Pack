@@ -4,20 +4,21 @@
      logs live in pack-dev/ because the repo IS the pack source — deployed
      projects keep theirs at the project root. Overwritten per task. -->
 
-**As of:** 2026-06-11 · **Pack version:** v11.51 (headers bump to v12.0 in commit 8) · **Audience mode:** Developer
-**Last completed:** Commit 7 — pack-dev boundary, lore strip, placeholder classification, non-dev setup gaps
-**Confirmed next task:** Commit 8 — consistency pass: session-type-D wording, testing-strategy trigger wording, read-order vs auto-load reality, `* text=auto` .gitattributes, sensitive-data scope line (known formats only; privileged content stays out of the repo), prune/verify known-limitations entries, v12.0 version bump + full self-checks
-**Branch:** `revised` (11 commits ahead of main)
+**As of:** 2026-06-11 · **Pack version:** v12.0 · **Audience mode:** Developer
+**Last completed:** Commit 8 — consistency pass, sensitive-data scope line, .gitattributes, v12.0 bump, full self-checks (BUILD PHASE COMPLETE)
+**Confirmed next task:** Effectiveness trials (user-led). Candidate probes below must be exercised before v12.0 is tagged/released.
+**Branch:** `revised` (12 commits ahead of main)
 
-**Open watch items:**
-- `.claude/settings.json` ask-rule prompt: verify in a FRESH Claude Code session (attempt a protocols/ edit → expect prompt). Rules load at session start; could not fire mid-session.
-- `opencode.json` edit-ask prompt: verify live in an OpenCode session (cannot fire from Claude Code; schema-shape validated only; open OpenCode issue re: permission enforcement — defense-in-depth).
-- SETUP.md Step 0 distribution-point placeholder: user fills in the download link.
+**Open watch items (OPEN — none silently closed):**
+- PROBE 1 — `.claude/settings.json` ask-rule: in a FRESH Claude Code session on this repo, ask the agent to edit any `protocols/` file → a permission prompt must appear. (Rules load at session start; could not fire in the build session.)
+- PROBE 2 — `opencode.json` edit-ask: in an OpenCode session, attempt an edit to AGENTS.md or `protocols/**` → prompt must appear; also confirm `read` deny on `.env`. (Schema-shape validated only; open upstream issue re: permission enforcement — treat as defense-in-depth either way.)
+- SETUP.md Step 0: distribution-point placeholder awaiting the user's download link.
+- Trial-phase suggestions (not commitments): first-session dry run as a non-dev with an empty folder (product-definition → walking skeleton → demo gate); inherited-codebase run; legacy CAPTAINS_LOG migration run.
 
 **Resume prompt (paste into any agent):**
 
     This is the pack-development repo (branch `revised`); its own logs live
     in pack-dev/. Read AGENTS.md, then pack-dev/HANDOFF.md, then the last
-    entries of pack-dev/DECISION_LOG.md as needed. Continue the approved
-    refactor at the task named above. One commit per step; demonstrate any
-    gate failing before trusting it; pause for user approval between commits.
+    entries of pack-dev/DECISION_LOG.md as needed. The v12.0 build phase is
+    complete; current work is effectiveness trials — start with the open
+    probes above and report results before any further pack edits.
