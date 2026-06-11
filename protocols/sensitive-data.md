@@ -67,13 +67,23 @@ How would you like to proceed?"
 ### Hard rules — always apply
 
 ```
-- Never reproduce sensitive data in the Captain's Log, commit messages,
+- Never reproduce sensitive data in the development log, commit messages,
   or any generated documentation
 - Never log, print, or output credentials or PII in code unless explicitly
   required and clearly marked
 - Never commit a file containing real credentials — flag it and stop
 - If in doubt about whether something is sensitive, treat it as sensitive
 ```
+
+### Permission-rule limits (applies to all harness configs)
+
+The read-deny rules on `.env*` and `secrets/**` in `.claude/settings.json`
+and `opencode.json` stop the agent's file tools from ingesting secret values,
+but they do NOT stop indirect reads through shell commands (`cat .env`,
+`grep KEY .env`) — the bash deny lists cover only rm/sudo/chmod. Treat the
+permission rules as defense-in-depth, not a boundary. The real secret
+boundary is keeping secrets out of the repo entirely: `.gitignore` coverage
+plus secrets living outside the working tree.
 
 ---
 

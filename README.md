@@ -127,8 +127,10 @@ CLAUDE.md                   Claude Code import shim — `@AGENTS.md` plus
                             web access notes.
 
 opencode.json               OpenCode config — permission rules that ask
-                            before pack-file edits and deny dangerous
-                            commands and secret-file edits.
+                            before pack-file edits and deny reads/edits of
+                            secret files and dangerous commands. Defense-
+                            in-depth, not a hard boundary (see
+                            protocols/sensitive-data.md).
 
 .github/workflows/
   agent-ci.yml              CI template — lint, format, type check, tests,
