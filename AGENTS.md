@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v12.0 — 2026-06-11 -->
+<!-- Starter Pack v12.1 — 2026-06-11 -->
 
 > **Single source of truth for all agents.** Codex and OpenCode read this
 > file automatically. Claude Code reads it through `CLAUDE.md`, which imports

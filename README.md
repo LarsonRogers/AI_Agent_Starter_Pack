@@ -1,5 +1,5 @@
 # AI Agent Starter Pack
-<!-- Starter Pack v12.0 — 2026-06-11 -->
+<!-- Starter Pack v12.1 — 2026-06-11 -->
 
 An instruction set for AI coding agents. Drop it into any repo and any
 supported agent — Claude Code, Codex, OpenCode first-class; others
@@ -216,7 +216,7 @@ Before tagging a new pack version, verify:
 
 ## Version
 
-This is **Starter Pack v12.0**. The version is recorded in the header of
+This is **Starter Pack v12.1**. The version is recorded in the header of
 `AGENTS.md`, `CLAUDE.md`, and in every development log entry so there's
 always an audit trail of which instruction set was active for any given
 session.

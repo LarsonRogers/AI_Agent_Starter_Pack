@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.0 — protocols/run-demo.md -->
+<!-- Starter Pack v12.1 — protocols/run-demo.md -->
 <!-- Load this file when: closing any coding task (the Definition of Done's
      "user has seen it run" gate), completing a backlog item, or whenever the
      way to run the app changes. -->
@@ -56,7 +56,10 @@ protocols/run-demo.md`. How to satisfy it depends on the task:
 Procedure: start the app (or have the user start it via RUNBOOK.md), tell
 the user exactly what to look at and what to try ("open [URL], add a note,
 refresh — it should still be there"), and wait for the user to confirm they
-saw it working. Their confirmation closes the gate.
+saw it working. Their confirmation closes the gate. For UI items the
+walkthrough includes a keyboard-only pass — complete the demoed action with
+Tab/Enter/arrows alone; if that fails, it is an accessibility finding
+(code-quality.md → Accessibility Baseline), not a footnote.
 
 **Quick re-confirm — all other coding tasks:**
 The agent itself verifies the app still starts and reaches its ready state

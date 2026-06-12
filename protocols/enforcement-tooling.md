@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.0 — protocols/enforcement-tooling.md -->
+<!-- Starter Pack v12.1 — protocols/enforcement-tooling.md -->
 <!-- Load this file when: the stack is chosen (product definition step 3, or
      inherited codebase Phase 3), validation commands are being set for the
      first time, or the walking skeleton is being built while CI still has
@@ -40,7 +40,7 @@ On confirmation, set up all of:
 | 4 | Import-boundary rules | import-linter | dependency-cruiser | go vet / ArchUnit-style tool, or document "none available" |
 | 5 | Pre-commit secret scan | git pre-commit hook running the sensitive-data patterns (protocols/sensitive-data.md) against STAGED files — blocks the commit on a match | same | same |
 | 6 | SAST | semgrep (`--config auto`) — the CI security job ships with it enabled; refine/pin rulesets here if the stack warrants (see protocols/secure-coding.md) | same | same |
-| 7 | CI wiring | Replace the failing placeholder jobs in `.github/workflows/agent-ci.yml` with the real commands from rows 1–4 | same | same |
+| 7 | CI wiring | Replace the failing placeholder jobs in `.github/workflows/agent-ci.yml` with the real commands from rows 1–4, and set the real `package-ecosystem` in `.github/dependabot.yml` (it silently does nothing on a wrong value) | same | same |
 
 Row 4 is the architecture made mechanical: derive the rules from
 AGENTS.md → Part 2 → Project-Specific Architecture (the layer/dependency

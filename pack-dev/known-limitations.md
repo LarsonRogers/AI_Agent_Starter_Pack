@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.0 — pack-dev/known-limitations.md -->
+<!-- Starter Pack v12.1 — pack-dev/known-limitations.md -->
 <!-- PACK-DEV ARTIFACT: consulted only when auditing or developing the pack
      itself. Lives outside protocols/ on purpose — it is not a triggerable
      protocol and is not copied into deployed projects (see pack-dev/README.md). -->

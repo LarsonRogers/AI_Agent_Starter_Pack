@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.0 — protocols/deployment.md -->
+<!-- Starter Pack v12.1 — protocols/deployment.md -->
 <!-- Load this file when: the user EXPLICITLY asks to deploy, publish, host, or
      share the app by link. OPT-IN ONLY. -->
 <!-- Does NOT trigger when: the user asks to run, demo, or test the app (that is
@@ -109,6 +109,8 @@ at deploy time, for the actual provider and project name, e.g.:
 ## Deployed version
 - Live at: https://[project].example.app
 - Redeploy: `[provider] deploy --prod`        (run from the project folder)
+- When something breaks: [where to see logs/errors — exact provider
+  dashboard path or CLI command]
 
 ## Take it down
 1. `[provider] remove [project-name] --yes`   (or the provider's exact

@@ -4,10 +4,10 @@
      logs live in pack-dev/ because the repo IS the pack source — deployed
      projects keep theirs at the project root. Overwritten per task. -->
 
-**As of:** 2026-06-11 · **Pack version:** v12.0 · **Audience mode:** Developer
-**Last completed:** W4 — independent review pass (fresh-context, four dimensions, no-self-waiver)
-**Confirmed next task:** W5 — scrutiny baselines (a11y, dependency cadence, license check, coverage floor, observability) + v12.1 bump + full self-checks. Effectiveness trials follow.
-**Branch:** `revised` (16 commits ahead of main)
+**As of:** 2026-06-11 · **Pack version:** v12.1 · **Audience mode:** Developer
+**Last completed:** W5 — scrutiny baselines + v12.1 (WAVE 2 COMPLETE: enforcement tooling, secure coding, day-one architecture, independent review, baselines)
+**Confirmed next task:** Effectiveness trials (user-led). Open the probes below first; trial suggestions follow them.
+**Branch:** `revised` (17 commits ahead of main)
 
 **Open watch items (OPEN — none silently closed):**
 - PROBE 1 — `.claude/settings.json` ask-rule: in a FRESH Claude Code session on this repo, ask the agent to edit any `protocols/` file → a permission prompt must appear. (Rules load at session start; could not fire in the build session.)
