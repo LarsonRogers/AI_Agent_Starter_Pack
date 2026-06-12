@@ -5,9 +5,9 @@
      projects keep theirs at the project root. Overwritten per task. -->
 
 **As of:** 2026-06-11 · **Pack version:** v12.0 · **Audience mode:** Developer
-**Last completed:** Commit 8 — consistency pass, sensitive-data scope line, .gitattributes, v12.0 bump, full self-checks (BUILD PHASE COMPLETE)
-**Confirmed next task:** Effectiveness trials (user-led). Candidate probes below must be exercised before v12.0 is tagged/released.
-**Branch:** `revised` (12 commits ahead of main)
+**Last completed:** W1 — enforcement-tooling protocol (wave 2: scrutiny hardening)
+**Confirmed next task:** W2 — secure-coding protocol + threat-model step + SAST in CI (then W3 architecture-fit, W4 review pass, W5 baselines + v12.1 bump). Effectiveness trials follow the wave.
+**Branch:** `revised` (13 commits ahead of main)
 
 **Open watch items (OPEN — none silently closed):**
 - PROBE 1 — `.claude/settings.json` ask-rule: in a FRESH Claude Code session on this repo, ask the agent to edit any `protocols/` file → a permission prompt must appear. (Rules load at session start; could not fire in the build session.)

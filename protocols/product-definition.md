@@ -91,6 +91,10 @@ Create `BACKLOG.md` at the repo root:
 Rules:
 - Item 1 is ALWAYS "get something minimal running end-to-end" — the walking
   skeleton the run/demo protocol can demonstrate. Features come after.
+- Item 1 includes the enforcement-tooling setup
+  (protocols/enforcement-tooling.md): lint, format, type check, boundary
+  rules, secret hook, and real CI commands exist BEFORE the first feature
+  is written.
 - Every item is phrased as a user-visible outcome, not a technical layer
   ("can add a note and see it saved", not "implement storage layer")
 - Completing a backlog item triggers a FULL demo (protocols/run-demo.md)
@@ -109,7 +113,8 @@ Rules:
 [ ] Product brief confirmed by the user
 [ ] Stack recommended, explained in plain English, and confirmed
 [ ] AGENTS.md Part 2 filled (summary, stack, quick constraints, commands)
-[ ] BACKLOG.md created, item 1 is a runnable walking skeleton
+[ ] BACKLOG.md created, item 1 is a runnable walking skeleton INCLUDING
+    enforcement tooling (protocols/enforcement-tooling.md)
 [ ] First task brief confirmed
 ```
 

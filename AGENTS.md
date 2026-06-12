@@ -396,6 +396,10 @@ incorrect claim, amend it with a correction note.
   current task, checkpoint, recommend fresh session. `protocols/context-window.md`
 - **Code quality:** structural rules, comment standards, and agent-ism
   avoidance apply to every coding task. `protocols/code-quality.md`
+- **Enforcement tooling:** quality rules get mechanical teeth — the agent
+  sets up strict lint/format/type/boundary checks + a secret pre-commit hook
+  at stack selection and replaces the CI placeholders; every gate is
+  demonstrated failing before it is trusted. `protocols/enforcement-tooling.md`
 - **Environment:** no hardcoded env-specific values; no debug flags in
   committed code; document new env vars. `protocols/environment.md`
 - **Run & demo:** maintain RUNBOOK.md from the first runnable state; a task
@@ -428,6 +432,7 @@ row. A mismatch in either direction is an error.
 | Placeholder Inference | `protocols/placeholder-inference.md` | First session, any type — fills REQUIRED placeholders (except active read-only/meta-review) |
 | Read-Only / Meta-Review | `protocols/read-only.md` | Review, audit, analysis — no edits intended |
 | Communication Modes | `protocols/communication.md` | First session (audience detection); any non-dev or technical non-dev session; any error reported to a non-developer |
+| Enforcement Tooling | `protocols/enforcement-tooling.md` | Stack chosen (product definition / inherited Phase 3); validation commands first set; walking skeleton built while CI has placeholder jobs |
 | Decision Log & Handoff Format | `protocols/log-format.md` | Writing a log entry or handoff; reconstructing history; migrating a legacy CAPTAINS_LOG.md |
 | Pre-Edit Protocol | AGENTS.md | Before every coding task |
 | Task Brief & Prompt Reformulation | AGENTS.md + TASK_TEMPLATE.md | Every coding task; read-only sessions exempt |

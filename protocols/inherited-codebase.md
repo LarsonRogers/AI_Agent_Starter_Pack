@@ -105,6 +105,9 @@ After the developer has reviewed the assessment:
         (bounded living summary, hard cap 40 lines)
 [ ] 3. Fill in AGENTS.md → Part 2 → Tech Stack table
 [ ] 4. Fill in AGENTS.md → Part 2 → File Structure section
+[ ] 4b. Run protocols/enforcement-tooling.md — for existing codebases use
+        baseline/ratchet mode (record current violations, require clean
+        new code, never bulk-fix or disable)
 [ ] 5. Finalize DECISION_LOG.md and create HANDOFF.md:
         - Reconstructed entries (from git history) are already present from Phase 1
         - Append a live first-session entry after them documenting:

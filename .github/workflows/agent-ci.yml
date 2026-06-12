@@ -5,8 +5,9 @@
 # CI green is part of the Definition of Done — the agent must not consider
 # a task complete until this workflow passes.
 #
-# SETUP: Replace the [NOT CONFIGURED] steps below with your actual stack.
-# Add or remove jobs as needed. Commit this file to your repo.
+# SETUP: The agent replaces the [NOT CONFIGURED] steps with real commands
+# during enforcement-tooling setup (protocols/enforcement-tooling.md) —
+# normally as part of backlog item 1. Humans can also adapt manually.
 #
 # UNCONFIGURED JOBS FAIL ON PURPOSE. A placeholder that passes green would
 # falsely satisfy the Definition of Done while verifying nothing. Each job
