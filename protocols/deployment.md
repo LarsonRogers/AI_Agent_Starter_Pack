@@ -70,6 +70,12 @@ explicit confirmation. Record the gate outcome (both signals, what data,
 who reviewed, what was confirmed) in the development log before any deploy
 command runs.
 
+### Step 0b — Independent review of the deployable surface
+
+Before any deploy step: run protocols/review.md over the diff since the
+last review (or the full app if never reviewed). Zero unresolved blockers
+before continuing — deployment publishes the code; review comes first.
+
 ### Step 1 — Choose the simplest viable target
 
 - Prefer: static hosting for static apps; the stack's mainstream

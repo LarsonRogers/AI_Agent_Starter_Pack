@@ -5,9 +5,9 @@
      projects keep theirs at the project root. Overwritten per task. -->
 
 **As of:** 2026-06-11 · **Pack version:** v12.0 · **Audience mode:** Developer
-**Last completed:** W3 — architecture-fit at day one (S1-S4 sizing, growth triggers, conformance check)
-**Confirmed next task:** W4 — independent review pass protocol (then W5 baselines + v12.1 bump). Effectiveness trials follow the wave.
-**Branch:** `revised` (15 commits ahead of main)
+**Last completed:** W4 — independent review pass (fresh-context, four dimensions, no-self-waiver)
+**Confirmed next task:** W5 — scrutiny baselines (a11y, dependency cadence, license check, coverage floor, observability) + v12.1 bump + full self-checks. Effectiveness trials follow.
+**Branch:** `revised` (16 commits ahead of main)
 
 **Open watch items (OPEN — none silently closed):**
 - PROBE 1 — `.claude/settings.json` ask-rule: in a FRESH Claude Code session on this repo, ask the agent to edit any `protocols/` file → a permission prompt must appear. (Rules load at session start; could not fire in the build session.)

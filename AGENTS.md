@@ -344,6 +344,9 @@ update, re-confirm. Exception: purely mechanical single-layer changes
 [ ] If secrets or external services added: documented in the development log
 [ ] Security pass — for tasks touching input, auth, sessions, or stored
     data: secure-coding self-check recorded (protocols/secure-coding.md)
+[ ] If a backlog item was completed: independent review passed with zero
+    unresolved blockers, verdict recorded (protocols/review.md) — before
+    the full demo
 [ ] User has seen it run — per protocols/run-demo.md (FULL demo on backlog-item
     completion or user-visible change; quick re-confirm otherwise; only the
     user may defer, and the deferral is logged with a watch item)
@@ -408,6 +411,9 @@ incorrect claim, amend it with a correction note.
 - **Secure coding:** tasks touching input, auth, sessions, or stored data
   run the secure-coding checklist (recorded self-check); SAST runs in CI;
   never hand-roll auth or crypto. `protocols/secure-coding.md`
+- **Independent review:** every completed backlog item and every deploy gets
+  a fresh-context review of the diff (correctness, security, architecture,
+  readability) — blockers cannot be self-waived. `protocols/review.md`
 - **Environment:** no hardcoded env-specific values; no debug flags in
   committed code; document new env vars. `protocols/environment.md`
 - **Run & demo:** maintain RUNBOOK.md from the first runnable state; a task
@@ -442,6 +448,7 @@ row. A mismatch in either direction is an error.
 | Communication Modes | `protocols/communication.md` | First session (audience detection); any non-dev or technical non-dev session; any error reported to a non-developer |
 | Enforcement Tooling | `protocols/enforcement-tooling.md` | Stack chosen (product definition / inherited Phase 3); validation commands first set; walking skeleton built while CI has placeholder jobs |
 | Secure Coding | `protocols/secure-coding.md` | Any task touching input handling, authn/authz, sessions, stored data, file/path handling, or output rendering |
+| Independent Review | `protocols/review.md` | Backlog item completed (before its full demo); before any deployment; user requests a review |
 | Decision Log & Handoff Format | `protocols/log-format.md` | Writing a log entry or handoff; reconstructing history; migrating a legacy CAPTAINS_LOG.md |
 | Pre-Edit Protocol | AGENTS.md | Before every coding task |
 | Task Brief & Prompt Reformulation | AGENTS.md + TASK_TEMPLATE.md | Every coding task; read-only sessions exempt |

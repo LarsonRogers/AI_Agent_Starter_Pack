@@ -48,7 +48,9 @@ The Definition of Done contains: `[ ] User has seen it run — per
 protocols/run-demo.md`. How to satisfy it depends on the task:
 
 **FULL demo — required when either is true:**
-- A backlog item was completed (always, regardless of what changed), OR
+- A backlog item was completed (always, regardless of what changed) —
+  the independent review (protocols/review.md) must pass FIRST: no full
+  demo while review blockers are unresolved, OR
 - The task changed user-visible behavior
 
 Procedure: start the app (or have the user start it via RUNBOOK.md), tell
@@ -76,7 +78,9 @@ re-confirm).
 When closing a task, evaluate in order:
 
 ```
-1. Did this task complete a backlog item?            → FULL demo required
+1. Did this task complete a backlog item?            → independent review
+                                                       (protocols/review.md)
+                                                       passes, THEN full demo
 2. Else: did user-visible behavior change?           → FULL demo required
 3. Else:                                             → quick re-confirm
 4. Gate satisfied only by: user confirmation (1,2),
