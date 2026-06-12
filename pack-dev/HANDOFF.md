@@ -10,7 +10,7 @@
 **Branch:** `revised` (17 commits ahead of main)
 
 **Open watch items (OPEN — none silently closed):**
-- PROBE 1 — `.claude/settings.json` ask-rule: in a FRESH Claude Code session on this repo, ask the agent to edit any `protocols/` file → a permission prompt must appear. (Rules load at session start; could not fire in the build session.)
+- ~~PROBE 1~~ RESOLVED 2026-06-11: ask-rule prompt live-fired in a fresh session, edit blocked (see decision log).
 - PROBE 2 — `opencode.json` edit-ask: in an OpenCode session, attempt an edit to AGENTS.md or `protocols/**` → prompt must appear; also confirm `read` deny on `.env`. (Schema-shape validated only; open upstream issue re: permission enforcement — treat as defense-in-depth either way.)
 - SETUP.md Step 0: distribution-point placeholder awaiting the user's download link.
 - PROBE 3 — semgrep CI step: on first real push, plant a string-built query in a scratch branch; the security job must fail. (Local Windows semgrep runs as a silent no-op — verified — so CI is the only trustworthy SAST surface.)

@@ -82,3 +82,8 @@
 - Decisions: a11y folded into code-quality + demo gate rather than a new protocol — WHY: it is a property of UI code and of the demo, not a separate workflow; avoids protocol sprawl. Coverage floor scoped to critical-path modules, not global — WHY: global numbers are vanity metrics; auth/payments/data-writes are where misses cost.
 - State: wave 2 complete (W1 enforcement tooling, W2 secure coding+SAST, W3 day-one architecture sizing, W4 independent review, W5 baselines). Self-checks all PASS: version grep v12.1, ls-vs-index 26=26, dead-link scan clean, paths exist, JSON+YAML parse. 17 commits on `revised`.
 - Watch: carried OPEN — PROBE 1 (.claude ask-rule, fresh session), PROBE 2 (opencode.json live-fire), PROBE 3 (semgrep CI on first push), SETUP Step 0 distribution link. Next: effectiveness trials.
+
+## [2026-06-11] PROBE 1 result: .claude ask-rule VERIFIED — Claude Code (fresh session, user-run)
+- Did: fresh Claude Code session asked to edit protocols/stuck-loop.md; the Edit(protocols/**) ask rule fired — diff preview + Yes/No/don't-ask prompt appeared BEFORE execution; edit never landed (working tree clean). Probe 1 PASSED.
+- Decisions: probe initially misread as failed because the MODEL agreed to attempt the edit — that is correct pack behavior (explicit user instruction is the legitimate pack-edit path); the harness prompt is the backstop layer and it held. Recorded so future probe-readers measure the harness layer, not the model's willingness.
+- State: enforcement layers verified 1 of 3 (.claude ask-rule live-fired). Remaining: PROBE 2 (opencode.json live-fire), PROBE 3 (semgrep CI on first push).
