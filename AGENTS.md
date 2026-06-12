@@ -339,6 +339,8 @@ update, re-confirm. Exception: purely mechanical single-layer changes
     per task
 [ ] If dependencies changed: lockfile committed, dependency audit run
 [ ] If secrets or external services added: documented in the development log
+[ ] Security pass — for tasks touching input, auth, sessions, or stored
+    data: secure-coding self-check recorded (protocols/secure-coding.md)
 [ ] User has seen it run — per protocols/run-demo.md (FULL demo on backlog-item
     completion or user-visible change; quick re-confirm otherwise; only the
     user may defer, and the deferral is logged with a watch item)
@@ -400,6 +402,9 @@ incorrect claim, amend it with a correction note.
   sets up strict lint/format/type/boundary checks + a secret pre-commit hook
   at stack selection and replaces the CI placeholders; every gate is
   demonstrated failing before it is trusted. `protocols/enforcement-tooling.md`
+- **Secure coding:** tasks touching input, auth, sessions, or stored data
+  run the secure-coding checklist (recorded self-check); SAST runs in CI;
+  never hand-roll auth or crypto. `protocols/secure-coding.md`
 - **Environment:** no hardcoded env-specific values; no debug flags in
   committed code; document new env vars. `protocols/environment.md`
 - **Run & demo:** maintain RUNBOOK.md from the first runnable state; a task
@@ -433,6 +438,7 @@ row. A mismatch in either direction is an error.
 | Read-Only / Meta-Review | `protocols/read-only.md` | Review, audit, analysis — no edits intended |
 | Communication Modes | `protocols/communication.md` | First session (audience detection); any non-dev or technical non-dev session; any error reported to a non-developer |
 | Enforcement Tooling | `protocols/enforcement-tooling.md` | Stack chosen (product definition / inherited Phase 3); validation commands first set; walking skeleton built while CI has placeholder jobs |
+| Secure Coding | `protocols/secure-coding.md` | Any task touching input handling, authn/authz, sessions, stored data, file/path handling, or output rendering |
 | Decision Log & Handoff Format | `protocols/log-format.md` | Writing a log entry or handoff; reconstructing history; migrating a legacy CAPTAINS_LOG.md |
 | Pre-Edit Protocol | AGENTS.md | Before every coding task |
 | Task Brief & Prompt Reformulation | AGENTS.md + TASK_TEMPLATE.md | Every coding task; read-only sessions exempt |

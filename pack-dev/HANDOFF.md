@@ -5,14 +5,15 @@
      projects keep theirs at the project root. Overwritten per task. -->
 
 **As of:** 2026-06-11 · **Pack version:** v12.0 · **Audience mode:** Developer
-**Last completed:** W1 — enforcement-tooling protocol (wave 2: scrutiny hardening)
-**Confirmed next task:** W2 — secure-coding protocol + threat-model step + SAST in CI (then W3 architecture-fit, W4 review pass, W5 baselines + v12.1 bump). Effectiveness trials follow the wave.
-**Branch:** `revised` (13 commits ahead of main)
+**Last completed:** W2 — secure-coding protocol, threat-model block, SAST in CI
+**Confirmed next task:** W3 — architecture-fit step in product definition (then W4 review pass, W5 baselines + v12.1 bump). Effectiveness trials follow the wave.
+**Branch:** `revised` (14 commits ahead of main)
 
 **Open watch items (OPEN — none silently closed):**
 - PROBE 1 — `.claude/settings.json` ask-rule: in a FRESH Claude Code session on this repo, ask the agent to edit any `protocols/` file → a permission prompt must appear. (Rules load at session start; could not fire in the build session.)
 - PROBE 2 — `opencode.json` edit-ask: in an OpenCode session, attempt an edit to AGENTS.md or `protocols/**` → prompt must appear; also confirm `read` deny on `.env`. (Schema-shape validated only; open upstream issue re: permission enforcement — treat as defense-in-depth either way.)
 - SETUP.md Step 0: distribution-point placeholder awaiting the user's download link.
+- PROBE 3 — semgrep CI step: on first real push, plant a string-built query in a scratch branch; the security job must fail. (Local Windows semgrep runs as a silent no-op — verified — so CI is the only trustworthy SAST surface.)
 - Trial-phase suggestions (not commitments): first-session dry run as a non-dev with an empty folder (product-definition → walking skeleton → demo gate); inherited-codebase run; legacy CAPTAINS_LOG migration run.
 
 **Resume prompt (paste into any agent):**

@@ -23,6 +23,8 @@ Ask, conversationally, not as a form:
 - Where do you picture using it — phone, computer, in a browser, somewhere else?
 - Is there anything it absolutely must do on day one?
 - Is there anything you specifically do NOT want it to do or become?
+- Will it store or handle information about you or other people — and if
+  so, who should be able to see it?
 
 Stop when you can write the brief below without guessing. Two to four
 exchanges is normal. Do not ask about technology — that is your job.
@@ -48,7 +50,18 @@ Present for confirmation before anything else happens:
 - [scaling/polish concern, deferred]
 
 **Success looks like:** [the user can do X end-to-end and show it to someone]
+
+**Data & trust (lightweight threat model):**
+- Data handled: [what personal/sensitive data, if any — "none" is an answer]
+- Who can touch it: [only the user / people with the link / the public]
+- Worst credible misuse: [one sentence — what's the worst thing a stranger
+  or a careless user could realistically do with this]
 ```
+
+The threat-model answers drive how much of protocols/secure-coding.md
+applies during build, and pre-answer the deployment protocol's
+data-sensitivity gate. Keep them current: if the data model changes, the
+brief changes.
 
 "Confirm, or tell me what to change." Do not proceed unconfirmed.
 

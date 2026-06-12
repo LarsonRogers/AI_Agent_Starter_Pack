@@ -111,6 +111,18 @@ jobs:
         with:
           extra_args: --results=verified,unknown
 
+      # Static analysis (SAST) — catches injection, XSS, eval-on-input, and
+      # other dangerous patterns. `--config auto` selects rules for whatever
+      # languages are present, so this step works out of the box on any
+      # stack. The agent may pin or extend rulesets during enforcement-
+      # tooling setup (protocols/enforcement-tooling.md). Findings fail the
+      # build; triage in the decision log (fix, or suppress with same-line
+      # justification).
+      - name: Static analysis (semgrep)
+        run: |
+          pip install semgrep
+          semgrep scan --config auto --error .
+
       # Dependency audit — detects vulnerable packages
       # Examples:
       #   Node:   npm audit --audit-level=high
