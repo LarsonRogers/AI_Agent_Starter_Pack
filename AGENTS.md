@@ -298,6 +298,9 @@ scope contract.
 [ ] 4. Identify where the relevant logic currently lives
 [ ] 5. State the exact scope of the planned change (files, functions)
 [ ] 6. Confirm no existing pattern already solves the problem (Part 2 → Pattern Registry)
+[ ] 6b. Confirm the change respects the architecture sketch and Key
+        Invariants (Part 2). A change that would cross a boundary is a
+        growth-trigger decision (logged), never a silent violation.
 [ ] 7. Identify external systems/SDKs/APIs involved — if any, complete the
         External Research Protocol first (protocols/external-research.md)
 [ ] 8. Confirm git working tree is clean (git status)
@@ -651,14 +654,17 @@ Anti-pattern: [What NOT to do instead]
 ```
 
 ## Project-Specific Architecture
-<!-- Agent-maintained (Inherited Codebase Phase 3, or as the project takes
-     shape). HARD CAP: 60 lines. Describe what IS there, not what should be.
+<!-- Agent-maintained. Set on DAY ONE — product-definition Step 3b (new
+     projects, sized S1–S4) or Inherited Codebase Phase 3 (existing code,
+     describe what IS there). HARD CAP: 60 lines. Growth triggers in
+     product-definition govern revisits — logged, never silent drift.
      When over cap: compress to current structure + key invariants; move
      superseded detail to the development log. -->
 
-### Directory Structure & Ownership
+### Size & Structure
 ```
-[actual structure]
+[S1–S4 rung] — [WHY this size fits the brief]
+[actual structure, one line per layer/module with its WHY]
 ```
 
 ### Data Flow

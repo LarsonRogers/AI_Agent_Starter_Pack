@@ -85,6 +85,49 @@ On confirmation: write the stack into AGENTS.md → Part 2 (Tech Stack,
 Quick Constraints, Validation Commands — standard tools for the chosen
 stack; mark # NOT CONFIGURED only for what genuinely has no command yet).
 
+### Step 3b — Sketch the architecture (size it honestly, on day one)
+
+Pick the **lowest rung that fits the brief** — structure is decided before
+any code, and written down, not discovered by accident:
+
+```
+S1  single-file tool       one file, functions only — NO layers
+                           (one job, no UI state, no storage beyond a file)
+S2  simple client app      UI + logic module + storage module
+                           (one-screen-ish UI, local data, single user)
+S3  client + server        client UI / server API / service layer
+                           (data crosses a network, or anyone else uses it)
+S4  client + server + DB   + data layer + schema migrations
+                           (multi-user, shared persistent data)
+```
+
+Rules:
+- Layers exist where the brief demands them, never by ceremony — a
+  200-line tool gets no controllers/services split, and a multi-user app
+  with shared data does NOT skip the service and data layers.
+- Every layer chosen gets one WHY line.
+- Write the result into AGENTS.md → Part 2 → Project-Specific Architecture
+  (structure + data flow) and Key Invariants (the dependency rules — these
+  become the import-boundary contracts in enforcement-tooling row 4) —
+  **on day one**, not "as architecture solidifies."
+
+**Growth triggers — when any of these appears, the structure decision is
+re-made and LOGGED (restructure now, or schedule it as a backlog item —
+never silent drift):**
+
+```
+- authentication appears            → at least S3 separation; secure-coding applies
+- second data entity, or shared
+  multi-user persistent data        → S4: a real data layer, not ad-hoc writes
+- second consumer (CLI + web,
+  public API, another service)      → service layer extracted from UI/transport
+- a file crosses ~300 lines or a
+  module clearly does two jobs      → split within the current rung
+```
+
+A revisit updates the sketch, the Key Invariants, and the import-boundary
+contracts in the same commit.
+
 ### Step 4 — Seed the backlog
 
 Create `BACKLOG.md` at the repo root:
@@ -123,8 +166,10 @@ Rules:
 ### Done criteria for this protocol
 
 ```
-[ ] Product brief confirmed by the user
+[ ] Product brief confirmed by the user (including the Data & trust block)
 [ ] Stack recommended, explained in plain English, and confirmed
+[ ] Architecture sketch sized (S1–S4) and written into Part 2 —
+    structure, WHY per layer, Key Invariants
 [ ] AGENTS.md Part 2 filled (summary, stack, quick constraints, commands)
 [ ] BACKLOG.md created, item 1 is a runnable walking skeleton INCLUDING
     enforcement tooling (protocols/enforcement-tooling.md)

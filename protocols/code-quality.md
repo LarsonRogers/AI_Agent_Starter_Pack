@@ -10,6 +10,14 @@
 These apply to every file, every function, every change — regardless of
 language or framework.
 
+> **The project's architecture sketch governs.** The layer table below
+> describes the FULL separation for apps that need it. Which layers exist
+> is decided by the sketch in AGENTS.md → Part 2 (sized S1–S4 at day one —
+> see protocols/product-definition.md Step 3b). Do not manufacture layers
+> a small tool doesn't need, and do not skip layers the sketch mandates.
+> Changing the structure is a logged growth-trigger decision, never silent
+> drift in either direction.
+
 ### Separation of Concerns
 
 ```

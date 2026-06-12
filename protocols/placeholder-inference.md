@@ -40,8 +40,6 @@ develops. The agent never halts on these:
 [Related Docs & Projects] — filled if/when relevant
 [Pattern Name]        — Pattern Registry entries, filled as patterns emerge
                         (bounded, cap 40 lines)
-[Key Invariants] / Project-Specific Architecture — filled as architecture
-                        solidifies (bounded, cap 60 lines)
 ```
 
 **Set by other protocols — NOT resolved by inference (do not ask for these):**
@@ -49,6 +47,10 @@ develops. The agent never halts on these:
 Audience Mode         — set by audience detection at session start
                         (protocols/communication.md)
 BACKLOG.md contents   — set by the product-definition protocol
+Project-Specific Architecture / [Key Invariants] — set on DAY ONE by
+                        product-definition Step 3b (new projects, sized
+                        S1–S4) or Inherited Codebase Phase 3 (existing
+                        code); revised only via logged growth triggers
 ```
 
 **The inference flow:**
