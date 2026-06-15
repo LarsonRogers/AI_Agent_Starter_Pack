@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.9 — protocols/inherited-codebase.md -->
+<!-- Starter Pack v12.10 — protocols/inherited-codebase.md -->
 <!-- Load this file when: no decision log exists and non-pack source files are present -->
 <!-- Does NOT trigger when: first message is a read-only audit or meta-review (load
      protocols/read-only.md instead), or when no non-pack source files are present

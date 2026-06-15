@@ -1,5 +1,5 @@
 ---
-# Starter Pack v12.9 — Light-tier sub-agent template (OpenCode).
+# Starter Pack v12.10 — Light-tier sub-agent template (OpenCode).
 # Activate: 1) copy to light-checker.md (drop the .example suffix); 2) set `model`
 #   to your real provider/model-id (e.g. anthropic/claude-haiku-..., openai/gpt-...-mini,
 #   google/..., ollama/...); 3) restart OpenCode (config loads at startup).

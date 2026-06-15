@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.9 — protocols/model-tiering.md -->
+<!-- Starter Pack v12.10 — protocols/model-tiering.md -->
 <!-- Load this file when: you are about to delegate a task to a sub-agent and
      must decide which model it runs on — a governance/watch check, a
      mechanical scan, or template-driven drafting. -->
@@ -90,6 +90,13 @@ Establishing it is a standard setup step, not a mandate:
   one usable model, it may set **single-tier** automatically and note it. If the
   user declines a Light tier, record single-tier explicitly. A NOT-SET block is
   resolved at the first session that needs it, never carried forward unaddressed.
+- **When a Light model is chosen, the agent activates it — it does not stop at
+  recording the string.** It writes the live Light subagent file from the
+  template and then tells the user whether a restart is required (see "Predefined
+  Light-tier subagents" below). Prompting for the model, activating the template,
+  and signalling restart are one continuous setup step, not three things the user
+  must chase down. The same applies whenever a user later turns tiering on in a
+  single-tier project.
 
 A Light model is used only when the map actually defines one AND the
 three-part gate below passes. No Light model in the map → every delegation is
@@ -226,24 +233,32 @@ scans to it and nothing else:
 .codex/agents/light-checker.toml.example    model: REPLACE_WITH_your_light_model       → restart Codex
 ```
 
-To make tiering actually run — the four steps your harness needs (this is the
-config + harness-exposure layer the policy above cannot do for you):
+**The agent drives activation; the user never edits these files by hand.** The
+user makes one decision (which Light model) and, for OpenCode/Codex, performs one
+action only it can do (restart the harness). Everything between is the agent's:
 
 ```
-[ ] 1. Choose the real Light model and record it in the Part 2 tier map.
-[ ] 2. Activate the template: drop the `.example` suffix and set `model` to that
-        string (Claude Code's `haiku` already works for the default Anthropic
-        setup, so its file needs no model edit).
-[ ] 3. Reload: OpenCode and Codex load agent files at startup — RESTART them.
-        Claude Code picks up new agent files in a fresh session.
-[ ] 4. Confirm invocation: the agent is reached by @mention or by description-
-        match delegation — OpenCode/Codex expose no "call agent X by name with
-        model Y" tool, so verify the primary actually delegates a bounded scan
-        to it. If it cannot be invoked, run the check on the Capable tier rather
-        than skipping it (fail-safe unchanged).
+[ ] 1. PROMPT for the model — propose a Light + Capable pairing for the detected
+        provider and ask once. (Skip/one model available → single-tier; done.)
+[ ] 2. RECORD it in the Part 2 → Model Tiers map.
+[ ] 3. ACTIVATE the template — the agent itself writes the live agent file from
+        this harness's light-checker.*.example: copy it to its live name (drop
+        `.example`) and set `model` to the chosen string. The user does not open
+        or edit the file. (Claude Code's `haiku` default needs no model edit.)
+[ ] 4. INDICATE RESTART — state plainly whether the harness must reload, because
+        the new agent is unavailable until it does and the agent cannot restart
+        its own harness:
+          OpenCode    → "Restart OpenCode — it loads agents at startup."
+          Codex       → "Restart Codex — it loads agents at startup."
+          Claude Code → "No harness restart — but the agent appears only in a
+                         NEW session, not the current one; start one to use it."
+[ ] 5. CONFIRM invocation after reload — verify the primary delegates a bounded
+        scan to the Light agent (@mention or description-match; there is no
+        by-name model-override tool). If it cannot be invoked, run the check on
+        the Capable tier rather than skipping it (fail-safe unchanged).
 ```
 
 Until activated, the templates are inert — the `.example` suffix means no harness
 loads them, so every delegation runs Capable (single-tier, always valid). This is
 the artifact behind the tier map: the map names the model; the agent file is what
-the harness actually invokes.
+the harness actually invokes — and the agent, not the user, creates it.
