@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v12.7 — 2026-06-15 -->
+<!-- Starter Pack v12.8 — 2026-06-15 -->
 
 > **Single source of truth for all agents.** Codex and OpenCode read this
 > file automatically. Claude Code reads it through `CLAUDE.md`, which imports
@@ -357,6 +357,7 @@ incorrect claim, amend it with a correction note.
 - **Deployment:** opt-in only, never the default path; data-sensitivity gate before any deploy step. `protocols/deployment.md`
 - **Edge cases:** missing pack files, no git, no file-read/write, placeholder conflicts, corrupt log → deterministic actions. `protocols/edge-cases.md`
 - **Pack upgrade:** migrate a project to a newer pack version — replace pack-owned files, preserve project Part 2 + logs verbatim, on a branch. `protocols/upgrade.md`
+- **Update check:** detect-only — compare local vs upstream pack version, offline→skip, behind→hand to upgrade.md; never auto-applies. `protocols/update-check.md`
 
 ---
 
@@ -402,6 +403,7 @@ row. A mismatch in either direction is an error.
 | Conflict Resolution Examples | `protocols/conflict-examples.md` | Surfacing a conflict or verifying conflict behavior |
 | Edge-Case Handling | `protocols/edge-cases.md` | Missing pack files, no git, no read/write, placeholder conflicts, corrupt log, version mismatch |
 | Pack Upgrade / Migration | `protocols/upgrade.md` | User asks to upgrade/migrate a project to a newer pack version, or edge-cases version-mismatch handler routes here to migrate |
+| Pack Update Check | `protocols/update-check.md` | User asks whether the pack is up to date, the launch notify-hook reports an update, or confirming the target version before an upgrade |
 | Pattern Registry Maintenance | `protocols/pattern-registry.md` | Same approach in 2+ files this session, or a new approach replaced a buggy one |
 
 ---
@@ -606,6 +608,7 @@ schema or config change.
 |---------------|------------------------|
 | `README.md` | Human-facing pack documentation |
 | `SETUP.md` | Human bootstrap walkthrough |
+| Pack source | [NOT SET — raw URL of the upstream pack's AGENTS.md; the referent for protocols/update-check.md. Set at setup (SETUP Step 0) or on first update check.] |
 
 ## Pattern Registry
 <!-- Agent-maintained. HARD CAP: 40 lines. Check here before implementing

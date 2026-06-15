@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.7 — protocols/upgrade.md -->
+<!-- Starter Pack v12.8 — protocols/upgrade.md -->
 <!-- Load this file when: the user asks to upgrade/migrate an existing project to a
      newer pack version, OR the edge-cases version-mismatch handler points here to
      migrate rather than just halt. -->
@@ -15,6 +15,11 @@ splice-and-preserve procedure that keeps the two apart.
 confirming with the user where the steps say to. Do not automate it end-to-end
 — every diff-and-confirm step exists because the file it touches may be
 user-customized.
+
+**Detecting that an upgrade is available** is a separate, read-only step —
+`protocols/update-check.md` compares the local version against the recorded pack
+source and routes here when behind. This protocol is the *apply* half; it assumes
+you already know the target version (Step 1 confirms it either way).
 
 **Distinguish from the version-mismatch handler.** `protocols/edge-cases.md`
 *detects* an inconsistency *within one project's* pack files and halts. This
@@ -110,6 +115,14 @@ If the Part 1 / Part 2 boundary cannot be cleanly identified in the project's
 AGENTS.md (e.g. a heavily hand-edited file), stop and ask rather than guessing
 the splice point — a wrong cut either drops project content or leaks stale
 policy.
+
+Reconciliation above is by `##` section header, so it catches whole new
+sections but not a new **row or field added inside an existing Part 2 section**
+(e.g. a new row in the Related Docs table, or a new line in the Model Tiers
+block). When the target version adds such a sub-section field, it will not
+appear by section-level reconciliation — diff the target's Part 2 against the
+project's and flag any new in-section fields for the user to add (as NOT-SET),
+rather than assuming verbatim preservation carried them.
 
 ### Step 4 — Diff-and-confirm the enforcement + CI files
 

@@ -1,5 +1,5 @@
 # Setup Guide
-<!-- Starter Pack v12.7 — 2026-06-15 -->
+<!-- Starter Pack v12.8 — 2026-06-15 -->
 
 No coding experience required. If you are a developer, skip to
 Developer Quick Setup at the bottom.
@@ -92,6 +92,15 @@ If git is not installed, download from the link above.
 Download the starter pack from
 **[PACK DISTRIBUTION POINT — maintainer: fill in your release page or
 download link]** and unzip it somewhere you can find it.
+
+**Optional — enable update checks.** If you want the agent to be able to tell you
+when a newer pack version is published, note the **raw URL of the upstream
+`AGENTS.md`** (e.g. the `raw.githubusercontent.com/…/AGENTS.md` path of the pack
+repo). On the first session, the agent records it in AGENTS.md → Part 2 → Related
+Docs → "Pack source"; from then on you can ask "is the pack up to date?" any time
+(`protocols/update-check.md`). For launch-time notices in Claude Code, see the
+opt-in `SessionStart` hook in that protocol. Skip this if you are offline or
+local-only — everything else works without it.
 
 ### Step 1 — Copy the starter pack files into your project folder
 
