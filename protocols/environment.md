@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.3 — protocols/environment.md -->
+<!-- Starter Pack v12.4 — protocols/environment.md -->
 <!-- Load this file when: any environment-specific code or config is involved
      (URLs, ports, hostnames, env vars, dev/staging/prod differences) -->
 <!-- Do not load unless triggered — see AGENTS.md → Protocol Index -->
