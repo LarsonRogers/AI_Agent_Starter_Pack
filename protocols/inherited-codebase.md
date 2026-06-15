@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.4 — protocols/inherited-codebase.md -->
+<!-- Starter Pack v12.5 — protocols/inherited-codebase.md -->
 <!-- Load this file when: no decision log exists and non-pack source files are present -->
 <!-- Does NOT trigger when: first message is a read-only audit or meta-review (load
      protocols/read-only.md instead), or when no non-pack source files are present
@@ -108,11 +108,12 @@ After the developer has reviewed the assessment:
 [ ] 4b. Run protocols/enforcement-tooling.md — for existing codebases use
         baseline/ratchet mode (record current violations, require clean
         new code, never bulk-fix or disable)
-[ ] 4c. Set the model tier map in AGENTS.md → Part 2 → Model Tiers
-        (protocols/model-tiering.md): detect the provider/environment,
-        propose a Capable + Light pairing, ask once; single-tier is a valid
-        answer (everything on the Capable/session model) and can be filled
-        in later
+[ ] 4c. Set the tier map and pack profile in AGENTS.md → Part 2 → Model Tiers:
+        detect the provider/environment, propose a Capable + Light pairing
+        (protocols/model-tiering.md), ask once; single-tier is valid. Also set
+        Pack profile + Context budget (protocols/context-window.md): FULL by
+        default, LEAN for small-context/local targets (≤~16k) — trims resident
+        footprint and checkpoints sooner, relaxes no gate
 [ ] 5. Finalize DECISION_LOG.md and create HANDOFF.md:
         - Reconstructed entries (from git history) are already present from Phase 1
         - Append a live first-session entry after them documenting:

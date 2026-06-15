@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v12.4 — 2026-06-15 -->
+<!-- Starter Pack v12.5 — 2026-06-15 -->
 
 > **Single source of truth for all agents.** Codex and OpenCode read this
 > file automatically. Claude Code reads it through `CLAUDE.md`, which imports
@@ -79,6 +79,15 @@ for the detailed step-by-step checklist:
 
 The router, this read order, the meta-review preemption, and the version
 check below stay always-on; the checklists load on demand.
+
+**Pack profile:** read Part 2 → Model Tiers → Pack profile. On **LEAN**
+(small-context/local), load only the protocol the current step strictly
+needs and checkpoint more often (protocols/context-window.md) — but the
+Protocol Index router still fires for every safety-critical trigger
+(secure-coding, safe-deletion, independent review, sensitive-data). LEAN
+never relaxes a guardrail, the Definition of Done, secure-coding, or the
+independent review — it trims resident footprint, not required discipline.
+Unset = FULL.
 
 ### Pack version consistency check
 
@@ -426,6 +435,12 @@ human-facing documentation.
 > update would exceed a cap, compress: keep what a cold agent needs *now*;
 > move superseded detail and decision history to the development log. The
 > always-on context budget must not creep up as the project ages.
+>
+> **LEAN profile:** when Pack profile (Model Tiers) is LEAN, the Pattern
+> Registry and Project-Specific Architecture sections collapse to a one-line
+> pointer into DECISION_LOG.md instead of carrying the full sketch — the
+> detail lives in the log and is read on demand. Everything else in Part 2
+> stays as-is. This is the main local-context saving.
 
 ## Project Summary
 <!-- Filled in by the agent during Placeholder Inference. -->
@@ -441,13 +456,15 @@ human-facing documentation.
 
 ## Model Tiers
 <!-- Set at stack selection (product-definition Step 3c / inherited-codebase
-     Phase 3 step 4c) per protocols/model-tiering.md; read when delegating a
-     sub-agent task. Provider/harness-agnostic — fill with whatever this
-     project actually uses. Status is single-tier whenever the Light row is
-     "none" (every delegation runs on the Capable/session model) — that is
-     the valid default until a Light model is set. Fill "How to switch" with
-     only the harness in use. Bounded: this table only. -->
+     Phase 3 step 4c). Read at session start (Pack profile — governs resident
+     footprint + checkpoint cadence, protocols/context-window.md) and when
+     delegating a sub-agent task (tier map — protocols/model-tiering.md).
+     Provider/harness-agnostic. Tier map is single-tier whenever the Light row
+     is "none" (every delegation runs on the Capable/session model). Fill "How
+     to switch" with only the harness in use. Bounded: this block only. -->
 
+**Pack profile:** [FULL — default; use LEAN for small-context/local runs (≤~16k). Governs resident footprint + checkpoint cadence per protocols/context-window.md]
+**Context budget:** [NOT SET — approx usable context window, e.g. 8k / 16k / 32k / 200k]
 **Provider / environment:** [NOT SET — e.g. Anthropic / OpenAI / Google / local Ollama / internal gateway]
 
 | Role | Model | How to switch |
@@ -592,7 +609,8 @@ schema or config change.
 <!-- Agent-maintained. HARD CAP: 40 lines. Check here before implementing
      anything; if a pattern exists, use it. Template and trigger rules:
      protocols/pattern-registry.md. When over cap: compress, keep current
-     patterns, move history to the development log. -->
+     patterns, move history to the development log. LEAN profile: collapse to
+     a one-line pointer into DECISION_LOG.md (see bounded living summary rule). -->
 
 ### [Pattern Name]
 ```
@@ -608,7 +626,8 @@ Anti-pattern: [What NOT to do instead]
      describe what IS there). HARD CAP: 60 lines. Growth triggers in
      product-definition govern revisits — logged, never silent drift.
      When over cap: compress to current structure + key invariants; move
-     superseded detail to the development log. -->
+     superseded detail to the development log. LEAN profile: collapse to a
+     one-line pointer into DECISION_LOG.md (see bounded living summary rule). -->
 
 ### Size & Structure
 ```

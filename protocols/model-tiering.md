@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.4 — protocols/model-tiering.md -->
+<!-- Starter Pack v12.5 — protocols/model-tiering.md -->
 <!-- Load this file when: you are about to delegate a task to a sub-agent and
      must decide which model it runs on — a governance/watch check, a
      mechanical scan, or template-driven drafting. -->
@@ -83,6 +83,11 @@ three-part gate below passes. No Light model in the map → every delegation is
 Capable, automatically. This is what makes the policy safe under any provider:
 absent or unknown configuration degrades to "run it on the main model," never
 to "skip it" or "guess a cheaper model."
+
+The same Part 2 → Model Tiers block also records the **Pack profile** and
+**Context budget** (FULL / LEAN) — these govern resident footprint and
+checkpoint cadence, a separate concern from sub-agent model choice, defined in
+protocols/context-window.md. They are set together at stack selection.
 
 ### Selection rule — the three-part gate
 

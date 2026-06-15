@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.4 — protocols/placeholder-inference.md -->
+<!-- Starter Pack v12.5 — protocols/placeholder-inference.md -->
 <!-- Load this file when: first session on any project type — fills REQUIRED placeholders -->
 <!-- Does NOT trigger when: a read-only meta-review is active (placeholder inference
      stays suspended until the review is complete and normal session-start resumes). -->
@@ -52,9 +52,10 @@ Project-Specific Architecture / [Key Invariants] — set on DAY ONE by
                         S1–S4) or Inherited Codebase Phase 3 (existing
                         code); revised only via logged growth triggers
 Model Tiers           — set at stack selection by product-definition Step 3c
-                        or Inherited Codebase Phase 3 step 4c
-                        (protocols/model-tiering.md); single-tier is the
-                        valid default until a Light model is added
+                        or Inherited Codebase Phase 3 step 4c: tier map
+                        (protocols/model-tiering.md) plus Pack profile +
+                        Context budget (protocols/context-window.md).
+                        Single-tier + FULL are the valid defaults
 ```
 
 **The inference flow:**

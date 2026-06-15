@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.4 — protocols/product-definition.md -->
+<!-- Starter Pack v12.5 — protocols/product-definition.md -->
 <!-- Load this file when: first session on a new project (type B) where the user
      arrives with an idea rather than a codebase — especially when the user cannot
      answer stack questions or the folder is empty. -->
@@ -128,11 +128,11 @@ never silent drift):**
 A revisit updates the sketch, the Key Invariants, and the import-boundary
 contracts in the same commit.
 
-### Step 3c — Establish the model tier map (provider-agnostic)
+### Step 3c — Establish the tier map and pack profile (provider-agnostic)
 
 Once the stack and provider/environment are known, set this project's tier
-map (protocols/model-tiering.md) so cheap-vs-capable routing is configured
-before any sub-agent runs:
+map (protocols/model-tiering.md) and pack profile (protocols/context-window.md)
+so routing and context posture are configured before any work:
 
 - Detect the provider/environment in use (the harness's configured models —
   Anthropic, OpenAI, Google, local Ollama, an internal gateway, etc.).
@@ -143,8 +143,13 @@ before any sub-agent runs:
 - Single-tier is a valid answer: if the user has only one model, doesn't
   want to split, or skips, leave the map single-tier (everything runs
   Capable). It can be filled in later — no friction, no requirement.
-- Write the result into AGENTS.md → Part 2 → Model Tiers (role → model →
-  how-to-switch knob for this harness).
+- Also set the **Pack profile** and **Context budget** (same Part 2 block):
+  FULL by default; LEAN when the target is a small-context or local model
+  (≤~16k usable). LEAN trims resident footprint and checkpoints more often
+  without relaxing any gate. State the budget (e.g. 8k / 32k / 200k) so
+  cadence and protocol-loading scale to it.
+- Write the result into AGENTS.md → Part 2 → Model Tiers (profile, budget,
+  provider, and role → model → how-to-switch knob for this harness).
 
 ### Step 4 — Seed the backlog
 
