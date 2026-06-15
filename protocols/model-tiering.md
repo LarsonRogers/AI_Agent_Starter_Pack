@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.12 — protocols/model-tiering.md -->
+<!-- Starter Pack v12.13 — protocols/model-tiering.md -->
 <!-- Load this file when: you are about to delegate a task to a sub-agent and
      must decide which model it runs on — a governance/watch check, a
      mechanical scan, or template-driven drafting. -->
@@ -47,7 +47,16 @@ an actual model call:
 
 - **Provider / environment** — *which models exist*: Anthropic, OpenAI,
   Google, a local Ollama host, an internal gateway, and so on. This decides
-  the concrete model behind each role.
+  the concrete model behind each role. **Access method matters as much as the
+  provider:** the *same* provider can expose a *different set of usable model
+  IDs* depending on how it is reached — an online/subscription login (OAuth)
+  vs a direct API key vs a gateway. A model that exists "on OpenAI" may not be
+  callable under the login this project actually uses (and this likely holds
+  across providers). So treat the available models as a function of provider
+  **and** auth path: when proposing a Light model, offer one the user's actual
+  access path exposes — confirm the ID is reachable under their auth, or ask
+  which cheaper model their login/key/gateway offers, rather than assuming a
+  brand-name model string is available.
 - **Harness** — *the knob that switches model*: Claude Code, OpenCode, Codex.
   This decides how a sub-agent is pointed at that model.
 

@@ -1,5 +1,5 @@
 # Setup Guide
-<!-- Starter Pack v12.12 — 2026-06-15 -->
+<!-- Starter Pack v12.13 — 2026-06-15 -->
 
 No coding experience required. If you are a developer, skip to
 Developer Quick Setup at the bottom.

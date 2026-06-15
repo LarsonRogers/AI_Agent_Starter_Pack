@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v12.12 — 2026-06-15 -->
+<!-- Starter Pack v12.13 — 2026-06-15 -->
 
 > **Single source of truth for all agents.** Codex and OpenCode read this
 > file automatically. Claude Code reads it through `CLAUDE.md`, which imports
@@ -481,7 +481,7 @@ human-facing documentation.
 
 **Pack profile:** [FULL — default; use LEAN for small-context/local runs (≤~16k). Governs resident footprint + checkpoint cadence per protocols/context-window.md]
 **Context budget:** [NOT SET — approx usable context window, e.g. 8k / 16k / 32k / 200k]
-**Provider / environment:** [NOT SET — e.g. Anthropic / OpenAI / Google / local Ollama / internal gateway]
+**Provider / environment:** [NOT SET — provider AND access method (available model IDs can depend on both), e.g. OpenAI via API key / OpenAI via login (OAuth) / Anthropic API / Google / local Ollama / internal gateway]
 
 | Role | Model | How to switch |
 |------|-------|---------------|

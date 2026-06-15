@@ -4,12 +4,13 @@
      logs live in pack-dev/ because the repo IS the pack source — deployed
      projects keep theirs at the project root. Overwritten per task. -->
 
-**As of:** 2026-06-15 · **Pack version:** v12.12 · **Audience mode:** Developer
-**Last completed:** Added a **proactive, ask-once tier-map offer** at session start (v12.11→v12.12). Root cause of "OpenCode never spawns lower-tier sub-agents": tier setup lived only in on-demand `model-tiering.md`, so a plain session never triggered it. Fix: an always-on clause in `AGENTS.md` Session Start (piggybacked on the existing Pack-profile read) offers tiering **once** when the Light row is still a bare `[placeholder]`; a real model or `none — single-tier (decided YYYY-MM-DD)` is resolved → silent; read-only skipped. "Resolved" is defined once (Part 2 comment); the decline path in `model-tiering.md` writes the dated sentinel (durable anti-nag). Independent review APPROVE, 0 blockers (1 minor fixed). The activation machinery itself is already confirmed working live (the user's OpenCode ran it end-to-end in their separate project).
+**As of:** 2026-06-15 · **Pack version:** v12.13 · **Audience mode:** Developer
+**Latest (v12.13):** Noted in model-tiering.md that usable model IDs depend on the **access method** (OpenAI login/OAuth vs API key vs gateway), not just the provider — so the agent proposes/confirms a Light model the user's actual auth exposes, rather than assuming a brand-name ID. Independent review APPROVE, 0 blockers.
+**Prior (v12.12):** Added a **proactive, ask-once tier-map offer** at session start (v12.11→v12.12). Root cause of "OpenCode never spawns lower-tier sub-agents": tier setup lived only in on-demand `model-tiering.md`, so a plain session never triggered it. Fix: an always-on clause in `AGENTS.md` Session Start (piggybacked on the existing Pack-profile read) offers tiering **once** when the Light row is still a bare `[placeholder]`; a real model or `none — single-tier (decided YYYY-MM-DD)` is resolved → silent; read-only skipped. "Resolved" is defined once (Part 2 comment); the decline path in `model-tiering.md` writes the dated sentinel (durable anti-nag). Independent review APPROVE, 0 blockers (1 minor fixed). The activation machinery itself is already confirmed working live (the user's OpenCode ran it end-to-end in their separate project).
 
 **Confirmed next task:** ask the user — no build task queued. The model-tiering arc is feature-complete (correct mechanism → shipped templates → agent-driven activation → proactive offer → baked-in update source).
 
-**Branch:** `main` — committing v12.12 now; will be ahead of origin until pushed. Pushing needs user confirmation.
+**Branch:** `main` — v12.12 + v12.13 committed locally, ahead of origin until pushed. Pushing needs user confirmation.
 
 **Open watch items (OPEN — none silently closed):**
 - **Tiering post-restart confirmation:** activation is now confirmed live in OpenCode (file created, model set, Model Tiers updated); the only remaining bit is verifying that after restart the primary actually *delegates a bounded scan to* the Light agent — the user is eyeballing this in their project.
