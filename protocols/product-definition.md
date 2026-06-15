@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.11 — protocols/product-definition.md -->
+<!-- Starter Pack v12.12 — protocols/product-definition.md -->
 <!-- Load this file when: first session on a new project (type B) where the user
      arrives with an idea rather than a codebase — especially when the user cannot
      answer stack questions or the folder is empty. -->

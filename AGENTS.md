@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v12.11 — 2026-06-15 -->
+<!-- Starter Pack v12.12 — 2026-06-15 -->
 
 > **Single source of truth for all agents.** Codex and OpenCode read this
 > file automatically. Claude Code reads it through `CLAUDE.md`, which imports
@@ -88,6 +88,15 @@ Protocol Index router still fires for every safety-critical trigger
 never relaxes a guardrail, the Definition of Done, secure-coding, or the
 independent review — it trims resident footprint, not required discipline.
 Unset = FULL.
+
+**Tier-map offer (ask once):** while reading that block, if the **Light** row
+still holds a bare `[…]` placeholder (the shipped default, not yet filled), the
+tier map was never resolved — offer **once** to set up lower-tier sub-agents and, if
+accepted, load `protocols/model-tiering.md` and run its setup. A Light row
+holding a real model, or `none — single-tier (decided YYYY-MM-DD)`, is already
+resolved — do **not** re-offer. Skip in read-only sessions (no writes to record
+the decision). Single-tier is always valid; this surfaces the choice without
+nagging.
 
 ### Pack version consistency check
 
@@ -465,7 +474,10 @@ human-facing documentation.
      delegating a sub-agent task (tier map — protocols/model-tiering.md).
      Provider/harness-agnostic. Tier map is single-tier whenever the Light row
      is "none" (every delegation runs on the Capable/session model). Fill "How
-     to switch" with only the harness in use. Bounded: this block only. -->
+     to switch" with only the harness in use. Bounded: this block only.
+     Resolved = Light row holds a real model OR "none — single-tier (decided
+     YYYY-MM-DD)". A bare [placeholder] is unresolved → Session Start offers
+     setup once (AGENTS.md Session Start → Tier-map offer). -->
 
 **Pack profile:** [FULL — default; use LEAN for small-context/local runs (≤~16k). Governs resident footprint + checkpoint cadence per protocols/context-window.md]
 **Context budget:** [NOT SET — approx usable context window, e.g. 8k / 16k / 32k / 200k]
@@ -474,7 +486,7 @@ human-facing documentation.
 | Role | Model | How to switch |
 |------|-------|---------------|
 | Capable (default — never downgraded) | [session/default model] | [where the model is pinned, e.g. `.claude/agents/*.md` `model:` / `.opencode/agent/*.md` `model:` / `.codex/agents/*.toml` `model`] |
-| Light (bounded, rule-bound checks) | [cheaper/faster model, or — none → single-tier] | [predefine a Light subagent there; only Claude Code also allows a per-call `model`] |
+| Light (bounded, rule-bound checks) | [cheaper/faster model — or: none — single-tier (decided YYYY-MM-DD)] | [predefine a Light subagent there; only Claude Code also allows a per-call `model`] |
 | Deterministic | none (script only) | n/a |
 
 ## Quick Constraints

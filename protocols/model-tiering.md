@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.11 — protocols/model-tiering.md -->
+<!-- Starter Pack v12.12 — protocols/model-tiering.md -->
 <!-- Load this file when: you are about to delegate a task to a sub-agent and
      must decide which model it runs on — a governance/watch check, a
      mechanical scan, or template-driven drafting. -->
@@ -88,8 +88,11 @@ Establishing it is a standard setup step, not a mandate:
   (protocols/upgrade.md) — the agent fills it *then*: detect the provider,
   propose a Light + Capable pairing, and ask once. If the provider exposes only
   one usable model, it may set **single-tier** automatically and note it. If the
-  user declines a Light tier, record single-tier explicitly. A NOT-SET block is
-  resolved at the first session that needs it, never carried forward unaddressed.
+  user declines a Light tier, record single-tier explicitly — write the Light
+  row as `none — single-tier (decided YYYY-MM-DD)` so the always-on Session Start
+  tier-map offer (AGENTS.md) treats it as resolved and never re-asks. A NOT-SET
+  block is resolved at the first session that needs it, never carried forward
+  unaddressed.
 - **When a Light model is chosen, the agent activates it — it does not stop at
   recording the string.** It writes the live Light subagent file from the
   template and then tells the user whether a restart is required (see "Predefined
@@ -262,3 +265,9 @@ Until activated, the templates are inert — the `.example` suffix means no harn
 loads them, so every delegation runs Capable (single-tier, always valid). This is
 the artifact behind the tier map: the map names the model; the agent file is what
 the harness actually invokes — and the agent, not the user, creates it.
+
+The live agent file (`.opencode/agent/light-checker.md` etc., `.example` dropped)
+is **project config — commit it** so the tier persists for the whole team. Only
+this pack-development repo keeps its own dogfood copy out of git (via
+`.git/info/exclude`, local and never shipped) to avoid distributing a personal
+model choice in the template.
