@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.1 — protocols/run-demo.md -->
+<!-- Starter Pack v12.2 — protocols/run-demo.md -->
 <!-- Load this file when: closing any coding task (the Definition of Done's
      "user has seen it run" gate), completing a backlog item, or whenever the
      way to run the app changes. -->

@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v12.1 — 2026-06-11 -->
+<!-- Starter Pack v12.2 — 2026-06-15 -->
 
 > **Single source of truth for all agents.** Codex and OpenCode read this
 > file automatically. Claude Code reads it through `CLAUDE.md`, which imports
@@ -414,6 +414,10 @@ incorrect claim, amend it with a correction note.
 - **Independent review:** every completed backlog item and every deploy gets
   a fresh-context review of the diff (correctness, security, architecture,
   readability) — blockers cannot be self-waived. `protocols/review.md`
+- **Model tiering:** delegate bounded, rubric-driven sub-agent checks to a
+  cheaper/faster model; judgment and safety-critical work (review, security,
+  conflicts) stays on the main model and is never downgraded; deterministic
+  checks use no model. Log the tier. `protocols/model-tiering.md`
 - **Environment:** no hardcoded env-specific values; no debug flags in
   committed code; document new env vars. `protocols/environment.md`
 - **Run & demo:** maintain RUNBOOK.md from the first runnable state; a task
@@ -449,6 +453,7 @@ row. A mismatch in either direction is an error.
 | Enforcement Tooling | `protocols/enforcement-tooling.md` | Stack chosen (product definition / inherited Phase 3); validation commands first set; walking skeleton built while CI has placeholder jobs |
 | Secure Coding | `protocols/secure-coding.md` | Any task touching input handling, authn/authz, sessions, stored data, file/path handling, or output rendering |
 | Independent Review | `protocols/review.md` | Backlog item completed (before its full demo); before any deployment; user requests a review |
+| Model Tiering | `protocols/model-tiering.md` | About to delegate a task to a sub-agent and deciding which model it runs on — a governance/watch check, mechanical scan, or template-driven drafting |
 | Decision Log & Handoff Format | `protocols/log-format.md` | Writing a log entry or handoff; reconstructing history; migrating a legacy CAPTAINS_LOG.md |
 | Pre-Edit Protocol | AGENTS.md | Before every coding task |
 | Task Brief & Prompt Reformulation | AGENTS.md + TASK_TEMPLATE.md | Every coding task; read-only sessions exempt |

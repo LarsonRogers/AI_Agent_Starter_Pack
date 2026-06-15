@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.1 — protocols/review.md -->
+<!-- Starter Pack v12.2 — protocols/review.md -->
 <!-- Load this file when: a backlog item is completed (review runs BEFORE its
      full demo), before any deployment, or when the user asks for a review
      of recent work. -->
@@ -30,6 +30,10 @@ is the item-level gate. (Cost scales with items, not with every commit.)
 **Claude Code:** spawn a subagent whose input is ONLY: AGENTS.md, the
 item's diff (`git diff <item-start>..HEAD`), the touched files, and the
 checklist below — explicitly NOT the session conversation.
+
+The reviewer runs on the **Capable tier** and is never downgraded to save
+cost (protocols/model-tiering.md → "never downgraded"): a cheap reviewer
+that misses a blocker defeats the gate's entire purpose.
 
 **Codex / OpenCode / any agent (portable fallback):** diff-only discipline.
 A fresh session if practical; otherwise, in-session: re-read only the diff,
