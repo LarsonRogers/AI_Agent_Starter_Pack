@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Starter Pack v12.10 — .claude/hooks/check-pack-update.sh
+# Starter Pack v12.11 — .claude/hooks/check-pack-update.sh
 #
 # OPTIONAL, OPT-IN, NOTIFY-ONLY pack update check for the Claude Code
 # SessionStart hook. Prints ONE line to stdout only when a newer pack version
@@ -7,27 +7,24 @@
 # it. This script NEVER downloads, overwrites, applies, or commits anything, and
 # it exits 0 on every failure path so it can never block or error a session.
 #
-# To enable: set PACK_SOURCE_URL below to the raw URL of the upstream AGENTS.md,
-# then register this script as a SessionStart "startup" hook in
-# .claude/settings.json (see protocols/update-check.md). Off until you do both.
+# To enable: register this script as a SessionStart "startup" hook in
+# .claude/settings.json (see protocols/update-check.md). The upstream URL is read
+# from AGENTS.md (no edit here needed); off until you register the hook.
 #
 # Applying an update is a separate, user-confirmed step — see
 # protocols/upgrade.md. This hook only tells you one is available.
 
 set -u
 
-# --- configure this -----------------------------------------------------------
-# Raw URL of the upstream pack's AGENTS.md (e.g. a raw.githubusercontent.com path).
-# Leave as-is to keep the hook a silent no-op.
-PACK_SOURCE_URL=""
-# ------------------------------------------------------------------------------
-
-# No source configured → silent no-op (offline / local-only setups stay quiet).
-[ -z "$PACK_SOURCE_URL" ] && exit 0
-
 project_dir="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
 local_agents="$project_dir/AGENTS.md"
 [ -f "$local_agents" ] || exit 0
+
+# Pack source URL is the single source of truth: AGENTS.md Part 2 → Related Docs
+# → "Pack source" (the pack ships it pre-set to the canonical upstream; a fork
+# changes it there). No URL found → silent no-op.
+PACK_SOURCE_URL="$(grep -i 'pack source' "$local_agents" 2>/dev/null | grep -oE 'https?://[^ )|`<>]+' | head -1)"
+[ -n "$PACK_SOURCE_URL" ] || exit 0
 
 extract_ver() { grep -oE 'Starter Pack v[0-9]+\.[0-9]+' "$1" 2>/dev/null | head -1 | grep -oE '[0-9]+\.[0-9]+'; }
 

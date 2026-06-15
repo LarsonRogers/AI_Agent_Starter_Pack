@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v12.10 — 2026-06-15 -->
+<!-- Starter Pack v12.11 — 2026-06-15 -->
 
 > **Single source of truth for all agents.** Codex and OpenCode read this
 > file automatically. Claude Code reads it through `CLAUDE.md`, which imports
@@ -608,7 +608,7 @@ schema or config change.
 |---------------|------------------------|
 | `README.md` | Human-facing pack documentation |
 | `SETUP.md` | Human bootstrap walkthrough |
-| Pack source | [NOT SET — raw URL of the upstream pack's AGENTS.md; the referent for protocols/update-check.md. Set at setup (SETUP Step 0) or on first update check.] |
+| Pack source | `https://raw.githubusercontent.com/LarsonRogers/AI_Agent_Starter_Pack/main/AGENTS.md` — canonical upstream; the referent for protocols/update-check.md (read by both the on-demand check and the launch hook). A fork or private redistribution changes this one URL. |
 
 ## Pattern Registry
 <!-- Agent-maintained. HARD CAP: 40 lines. Check here before implementing

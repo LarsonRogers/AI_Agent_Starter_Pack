@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.10 — protocols/task-workflow.md -->
+<!-- Starter Pack v12.11 — protocols/task-workflow.md -->
 <!-- Load this file when: starting a coding task and you need the full Pre-Edit
      checklist, or the checkpoint/rollback procedure. -->
 <!-- Does NOT trigger when: the session is read-only/meta-review (no edits), or

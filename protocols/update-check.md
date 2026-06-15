@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.10 — protocols/update-check.md -->
+<!-- Starter Pack v12.11 — protocols/update-check.md -->
 <!-- Load this file when: the user asks "is the pack up to date?" / "check for a
      newer pack version", or the optional launch notify-hook reports an update is
      available, or you are about to run an upgrade and want to confirm the target
@@ -19,11 +19,14 @@ on explicit instruction (AGENTS.md hard guardrail).
 
 ### The pack source (the referent)
 
-The check needs to know *where upstream is*. Each project records it once in
-**AGENTS.md → Part 2 → Related Docs & Projects → "Pack source"** — the URL of the
-upstream pack's `AGENTS.md` (a raw file URL, e.g. a `raw.githubusercontent.com/…/AGENTS.md`
-path, or a repo the agent can derive one from). If no Pack source is recorded,
-the check cannot run: say so and offer to record one — do not guess a URL.
+The check needs to know *where upstream is*, and **the pack ships with it set**:
+**AGENTS.md → Part 2 → Related Docs & Projects → "Pack source"** holds the raw
+URL of the canonical upstream `AGENTS.md`. This one field is the single source of
+truth — both the on-demand check below and the optional launch hook read it, so
+there is nothing to configure out of the box. A **fork or private
+redistribution** changes that one URL to point at its own upstream. If the field
+has been blanked (no URL present), the check cannot run: say so and offer to
+restore it — do not guess a URL.
 
 ### On-demand check (portable — all three harnesses)
 
@@ -58,9 +61,10 @@ an update exists and never downloads or applies. Not enabled by default — it m
 an outbound request to the pack source on every launch, which an offline or
 local-only setup should not do.
 
-The pack ships the script at **`.claude/hooks/check-pack-update.sh`** (reads local
-+ upstream version, prints one line only if behind, exits 0 on any failure — never
-writes). To enable, set the source URL in the script and add this to
+The pack ships the script at **`.claude/hooks/check-pack-update.sh`** (reads the
+local + upstream version, prints one line only if behind, exits 0 on any failure
+— never writes). It reads the upstream URL from the "Pack source" field above, so
+there is nothing to edit in the script — just register it by adding this to
 `.claude/settings.json` (or `settings.local.json`):
 
 ```json
