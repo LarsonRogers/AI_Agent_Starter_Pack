@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v12.6 — 2026-06-15 -->
+<!-- Starter Pack v12.7 — 2026-06-15 -->
 
 > **Single source of truth for all agents.** Codex and OpenCode read this
 > file automatically. Claude Code reads it through `CLAUDE.md`, which imports
@@ -471,8 +471,8 @@ human-facing documentation.
 
 | Role | Model | How to switch |
 |------|-------|---------------|
-| Capable (default — never downgraded) | [session/default model] | [harness knob, e.g. `.claude/agents` `model:` / `opencode.json` `agent.<n>.model` / `.codex/agents` `model`] |
-| Light (bounded, rule-bound checks) | [cheaper/faster model, or — none → single-tier] | [same knob, with the Light model string] |
+| Capable (default — never downgraded) | [session/default model] | [where the model is pinned, e.g. `.claude/agents/*.md` `model:` / `.opencode/agent/*.md` `model:` / `.codex/agents/*.toml` `model`] |
+| Light (bounded, rule-bound checks) | [cheaper/faster model, or — none → single-tier] | [predefine a Light subagent there; only Claude Code also allows a per-call `model`] |
 | Deterministic | none (script only) | n/a |
 
 ## Quick Constraints

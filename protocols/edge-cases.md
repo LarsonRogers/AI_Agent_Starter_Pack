@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.6 — protocols/edge-cases.md -->
+<!-- Starter Pack v12.7 — protocols/edge-cases.md -->
 <!-- Load this file when: pack files missing, git unavailable, no file-read, no file-write, placeholder conflicts, DECISION_LOG missing/corrupt -->
 <!-- Do not load unless triggered — see AGENTS.md → Protocol Index -->
 

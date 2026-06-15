@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.6 — protocols/model-tiering.md -->
+<!-- Starter Pack v12.7 — protocols/model-tiering.md -->
 <!-- Load this file when: you are about to delegate a task to a sub-agent and
      must decide which model it runs on — a governance/watch check, a
      mechanical scan, or template-driven drafting. -->
@@ -77,6 +77,18 @@ Establishing it is a standard setup step, not a mandate:
   stays **single-tier**: every delegated task runs on the Capable / session
   model. Single-tier is always valid — tiering is a cost lever, never a
   requirement, and can be switched on later by filling in a Light model.
+- In OpenCode and Codex, "filling in a Light model" means **predefining a
+  Light-tier subagent file** pinned to that model (see harness mechanism
+  below) — there is no per-call selector to reach a cheaper model on the fly.
+  In Claude Code either path works (predefined agent or per-call `model`).
+- **Never leave the block silently blank.** Whenever a session finds the Part
+  2 → Model Tiers block unset and it is needed — a new project, inherited
+  onboarding, or just after a pack upgrade that introduced the block as NOT SET
+  (protocols/upgrade.md) — the agent fills it *then*: detect the provider,
+  propose a Light + Capable pairing, and ask once. If the provider exposes only
+  one usable model, it may set **single-tier** automatically and note it. If the
+  user declines a Light tier, record single-tier explicitly. A NOT-SET block is
+  resolved at the first session that needs it, never carried forward unaddressed.
 
 A Light model is used only when the map actually defines one AND the
 three-part gate below passes. No Light model in the map → every delegation is
@@ -140,45 +152,61 @@ guardrail-adjacent work — that is governed by AGENTS.md Part 1, unchanged.
 ### The switch — harness mechanism
 
 The tier map says *which* model fills each role; this section is *how* you
-point a sub-agent at it. The principle is identical in all harnesses; only
-the knob differs. All three default a sub-agent to inherit the session model
-when no model is set, so tiering is opt-in per delegation. The model string
-the knob takes comes straight from the tier map — so a non-Anthropic
-provider just means a different string in the same knob (e.g.
-`openai/gpt-…`, `google/gemini-…`, `ollama/llama-…`), not a different
-mechanism. Record the exact knob for this project in the Part 2 tier map's
-"How to switch" column.
+point a sub-agent at it. There are two distinct mechanisms, and only one is
+portable across all three harnesses — do not assume they are interchangeable:
+
+- **Per-definition (all three harnesses):** pin a model inside a *named
+  subagent's definition*, then route work to that agent by name. This is the
+  portable pattern. To tier in OpenCode or Codex you **predefine** a
+  tier-specific subagent (e.g. a `light-checker` pinned to the cheaper model)
+  and invoke it — the model is chosen when the agent is defined, not at the
+  moment of delegation.
+- **Per-call (Claude Code only):** choose a cheaper model *dynamically at spawn
+  time* without a predefined agent. Convenient, but it does **not** exist in
+  OpenCode or Codex. Their docs expose no per-invocation model selector, and an
+  agent reporting "no per-call model selector" is correct, not misconfigured.
+
+The portable rule: **define the tier agents up front; treat per-call override
+as a Claude-Code-only convenience.** The model string each definition takes
+comes straight from the tier map, so a non-Anthropic provider is just a
+different string in the same field (`openai/…`, `google/…`, `ollama/…`), not a
+different mechanism. All three inherit the parent/session model when no model is
+set, so tiering stays opt-in. Record the exact path for this project in the Part
+2 tier map's "How to switch" column.
 
 ```
-Claude Code  — set `model:` in the sub-agent's `.claude/agents/*.md`
-               frontmatter (alias haiku / sonnet / opus, `inherit`, or a full
-               model ID), or pass `model` when spawning via the Agent/Task
-               tool. Omit → inherit. A global floor can be set with the
-               CLAUDE_CODE_SUBAGENT_MODEL env var; enterprise policy may
-               restrict models via an availableModels allowlist (a blocked
-               request falls back, it does not fail). Non-Anthropic providers
-               are reached via the harness's configured gateway/model IDs.
+Claude Code  — BOTH paths. Per-definition: `model:` in a subagent's
+               `.claude/agents/*.md` frontmatter (alias haiku/sonnet/opus/fable,
+               a full model ID, or `inherit`). Per-call: pass `model` when
+               spawning via the Agent/Task tool. Resolution order is
+               CLAUDE_CODE_SUBAGENT_MODEL env var → per-call param → frontmatter
+               → main model; omit everywhere → inherit. (Enterprise policy may
+               restrict models via an allowlist; a blocked request falls back,
+               it does not fail.)
 
-OpenCode     — define the agent under the `agent` key in opencode.json with
-               `"mode": "subagent"` and `"model": "provider/model-id"`
-               — provider-prefixed, so any configured provider works
-               (`anthropic/…`, `openai/…`, `google/…`, `ollama/…`). Omit
-               model → inherits the invoking agent's model.
+OpenCode     — Per-definition ONLY. Pin `"model": "provider/model-id"` on a
+               subagent declared with `"mode": "subagent"`, then invoke it by
+               name / @mention. Prefer a markdown agent file
+               (`.opencode/agent/*.md` frontmatter) over an `opencode.json`
+               entry: a subagent listed in opencode.json can be mis-treated as a
+               primary agent, ignoring `mode: subagent` (OpenCode issue #22130,
+               open as of 2026-06). No per-call selector (issue #6651, open
+               feature request). Omit model → inherits the invoking agent's.
 
-Codex        — define the subagent in `.codex/agents/*.toml` with `model`
-               (and optional `model_reasoning_effort`), resolved against the
-               configured `model_provider`; omit → inherits the parent
-               session. Caveat: subagent invocation has known rough edges in
-               some Codex sessions (reported in openai/codex#15250 as of
-               2026-06; verify against current Codex docs) — if a Codex
-               subagent is not reachable, fall back to running the check
-               in-session on the Capable model rather than skipping it.
+Codex        — Per-definition ONLY. Define the subagent as a TOML file in
+               `.codex/agents/*.toml` (or `~/.codex/agents/`) with `model` and
+               optional `model_reasoning_effort`; required fields are name /
+               description / developer_instructions. Models are fixed per file,
+               not selectable per call; omitted fields inherit the parent
+               session. (No global default-subagent-model setting yet — Codex
+               issue #19482; set the model on each agent file.)
 
-Other / SDK  — any harness exposing a per-agent or per-call model parameter
-               works the same way: put the tier-map model string in that
-               parameter. No such knob → single-tier (everything Capable).
+Other / SDK  — Any harness or SDK exposing a per-agent model field (or, more
+               rarely, a per-call parameter) works the same way: put the
+               tier-map model string there. No such field → single-tier
+               (everything Capable).
 ```
 
-If a harness cannot route to a cheaper model for a given task, run the task
-on the Capable model — never skip the check to save cost. Tiering lowers
-cost where possible; it never lowers coverage.
+If a harness cannot route a given task to the cheaper model — no per-call knob
+and no predefined tier agent — run it on the Capable model rather than skip it.
+Tiering lowers cost where the mechanism exists; it never lowers coverage.

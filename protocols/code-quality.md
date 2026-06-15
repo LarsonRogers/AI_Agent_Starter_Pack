@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.6 — protocols/code-quality.md -->
+<!-- Starter Pack v12.7 — protocols/code-quality.md -->
 <!-- Load this file when: writing or modifying code — structural rules, comment
      standards, and readability requirements apply to every coding task. -->
 <!-- Does NOT trigger when: the session is read-only/analysis, or the task is

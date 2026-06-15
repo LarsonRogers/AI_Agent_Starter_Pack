@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.6 — protocols/upgrade.md -->
+<!-- Starter Pack v12.7 — protocols/upgrade.md -->
 <!-- Load this file when: the user asks to upgrade/migrate an existing project to a
      newer pack version, OR the edge-cases version-mismatch handler points here to
      migrate rather than just halt. -->
@@ -91,7 +91,13 @@ Project Specifics`** heading to EOF is project-owned and agent-maintained.
        - Section in BOTH → keep the project's content unchanged.
        - Section in target but NOT in the project (a section the new version
          introduced, e.g. "Model Tiers") → append it from the target template
-         as NOT-SET placeholders, in template order. NEVER invent values.
+         as NOT-SET placeholders, in template order. NEVER invent values — but
+         if it is a SETUP section (Model Tiers / Pack profile / tier map), don't
+         leave it silently NOT-SET either: flag it now and fill it via the normal
+         setup prompt before the upgrade closes (Step 7), per
+         protocols/model-tiering.md (detect provider, propose Light+Capable, ask
+         once; user may decline → single-tier). "Never invent" means don't guess
+         values; it does not mean leave a needed setup block blank.
        - Section in the project but NOT in target (removed/renamed upstream) →
          keep the project's content and flag it for the user; do not delete
          project content to match a template. If it looks like a RENAME (the
@@ -152,6 +158,10 @@ do not commit broken state.
 ### Step 7 — Review, show diff, hand off
 
 ```
+[ ] Any SETUP section added as NOT-SET in Step 3 (Model Tiers / Pack profile /
+    tier map) is filled via the setup prompt (model-tiering.md) or explicitly
+    recorded single-tier — not left blank. A new setup block is resolved before
+    the upgrade closes, never carried forward NOT-SET.
 [ ] Independent fresh-context review of the full upgrade diff — reuse the
     protocols/review.md mechanism (diff-only, fresh context, cite file:line);
     zero unresolved blockers before commit.
