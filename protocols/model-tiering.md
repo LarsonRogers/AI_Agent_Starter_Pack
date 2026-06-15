@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.8 — protocols/model-tiering.md -->
+<!-- Starter Pack v12.9 — protocols/model-tiering.md -->
 <!-- Load this file when: you are about to delegate a task to a sub-agent and
      must decide which model it runs on — a governance/watch check, a
      mechanical scan, or template-driven drafting. -->
@@ -78,9 +78,10 @@ Establishing it is a standard setup step, not a mandate:
   model. Single-tier is always valid — tiering is a cost lever, never a
   requirement, and can be switched on later by filling in a Light model.
 - In OpenCode and Codex, "filling in a Light model" means **predefining a
-  Light-tier subagent file** pinned to that model (see harness mechanism
-  below) — there is no per-call selector to reach a cheaper model on the fly.
-  In Claude Code either path works (predefined agent or per-call `model`).
+  Light-tier subagent file** pinned to that model (the pack ships a fill-the-model
+  template per harness — see "Predefined Light-tier subagents" below) — there is
+  no per-call selector to reach a cheaper model on the fly. In Claude Code either
+  path works (predefined agent or per-call `model`).
 - **Never leave the block silently blank.** Whenever a session finds the Part
   2 → Model Tiers block unset and it is needed — a new project, inherited
   onboarding, or just after a pack upgrade that introduced the block as NOT SET
@@ -210,3 +211,39 @@ Other / SDK  — Any harness or SDK exposing a per-agent model field (or, more
 If a harness cannot route a given task to the cheaper model — no per-call knob
 and no predefined tier agent — run it on the Capable model rather than skip it.
 Tiering lowers cost where the mechanism exists; it never lowers coverage.
+
+### Predefined Light-tier subagents (shipped templates)
+
+Because OpenCode and Codex have no per-call selector, tiering there needs a
+*named subagent pinned to the Light model*. The pack ships one ready to fill, per
+harness — each is a read-only, rubric-only scanner (no edit permission) whose
+description is scoped to bounded checklist work, so the primary delegates Light
+scans to it and nothing else:
+
+```
+.claude/agents/light-checker.md.example     model: haiku  (already valid; edit only to match your map)
+.opencode/agent/light-checker.md.example    model: REPLACE_WITH/your-light-model-id   → restart OpenCode
+.codex/agents/light-checker.toml.example    model: REPLACE_WITH_your_light_model       → restart Codex
+```
+
+To make tiering actually run — the four steps your harness needs (this is the
+config + harness-exposure layer the policy above cannot do for you):
+
+```
+[ ] 1. Choose the real Light model and record it in the Part 2 tier map.
+[ ] 2. Activate the template: drop the `.example` suffix and set `model` to that
+        string (Claude Code's `haiku` already works for the default Anthropic
+        setup, so its file needs no model edit).
+[ ] 3. Reload: OpenCode and Codex load agent files at startup — RESTART them.
+        Claude Code picks up new agent files in a fresh session.
+[ ] 4. Confirm invocation: the agent is reached by @mention or by description-
+        match delegation — OpenCode/Codex expose no "call agent X by name with
+        model Y" tool, so verify the primary actually delegates a bounded scan
+        to it. If it cannot be invoked, run the check on the Capable tier rather
+        than skipping it (fail-safe unchanged).
+```
+
+Until activated, the templates are inert — the `.example` suffix means no harness
+loads them, so every delegation runs Capable (single-tier, always valid). This is
+the artifact behind the tier map: the map names the model; the agent file is what
+the harness actually invokes.
