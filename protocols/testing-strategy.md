@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.5 — protocols/testing-strategy.md -->
+<!-- Starter Pack v12.6 — protocols/testing-strategy.md -->
 <!-- Load this file when: writing or evaluating tests (not: reviewing results or running an existing suite) -->
 <!-- Does NOT trigger when: merely reading CI output, reviewing test results
      without authoring or changing tests, or running an existing test suite

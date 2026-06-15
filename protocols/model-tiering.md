@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.5 — protocols/model-tiering.md -->
+<!-- Starter Pack v12.6 — protocols/model-tiering.md -->
 <!-- Load this file when: you are about to delegate a task to a sub-agent and
      must decide which model it runs on — a governance/watch check, a
      mechanical scan, or template-driven drafting. -->
