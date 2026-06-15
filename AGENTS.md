@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v12.2 — 2026-06-15 -->
+<!-- Starter Pack v12.3 — 2026-06-15 -->
 
 > **Single source of truth for all agents.** Codex and OpenCode read this
 > file automatically. Claude Code reads it through `CLAUDE.md`, which imports
@@ -518,6 +518,23 @@ human-facing documentation.
      Update only when the user asks for more or less explanation. -->
 
 **Active mode:** [NOT SET — detect on first session per protocols/communication.md]
+
+## Model Tiers
+<!-- Set at stack selection (product-definition Step 3c / inherited-codebase
+     Phase 3 step 4c) per protocols/model-tiering.md; read when delegating a
+     sub-agent task. Provider/harness-agnostic — fill with whatever this
+     project actually uses. Status is single-tier whenever the Light row is
+     "none" (every delegation runs on the Capable/session model) — that is
+     the valid default until a Light model is set. Fill "How to switch" with
+     only the harness in use. Bounded: this table only. -->
+
+**Provider / environment:** [NOT SET — e.g. Anthropic / OpenAI / Google / local Ollama / internal gateway]
+
+| Role | Model | How to switch |
+|------|-------|---------------|
+| Capable (default — never downgraded) | [session/default model] | [harness knob, e.g. `.claude/agents` `model:` / `opencode.json` `agent.<n>.model` / `.codex/agents` `model`] |
+| Light (bounded, rule-bound checks) | [cheaper/faster model, or — none → single-tier] | [same knob, with the Light model string] |
+| Deterministic | none (script only) | n/a |
 
 ## Quick Constraints
 <!-- Filled in by the agent during Placeholder Inference. -->

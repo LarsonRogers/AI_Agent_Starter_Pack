@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.2 — protocols/model-tiering.md -->
+<!-- Starter Pack v12.3 — protocols/model-tiering.md -->
 <!-- Load this file when: you are about to delegate a task to a sub-agent and
      must decide which model it runs on — a governance/watch check, a
      mechanical scan, or template-driven drafting. -->
@@ -31,8 +31,8 @@ LIGHT          — bounded, rubric-driven sub-agent work with a mechanically
                  "every protocol has a trigger row," "every changed file has a
                  file header," template-driven DECISION_LOG/HANDOFF drafting,
                  mechanical reformatting, simple extraction/classification.
-                 Model: cheap/fast tier (e.g. Haiku-class; in OpenCode/Codex
-                 the provider's small model).
+                 Model: the Light-tier model from the project's tier map
+                 (the provider's cheaper/faster model — see Tier map below).
 
 CAPABLE        — judgment and safety-critical work. Independent review
                  (protocols/review.md), secure-coding assessment, conflict
@@ -41,9 +41,48 @@ CAPABLE        — judgment and safety-critical work. Independent review
                  Model: the main session model. NEVER downgraded.
 ```
 
-Tier names are by task property, not by model brand — model IDs drift and
-differ across harnesses. The parenthetical model names are current examples,
-not pins.
+Tier names are by task property, not by model brand — they are capability
+roles, deliberately provider-neutral. Two independent axes turn a role into
+an actual model call:
+
+- **Provider / environment** — *which models exist*: Anthropic, OpenAI,
+  Google, a local Ollama host, an internal gateway, and so on. This decides
+  the concrete model behind each role.
+- **Harness** — *the knob that switches model*: Claude Code, OpenCode, Codex.
+  This decides how a sub-agent is pointed at that model.
+
+Both are project-specific, so the concrete mapping is NOT hardcoded in this
+protocol — it lives in the **tier map** below, established once per project.
+
+### Tier map (per project)
+
+The capability roles are universal; the models filling them are not. At stack
+selection the agent records this project's map in **AGENTS.md → Part 2 →
+Model Tiers** — provider-neutral, filled with whatever this project actually
+uses:
+
+```
+Provider / environment: [what this project uses]
+Capable role  → [the session / default model]    (never downgraded)
+Light role    → [a cheaper / faster model on a compatible provider]
+Deterministic → none (script only)
+```
+
+Establishing it is a standard setup step, not a mandate:
+
+- New project — product-definition Step 3c (right after the stack is chosen).
+- Inherited project — inherited-codebase Phase 3 step 4c.
+- The agent detects the provider, proposes a Light + Capable pairing, and
+  asks once. If the user skips, or only one model is available, the map
+  stays **single-tier**: every delegated task runs on the Capable / session
+  model. Single-tier is always valid — tiering is a cost lever, never a
+  requirement, and can be switched on later by filling in a Light model.
+
+A Light model is used only when the map actually defines one AND the
+three-part gate below passes. No Light model in the map → every delegation is
+Capable, automatically. This is what makes the policy safe under any provider:
+absent or unknown configuration degrades to "run it on the main model," never
+to "skip it" or "guess a cheaper model."
 
 ### Selection rule — the three-part gate
 
@@ -93,33 +132,46 @@ wherever the result is recorded. Routing to the Light tier never changes
 executes a downstream-checked scan. It is never license to self-delegate
 guardrail-adjacent work — that is governed by AGENTS.md Part 1, unchanged.
 
-### Harness-aware mechanism
+### The switch — harness mechanism
 
-The tiering principle is identical in all harnesses; only the knob differs.
-All three default a sub-agent to inherit the session model when no model is
-set, so tiering is opt-in per delegation.
+The tier map says *which* model fills each role; this section is *how* you
+point a sub-agent at it. The principle is identical in all harnesses; only
+the knob differs. All three default a sub-agent to inherit the session model
+when no model is set, so tiering is opt-in per delegation. The model string
+the knob takes comes straight from the tier map — so a non-Anthropic
+provider just means a different string in the same knob (e.g.
+`openai/gpt-…`, `google/gemini-…`, `ollama/llama-…`), not a different
+mechanism. Record the exact knob for this project in the Part 2 tier map's
+"How to switch" column.
 
 ```
 Claude Code  — set `model:` in the sub-agent's `.claude/agents/*.md`
-               frontmatter (haiku / sonnet / opus / inherit, or a full model
-               ID), or pass `model` when spawning via the Agent/Task tool.
-               Omit → inherit. A global floor can be set with the
+               frontmatter (alias haiku / sonnet / opus, `inherit`, or a full
+               model ID), or pass `model` when spawning via the Agent/Task
+               tool. Omit → inherit. A global floor can be set with the
                CLAUDE_CODE_SUBAGENT_MODEL env var; enterprise policy may
                restrict models via an availableModels allowlist (a blocked
-               request falls back, it does not fail).
+               request falls back, it does not fail). Non-Anthropic providers
+               are reached via the harness's configured gateway/model IDs.
 
 OpenCode     — define the agent under the `agent` key in opencode.json with
                `"mode": "subagent"` and `"model": "provider/model-id"`
-               (e.g. "anthropic/claude-haiku-…"). Omit model → inherits the
-               invoking agent's model.
+               — provider-prefixed, so any configured provider works
+               (`anthropic/…`, `openai/…`, `google/…`, `ollama/…`). Omit
+               model → inherits the invoking agent's model.
 
 Codex        — define the subagent in `.codex/agents/*.toml` with `model`
-               (and optional `model_reasoning_effort`); omit → inherits the
-               parent session. Caveat: subagent invocation has known rough
-               edges in some Codex sessions (reported in openai/codex#15250
-               as of 2026-06; verify against current Codex docs) — if a
-               Codex subagent is not reachable, fall back to running the
-               check in-session on the Capable model rather than skipping it.
+               (and optional `model_reasoning_effort`), resolved against the
+               configured `model_provider`; omit → inherits the parent
+               session. Caveat: subagent invocation has known rough edges in
+               some Codex sessions (reported in openai/codex#15250 as of
+               2026-06; verify against current Codex docs) — if a Codex
+               subagent is not reachable, fall back to running the check
+               in-session on the Capable model rather than skipping it.
+
+Other / SDK  — any harness exposing a per-agent or per-call model parameter
+               works the same way: put the tier-map model string in that
+               parameter. No such knob → single-tier (everything Capable).
 ```
 
 If a harness cannot route to a cheaper model for a given task, run the task

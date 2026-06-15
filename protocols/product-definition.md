@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.2 — protocols/product-definition.md -->
+<!-- Starter Pack v12.3 — protocols/product-definition.md -->
 <!-- Load this file when: first session on a new project (type B) where the user
      arrives with an idea rather than a codebase — especially when the user cannot
      answer stack questions or the folder is empty. -->
@@ -128,6 +128,24 @@ never silent drift):**
 A revisit updates the sketch, the Key Invariants, and the import-boundary
 contracts in the same commit.
 
+### Step 3c — Establish the model tier map (provider-agnostic)
+
+Once the stack and provider/environment are known, set this project's tier
+map (protocols/model-tiering.md) so cheap-vs-capable routing is configured
+before any sub-agent runs:
+
+- Detect the provider/environment in use (the harness's configured models —
+  Anthropic, OpenAI, Google, local Ollama, an internal gateway, etc.).
+- Propose a pairing in plain English: a **Capable** model (the main/default
+  model — never downgraded) and, if a cheaper/faster one is available on a
+  compatible provider, a **Light** model for bounded rule-bound checks. Ask
+  once.
+- Single-tier is a valid answer: if the user has only one model, doesn't
+  want to split, or skips, leave the map single-tier (everything runs
+  Capable). It can be filled in later — no friction, no requirement.
+- Write the result into AGENTS.md → Part 2 → Model Tiers (role → model →
+  how-to-switch knob for this harness).
+
 ### Step 4 — Seed the backlog
 
 Create `BACKLOG.md` at the repo root:
@@ -170,6 +188,7 @@ Rules:
 [ ] Stack recommended, explained in plain English, and confirmed
 [ ] Architecture sketch sized (S1–S4) and written into Part 2 —
     structure, WHY per layer, Key Invariants
+[ ] Model tier map set in Part 2 (single-tier is a valid answer)
 [ ] AGENTS.md Part 2 filled (summary, stack, quick constraints, commands)
 [ ] BACKLOG.md created, item 1 is a runnable walking skeleton INCLUDING
     enforcement tooling (protocols/enforcement-tooling.md)
