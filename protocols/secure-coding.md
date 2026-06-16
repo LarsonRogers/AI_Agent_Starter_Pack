@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.15 — protocols/secure-coding.md -->
+<!-- Starter Pack v12.16 — protocols/secure-coding.md -->
 <!-- Load this file when: a task touches input handling, authentication or
      authorization, sessions, stored data, file/path handling, output
      rendering (HTML/templates), or anything reachable by untrusted users. -->
@@ -14,7 +14,36 @@ exploitable. Principles: never trust input; deny by default; least
 privilege; use the framework's security features instead of inventing your
 own.
 
+### Where capable models actually miss — verify these hardest
+
+Spend the scrutiny where the misses are. A capable model usually parameterizes
+queries, escapes output, and even gets object-ownership (IDOR) right on its own —
+and reliably **under-weights, or silently skips, the items below.** (Observed: in
+an A/B build, the unguided model shipped login + edit/delete with *no CSRF* and
+rationalized the gap; the review gate is what caught it — pack-dev/ab-test-pack-value.md.)
+Treat these as the gate, not a footnote:
+
+```
+[ ] CSRF on EVERY state-changing request — incl. login/register (login-CSRF,
+    session fixation). SameSite alone is not a CSRF strategy; verify a token.
+[ ] Sessions: server-side invalidation on logout, expiry, rotation on login;
+    HttpOnly + Secure + SameSite. Rate-limit login and other abusable endpoints.
+[ ] Authorization on EVERY endpoint (not just "is logged in") — object-level
+    ownership on every client-supplied ID; deny by default.
+[ ] Error/timing hygiene that leaks: username enumeration (login/reset/register),
+    stack traces, internal IDs/paths to the user.
+```
+
+These are not new items — they are the high-miss subset of the full checklist
+below, pulled to the front so attention lands there. Do not skip the rest.
+
 ### The checklist — apply every item relevant to the task
+
+The **basics** below (input validation, parameterized queries, output encoding) a
+capable model usually handles — **confirm they're present, don't belabor them** —
+and put the real effort into the high-miss set above. This relaxation is for
+capable models only: on a weak or local model the basics are NOT reliable —
+treat them as unverified and apply every item in full.
 
 **Input — at every boundary (API, form, file upload, CLI arg, URL param):**
 ```
@@ -71,6 +100,9 @@ own.
 [ ] No stack traces, queries, or internal paths shown to end users —
     log details server-side, show a generic message (communication.md
     governs how it is explained to the user)
+[ ] No account-enumeration or timing oracles: login / password-reset /
+    register give the same response (and similar timing) whether or not the
+    account exists
 [ ] Never log secrets, tokens, or PII
 ```
 

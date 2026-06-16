@@ -148,3 +148,56 @@ The pack likely does NOT visibly improve line-level code. It likely shows up in
 dimensions 1–3 and 5–6, and costs more on dimension 8. If it *doesn't* separate
 on the decisive question across 2–3 runs, that's a real finding — log it; the
 pack should earn its overhead or be trimmed.
+
+---
+
+## Results — run 1 (2026-06-16, the cheap architecture probe, then security)
+
+**Setup:** the book-club prompt, autonomous subagents, same model (Opus 4.8) both
+arms, N=1. Arm A = no pack (neutral "build this"); Arm B = pack loaded, told to
+follow it. MVP → genre retrofit → login + author-only edit/delete. Verified by
+reading code + grep, not by trusting the agents' summaries. Scratch repos:
+`I:/mega/megasync/projects/pack-ab-probe`.
+
+**Architecture (tells 1–4):**
+- **Tell 2 (decisive, verified):** Arm A put ALL SQL inline in the route file
+  (`server.js`); Arm B put ALL SQL in a data layer (`src/db/index.js`), routes
+  SQL-free, with a stated Key Invariant. The "didn't architect layers" anecdote
+  reproduced exactly. The boundary HELD through the schema change.
+- **Tell 1:** Arm B recorded the architecture (S-sizing + invariants in Part 2 +
+  log); Arm A made no structure decision.
+- **Tell 3:** Arm A under-separated + 0 tests + free-text genre; Arm B layered +
+  18 tests + allow-list — but went full S4 + CI/dependabot/semgrep/5-docs for a
+  toy (~2× tokens). → motivated the **Project Stakes** dial (v12.15).
+- **Tell 4 (retrofit):** CLOSER than expected — both chose a single genre column
+  + wrote idempotent migrations; the flat structure absorbed an additive column
+  fine. The architecture gap is LATENT — it bites on relational features, not a
+  single column.
+
+**Security (login + author-only edit/delete):**
+- **IDOR / ownership — BOTH correct.** Arm A `ownsReview()` → 403; Arm B SQL-scoped
+  `WHERE id=? AND user_id=?`. Default Claude did NOT skip the obvious authz —
+  partially counters the "vibe code skips security" fear.
+- **CSRF — the decisive divergence.** Arm A shipped login/register/edit/delete
+  with **no CSRF token** and rationalized it ("minimal scope"). Arm B has full
+  CSRF (per-session + pre-session token, SameSite=Strict) — **because the pack's
+  independent-review gate caught it as a BLOCKER and forced the fix**, and also
+  closed a login-timing username-enumeration channel. Arm A: 0 tests; Arm B: 34.
+
+**Headline:** the pack's win is not "writes more secure code" (both first drafts
+under-weighted CSRF) — it's that the **review gate caught a real, shippable,
+non-obvious vuln that default Claude wrote and then rationalized away.** The value
+is on the NON-OBVIOUS security layer (CSRF / session / enumeration), not the
+basics (parameterization, escaping, IDOR) the model already does unprompted.
+
+**Decisions this drove:**
+- Keep the independent-review gate + secure-coding self-check (they caught a live
+  vuln) — resolves the deferred "maybe trim them" question: don't.
+- Re-weight secure-coding.md toward the high-miss items, stop giving the basics
+  equal billing (v12.16).
+- Validated v12.15: adding auth is the escalation trigger that pulls a Spike up to
+  Production → fires the review → caught the bug.
+
+**Caveats:** N=1 per arm, same model both sides, I (same model) judged. Strong
+directional signal, not proof. A fresh replication pair (run "c") is pending the
+maintainer's call. Pack arm cost ~2–2.7× tokens.
