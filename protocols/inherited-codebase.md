@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.13 — protocols/inherited-codebase.md -->
+<!-- Starter Pack v12.14 — protocols/inherited-codebase.md -->
 <!-- Load this file when: no decision log exists and non-pack source files are present -->
 <!-- Does NOT trigger when: first message is a read-only audit or meta-review (load
      protocols/read-only.md instead), or when no non-pack source files are present
@@ -91,6 +91,18 @@ After mapping, the agent must produce a written assessment covering:
 
 Do not soften the assessment. If the codebase is in poor shape, say so clearly
 and specifically. The developer needs an honest picture before deciding what to do.
+
+#### Phase 2b — Pressure-test the intended change
+
+The assessment maps the code; this establishes what the developer actually wants
+to do with it and what that will cost. Run the **Requirement Pressure-Test**
+(protocols/requirements.md, CHANGE BLAST-RADIUS lens): elicit the goal, then —
+now that you have the map — interrogate the blast radius of touching the relevant
+areas (what could break in code you didn't write, hidden dependencies between the
+modules involved, edge/failure cases the existing code already mishandles, and
+what "done" concretely looks like). Bounded and audience-scaled; do not
+manufacture questions. The resolved goal + risks feed the first-task confirmation
+in Phase 3/4; accepted risks are recorded as watch items in the live log entry.
 
 #### Phase 3 — Build Out Project Docs
 

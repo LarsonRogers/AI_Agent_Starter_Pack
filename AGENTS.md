@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v12.13 — 2026-06-15 -->
+<!-- Starter Pack v12.14 — 2026-06-16 -->
 
 > **Single source of truth for all agents.** Codex and OpenCode read this
 > file automatically. Claude Code reads it through `CLAUDE.md`, which imports
@@ -269,6 +269,10 @@ scope contract — anything outside it is out of scope. Exception: read-only
 sessions (protocols/read-only.md) are exempt — the review request is the
 scope contract.
 
+If the brief is large, ambiguous, or cross-cutting, pressure-test *what is
+wanted* before confirming — protocols/requirements.md (Scope & Acceptance lens).
+A small, clear, low-risk brief needs only the reformulation above.
+
 ### Pre-Edit Protocol (before every coding task)
 
 Before touching code, run the 9-step Pre-Edit checklist in
@@ -398,6 +402,7 @@ row. A mismatch in either direction is an error.
 | Pre-Edit Protocol | `protocols/task-workflow.md` | Before every coding task (9-step checklist + checkpoint/rollback) |
 | Task Brief & Prompt Reformulation | AGENTS.md + TASK_TEMPLATE.md | Every coding task; read-only exempt |
 | Cross-Cutting Changes | `protocols/cross-cutting.md` | Task touches 3+ files, crosses layers, or moves/renames structurally |
+| Requirement Pressure-Test | `protocols/requirements.md` | Idea-stage product definition (always); inherited project after assessment; large/ambiguous/cross-cutting task brief |
 | Safe Deletion | `protocols/safe-deletion.md` | Any file deletion request |
 | Code Quality | `protocols/code-quality.md` | Writing/modifying code (not read-only or docs-only) |
 | Environment Awareness | `protocols/environment.md` | Any environment-specific code or config |

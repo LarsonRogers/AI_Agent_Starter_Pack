@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.13 — protocols/product-definition.md -->
+<!-- Starter Pack v12.14 — protocols/product-definition.md -->
 <!-- Load this file when: first session on a new project (type B) where the user
      arrives with an idea rather than a codebase — especially when the user cannot
      answer stack questions or the folder is empty. -->
@@ -26,8 +26,21 @@ Ask, conversationally, not as a form:
 - Will it store or handle information about you or other people — and if
   so, who should be able to see it?
 
-Stop when you can write the brief below without guessing. Two to four
-exchanges is normal. Do not ask about technology — that is your job.
+Stop when you can write the brief below without guessing AND Step 1b has
+resolved the risky unknowns. Two to four exchanges is normal. Do not ask about
+technology — that is your job.
+
+### Step 1b — Pressure-test the idea (before the brief)
+
+Run the **Requirement Pressure-Test** (protocols/requirements.md, PRODUCT lens)
+before writing the brief: surface and resolve the high-leverage unknowns —
+unstated assumptions, edge cases, conflicting wants, hidden dependencies, and
+what "success" concretely means — so the brief captures what the user actually
+needs, not just what they first said. Bounded and audience-scaled: a crisp idea
+may pass with one or two questions (or none); a vague or ambitious one earns
+more. Do not manufacture questions, and never grill a non-dev into a wall —
+each question carries its "why." Accepted-but-unresolved risks become stated
+assumptions in the brief.
 
 ### Step 2 — Write the product brief
 
@@ -189,6 +202,8 @@ Rules:
 ### Done criteria for this protocol
 
 ```
+[ ] Requirement pressure-test run (Step 1b) — risky unknowns resolved or
+    recorded as stated assumptions
 [ ] Product brief confirmed by the user (including the Data & trust block)
 [ ] Stack recommended, explained in plain English, and confirmed
 [ ] Architecture sketch sized (S1–S4) and written into Part 2 —
