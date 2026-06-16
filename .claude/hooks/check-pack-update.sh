@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Starter Pack v12.14 — .claude/hooks/check-pack-update.sh
+# Starter Pack v12.15 — .claude/hooks/check-pack-update.sh
 #
 # OPTIONAL, OPT-IN, NOTIFY-ONLY pack update check for the Claude Code
 # SessionStart hook. Prints ONE line to stdout only when a newer pack version

@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.14 — protocols/placeholder-inference.md -->
+<!-- Starter Pack v12.15 — protocols/placeholder-inference.md -->
 <!-- Load this file when: first session on any project type — fills REQUIRED placeholders -->
 <!-- Does NOT trigger when: a read-only meta-review is active (placeholder inference
      stays suspended until the review is complete and normal session-start resumes). -->
@@ -56,6 +56,9 @@ Model Tiers           — set at stack selection by product-definition Step 3c
                         (protocols/model-tiering.md) plus Pack profile +
                         Context budget (protocols/context-window.md).
                         Single-tier + FULL are the valid defaults
+Project Stakes        — set at setup by product-definition Step 3d or Inherited
+                        Codebase Phase 3 step 4d (protocols/project-stakes.md);
+                        Standard is the valid default
 ```
 
 **The inference flow:**

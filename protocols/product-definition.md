@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.14 — protocols/product-definition.md -->
+<!-- Starter Pack v12.15 — protocols/product-definition.md -->
 <!-- Load this file when: first session on a new project (type B) where the user
      arrives with an idea rather than a codebase — especially when the user cannot
      answer stack questions or the folder is empty. -->
@@ -164,6 +164,20 @@ so routing and context posture are configured before any work:
 - Write the result into AGENTS.md → Part 2 → Model Tiers (profile, budget,
   provider, and role → model → how-to-switch knob for this harness).
 
+### Step 3d — Set the project stakes
+
+Propose a stakes posture from the brief and confirm it (protocols/project-stakes.md)
+— it scales how much process ceremony the build carries (tooling bundle, doc set,
+test depth, demo formality), never the safety floor:
+
+- **Spike** if the brief reads throwaway/local/exploratory with no real data;
+  **Production** on clear signals (real users, real or sensitive data, money,
+  deploy intent); otherwise **Standard** (the default).
+- Propose, don't impose: "This looks like X — I suggest **[posture]** stakes;
+  confirm or pick another." Default to Standard if unsure.
+- Write it to AGENTS.md → Part 2 → Project Stakes. It governs Step 4's tooling
+  and doc scope below.
+
 ### Step 4 — Seed the backlog
 
 Create `BACKLOG.md` at the repo root:
@@ -184,9 +198,13 @@ Rules:
 - Item 1 is ALWAYS "get something minimal running end-to-end" — the walking
   skeleton the run/demo protocol can demonstrate. Features come after.
 - Item 1 includes the enforcement-tooling setup
-  (protocols/enforcement-tooling.md): lint, format, type check, boundary
-  rules, secret hook, and real CI commands exist BEFORE the first feature
-  is written.
+  (protocols/enforcement-tooling.md), scaled to the Project Stakes set in Step 3d:
+  Spike = linter + secret hook; Standard = + format, type, tests, CI (boundary
+  rules if the architecture has layers); Production = the full bundle. The secret
+  hook is set up at every stakes level. Gates exist BEFORE the first feature.
+- Docs for item 1 also scale with stakes: Spike = DECISION_LOG + HANDOFF (+ the
+  architecture sketch, always); Standard/Production = + BACKLOG + RUNBOOK + full
+  Part 2. (If Spike, this BACKLOG.md may be a short list rather than the full set.)
 - Every item is phrased as a user-visible outcome, not a technical layer
   ("can add a note and see it saved", not "implement storage layer")
 - Completing a backlog item triggers a FULL demo (protocols/run-demo.md)
@@ -209,6 +227,8 @@ Rules:
 [ ] Architecture sketch sized (S1–S4) and written into Part 2 —
     structure, WHY per layer, Key Invariants
 [ ] Model tier map set in Part 2 (single-tier is a valid answer)
+[ ] Project Stakes set in Part 2 (Standard is the default; Spike/Production
+    proposed from the brief and confirmed)
 [ ] AGENTS.md Part 2 filled (summary, stack, quick constraints, commands)
 [ ] BACKLOG.md created, item 1 is a runnable walking skeleton INCLUDING
     enforcement tooling (protocols/enforcement-tooling.md)

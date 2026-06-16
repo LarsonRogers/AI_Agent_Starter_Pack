@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.14 — protocols/run-demo.md -->
+<!-- Starter Pack v12.15 — protocols/run-demo.md -->
 <!-- Load this file when: closing any coding task (the Definition of Done's
      "user has seen it run" gate), completing a backlog item, or whenever the
      way to run the app changes. -->
@@ -75,6 +75,19 @@ it at the next session. The DoD item is then marked
 the gate on its own initiative, and must not mark it satisfied without
 either user confirmation (full demo) or its own verified start (quick
 re-confirm).
+
+### Scale to Project Stakes
+
+Demo *formality* scales with Project Stakes (protocols/project-stakes.md); the
+*floor* does not — the user must have seen it run at least once before it counts
+as real:
+- **Spike:** the agent-verified start (quick re-confirm) satisfies most steps;
+  RUNBOOK.md is optional (the README/log run steps suffice). A throwaway the
+  builder runs themselves needs no formal walkthrough.
+- **Standard / Production:** FULL demo on backlog-item completion (with the
+  keyboard-only pass for UI), RUNBOOK.md maintained, as below.
+
+A Spike that escalates (project-stakes.md) adopts the fuller demo from then on.
 
 ### Gate evaluation (explicit, not vibes)
 

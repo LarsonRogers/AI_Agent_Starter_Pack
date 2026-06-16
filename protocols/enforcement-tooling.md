@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.14 — protocols/enforcement-tooling.md -->
+<!-- Starter Pack v12.15 — protocols/enforcement-tooling.md -->
 <!-- Load this file when: the stack is chosen (product definition step 3, or
      inherited codebase Phase 3), validation commands are being set for the
      first time, or the walking skeleton is being built while CI still has
@@ -47,6 +47,26 @@ AGENTS.md → Part 2 → Project-Specific Architecture (the layer/dependency
 decisions in the sketch become the tool's contracts — e.g., "nothing in
 data/ imports from controllers/"). When the sketch changes, the rules
 change in the same commit.
+
+### Scale the bundle to Project Stakes
+
+How many of these gates you set up scales with **Project Stakes** (Part 2;
+protocols/project-stakes.md) — don't bolt production CI onto a throwaway:
+
+```
+SPIKE       — gate 1 (linter) + gate 5 (secret hook). Skip the rest.
+STANDARD    — gates 1, 2, 3, 5 + tests + gate 7 CI WIRING (the dependabot half
+              of gate 7 is Production); gate 4 (import-boundaries) IF the
+              architecture sketch has layers to enforce.
+PRODUCTION  — the full bundle: all of 1–7 incl. gate 6 (SAST/semgrep), the
+              dependabot half of gate 7, and strict import-boundaries.
+```
+
+**Gate 5 (the secret hook) is FLOOR — set it up at every stakes level, Spike
+included.** It guards a hard guardrail; it is never the thing that gets trimmed.
+Row 4 only applies once layers exist (an S1 single-file tool has no boundaries to
+enforce). When a Spike escalates (project-stakes.md), set up the gates the new
+posture adds at that point (and demonstrate each can fail, per below).
 
 ### Verify every gate can fail (mandatory, before trusting any of them)
 

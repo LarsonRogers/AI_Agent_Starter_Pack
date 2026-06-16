@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v12.14 — 2026-06-16 -->
+<!-- Starter Pack v12.15 — 2026-06-16 -->
 
 > **Single source of truth for all agents.** Codex and OpenCode read this
 > file automatically. Claude Code reads it through `CLAUDE.md`, which imports
@@ -327,6 +327,13 @@ commit after; `git reset --hard HEAD` if something breaks).
 [ ] Commit made with imperative mood message
 ```
 
+The tooling/CI items, test depth, and demo formality above scale with **Project
+Stakes** (Part 2; protocols/project-stakes.md) — a Spike runs a lighter set, a
+Production project the full set. The **safety floor never scales**: secrets +
+the secret hook, the secure-coding self-check, independent review when triggered,
+the day-one architecture sketch, "don't commit broken state," and the log entry
+apply at every stakes level.
+
 If any item fails, roll back — do not accumulate broken state across tasks.
 
 ---
@@ -362,7 +369,7 @@ incorrect claim, amend it with a correction note.
 - **Context window:** after 5 tasks or detected degradation → finish task, checkpoint, recommend fresh session. `protocols/context-window.md`
 - **Code quality:** structural rules, comment standards, agent-ism avoidance on every coding task. `protocols/code-quality.md`
 - **Enforcement tooling:** at stack selection, set up strict lint/format/type/boundary checks + secret pre-commit hook + real CI; demonstrate each gate failing before trusting it. `protocols/enforcement-tooling.md`
-- **Secure coding:** input/auth/session/stored-data tasks run the checklist (recorded self-check); SAST in CI; never hand-roll auth/crypto. `protocols/secure-coding.md`
+- **Secure coding:** input/auth/session/stored-data tasks run the checklist (recorded self-check, floor at every stakes level); SAST in CI per Project Stakes (Production default, pulled forward for auth/payments/sensitive-data); never hand-roll auth/crypto. `protocols/secure-coding.md`
 - **Independent review:** every completed backlog item and deploy gets a fresh-context diff review (correctness/security/architecture/readability); blockers not self-waived. `protocols/review.md`
 - **Model tiering:** route bounded rule-bound sub-agent checks to a cheaper model; judgment/safety-critical work stays on the main model, never downgraded; log the tier. `protocols/model-tiering.md`
 - **Environment:** no hardcoded env values; no debug flags committed; document new env vars. `protocols/environment.md`
@@ -404,6 +411,7 @@ row. A mismatch in either direction is an error.
 | Cross-Cutting Changes | `protocols/cross-cutting.md` | Task touches 3+ files, crosses layers, or moves/renames structurally |
 | Requirement Pressure-Test | `protocols/requirements.md` | Idea-stage product definition (always); inherited project after assessment; large/ambiguous/cross-cutting task brief |
 | Safe Deletion | `protocols/safe-deletion.md` | Any file deletion request |
+| Project Stakes | `protocols/project-stakes.md` | Setting how much process ceremony a project warrants (setup); a stakes-scaled step (tooling/docs/tests/demo); a Spike escalation trigger |
 | Code Quality | `protocols/code-quality.md` | Writing/modifying code (not read-only or docs-only) |
 | Environment Awareness | `protocols/environment.md` | Any environment-specific code or config |
 | Context Window Management | `protocols/context-window.md` | 5+ tasks in session, or detected degradation |
@@ -471,6 +479,14 @@ human-facing documentation.
      Update only when the user asks for more or less explanation. -->
 
 **Active mode:** [NOT SET — detect on first session per protocols/communication.md]
+
+## Project Stakes
+<!-- Set at setup (product-definition / inherited-codebase Phase 3), proposed by
+     the agent from the brief and confirmed. Scales process ceremony (tooling
+     bundle, doc set, test depth, demo formality) — NEVER the safety floor.
+     Full posture definitions + escalation trigger: protocols/project-stakes.md. -->
+
+**Stakes:** [Standard — default; Spike = throwaway/local/no-real-data (lighter tooling + minimal docs); Production = shipped/shared/real or sensitive data (full rigor). A Spike ratchets up automatically when real data, auth, or deploy appears.]
 
 ## Model Tiers
 <!-- Set at stack selection (product-definition Step 3c / inherited-codebase

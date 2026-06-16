@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.14 — protocols/secure-coding.md -->
+<!-- Starter Pack v12.15 — protocols/secure-coding.md -->
 <!-- Load this file when: a task touches input handling, authentication or
      authorization, sessions, stored data, file/path handling, output
      rendering (HTML/templates), or anything reachable by untrusted users. -->
@@ -91,7 +91,11 @@ self-check. "Probably fine" is not a state.
 
 Static analysis runs in CI (security job): semgrep with the auto config
 works on any stack out of the box; the agent sets it up / refines rulesets
-during enforcement-tooling setup (protocols/enforcement-tooling.md). SAST
+during enforcement-tooling setup (protocols/enforcement-tooling.md). SAST is
+set up per **Project Stakes** (protocols/project-stakes.md): Production by
+default, and pulled forward to any stakes level the moment a task touches auth,
+payments, or regulated/sensitive data (the secure-coding self-check below is
+floor regardless — it always runs on input/auth/session/stored-data tasks). SAST
 findings fail the build; each finding is fixed or explicitly triaged in the
 decision log (false positive → suppress with same-line justification, real
 → fix). The verify-can-fail rule applies: at setup, plant a string-built

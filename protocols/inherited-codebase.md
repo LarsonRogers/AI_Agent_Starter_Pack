@@ -1,4 +1,4 @@
-<!-- Starter Pack v12.14 — protocols/inherited-codebase.md -->
+<!-- Starter Pack v12.15 — protocols/inherited-codebase.md -->
 <!-- Load this file when: no decision log exists and non-pack source files are present -->
 <!-- Does NOT trigger when: first message is a read-only audit or meta-review (load
      protocols/read-only.md instead), or when no non-pack source files are present
@@ -126,6 +126,11 @@ After the developer has reviewed the assessment:
         Pack profile + Context budget (protocols/context-window.md): FULL by
         default, LEAN for small-context/local targets (≤~16k) — trims resident
         footprint and checkpoints sooner, relaxes no gate
+[ ] 4d. Set Project Stakes in AGENTS.md → Part 2 (protocols/project-stakes.md):
+        infer from what the project IS (a shipped/shared/data-handling system →
+        Production; an internal tool → Standard; a clearly-throwaway scratch repo
+        → Spike) and confirm. Governs how much enforcement tooling Step 4b sets
+        up and the doc/test/demo scope; never the safety floor
 [ ] 5. Finalize DECISION_LOG.md and create HANDOFF.md:
         - Reconstructed entries (from git history) are already present from Phase 1
         - Append a live first-session entry after them documenting:
