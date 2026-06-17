@@ -30,6 +30,28 @@ A coding agent that:
   briefs and waits for your approval before starting
 - **Plans cross-cutting changes upfront** — any change touching multiple files
   or layers requires a confirmed pre-flight plan
+- **Sizes the architecture on day one** — picks the simplest structure that fits
+  (single-file tool → layered app) and writes the layer rules down before coding,
+  instead of letting structure drift (the data layer that keeps a growing app
+  maintainable, decided up front)
+- **Scales rigor to the stakes** — a throwaway spike gets light tooling and
+  minimal docs; a production app gets the full set (CI, security scanning,
+  coverage); the safety floor (secrets, security pass, review) never scales down
+- **Pressure-tests vague or ambitious requests** — interrogates assumptions, edge
+  cases, and failure modes before building, so it builds the right thing — without
+  grilling you over a one-line fix
+- **Sets up quality gates before the first feature** — linter, formatter, type
+  checks, tests, a secrets pre-commit hook, and CI, each demonstrated actually
+  catching a planted failure before it's trusted
+- **Runs a security pass with an independent review** — for anything touching
+  input, auth, sessions, or stored data, with a focus on the holes models
+  actually miss (CSRF, session handling, access control), checked by a
+  fresh-context reviewer before work is called done
+- **Routes cheap work to cheaper models (optional)** — bounded, rule-bound checks
+  can run on a faster/cheaper model while judgment and safety work stay on the
+  main one
+- **Keeps itself current** — can check whether a newer pack version is published
+  and migrate a project onto it without touching your project's own content
 - **Maintains an append-only decision log** — structured entries (what, why,
   state, watch items) so any agent on any platform can trace how the project
   got here
@@ -139,6 +161,15 @@ opencode.json               OpenCode config — permission rules that ask
                             secret scanning, dependency audit. Adapt to
                             your stack before use.
 
+.claude/agents/             Light-tier sub-agent templates (also .opencode/agent/
+.opencode/agent/            and .codex/agents/) — fill-the-model `*.example`
+.codex/agents/              files for routing cheap checks to a cheaper model.
+                            Inert until you (or the agent) activate one.
+
+.claude/hooks/              Optional, opt-in Claude Code launch hook that notifies
+                            you when a newer pack version is published. Off until
+                            registered; reads the upstream URL from AGENTS.md.
+
 pack-dev/                   Pack development artifacts (known-limitations
                             ledger, the pack's own decision log + handoff).
                             NOT copied into projects — the whole directory
@@ -211,8 +242,11 @@ pack to catch regressions in agent behavior before they affect real work.
 Before tagging a new pack version, verify:
 
 - [ ] `ls protocols/` matches the AGENTS.md → Protocol Index exactly: every
-      indexed file exists, no protocols/ file is missing from the index
-- [ ] Version string updated in all pack file headers (AGENTS.md, CLAUDE.md)
+      indexed file exists, no protocols/ file is missing from the index (both
+      directions)
+- [ ] Version string updated in ALL pack file headers — `grep -r "Starter Pack v"`
+      over AGENTS.md, CLAUDE.md, TASK_TEMPLATE.md, SETUP.md, README.md, every
+      `protocols/*.md`, and the agent/hook templates — all match
 
 ## Version
 
