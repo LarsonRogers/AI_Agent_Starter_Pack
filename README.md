@@ -97,6 +97,18 @@ See `SETUP.md` for a full walkthrough including non-developer instructions.
 
 ---
 
+## Learn it
+
+Three human-facing docs (read in any order — none of them is loaded by the agent):
+
+- **`SETUP.md`** — install and bootstrap the pack into your repo.
+- **`WALKTHROUGH.md`** — one small project built end to end, narrated, so you can
+  see the whole process in motion.
+- **`GUIDE.md`** — the concepts behind it and how to drive the agent well (the
+  four dials, Project Stakes, the guardrails, and the best practices).
+
+---
+
 ## Use Cases
 
 Works for new projects, active projects, inherited codebases, and refactors.
@@ -119,6 +131,12 @@ human-facing documentation.
 ```
 SETUP.md                    Human bootstrap checklist and walkthrough.
                             Start here, especially if you're not a developer.
+
+WALKTHROUGH.md              Human-facing. One small project built end to end,
+                            narrated. NOT loaded by the agent.
+
+GUIDE.md                    Human-facing handbook — how it works, the four
+                            dials, best practices. NOT loaded by the agent.
 
 TASK_TEMPLATE.md            Structured task brief template. The agent uses
                             this to reformulate your prompts before starting
@@ -245,8 +263,11 @@ Before tagging a new pack version, verify:
       indexed file exists, no protocols/ file is missing from the index (both
       directions)
 - [ ] Version string updated in ALL pack file headers — `grep -r "Starter Pack v"`
-      over AGENTS.md, CLAUDE.md, TASK_TEMPLATE.md, SETUP.md, README.md, every
-      `protocols/*.md`, and the agent/hook templates — all match
+      over AGENTS.md, CLAUDE.md, TASK_TEMPLATE.md, SETUP.md, README.md,
+      WALKTHROUGH.md, GUIDE.md, every `protocols/*.md`, and the agent/hook
+      templates — all match
+- [ ] If pack *behavior* changed: the human docs that describe it are updated —
+      README "What You Get", WALKTHROUGH.md, GUIDE.md (they rot silently otherwise)
 
 ## Version
 
