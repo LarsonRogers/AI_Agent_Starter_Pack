@@ -26,6 +26,28 @@ makes you a much better operator.
   always-current "where are we + how to resume" snapshot, overwritten every task.
   Together they let *any* agent on *any* harness pick the project up cold.
 
+## Does the discipline actually help?
+
+An informal A/B comparison — the same vague "book club app" prompt built twice by
+the same model, once with the pack and once without, then pushed past MVP to a
+login feature — found two consistent differences (small sample, directional, not
+a controlled study):
+
+- **Structure.** Without the pack, the app put database access straight inside the
+  request handlers — fine at first, painful as it grows. With the pack, the data
+  layer was decided and written down on day one and held as features were added.
+  (The day-one architecture sketch earning its keep.)
+- **The non-obvious security miss.** Both versions got the *obvious* access control
+  right (only a review's author can edit it). But the un-packed version shipped
+  login with **no CSRF protection** and waved it off — while the pack's security
+  pass and independent review caught and fixed it.
+
+The takeaway isn't "the pack writes better code line-for-line" — both wrote solid
+code. It's that the pack catches what a capable model does *competently but
+incompletely*: the structure that bites later, and the security hole it doesn't
+think to mention. That's what the ceremony buys — and why the **Spike** stakes
+level exists for when you don't need it.
+
 ## The four dials
 
 The agent sets these once at setup (and you can change them). They tune behavior
