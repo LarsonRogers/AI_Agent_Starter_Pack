@@ -12,8 +12,13 @@ Contents:
   consulted when auditing the pack itself. Never needed during project work.
 - `DECISION_LOG.md` — the pack's own development log (append-only).
 - `HANDOFF.md` — the pack's own development handoff (overwritten per task).
-- `ab-test-pack-value.md` — the A/B test methodology + recorded results: does
-  the pack make a measurable difference vs. no pack. Maintainer reference; never
+- `validation-matrix.md` — the master, harness-agnostic harness for proving each
+  pack capability is *necessary* (adds value over the same model without the pack)
+  vs. redundant: every capability, its experiment, pass criterion, three test modes
+  (autonomous / cross-session / simulated-user-across-knowledge-levels), and a ★
+  high-value subset any agent can run quickly. Runnable against Codex/OpenCode too.
+- `ab-test-pack-value.md` — the run-record for `validation-matrix.md`: methodology
+  + recorded results so far (architecture, security). Maintainer reference; never
   linked from the distributed `README.md` (this directory doesn't ship, so the
   link would die downstream).
 

@@ -4,36 +4,30 @@
      logs live in pack-dev/ because the repo IS the pack source — deployed
      projects keep theirs at the project root. Overwritten per task. -->
 
-**As of:** 2026-06-16 · **Pack version:** v12.16 · **Audience mode:** Developer
+**As of:** 2026-06-17 · **Pack version:** v12.16 · **Audience mode:** Developer
 
-**Latest (v12.16):** A/B **probe-2 (security)** run + recorded (pack-dev/ab-test-pack-value.md → Results). Finding: both arms got IDOR/ownership right unprompted; the divergence was **CSRF** — no-pack shipped login/edit/delete with no CSRF and rationalized it; the pack's **independent-review gate caught it as a blocker and forced the fix** (+ closed a username-enumeration channel). Acted on it: **re-weighted secure-coding.md** toward the high-miss items (CSRF / sessions+rate-limit / authz-on-every-endpoint / enumeration) with a "verify these hardest" block, reframing the basics as "capable model usually handles — confirm, don't belabor" (weak/local models still apply them in full). No checklist item deleted. Independent review APPROVE, 0 blockers (2 minors fixed). Resolves the deferred trim question: KEEP the review + secure-coding gates — they caught a live vuln.
+**Latest (pack-dev, no version change):** Built `pack-dev/validation-matrix.md` — the standing, harness-agnostic harness for proving each pack capability is *necessary* (adds value over the same model without the pack) vs redundant. Every Protocol Index capability has a row or is explicitly accounted-for; three test modes (M1 autonomous code-output / M2 cross-session fresh-agent resume / M3 interactive simulated-user ×3 knowledge levels); a ★ high-value subset any agent can run fast; runnable against Codex/OpenCode. Independent (adversarial) review APPROVE, 0 blockers, 8 minors fixed (control-conditioning so redundant outcomes can't read as wins; answer-key simulator; decorrelated judges; N≥2 for all behavioral tells; product-definition row; mechanical-C tagging; harness-agnostic scoping). `ab-test-pack-value.md` is now the *run-record*; `pack-dev/README.md` indexes both.
 
-**Prior (v12.15):** Added a **Project Stakes** dial (`protocols/project-stakes.md`) — Spike / Standard / Production, proposed at setup — that scales process ceremony (enforcement-tooling bundle, doc set, test depth, demo formality) but **never the safety floor** (secrets+secret-hook, secure-coding self-check, review-when-triggered, the day-one architecture sketch). Default = Standard (≈ current behavior); Spike auto-escalates up on real-data/auth/deploy. Born from the A/B probe (the pack applied full production ceremony to a toy, ~2× tokens). 7 consumers wired, protocols 32→33. Independent review APPROVE, 0 blockers (3 minors fixed). The *safe* minimization (gates ceremony, removes nothing); content-level trims await the 2nd A/B pair.
+**Validation status:** ~2 of ~56 capabilities validated (✅ day-one architecture 2/2; ✅ secure-coding/CSRF 2/2). ⚠ formatter = the one redundancy found (already Spike-excluded). Everything else ☐ untested. A/B runs 1+2 (N=2) recorded in ab-test-pack-value.md; both load-bearing tells reproduced (no-pack flat+ships-CSRF / pack layered+closes-CSRF), and the v12.15 stakes dial fired correctly live (Standard at MVP → ratchet to Production on auth).
 
-**Recent arc (v12.6→v12.15):** upgrade.md (migration) · model-tiering corrected + shipped templates + agent-driven activation + proactive offer + baked-in update source · update-check + notify-hook · Requirement Pressure-Test (v12.14) · Project Stakes (v12.15). Full detail in DECISION_LOG.md.
+**Latest shipped pack (v12.16):** secure-coding re-weighted toward the high-miss items (born from probe-2). Prior arc v12.6→v12.16: upgrade/migration · model-tiering (corrected + templates + agent-driven activation + proactive offer + baked-in source) · update-check + notify-hook · requirement pressure-test (v12.14) · Project Stakes (v12.15). Human docs: README "Learn it", WALKTHROUGH.md, GUIDE.md.
 
-**Confirmed next task:** ask the user — no build task queued. Pending the maintainer's call: option **(c) a FRESH replication pair** (new repos, 2× per arm) to fight N=1, now that probe-1 (architecture) + probe-2 (security) are both run and their findings acted on (v12.15 stakes dial, v12.16 secure-coding re-weight).
+**Confirmed next task:** ask the user. Likely: run the ★ subset's 6 untested high-value rows from validation-matrix.md (cross-session resumption, secret-hook, scope-control, stuck-loop, guardrail refusals, requirement interrogation), or do something else entirely.
 
-**Branch:** `main` — v12.16 committed locally, 1 commit ahead of origin. Pushing needs user confirmation.
+**Branch:** `main` — 1 commit ahead of origin (the validation-matrix, local). Pushing needs user confirmation.
 
 **Open watch items (OPEN — none silently closed):**
-- **A/B test — run 1 + run 2 (N=2) DONE**, recorded in pack-dev/ab-test-pack-value.md. Both load-bearing tells reproduced: no-pack flat / pack layered; no-pack ships the CSRF gap / pack closes it (run 1 via the review catch, run 2 via the secure-coding self-check — validates the v12.16 re-weight). v12.15 stakes dial fired correctly in run 2 (Standard at MVP → ratchet to Production on auth). Scratch repos `pack-ab-probe/{,run2}` (disposable). Further N>2 optional. Directional (same-model, autonomous), not a study.
-- **Two unpushed commits on main:** `00e7805` (background /btw task — added human-facing WALKTHROUGH.md + GUIDE.md + README "Learn it" section; marked NOT-loaded-by-agent) and `0c7067b` (run-2 recording, pack-dev). Both await the maintainer's push decision.
-- **Project Stakes** is prose-verified only — no live run confirming a Spike actually drops the right ceremony while keeping the floor.
-- **Requirement Pressure-Test** (v12.14) prose-verified only — no live run vs a real vague idea / inherited change / big brief (watch Non-dev scaling).
-- **Tiering post-restart confirmation:** activation confirmed live in OpenCode; remaining = after restart the primary actually delegates a bounded scan to the Light agent (user eyeballing).
-- **Notify-hook live-fire:** the hook's own `curl` to the baked-in Pack source URL is unexercised (sandbox-blocked here); URL-extraction + reachability + compare all verified.
-- **KEY VALIDATION** (blocked on rig): full pack on a real quantized 12B at 8–16k under LEAN.
-- **upgrade.md** prose-verified only — no end-to-end migration dry-run against a real older-version project.
-- **PROBE 2** (opencode.json edit-ask live-fire), **PROBE 3** (semgrep CI on first push).
-- Accepted wart: the pack-dev repo's own Part 2 ships as placeholders (it's the template), so the proactive tier-map offer fires every pack-dev session and can't be resolved without polluting the template — the maintainer just declines.
+- **Untested capabilities** — ~54 of 56 still ☐ in validation-matrix.md; the ★ subset is the priority. M3 (interactive) needs a built simulated-user; M2 needs a fresh-agent resume harness.
+- **Project Stakes** + **Requirement Pressure-Test** — prose-verified only; no live trial yet (both are matrix rows now).
+- **Tiering post-restart**, **notify-hook live-fire**, **KEY VALIDATION** (real 12B LEAN), **upgrade.md** e2e, **PROBE 2/3** — environment-dependent live checks, unchanged.
+- Scratch A/B repos at `pack-ab-probe/{,run2}` (disposable).
+- Accepted wart: this pack-dev repo's own Part 2 ships as placeholders, so the proactive tier-map offer fires every pack-dev session — the maintainer just declines.
 
 **Resume prompt (paste into any agent):**
 
     This is the pack-development repo (branch `main`; `revised` retired); its own
-    logs live in pack-dev/. Read AGENTS.md, then pack-dev/HANDOFF.md, then the
-    last entries of pack-dev/DECISION_LOG.md as needed. Pack is at v12.16. No
-    build task queued — ask the user. A/B probe-1 (architecture) + probe-2
-    (security) are done and acted on (v12.15 stakes dial, v12.16 secure-coding
-    re-weight); the open option is a fresh N>1 replication. main is 1 commit
-    ahead of origin (local); pushing needs user confirmation.
+    logs live in pack-dev/. Read AGENTS.md, then pack-dev/HANDOFF.md, then the last
+    DECISION_LOG.md entries as needed. Pack is at v12.16. The standing capability-
+    validation harness is pack-dev/validation-matrix.md (~2 of 56 validated; ★
+    subset is the next priority). No build task queued — ask the user. main is 1
+    commit ahead of origin (local); pushing needs user confirmation.

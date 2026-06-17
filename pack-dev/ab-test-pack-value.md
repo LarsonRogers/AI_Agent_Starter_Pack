@@ -3,6 +3,11 @@
 <!-- PACK-DEV ARTIFACT. Not part of the distributed pack. A methodology for
      comparing Claude Code WITHOUT the pack vs WITH the pack on the same project. -->
 
+> **This file is the run-record.** The master, per-capability harness is
+> `pack-dev/validation-matrix.md` (every capability, its experiment, pass/redundant
+> criterion, across three test modes + a simulated user). The runs below (architecture,
+> security) back the rows that file marks ✅. Record new runs here; update Status there.
+
 ## Hypothesis
 
 Claude Code alone writes good code but skips **process**: it under-architects,
