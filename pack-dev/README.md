@@ -21,6 +21,9 @@ Contents:
   + recorded results so far (architecture, security). Maintainer reference; never
   linked from the distributed `README.md` (this directory doesn't ship, so the
   link would die downstream).
+- `star-subset-run-plan.md` — pre-authored execution design for the 6 untested ★
+  rows (seed specs, per-row pass-criteria, agent counts, session split). Scratch;
+  delete once all 6 are recorded in `ab-test-pack-value.md`.
 
 Deployed projects create their OWN fresh `DECISION_LOG.md` and `HANDOFF.md`
 at the project root on first session (see `protocols/log-format.md`) — those

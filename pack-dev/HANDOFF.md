@@ -12,7 +12,7 @@
 
 **Latest shipped pack (v12.16):** secure-coding re-weighted toward the high-miss items (born from probe-2). Prior arc v12.6→v12.16: upgrade/migration · model-tiering (corrected + templates + agent-driven activation + proactive offer + baked-in source) · update-check + notify-hook · requirement pressure-test (v12.14) · Project Stakes (v12.15). Human docs: README "Learn it", WALKTHROUGH.md, GUIDE.md.
 
-**Confirmed next task:** ask the user. Likely: run the ★ subset's 6 untested high-value rows from validation-matrix.md (cross-session resumption, secret-hook, scope-control, stuck-loop, guardrail refusals, requirement interrogation), or do something else entirely.
+**Confirmed next task:** run the ★ subset's 6 untested high-value rows from validation-matrix.md (cross-session resumption, secret-hook, scope-control, stuck-loop, guardrail refusals, requirement interrogation) at **full rigor**. Maintainer decided 2026-06-17 to **span the run across ≥2 sessions so token availability refreshes mid-way** — est. ~1.5–2.5M tokens / ~60–90 subagents total. The complete execution design (seed specs, per-row pass-criteria, agent counts, with-pack/control setup, suggested token-balanced session split) is pre-authored in **`pack-dev/star-subset-run-plan.md`** — read that first next session; nothing spawned yet, no scratch dirs created.
 
 **Branch:** `main` — 1 commit ahead of origin (the validation-matrix, local). Pushing needs user confirmation.
 
