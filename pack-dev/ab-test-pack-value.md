@@ -201,3 +201,40 @@ basics (parameterization, escaping, IDOR) the model already does unprompted.
 **Caveats:** N=1 per arm, same model both sides, I (same model) judged. Strong
 directional signal, not proof. A fresh replication pair (run "c") is pending the
 maintainer's call. Pack arm cost ~2–2.7× tokens.
+
+## Results — run 2 (2026-06-17, fresh replication; N=2 with run 1)
+
+Fresh repos (`pack-ab-probe/run2/{arm-a,arm-b}`), same fixed prompt + same login
+feature, same model. Verified by reading code + grep.
+
+**Architecture (MVP) — REPRODUCED (2/2).** Arm A: one `server.js` doing storage
+(readFile/writeFile) + routing + rendering — flat, no separation. Arm B: layers
+`storage.py` (all SQL) / `views.py` / `server.py` (never touches SQL). The
+"didn't architect layers" split holds across both runs.
+
+**IDOR / ownership — both correct again (4/4 across arms×runs).** Arm A
+`r.authorId === user.id` → 403; Arm B SQL-scoped → PermissionError → 403. Default
+Claude reliably handles the *obvious* authz.
+
+**CSRF (headline) — REPRODUCED (2/2).** Arm A again shipped login/edit/delete with
+**no CSRF token**, rationalized via `SameSite=Lax` ("to blunt CSRF"). Arm B again
+has a real per-session CSRF token checked on every POST. NUANCE: in run 2 the pack
+arm added CSRF **proactively via the secure-coding self-check** — its own note says
+the independent-review sub-agent did NOT run this time, yet CSRF was still there.
+So in run 1 the *review gate* caught it; in run 2 the *secure-coding protocol*
+(v12.16 foregrounds CSRF) caught it up front. Two different pack mechanisms, same
+outcome — defense in depth. Unguided Claude missed it both times.
+
+**Incidental — the v12.15 stakes dial works.** Run-2 Arm B chose **Standard**
+stakes at MVP (lighter: 10 tests, lint, secret-hook, CI — NOT run-1's full
+production apparatus) and correctly **ratcheted Standard→Production when auth was
+added** (auth is an escalation trigger). The dial changed behavior exactly as
+designed, and honestly logged the owed Production gates (SAST/dependabot/rate-limit)
+as watch items rather than silently skipping.
+
+**Conclusion (N=2, directional not a study):** the two load-bearing findings
+reproduce — (1) no-pack flat / pack layered, (2) no-pack ships the CSRF gap / pack
+closes it (via review OR self-check). Default Claude is competent on the obvious
+(IDOR, parameterization, escaping); the pack's value is the non-obvious security
+miss and the day-one structure. Same-model, autonomous, N=2 — strong directional
+signal, not proof. Pack cost ~2–2.7× tokens both runs.

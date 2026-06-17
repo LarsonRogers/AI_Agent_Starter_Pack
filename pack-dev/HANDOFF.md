@@ -17,7 +17,8 @@
 **Branch:** `main` — v12.16 committed locally, 1 commit ahead of origin. Pushing needs user confirmation.
 
 **Open watch items (OPEN — none silently closed):**
-- **A/B replication (option c)** — probe-1 (architecture) + probe-2 (security) are DONE and recorded in pack-dev/ab-test-pack-value.md (Results — run 1); scratch repos at `I:/mega/megasync/projects/pack-ab-probe` (disposable). What's left is a FRESH N>1 replication to confirm the pattern isn't a single-run fluke (esp. whether no-pack reliably ships the CSRF gap and the pack's review reliably catches it). Maintainer deciding whether to spend on it.
+- **A/B test — run 1 + run 2 (N=2) DONE**, recorded in pack-dev/ab-test-pack-value.md. Both load-bearing tells reproduced: no-pack flat / pack layered; no-pack ships the CSRF gap / pack closes it (run 1 via the review catch, run 2 via the secure-coding self-check — validates the v12.16 re-weight). v12.15 stakes dial fired correctly in run 2 (Standard at MVP → ratchet to Production on auth). Scratch repos `pack-ab-probe/{,run2}` (disposable). Further N>2 optional. Directional (same-model, autonomous), not a study.
+- **Two unpushed commits on main:** `00e7805` (background /btw task — added human-facing WALKTHROUGH.md + GUIDE.md + README "Learn it" section; marked NOT-loaded-by-agent) and `0c7067b` (run-2 recording, pack-dev). Both await the maintainer's push decision.
 - **Project Stakes** is prose-verified only — no live run confirming a Spike actually drops the right ceremony while keeping the floor.
 - **Requirement Pressure-Test** (v12.14) prose-verified only — no live run vs a real vague idea / inherited change / big brief (watch Non-dev scaling).
 - **Tiering post-restart confirmation:** activation confirmed live in OpenCode; remaining = after restart the primary actually delegates a bounded scan to the Light agent (user eyeballing).
