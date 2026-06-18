@@ -1,5 +1,5 @@
 # Walkthrough — building something small, end to end
-<!-- Starter Pack v12.16 — 2026-06-16 -->
+<!-- Starter Pack v12.17 — 2026-06-18 -->
 <!-- HUMAN-FACING DOC — for the user, NOT the agent. Agents must NOT load this
      file: it is not a protocol, is never in the session-start read order, and
      has no Protocol Index row. If you are an agent and reached this file, stop
@@ -66,6 +66,8 @@ The agent runs the product-definition protocol, in order:
   database directly."* (That one decision is what keeps it maintainable as it
   grows — see §6.)
 - **Set the model tier map** (which model runs which work) and **Project Stakes**.
+  If you enable a cheaper Light tier, it also asks once whether to note in each
+  work summary when it used that cheaper model — so you can see how often.
   Here it proposes **Standard** — "a real app a few people use, but no accounts
   or sensitive data yet" — not Spike (it's meant to be kept) and not Production
   (no real data / deploy). Stakes decides how much tooling and ceremony to set up.

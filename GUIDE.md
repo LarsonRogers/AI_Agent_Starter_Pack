@@ -1,5 +1,5 @@
 # Guide — how the pack works and how to drive it well
-<!-- Starter Pack v12.16 — 2026-06-16 -->
+<!-- Starter Pack v12.17 — 2026-06-18 -->
 <!-- HUMAN-FACING DOC — for the user, NOT the agent. Agents must NOT load this
      file: it is not a protocol, is never in the session-start read order, and
      has no Protocol Index row. If you are an agent and reached this file, stop
@@ -56,7 +56,7 @@ without changing the rules:
 | Dial | Options | What it controls |
 |------|---------|------------------|
 | **Audience Mode** | Developer · Technical non-dev · Non-dev | How much it explains, how it phrases errors |
-| **Model Tiers** | Capable + optional Light | Routes bounded, rule-bound checks to a cheaper/faster model; judgment + safety work stay on the main one |
+| **Model Tiers** | Capable + optional Light | Routes bounded, rule-bound checks to a cheaper/faster model; judgment + safety work stay on the main one; can optionally report in each work summary when it used the cheaper model |
 | **Pack profile** | FULL · LEAN | Resident footprint — LEAN is for small-context / local models |
 | **Project Stakes** | Spike · Standard · Production | How much *process ceremony* (tooling, docs, tests, demos) — see below |
 

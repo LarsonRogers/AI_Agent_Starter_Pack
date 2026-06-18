@@ -1,5 +1,5 @@
 # AGENTS.md — [PROJECT_NAME]
-<!-- Starter Pack v12.16 — 2026-06-16 -->
+<!-- Starter Pack v12.17 — 2026-06-18 -->
 
 > **Single source of truth for all agents.** Codex and OpenCode read this
 > file automatically. Claude Code reads it through `CLAUDE.md`, which imports
@@ -371,7 +371,7 @@ incorrect claim, amend it with a correction note.
 - **Enforcement tooling:** at stack selection, set up strict lint/format/type/boundary checks + secret pre-commit hook + real CI; demonstrate each gate failing before trusting it. `protocols/enforcement-tooling.md`
 - **Secure coding:** input/auth/session/stored-data tasks run the checklist (recorded self-check, floor at every stakes level); SAST in CI per Project Stakes (Production default, pulled forward for auth/payments/sensitive-data); never hand-roll auth/crypto. `protocols/secure-coding.md`
 - **Independent review:** every completed backlog item and deploy gets a fresh-context diff review (correctness/security/architecture/readability); blockers not self-waived. `protocols/review.md`
-- **Model tiering:** route bounded rule-bound sub-agent checks to a cheaper model; judgment/safety-critical work stays on the main model, never downgraded; log the tier. `protocols/model-tiering.md`
+- **Model tiering:** route bounded rule-bound sub-agent checks to a cheaper model; judgment/safety-critical work stays on the main model, never downgraded; log the tier; optionally surface Light-tier use in the work summary (opt-in, asked once at tier setup). `protocols/model-tiering.md`
 - **Environment:** no hardcoded env values; no debug flags committed; document new env vars. `protocols/environment.md`
 - **Run & demo:** maintain RUNBOOK.md from first runnable state; not done until the user has seen it run (or verifiably could). `protocols/run-demo.md`
 - **Deployment:** opt-in only, never the default path; data-sensitivity gate before any deploy step. `protocols/deployment.md`
@@ -503,6 +503,7 @@ human-facing documentation.
 **Pack profile:** [FULL — default; use LEAN for small-context/local runs (≤~16k). Governs resident footprint + checkpoint cadence per protocols/context-window.md]
 **Context budget:** [NOT SET — approx usable context window, e.g. 8k / 16k / 32k / 200k]
 **Provider / environment:** [NOT SET — provider AND access method (available model IDs can depend on both), e.g. OpenAI via API key / OpenAI via login (OAuth) / Anthropic API / Google / local Ollama / internal gateway]
+**Tier-use reporting:** [NOT SET — set once at tier setup, only when a Light tier exists. `on` = note Light-tier use in each work summary (so the user sees how often); `off` = don't (the tier is still logged either way); `n/a — single-tier` when no Light model. See protocols/model-tiering.md.]
 
 | Role | Model | How to switch |
 |------|-------|---------------|

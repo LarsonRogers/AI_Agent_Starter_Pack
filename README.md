@@ -1,5 +1,5 @@
 # AI Agent Starter Pack
-<!-- Starter Pack v12.16 — 2026-06-16 -->
+<!-- Starter Pack v12.17 — 2026-06-18 -->
 
 An instruction set for AI coding agents. Drop it into any repo and any
 supported agent — Claude Code, Codex, OpenCode first-class; others
@@ -49,7 +49,8 @@ A coding agent that:
   fresh-context reviewer before work is called done
 - **Routes cheap work to cheaper models (optional)** — bounded, rule-bound checks
   can run on a faster/cheaper model while judgment and safety work stay on the
-  main one
+  main one; it can optionally note in each work summary when it used the cheaper
+  model, so you see how often
 - **Keeps itself current** — can check whether a newer pack version is published
   and migrate a project onto it without touching your project's own content
 - **Maintains an append-only decision log** — structured entries (what, why,
@@ -271,7 +272,7 @@ Before tagging a new pack version, verify:
 
 ## Version
 
-This is **Starter Pack v12.16**. The version is recorded in the header of
+This is **Starter Pack v12.17**. The version is recorded in the header of
 `AGENTS.md`, `CLAUDE.md`, and in every development log entry so there's
 always an audit trail of which instruction set was active for any given
 session.
