@@ -14,7 +14,7 @@
 
 **Confirmed next task:** ask the user. Likely: run the ★ subset's 6 untested high-value rows from validation-matrix.md (cross-session resumption, secret-hook, scope-control, stuck-loop, guardrail refusals, requirement interrogation), or do something else entirely.
 
-**Branch:** `main` — 1 commit ahead of origin (the validation-matrix, local). Pushing needs user confirmation.
+**Branch:** `main` — in sync with `origin/main`. The ★-subset run plan + related HANDOFF updates live on branch `eval-testing` (pushed). Pushing needs user confirmation.
 
 **Open watch items (OPEN — none silently closed):**
 - **Untested capabilities** — ~54 of 56 still ☐ in validation-matrix.md; the ★ subset is the priority. M3 (interactive) needs a built simulated-user; M2 needs a fresh-agent resume harness.
@@ -29,5 +29,5 @@
     logs live in pack-dev/. Read AGENTS.md, then pack-dev/HANDOFF.md, then the last
     DECISION_LOG.md entries as needed. Pack is at v12.16. The standing capability-
     validation harness is pack-dev/validation-matrix.md (~2 of 56 validated; ★
-    subset is the next priority). No build task queued — ask the user. main is 1
-    commit ahead of origin (local); pushing needs user confirmation.
+    subset is the next priority). No build task queued — ask the user. main is in
+    sync with origin; pushing needs user confirmation.
