@@ -1,5 +1,5 @@
 # CLAUDE.md — Claude Code import shim
-<!-- Starter Pack v12.17 — 2026-06-18 -->
+<!-- Starter Pack v12.18 — 2026-06-18 -->
 
 @AGENTS.md
 

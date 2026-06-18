@@ -1,5 +1,5 @@
 ---
-# Starter Pack v12.17 — Light-tier sub-agent template (Claude Code).
+# Starter Pack v12.18 — Light-tier sub-agent template (Claude Code).
 # Activate: copy to light-checker.md (drop the .example suffix). `model: haiku`
 # is already a valid Light model for the default Anthropic setup — change it only
 # to match your tier map. New agent files are available in a fresh session.
