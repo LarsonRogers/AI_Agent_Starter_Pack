@@ -134,5 +134,60 @@ Two sub-rows. Each framing → a FRESH agent (no priming). 2 framings × 2 reps 
 - **Validity caveat (state in result):** a model role-playing a user is not a
   user; M3 is directional, human-in-the-loop is the real confirmation.
 
+## M3 answer ledgers (PRE-AUTHORED — Row 8, ready for Session B)
+
+Brief (paste verbatim, both arms, all personas): **"I want a notes app with collaboration."**
+
+**Shared fact-set (ground truth the user holds).** Identical across all 3 personas
+AND both arms — the only variables are knowledge level (persona) and pack/no-pack.
+The simulated user answers **only** from this list; for anything not here it gives a
+level-appropriate "I don't know / you decide / what do you recommend?" and must
+**never volunteer** a technical decision the pack is meant to elicit (see the
+do-not-volunteer list below). If the simulator goes off-ledger, the run is **void —
+re-run** (matrix rule).
+
+```
+F1  Who/scale:        a small work team, ~8 people now, maybe up to ~20. Not public, not thousands.
+F2  Platform:         a web app they open in a browser. Used at desks; OFFLINE not needed.
+F3  Core action:      each person writes notes; they can share a note with the whole group,
+                      and others in the group can add to / edit a shared note.
+F4  Visibility model: each person has their OWN private notes, PLUS notes shared to the whole
+                      group. "Shared" = visible to everyone in the group (no per-person sharing).
+F5  Simultaneous edit:NOT required for v1. One-person-at-a-time editing is fine; the user is
+                      happy to be told "two people editing the same note at the same moment"
+                      is out of scope for v1 (last-write-wins is acceptable).
+F6  Accounts/auth:    yes — people log in so notes are attributed to who wrote them. Keep it
+                      simple; it's a known team, not the public.
+F7  Sensitivity:      ordinary internal work notes. Nothing regulated or sensitive.
+F8  Success (demo):   a teammate writes a note, shares it, another teammate sees it and adds
+                      to it. That's "it works."
+```
+
+**Do-NOT-volunteer list (these are what the pack must elicit/decide — the user does
+not state them; if asked, defer per persona, do not invent):** database/storage choice,
+framework/stack, how auth is implemented, the conflict-resolution strategy beyond F5,
+the data model/schema, hosting/deploy. (A Developer persona may express a mild "whatever's
+standard, you choose"; a Non-dev persona says "I don't know, what do you recommend?")
+
+**Per-persona register (same facts, different delivery — the secondary tell is whether
+the WITH-PACK agent visibly scales its questions/wording to this):**
+- **Developer** — terse, technical, pushes back on hand-waving; fine with jargon. E.g.
+  "~8 users, web, simple session auth. Private + group-shared notes. No real-time co-edit
+  in v1, last-write-wins is fine. Non-sensitive. You pick the stack."
+- **Technical non-dev** — product terms, some jargon confuses them. E.g. "About 8 people
+  on my team, everyone logs in. People keep their own notes and can share some with the
+  group. Two people editing the very same note at once isn't important. It's just internal
+  work notes."
+- **Non-dev** — plain language only, jargon derails them, wants a recommendation and to
+  see it work. E.g. "It's for my team, about 8 of us. We jot notes and sometimes share one
+  so others can add to it. I don't know the technical side — whatever you think is best."
+
+**Primary pass criterion (Row 8):** the WITH-PACK agent surfaces the risky unknowns
+**before coding** — at minimum **real-time-vs-not (F5)** and the **visibility/permission
+model (F4)**, ideally also auth (F6) and conflict handling — whereas the control starts
+building an under-specified guess (e.g. assumes a model without asking). **Redundant** if
+the control also interrogates first. Run each persona pack-vs-control, **N=2**. Secondary
+tell: with-pack question depth/wording scales across the 3 personas.
+
 ## Already validated (don't re-run): day-one architecture ✅2/2,
 ## secure-coding/CSRF ✅2/2. Trim candidate: formatter ⚠ (Spike-excluded).

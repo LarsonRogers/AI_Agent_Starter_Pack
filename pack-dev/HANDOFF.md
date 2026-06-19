@@ -16,26 +16,28 @@
 
 **Prior arc v12.6→v12.16:** upgrade/migration · model-tiering (templates + agent-driven activation + proactive offer + access-method caveat) · update-check + notify-hook · requirement pressure-test (v12.14) · Project Stakes (v12.15) · secure-coding re-weight (v12.16). Standing harness pack-dev/validation-matrix.md (run-record ab-test-pack-value.md).
 
-**Confirmed next task — ★-subset Session B** (the heavy, pack-only rows; Session A done): **cross-session resumption (M2, N≥2)** and **requirement interrogation (M3, ×3 personas, N≥2)**. This is where the pack should actually separate — Session A showed the M1/guardrail behaviors are inherent to a strong base model, so M2 (persistence) + M3 (interaction) are the real test. Execution design in `pack-dev/star-subset-run-plan.md` (Rows 4 + 8). STILL OWED before M3: pre-author the per-persona answer ledgers. Est. ~0.9–1.7M tokens — spanned to a fresh session per the token-refresh decision (2026-06-17).
+**Confirmed next task — ★-subset Session B** (the heavy, pack-only rows; Session A done): **cross-session resumption (M2, N≥2)** and **requirement interrogation (M3, ×3 personas, N≥2)**. This is where the pack should actually separate — Session A showed the M1/guardrail behaviors are inherent to a strong base model, so M2 (persistence) + M3 (interaction) are the real test. Execution design AND the pre-authored M3 per-persona answer ledgers (Developer / Technical non-dev / Non-dev for the "notes app with collaboration" brief) are both in `pack-dev/star-subset-run-plan.md` (Rows 4 + 8) — **no prep left; Session B can start immediately**. Est. ~0.9–1.7M tokens — spanned to a fresh session per the token-refresh decision (2026-06-17). The Session-A workflow harness pattern (pre-staged seeds + parallel pack-vs-control arms + verify tells yourself) is reusable; Session A scratch repos at `pack-ab-probe/star/`.
 
-**Branches:** `main` — now at **v12.19**, carrying v12.17 Light-tier usage reporting + v12.18 Right-sized & Resilient (both reviewed APPROVE) + v12.19 test run-cadence note (review skipped by user), all merged + pushed to `origin/main`. `eval-testing` — the ★-subset run plan (pushed, separate concern).
+**Branches:** `main` @ **v12.19** — pack code (v12.17–v12.19) is reviewed/merged and matches `origin/main`, BUT main is **1 commit ahead of origin (local, unpushed): the Session A run record** (`1e46099`) — maintainer chose to leave it local until after Session B. Push needs confirmation. `eval-testing` — older copy of the run plan (pushed); now superseded by main's copy, safe to ignore/delete.
 
 **Open watch items (OPEN — none silently closed):**
 - **NEW — tier-use reporting is prose-only:** no live run yet confirming the work-summary note fires on a Light delegation and stays silent otherwise.
-- **Untested capabilities** — ~54 of 56 still ☐; the ★ subset is the priority. M3 needs the answer-ledgers; M2 needs the fresh-agent resume substrate (both detailed in star-subset-run-plan.md).
-- **Project Stakes** + **Requirement Pressure-Test** — prose-verified only; no live trial yet.
+- **★ Session B is the priority** — cross-session resumption (M2) + requirement interrogation (M3). M3 answer-ledgers are now PRE-AUTHORED in star-subset-run-plan.md (no prep left); M2 still needs a session-1 build substrate (design in the plan, Row 4).
+- **Other untested capabilities** — most of the ~56 still ☐ beyond the ★ subset.
+- **Requirement Pressure-Test** — still no isolated live trial (Session B Row 8 IS that trial). **Project Stakes** — prose-verified only.
 - **Tiering post-restart**, **notify-hook live-fire**, **KEY VALIDATION** (real 12B LEAN), **upgrade.md** e2e, **PROBE 2/3** — environment-dependent live checks, unchanged.
-- Scratch A/B repos at `pack-ab-probe/{,run2}` (disposable); ★-subset scratch root will be `pack-ab-probe/star/` (not yet created).
+- Scratch A/B repos at `pack-ab-probe/{,run2,star}` (disposable); `star/` holds Session A's 26 arms + the reusable seed/pack templates.
 - Accepted wart: this pack-dev repo's own Part 2 ships as placeholders, so the proactive tier-map offer fires every pack-dev session — the maintainer just declines.
 
 **Resume prompt (paste into any agent):**
 
     This is the pack-development repo (branch `main`); its own logs live in
     pack-dev/. Read AGENTS.md, then pack-dev/HANDOFF.md, then the last
-    DECISION_LOG.md entries as needed. Pack is at v12.18 — both v12.17 (Light-tier
-    usage reporting) and v12.18 (Right-sized & Resilient quality bar) are reviewed,
-    merged to main, and pushed to origin.
-    The standing capability-validation harness is pack-dev/validation-matrix.md
-    (~2 of 56 validated); the next queued work is the ★-subset run, design in
-    pack-dev/star-subset-run-plan.md, spanned across ≥2 sessions. Pushing/merging
-    needs user confirmation.
+    DECISION_LOG.md entries as needed. Pack is at v12.19 (all merged to main).
+    NEXT TASK = ★-subset Session B: cross-session resumption (M2) + requirement
+    interrogation (M3, ×3 personas), N≥2 — the full design AND the pre-authored M3
+    answer ledgers are in pack-dev/star-subset-run-plan.md (read it; no prep left).
+    Session A (the 5 M1 rows) is DONE — all redundant on Opus 4.8, recorded in
+    ab-test-pack-value.md → "Session A". NOTE: main has 1 LOCAL unpushed commit
+    (the Session A record, 1e46099) the maintainer is holding until after Session B;
+    pushing/merging needs user confirmation.
