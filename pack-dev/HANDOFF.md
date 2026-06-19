@@ -6,7 +6,7 @@
 
 **As of:** 2026-06-18 · **Pack version:** v12.19 · **Audience mode:** Developer
 
-**Latest pack (v12.19):** **test run-cadence note** in protocols/testing-strategy.md ("Fast feedback vs the gate"). Clarifies what to run when: during iteration, the focused subset (affected file / single test / changed-only mode — `jest --changed` etc.) for speed; at the DoD + CI, the **full suite** must pass (catches regressions elsewhere; a passing subset never satisfies the DoD). Scales run *cadence* only, not coverage/authoring; reaffirms the full-suite gate, no DoD/guardrail weakened. On branch `feature/test-feedback-cadence` (not pushed); independent review offered, not yet run.
+**Latest pack (v12.19):** **test run-cadence note** in protocols/testing-strategy.md ("Fast feedback vs the gate"). Clarifies what to run when: during iteration, the focused subset (affected file / single test / changed-only mode — `jest --changed` etc.) for speed; at the DoD + CI, the **full suite** must pass (catches regressions elsewhere; a passing subset never satisfies the DoD). Scales run *cadence* only, not coverage/authoring; reaffirms the full-suite gate, no DoD/guardrail weakened. Review skipped by user (small additive note); merged to `main` + pushed.
 
 **Prior shipped pack (v12.18):** explicit **Right-sized & Resilient** quality bar. New section in protocols/code-quality.md stipulating produced code is as **lightweight and robust as the project's stakes warrant** — *fit, not maximal* — Lightweight (fewest adequate dependencies, no speculative abstraction/YAGNI, remove dead weight, appropriate efficiency not premature optimization) + Robust (validate at boundaries, handle real failure modes, fail loudly, degrade gracefully). Both scale with Project Stakes; both subordinate to the existing rules + safety floor; doesn't change scope control. Folded one clause into the AGENTS.md "Code quality" Standing Rule (no new always-on bullet). Independent fresh-context review APPROVE, 0 blockers (2 by-design minors). Merged to `main` + pushed.
 
@@ -18,7 +18,7 @@
 
 **Confirmed next task:** run the ★ subset's 6 untested high-value rows from validation-matrix.md (cross-session resumption, secret-hook, scope-control, stuck-loop, guardrail refusals, requirement interrogation) at **full rigor**, deliberately **spanned across ≥2 sessions so tokens refresh** (maintainer decision 2026-06-17). Full execution design pre-authored in `pack-dev/star-subset-run-plan.md` (read first; nothing spawned yet). Still owed before the M3 row: pre-author the per-persona answer ledgers.
 
-**Branches:** `feature/test-feedback-cadence` (v12.19, THIS change — not pushed, not yet merged/reviewed). `main` — at **v12.18**, carrying v12.17 Light-tier usage reporting + v12.18 Right-sized & Resilient (both reviewed APPROVE, merged + pushed to `origin/main`). `eval-testing` — the ★-subset run plan (pushed, separate concern).
+**Branches:** `main` — now at **v12.19**, carrying v12.17 Light-tier usage reporting + v12.18 Right-sized & Resilient (both reviewed APPROVE) + v12.19 test run-cadence note (review skipped by user), all merged + pushed to `origin/main`. `eval-testing` — the ★-subset run plan (pushed, separate concern).
 
 **Open watch items (OPEN — none silently closed):**
 - **NEW — tier-use reporting is prose-only:** no live run yet confirming the work-summary note fires on a Light delegation and stays silent otherwise.
