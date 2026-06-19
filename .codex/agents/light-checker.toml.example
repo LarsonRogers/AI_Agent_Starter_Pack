@@ -1,4 +1,4 @@
-# Starter Pack v12.18 — Light-tier sub-agent template (Codex).
+# Starter Pack v12.19 — Light-tier sub-agent template (Codex).
 # Activate: 1) copy to light-checker.toml (drop the .example suffix); 2) set
 #   `model` to your real model string (omit to inherit the parent session's
 #   model); 3) restart Codex (config loads at startup).

@@ -1,5 +1,5 @@
 # Task Brief Template
-<!-- Starter Pack v12.18 — 2026-06-18 -->
+<!-- Starter Pack v12.19 — 2026-06-18 -->
 
 ## For the agent — prompt reformulation protocol
 

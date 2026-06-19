@@ -1,5 +1,5 @@
 # Walkthrough — building something small, end to end
-<!-- Starter Pack v12.18 — 2026-06-18 -->
+<!-- Starter Pack v12.19 — 2026-06-18 -->
 <!-- HUMAN-FACING DOC — for the user, NOT the agent. Agents must NOT load this
      file: it is not a protocol, is never in the session-start read order, and
      has no Protocol Index row. If you are an agent and reached this file, stop
