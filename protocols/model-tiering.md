@@ -283,8 +283,9 @@ action only it can do (restart the harness). Everything between is the agent's:
 [ ] 2. RECORD it in the Part 2 → Model Tiers map.
 [ ] 2b. ASK once whether to report Light-tier use in the work summary (now that a
         Light tier exists — see "Surfacing Light-tier use to the user" above) and
-        record `Tier-use reporting` in the Model Tiers block. Single-tier → set
-        the field `n/a — single-tier`, skip the question.
+        record `Tier-use reporting` in the Model Tiers block. (Single-tier projects
+        never reach this step — their field is set `n/a — single-tier` when the
+        tier map is resolved.)
 [ ] 3. ACTIVATE the template — the agent itself writes the live agent file from
         this harness's light-checker.*.example: copy it to its live name (drop
         `.example`) and set `model` to the chosen string. The user does not open

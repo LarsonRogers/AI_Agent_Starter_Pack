@@ -96,8 +96,7 @@ leans lighter, a Production system leans more resilient — the floor never scal
 - **Degrade gracefully where it matters.** At stakes that warrant it, a failed
   non-critical part should not take the whole app down.
 
-This names a quality bar; it does not change scope — out-of-scope inefficiency or
-fragility is recorded as a watch item, not fixed in passing.
+This names a quality bar; it does not widen scope — Scope Control still governs.
 
 ---
 

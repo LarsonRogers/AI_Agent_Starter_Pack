@@ -367,7 +367,7 @@ incorrect claim, amend it with a correction note.
 - **Validation fallback:** lint/test/CI missing → report, propose, mark DoD accordingly; never silently skip. `protocols/validation-fallback.md`
 - **External research:** verify current docs before coding against any external SDK/API/platform; web down + unverifiable → Knowledge Gap (declare, offer three options). `protocols/external-research.md`
 - **Context window:** after 5 tasks or detected degradation → finish task, checkpoint, recommend fresh session. `protocols/context-window.md`
-- **Code quality:** structural rules, comment standards, agent-ism avoidance, right-sized & resilient output (as lightweight + robust as the stakes warrant — fit, not maximal — never below the safety floor) on every coding task. `protocols/code-quality.md`
+- **Code quality:** structural rules, comment standards, agent-ism avoidance, right-sized & resilient output (lightweight + robust, scaled to stakes; never below the safety floor) on every coding task. `protocols/code-quality.md`
 - **Enforcement tooling:** at stack selection, set up strict lint/format/type/boundary checks + secret pre-commit hook + real CI; demonstrate each gate failing before trusting it. `protocols/enforcement-tooling.md`
 - **Secure coding:** input/auth/session/stored-data tasks run the checklist (recorded self-check, floor at every stakes level); SAST in CI per Project Stakes (Production default, pulled forward for auth/payments/sensitive-data); never hand-roll auth/crypto. `protocols/secure-coding.md`
 - **Independent review:** every completed backlog item and deploy gets a fresh-context diff review (correctness/security/architecture/readability); blockers not self-waived. `protocols/review.md`
@@ -503,7 +503,7 @@ human-facing documentation.
 **Pack profile:** [FULL — default; use LEAN for small-context/local runs (≤~16k). Governs resident footprint + checkpoint cadence per protocols/context-window.md]
 **Context budget:** [NOT SET — approx usable context window, e.g. 8k / 16k / 32k / 200k]
 **Provider / environment:** [NOT SET — provider AND access method (available model IDs can depend on both), e.g. OpenAI via API key / OpenAI via login (OAuth) / Anthropic API / Google / local Ollama / internal gateway]
-**Tier-use reporting:** [NOT SET — set once at tier setup, only when a Light tier exists. `on` = note Light-tier use in each work summary (so the user sees how often); `off` = don't (the tier is still logged either way); `n/a — single-tier` when no Light model. See protocols/model-tiering.md.]
+**Tier-use reporting:** [NOT SET — set once at tier setup, only when a Light tier exists. `on` = note Light-tier use in each work summary (so the user sees how often); `off` = don't (the tier is still logged either way); `n/a — single-tier` when there's no Light model (reporting is moot). See protocols/model-tiering.md.]
 
 | Role | Model | How to switch |
 |------|-------|---------------|
