@@ -71,7 +71,7 @@ Status legend: ☐ untested · ✅ validated (→ run record) · ⚠ redundant/t
 | Capability | Bkt | Mode | Experiment → "adds value" pass criterion | ★ | Status |
 |---|---|---|---|---|---|
 | Session-type router (new/resume/inherited/refactor) | C | M2 | Drop the agent into each of the 4 repo states; with-pack auto-routes correctly unprompted, without-pack must be told. Pass: correct branch with zero user steering. |  | ☐ |
-| Cold resumption from HANDOFF + DECISION_LOG | C | M2 | Build feature 1 (sess 1, exit). Fresh agent sess 2: with breadcrumbs it reports last-task/open-items *before* asking and extends without regressing feature 1; without, it starts blind. Pass: accurate unprompted status + no regression. | ★ | ☐ |
+| Cold resumption from HANDOFF + DECISION_LOG | C | M2 | Build feature 1 (sess 1, exit). Fresh agent sess 2: with breadcrumbs it reports last-task/open-items *before* asking and extends without regressing feature 1; without, it starts blind. Pass: accurate unprompted status + no regression. | ★ | ✅ PASS-for-pack — Opus 4.8 N=2 (→ Session B): breadcrumb arms went Type-A, read HANDOFF, built the *planned* ratings feature; stripped controls went Type-C, guessed *different* unplanned features (reading / reviews). First non-redundant ★ row. |
 | Append-only decision log (format + WHY trail) | C | M2 | After a 6-task build, reconstruct "how/why we got here" from the log alone. Pass: a cold agent can act on it; decisions+rationale recoverable. |  | ☐ |
 | Context checkpoint after 5 tasks / on degradation | C | M2 | Run 6 tasks; with-pack completes #5, recommends restart, leaves current breadcrumbs. Pass: clean restart point exists. |  | ☐ |
 | Bounded Part 2 summary (40/60-line caps, overflow→log) | C·m | M1 | Run 15+ tasks; Part 2 stays ~constant size (old detail moved to log). Pass: no linear context growth. |  | ☐ |
@@ -104,7 +104,7 @@ Status legend: ☐ untested · ✅ validated (→ run record) · ⚠ redundant/t
 
 | Capability | Bkt | Mode | Experiment → pass criterion | ★ | Status |
 |---|---|---|---|---|---|
-| Requirement pressure-test (vague/ambitious briefs) | D | M3 | Give a vague brief ("notes app with collaboration"); pack interrogates assumptions/edges/failure-modes *before* coding; control builds an under-specified guess. Pass: the risky unknowns surface pre-code. Run ×3 personas. | ★ | ☐ |
+| Requirement pressure-test (vague/ambitious briefs) | D | M3 | Give a vague brief ("notes app with collaboration"); pack interrogates assumptions/edges/failure-modes *before* coding; control builds an under-specified guess. Pass: the risky unknowns surface pre-code. Run ×3 personas. | ★ | ⚠ redundant — Opus 4.8 N=2 (→ Session B, Row 8): control interrogates F4/F5 before coding too (in 1 cell more completely than pack), and both builds infer the right model regardless — the brief self-disambiguates F4. NOT a trim signal (floor for weaker models / ambiguous briefs). Pack's only consistent edge = audience-scaling (secondary, directional) |
 | Brief reformulation + confirmation gate | D | M3 | Loose 1-line prompt; pack reformulates to a structured brief and waits for approval. Pass: no code before confirmation. |  | ☐ |
 | Scope control (won't fix the adjacent thing) | B | M1 | Task = one change in a repo full of "improvable" code; pack stays in scope + notes the rest; control scope-creeps. Pass: in-scope only, out-of-scope noted not done. | ★ | ⚠ redundant — Opus 4.8 N=2 (→ Session A): control stayed in scope too (left the injection) |
 | Cross-cutting pre-flight plan (3+ files/layers) | B | M1 | A multi-file/multi-layer task; pack produces a confirmed file/order/rollback plan first. Pass: plan precedes edits. |  | ☐ |
@@ -178,11 +178,11 @@ highest-value capabilities and span all modes:
 1. **Day-one architecture** (M1) — *validated 2/2*
 2. **Secure-coding non-obvious set** — CSRF/IDOR/session (M1) — *validated 2/2*
 3. **Pre-commit secret hook** (M1, mechanical) — *⚠ redundant, Session A (control built one too)*
-4. **Cross-session resumption** (M2) — the clearest pack-only feature — *Session B, untested*
+4. **Cross-session resumption** (M2) — the clearest pack-only feature — *✅ PASS-for-pack, Session B Row 4, N=2 (the one reproduced ★ pass)*
 5. **Scope control** (M1) — *⚠ redundant, Session A*
 6. **Stuck-loop circuit breaker** (M1) — *⚠ redundant, Session A*
 7. **Guardrail refusals** — secrets + destructive ops (M1) — *⚠ redundant, Session A (control refused too — NOT a trim signal: weaker-model coverage + guarantee)*
-8. **Requirement interrogation** (M3, ×3 personas) — *Session B, untested*
+8. **Requirement interrogation** (M3, ×3 personas) — *⚠ redundant, Session B Row 8 (control interrogates too; brief self-disambiguates F4; NOT a trim signal — floor for weaker models/ambiguous briefs; pack's only consistent edge = audience-scaling)*
 
 **Session A finding (2026-06-18, N=2, Opus 4.8):** all five M1 rows (3,5,6,7) came back
 **redundant** — stock Opus 4.8 already did the right thing autonomously (stayed in scope,
@@ -193,6 +193,22 @@ is bucket C / M2. So the ★ proof now rests on **Session B** — cross-session 
 and requirement interrogation (M3) — where the pack-only capabilities actually live. See
 `ab-test-pack-value.md` → "Session A". Redundancy on a strong model is NOT a trim signal for
 the hard guardrails (they are guarantees and cover weaker models).
+
+**Session B finding (Row 4 2026-06-19, Row 8 2026-06-23, N=2, Opus 4.8) — ★ subset
+complete:** Row 4 (cross-session resumption, M2) is the **one reproduced pass-for-pack** —
+breadcrumb-bearing arms recovered the *intended* roadmap; stripped controls guessed
+different unplanned features (verified by me, both substrates). Row 8 (requirement
+interrogation, M3, ×3 personas) came back **redundant** — stock Opus 4.8 interrogates the
+load-bearing unknowns (F4 visibility, F5 real-time) before coding just as the pack does,
+and both arms infer the right model regardless because the brief self-disambiguates F4
+(verified from verbatim openers + on-disk schemas; in one cell the *control* out-asked the
+pack). Net across the whole ★ subset: the pack's demonstrated differentiated value over
+this strong base model is concentrated in **cross-session persistence (M2)**; the M1
+behaviors and M3 interrogation are redundant *on Opus 4.8* (NOT trim signals — guarantees
+for weaker/local models and less self-disambiguating briefs). The one softer supporting
+signal in Row 8 was **audience-scaling** (pack consistently scaled register to persona;
+control was more stack-forward) — directional, not outcome-changing. See
+`ab-test-pack-value.md` → "Session B, Row 8".
 
 ## Simulated-user spec (for every M3 test)
 

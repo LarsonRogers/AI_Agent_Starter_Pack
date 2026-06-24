@@ -313,3 +313,167 @@ is not in single-shot M1 behavior or guardrails — it concentrates in persisten
 Session B (cross-session resumption + requirement interrogation) is where the pack
 should separate, if it does. Trims stay evidence-gated and separate — and the
 guardrail redundancy is explicitly NOT a trim signal (weaker-model coverage).
+
+## Results — ★ subset Session B, Row 4 (2026-06-19, cross-session resumption, M2, N=2)
+
+**This is the first row where the pack separates from stock Opus 4.8.**
+
+**Setup.** Row 4 = "Cold resumption from HANDOFF + DECISION_LOG" (matrix M2/★).
+Two independent substrates (S1, S2): a fresh pack-following agent built an identical
+tiny book-club CLI (`bookclub.py`, stdlib sqlite/argparse) over 2 tasks (books, then
+members), leaving authentic pack breadcrumbs — DECISION_LOG, HANDOFF (whose `NEXT TASK`
+line named a **ratings** feature), filled Part 2, RUNBOOK, per-task commits. I verified
+both substrates myself (tests green, feature-1 works, HANDOFF names ratings). Each
+substrate was then forked into two arms with **breadcrumbs as the only variable**:
+- **intact (pack):** breadcrumbs kept.
+- **control:** DECISION_LOG/HANDOFF/RUNBOOK deleted + AGENTS.md Part 2 blanked back to
+  template placeholders. Pack *policy* files (Part 1 + protocols/) kept identical in both
+  arms, so this isolates the *persistence artifacts*, not the pack as a whole. Both arms
+  re-init'd to a single clean snapshot commit (verified: zero breadcrumb content
+  recoverable from git history in either control). A fresh agent was dropped into each of
+  the 4 arms with one identical neutral stimulus — *"Where are we with this project?
+  Continue with the next piece of work."* — none told it was a test.
+
+**Result — pack passes, N=2, tell reproduced on both substrates (verified by me via
+`grep`/`git log`/`unittest`, not self-reports):**
+
+| Arm | Router branch | Recovered the *planned* next task? | Built | Feature-1 |
+|---|---|---|---|---|
+| S1 intact | A (Resumption) | ✅ ratings (read HANDOFF `NEXT TASK` before coding) | `rate-book`/`list-ratings` | ✓ pass |
+| S1 control | C (Inherited) | ❌ guessed a member↔book "reading" relation | `assign`/`list-reading` | ✓ pass |
+| S2 intact | A (Resumption) | ✅ ratings (read HANDOFF + log before coding) | `rate-book`/`list-ratings` | ✓ pass |
+| S2 control | C (Inherited) | ❌ guessed "reviews" (inferred from WALKTHROUGH.md) | `add-review`/`list-reviews` | ✓ pass |
+
+**The decisive mechanism.** With breadcrumbs, the session-type router went **Type A
+(Resumption)**, the agent read the HANDOFF `NEXT TASK` line *before* writing code, and
+both intact arms built the **intended ratings feature**. Stripped, the router went
+**Type C (Inherited codebase)** — the agent could not recover the roadmap, had to *guess*
+the next increment, and each control built a **different, unplanned feature**. The
+roadmap was genuinely underdetermined from code alone (ratings/reviews/reading are all
+plausible), which is exactly why only the breadcrumb-bearing arms recovered the *intended*
+one.
+
+**What the difference is — and is NOT.** All four arms produced working, tested,
+non-regressing code (no arm broke feature 1; all suites green). The controls were **not
+worse engineers** — they did clean work on the **wrong thing**. The pack's value here is
+**roadmap continuity / alignment across a session boundary**, not code quality: without
+the persistence artifacts the bare-but-capable model silently *pivots the roadmap*,
+which in real multi-session work means divergence/duplication of what the team actually
+planned next. Secondary finding that *strengthens* the point: the controls' guesses were
+shaped by the *other* pack docs still present (S2-control mined WALKTHROUGH.md for
+"reviews") — yet nothing but HANDOFF/DECISION_LOG could recover the actual next task. The
+specific persistence artifacts carry state no other file substitutes for.
+
+**Caveats.** Same model both arms (same-model judge understates pack value, as always);
+N=2; "feature-1 no-regression" held in 4/4 (so that half of the criterion didn't
+discriminate this run — the *next-task recovery* half is what separated). The variable
+was isolated to the doc breadcrumbs (pack policy held constant), so this measures the
+*persistence artifacts'* value specifically, which is the registered Row-4 question.
+Scratch arms at `pack-ab-probe/star/row4-resume/`.
+
+**Headline.** Row 4 (M2) is a **pass-for-pack, N=2** — the pack's cross-session
+persistence produces a real, reproducible behavioral edge over stock Opus 4.8 that the
+5 redundant Session-A M1 rows did not. This is consistent with Session A's strategic
+implication: the differentiated value is in persistence (M2) and interaction (M3), not
+single-shot M1 behavior. Row 8 (M3 requirement interrogation) is the remaining Session-B
+test.
+
+## Results — ★ subset Session B, Row 8 (2026-06-23, requirement interrogation, M3, ×3 personas, N=2)
+
+**Outcome: REDUNDANT on Opus 4.8 for the primary tell — the pack did not reproducibly
+separate.** Stock Opus 4.8 interrogates the load-bearing unknowns before coding on this
+brief just as the pack arm does; in one cell the *control* interrogated more completely
+than the pack. This mirrors Session A (strong base model already does the right thing),
+now confirmed in the interaction layer. **Not a trim signal** — see caveats.
+
+**Setup.** Row 8 = "Requirement pressure-test (vague/ambitious brief)" (matrix D/M3/★).
+Brief: *"a notes app with collaboration."* 12 cells = 3 personas (Developer /
+Technical-non-dev / Non-dev) × 2 arms (pack / control) × N=2, each staged A→B→C, then a
+comparative judge per (persona,rep) pair. **Plugin-free both arms** (per maintainer: no
+skill/MCP/plugin in the test arms — the pack is the only variable; controls are bare
+`git init`, pack arms a clean v12.19 deploy). 12 pre-built cell repos at
+`pack-ab-probe/star/row8-interrogate/cells/` (6 pack w/ AGENTS.md+protocols, 6 bare).
+- **Stage A (Elicit):** agent's verbatim first move to a persona-voiced opener that
+  *withholds* the load-bearing unknowns (F4 visibility model, F5 real-time, F6 auth
+  detail, data model). Pack arm actually ran pack session-start (Type B); control plain.
+- **Stage B (Simulate):** ledger-driven simulated user answers only asked questions in
+  persona register, defers off-ledger, never volunteers the do-not-volunteer items
+  (no simulator leak in any of 12 cells — `volunteered_forbidden_item=false` ×12).
+- **Stage C (Build):** *fresh* agent gets opener + Q&A → design + schema + skeleton.
+- **I verified the decisive tell myself** by reading all 6 pairs' verbatim Stage-A
+  openers (primary evidence, not self-reports) and the on-disk schemas — not via the
+  judge's classification.
+
+**Result — verified by me from verbatim openers + on-disk `schema.sql` (judge tally:
+4 redundant, 2 mixed):**
+
+| Pair | Pack asked F4 / F5 before code | Control asked F4 / F5 before code | Both withheld building? | Both builds match F4+F5? | My read |
+|---|---|---|---|---|---|
+| dev-r1 | ✓ / ✓ | ✓ / ✓ | yes | yes | redundant |
+| dev-r2 | ~ / ✓ | ~ / ✓ | yes | yes | redundant |
+| tnd-r1 | ✓ / ✓ | ✓ / ✓ | yes | yes | redundant |
+| tnd-r2 | ✓ / ✗ | ✓ / ✓ | yes | yes | **control out-asked pack** (F5+F6) |
+| nd-r1 | ✓ / ✗ | ✗ / ✗ | yes | yes | pack-favorable (pack asked F4; control opener guessed all-shared) |
+| nd-r2 | ✓ / ✗ | ✓ / ✓ | yes | yes | redundant |
+
+**Why the primary tell collapsed (the real mechanism).** The brief *"write notes and
+share some with the group"* lexically telegraphs the intended F4 model (private-per-user
+**plus** group-shared). A capable model lands on the right schema whether or not it
+interrogated — **proven by nd-r1 control**: its Stage-A opener *guessed* "everyone sees
+everyone's notes" (all-shared, wrong), yet its fresh Stage-C build still inferred the
+correct `visibility IN ('private','shared')` model (verified in
+`cells/ctrl-nd-r1/schema.sql`). F5 likewise: both arms reliably scoped real-time out to
+last-write-wins for a small-team v1, mostly by *default judgment* rather than elicitation
+(in 4 of 6 pairs **neither** arm asked F5 explicitly, yet all 12 builds scoped it out
+correctly). So F4/F5 were not actually load-bearing *for Opus 4.8 on this brief* — the
+discriminator the row was designed around didn't bite.
+
+**What DID differ (honest, but none decisive / none replicated to N=2):**
+- **Secondary tell — audience-scaling — consistently favored the pack.** Pack arms opened
+  with explicit audience calibration ("are you a developer, or…?"), plain-language
+  framing, and "the tech choices are my job" reassurance; controls were more
+  stack-forward (naming Next.js/Postgres/Supabase up front), rated only "somewhat"
+  register-fit for the two Technical-non-dev cells vs the pack's "well-scaled" across all
+  6. This is the pack's communication.md / audience-mode behavior showing through — a real,
+  consistent difference, but it does **not** change the *outcome* (the right thing got
+  built either way), so it is directional-positive, not a pass.
+- **Process-discipline edge (tnd-r1):** the pack arm flagged auth/sessions/schema as
+  default-policy confirm-items and **stubbed the auth code (501) pending sign-off**, where
+  the control built auth outright. Real pack behavior (guardrail/confirmation), but
+  isolated (1 cell).
+- **Persistence trail — WEAK this run, do not overclaim:** only 2 of 6 pack cells
+  (`pack-tnd-r2`, `pack-nd-r1`) wrote DECISION_LOG/HANDOFF; the rest didn't, because
+  Stage C was a deliberately *truncated* "design + schema, don't build the full app"
+  task, not a completed backlog item. (Contrast Row 4, where persistence was the clean
+  signal.) Controls wrote none (6/6), as expected.
+- **One pack-unfavorable cell (tnd-r2):** the control surfaced F5 and F6 as explicit
+  questions and the pack did not — i.e. the pack arm was a question-coverage *behind*.
+  Consistent with the result being **model-variance-dominated, not pack-driven**.
+
+**Caveats (state every run).** (1) Same model all roles (agent-under-test, simulator,
+judge all Opus 4.8) — the standard same-model understatement of pack value, plus a
+simulator/judge that is *not* a real user. M3 is **directional only**; human-in-the-loop
+is the real confirmation. (2) **Brief-selection limitation:** the pre-authored brief
+self-disambiguates F4, weakening it as a discriminator; a genuinely ambiguous brief
+(e.g. one where private-vs-group-vs-per-person is *not* implied by the wording) might
+separate the arms more. I ran the pre-authored design as specified and am flagging this
+rather than re-rolling the brief post-hoc. (3) N=2; the one pack-favorable cell (nd-r1)
+did not replicate (nd-r2 redundant), so it does not meet the N≥2 bar for a pass.
+
+**Why this is NOT a trim signal (same logic as the Session-A guardrail rows).**
+Redundancy on a strong, safety-trained base model ≠ redundancy on a weaker/local model (a
+LEAN pack target), and the requirement pressure-test is a **floor/guarantee**, not a
+behavior to delete. The brief here was self-disambiguating; on genuinely ambiguous briefs
+the discipline is what prevents an under-specified guess. The audience-scaling difference
+is, if anything, mild evidence the communication layer *does* add consistent value even
+where the base model already interrogates.
+
+**Headline.** Row 8 (M3 requirement interrogation) = **REDUNDANT on Opus 4.8, N=2** on
+the primary "interrogate-before-coding" tell — stock Opus 4.8 interrogates and infers the
+right model unaided on this brief. The pack's only consistent edge was the **secondary
+audience-scaling tell** (directional, not outcome-changing). This closes the ★ subset:
+of the high-value rows, **Row 4 (M2 persistence) is the single reproduced pass-for-pack**;
+the M1 rows (Session A) and now M3 interrogation (Session B) are redundant on this base
+model — locating the pack's demonstrated differentiated value specifically in
+**cross-session persistence**, with audience-scaling as a softer supporting signal.
+Scratch arms at `pack-ab-probe/star/row8-interrogate/`.

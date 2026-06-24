@@ -14,10 +14,18 @@
   behavioral edge over the strong base model. Verified by direct inspection
   (git/grep/sqlite/mechanical-commit), no contamination. Full record in
   `ab-test-pack-value.md` → "Session A"; matrix statuses flipped ☐→⚠.
-- **Session B — NEXT (fresh session for token refresh).** Rows 4 (cross-session
-  resumption, M2) + 8 (requirement interrogation, M3 ×3 personas) — the pack-only
-  capabilities, where the pack must actually separate. Pre-author the per-persona
-  answer ledgers first.
+- **Session B — DONE (Row 4: 2026-06-19; Row 8: 2026-06-23).** Row 4 (cross-session
+  resumption, M2, N=2) = **PASS-for-pack** (the one reproduced ★ pass). Row 8 (requirement
+  interrogation, M3, ×3 personas, N=2) = **REDUNDANT on Opus 4.8** — both arms interrogate
+  F4/F5 before coding (control out-asked the pack in 1 cell) and both builds infer the right
+  model regardless (the brief self-disambiguates F4); NOT a trim signal. Records in
+  ab-test-pack-value.md → "Session B, Row 4" / "Session B, Row 8".
+
+> **★ SUBSET COMPLETE — all 6 rows recorded.** Per the header, this file is now ready to
+> DELETE (left for the maintainer; safe-deletion protocol applies). Net finding: the pack's
+> demonstrated edge over stock Opus 4.8 is concentrated in cross-session persistence (M2);
+> the M1 rows + M3 interrogation are redundant on this base model (guarantees for weaker
+> models, not trims). Scratch: pack-ab-probe/star/{row4-resume,row8-interrogate}/.
 
 ## Status / timing decision (2026-06-17)
 
