@@ -4,7 +4,7 @@
      logs live in pack-dev/ because the repo IS the pack source — deployed
      projects keep theirs at the project root. Overwritten per task. -->
 
-**As of:** 2026-06-23 · **Pack version:** v12.19 · **Audience mode:** Developer
+**As of:** 2026-06-26 · **Pack version:** v12.19 · **Audience mode:** Developer
 
 **★ SUBSET COMPLETE — Row 8 DONE this session = REDUNDANT on Opus 4.8 (N=2).** Requirement
 interrogation (M3, ×3 personas Developer/Technical-non-dev/Non-dev) did **not** reproducibly
@@ -32,11 +32,14 @@ Audience-scaling (Row 8 secondary tell) is a softer supporting signal that the c
 layer adds consistent value even where the base model already interrogates.
 
 **IMMEDIATE NEXT = maintainer decisions, not a queued task.** No confirmed next coding task.
-The open threads are: (1) **the held commits** — Session A (1e46099) + Row 4 + this Row 8 are
-LOCAL/unpushed and partly uncommitted per the user's "Keep holding"; committing/pushing needs
-the maintainer's OK. (2) **star-subset-run-plan.md is fully executed** (all 6 ★ rows recorded)
-— per its own header it is now ready to delete (safe-deletion protocol; left for the maintainer).
-(3) the standing untested-coverage backlog (most of the ~56 matrix rows beyond the ★ subset).
+**The held-commits thread is now CLOSED:** on 2026-06-26 the maintainer said "commit and push" —
+the 5 Row 4 + Row 8 run-record files were committed (6073718) and `main` was pushed to origin,
+carrying up the three previously-held commits (Session A 1e46099, handoff prep 5d86e61, and
+6073718). Working tree is clean; `main` == `origin/main`; nothing unpushed. Remaining open
+threads: (1) **star-subset-run-plan.md is fully executed** (all 6 ★ rows recorded) — per its own
+header it is now ready to delete (safe-deletion protocol; left for the maintainer). (2) the
+standing untested-coverage backlog (most of the ~56 matrix rows beyond the ★ subset, plus the
+environment-dependent live checks).
 
 **Latest pack (v12.19):** test run-cadence note in protocols/testing-strategy.md ("Fast
 feedback vs the gate") — focused subset during iteration, full suite at the DoD + CI; cadence
@@ -50,15 +53,14 @@ interrogation, N=2)** — all flagged NOT-a-trim with the weaker-model/guarantee
 formatter redundant (Spike-excluded). The ★ subset is now fully run; remaining gaps are the
 non-★ matrix rows + environment-dependent live checks.
 
-**Branches:** `main` @ **v12.19** — pack code reviewed/merged, matches `origin/main`. Local
-pack-dev commits are **ahead of origin and unpushed**: Session A run record (1e46099) + Row 4
-records + this session's Row 8 records (ab-test/matrix/log/handoff edits, partly uncommitted in
-the working tree). Maintainer holding local until they say otherwise. Push/commit needs
-confirmation. `eval-testing` — stale copy of the run plan, safe to ignore/delete.
+**Branches:** `main` @ **v12.19** — pack code reviewed/merged, **fully synced with `origin/main`
+(pushed 2026-06-26 through 6073718)**. Working tree clean; no unpushed commits. The Session A +
+Row 4 + Row 8 run records are now all in origin history. `eval-testing` — stale copy of the run
+plan, safe to ignore/delete.
 
 **Open watch items (OPEN — none silently closed):**
-- **Held commits:** Session A (1e46099) + Row 4 + Row 8 run records are LOCAL/unpushed and
-  partly uncommitted per the user's "Keep holding" — commit/push needs the maintainer's OK.
+- ~~**Held commits**~~ — **CLOSED 2026-06-26**: maintainer said "commit and push"; all run
+  records committed (6073718) and `main` pushed to origin. No unpushed work remains.
 - **star-subset-run-plan.md fully executed** — all 6 ★ rows recorded; ready to delete per its
   header (left for the maintainer; safe-deletion protocol applies).
 - **tier-use reporting is prose-only** — no live run yet confirming the work-summary note fires
@@ -82,8 +84,8 @@ confirmation. `eval-testing` — stale copy of the run plan, safe to ignore/dele
     The ★-subset validation run is COMPLETE: Row 4 (M2 cross-session resumption)
     = the one reproduced PASS-for-pack; the 5 Session-A M1 rows + Row 8 (M3
     requirement interrogation) = redundant on Opus 4.8 (NOT trim signals). There
-    is NO queued coding task. Open threads: (1) the held local/unpushed run
-    records (Session A 1e46099 + Row 4 + Row 8) — committing/pushing needs the
-    maintainer's OK; (2) star-subset-run-plan.md is fully executed and ready to
-    delete; (3) the non-★ matrix rows remain untested. Ask the maintainer which
-    they want before acting.
+    is NO queued coding task. All run records are COMMITTED AND PUSHED (main ==
+    origin/main as of 2026-06-26, through 6073718) — nothing held. Open threads:
+    (1) star-subset-run-plan.md is fully executed and ready to delete;
+    (2) the non-★ matrix rows + environment-dependent live checks remain
+    untested. Ask the maintainer which they want before acting.
