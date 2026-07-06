@@ -210,9 +210,10 @@ The safety floor never scales down; ratchet rules live in guardrails.]
 
 - Provider / environment: [NOT SET]
 - Capable (session model, never downgraded): [NOT SET]
-- Light (bounded rubric checks): [model, or "none — single-tier (YYYY-MM-DD)"]
-- Local endpoint (if Light is a local GPU): [URL · model id · auth: <path outside
-  repo> · service name · decided YYYY-MM-DD]
+- Light (bounded rubric checks): deepseek-coder-v2:latest (strongest coder model on
+  the local Ollama instance, 15.7B Q4_0) — revisit at V100 install — ulysses item 10
+- Local endpoint (if Light is a local GPU): http://127.0.0.1:11434 ·
+  deepseek-coder-v2:latest · auth: none (loopback only) · ollama · decided 2026-07-06
 
 ## Quick constraints
 
