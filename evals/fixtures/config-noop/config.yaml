@@ -1,0 +1,3 @@
+# Deployment config
+timeout: 60
+retries: 3

@@ -25,7 +25,13 @@ model steps on them.
 
 ## Non-goals
 <The adjacent things NOT to do. "Do not touch the auth middleware." "No refactoring of X
- even though it's ugly." "Performance is out of scope.">
+ even though it's ugly." "Performance is out of scope." Also list files that might look
+ relevant but are NOT to be touched — an explicit not-touched list is the cheapest scope
+ fence there is.>
+
+## Constraints
+<Hard limits distinct from scope: "Do not modify: <files/systems off-limits>."
+ "Do not change: <behavior, interface, or schema that must stay the same>.">
 
 ## Starting points
 <Files, symbols, docs, and a prior-art example to imitate:
@@ -44,7 +50,16 @@ model steps on them.
 ## Budget & escalation
 <When to stop and ask rather than push on: "If the fix requires schema changes, stop and
  report." "If not reproducible within ~15 minutes, escalate with a stuck report.">
+
+## Open questions
+<Anything the executor cannot resolve from the codebase or this briefing alone. If a
+ question affects the approach, it must be answered before work starts — otherwise the
+ blank becomes a guess.>
 ```
+
+Task type note: for an **investigation** briefing (analysis, review, audit — no code
+changes), say so in Goal and require the deliverable as findings with claim tags; the
+"Done means" is then the questions the findings must answer, not a command.
 
 ## For orchestrators (model-to-model delegation)
 
