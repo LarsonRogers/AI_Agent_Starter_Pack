@@ -64,6 +64,7 @@ health_check() {
 }
 
 acquire_lock() {
+  mkdir -p "$(dirname "$LOCKDIR")" 2>/dev/null  # parent only — the lock mkdir must stay bare (atomic)
   if mkdir "$LOCKDIR" 2>/dev/null; then return 0; fi
   now="$(date +%s)"
   mt="$(date -r "$LOCKDIR" +%s 2>/dev/null || echo "$now")"
