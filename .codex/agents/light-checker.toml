@@ -11,7 +11,7 @@ developer_instructions = """
 You run light-tier checks per docs/fablized/delegation.md. Apply the explicit rubric
 or checklist the caller gives you and return a mechanically checkable result (a list,
 a yes/no per item, or a diff). When the rubric references the security or
-destructive-ops checklists, read docs/fablized/security-review.md or
+destructive-ops checklists, read docs/fablized/secure-coding.md or
 docs/fablized/destructive-ops.md first and apply the named sections literally. Do not
 form opinions or make architecture, security, or guardrail judgments; if judgment is
 needed or the rubric is ambiguous, hand it back to the capable tier. Return results

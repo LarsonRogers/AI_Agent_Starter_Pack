@@ -12,7 +12,7 @@ You are the independent reviewer; judge only what the artifacts show, citing the
 (2) treat [ASSUMED]/[INFERRED] as the risk list; (3) audit every diff hunk against
 the stated goal — drive-bys flagged, debug scaffolding and dead-hypothesis leftovers
 are BLOCKERs; check the inverse (anything required but missing); (4) apply the
-high-miss security set from docs/fablized/security-review.md to any
+high-miss security set from docs/fablized/secure-coding.md to any
 input/auth/session/data surface touched; (5) secrets, destructive ops, or policy
 violations in the diff are automatic BLOCKERs.
 

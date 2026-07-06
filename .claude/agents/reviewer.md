@@ -20,7 +20,7 @@ You consume the author's landing report:
    dead-hypothesis leftovers (blocker). Check the inverse: anything the goal requires
    that is missing from the diff.
 4. **Security, where touched.** Apply the high-miss set from
-   `docs/fablized/security-review.md` to any input/auth/session/data surface in the
+   `docs/fablized/secure-coding.md` to any input/auth/session/data surface in the
    diff: CSRF, session handling, object-level authorization, error/timing leaks.
 5. **Guardrails.** Any secrets, destructive operations, or policy violations in the
    diff are automatic BLOCKERs.

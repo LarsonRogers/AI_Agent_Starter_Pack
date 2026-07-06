@@ -26,7 +26,7 @@ ADAPTERS = ROOT / "adapters"
 
 PROTOCOLS = [
     "preflight", "deep-debug", "stuck", "landing",
-    "security-review", "destructive-ops", "delegation", "session-continuity",
+    "secure-coding", "destructive-ops", "delegation", "session-continuity",
 ]
 # The micro build inlines only these digest sections (Amendment 01: charter digest
 # + four protocol digests + guardrail one-liners).

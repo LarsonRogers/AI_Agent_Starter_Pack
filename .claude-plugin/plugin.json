@@ -41,6 +41,11 @@
             "type": "command",
             "command": "${CLAUDE_PLUGIN_ROOT}/.claude/hooks/local-tier-canary.sh",
             "timeout": 45
+          },
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/.claude/hooks/skill-shadow-check.sh",
+            "timeout": 15
           }
         ]
       }

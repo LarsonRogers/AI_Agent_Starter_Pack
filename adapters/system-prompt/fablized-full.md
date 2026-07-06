@@ -499,7 +499,7 @@ Each of these, if you catch yourself writing it, means a step above was skipped:
 
 ---
 
-# Protocol: Security review
+# Protocol: Secure coding
 
 
 Two halves, both mandatory: the code must not be exploitable, and secrets must never

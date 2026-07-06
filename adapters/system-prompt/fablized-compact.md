@@ -251,7 +251,7 @@ Before declaring anything done:
    remaining risk. Banned: "should work", "all tests pass" without naming which ran,
    "everything is fixed".
 
-## Security-review digest
+## Secure-coding digest
 
 On any task touching input, auth, sessions, stored data, paths/uploads, or rendered
 output — and before any deploy:

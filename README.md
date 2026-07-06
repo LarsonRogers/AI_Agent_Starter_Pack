@@ -18,7 +18,7 @@ don't depend on the model at all.
 |---|---|---|
 | **Charter** | 12 laws + cadence + self-check tells; always loaded | `core/charter.md` → generated into every adapter |
 | **Guardrails** | hard limits, confirm-first defaults, safety floor, precedence | `core/guardrails.md` |
-| **Protocols (8)** | preflight · deep-debug · stuck · landing · security-review · destructive-ops · delegation · session-continuity | `core/protocols/` → skills, rules, or files per harness |
+| **Protocols (8)** | preflight · deep-debug · stuck · landing · secure-coding · destructive-ops · delegation · session-continuity | `core/protocols/` → skills, rules, or files per harness |
 | **Part 2** | your project's specifics, agent-maintained; three onboarding toggles (demo gate, sizing, accessibility) that delete when off | template in `core/part2-template.md`, lives in your `AGENTS.md` |
 | **Subagents** | `light-checker` (cheap rubric scans) + `reviewer` (fresh-context, consumes the landing report) | `.claude/agents/`, `.opencode/agent/`, `.codex/agents/` |
 | **Deterministic gates** | `tools/land.sh` landing gate · `.githooks/pre-commit` (secrets, size, GENERATED-file guard) · notify hooks | `tools/`, `.githooks/`, `.claude/hooks/` |
@@ -143,11 +143,26 @@ python tools/build.py     # regenerates every adapter; fails over word budgets
 ```
 
 Never hand-edit generated files (they carry a GENERATED marker; the pre-commit hook
-blocks it). Charter and the four Fablized protocol texts are frozen doctrine — the
+blocks it — with one deliberate exemption: AGENTS.md, whose Part 2 is agent-maintained
+per project). **Deployed projects must not run `build.py`** — it regenerates the Part 2
+skeleton and would clobber a filled Part 2; rebuilding is a kit-development activity.
+The word-budget gate covers the shipped skeleton only; a filled Part 2's size is
+governed by its own line caps and the delete-off-blocks rule. Charter and the four Fablized protocol texts are frozen doctrine — the
 sanctioned condensation surface is `core/digests.md`. After editing a full protocol,
 update its digest; a drifted digest quietly forks the doctrine. Maintenance loop:
 recurring failure → entry in `doctrine/failure-modes.md` → promote to a protocol step
 or law only if the entry alone doesn't stop it.
+
+## Skill-name collisions
+
+Harnesses can ship built-in skills/commands, and other plugins can claim the same
+names — a same-named skill may silently shadow the kit's. A SessionStart hook
+(`.claude/hooks/skill-shadow-check.sh`, notify-only) compares the kit's skill names
+against known built-ins, user-level `~/.claude/skills`, and installed plugins, and
+prints one warning line on collision. Detection is best-effort (built-ins aren't
+enumerable from disk); if it fires, rename the kit skill in `core/protocols/`, update
+its digest heading, and rebuild. This is why the security protocol is named
+`secure-coding` — `security-review` collides with a Claude Code built-in.
 
 ## Harness parity notes
 
@@ -180,7 +195,7 @@ evals/                behavior cases + fixtures + acceptance rules
 In A/B testing of the predecessor pack, the two reproduced wins were **day-one
 architecture that held as features grew** and **an independent review catching a
 shipped CSRF hole the unguided model rationalized away** — both mechanisms survive
-here (sizing block; security-review high-miss set + reviewer agent). The honest
+here (sizing block; secure-coding high-miss set + reviewer agent). The honest
 limits: the kit adds no reasoning depth, and compliance varies by model — test a
 candidate on one real task against `doctrine/failure-modes.md` before trusting it,
 or just run the evals.
