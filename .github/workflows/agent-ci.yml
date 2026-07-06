@@ -6,7 +6,7 @@
 # a task complete until this workflow passes.
 #
 # SETUP: The agent replaces the [NOT CONFIGURED] steps with real commands
-# during enforcement-tooling setup (protocols/enforcement-tooling.md) —
+# when wiring up project tooling (see README — quality gates) —
 # normally as part of backlog item 1. Humans can also adapt manually.
 #
 # UNCONFIGURED JOBS FAIL ON PURPOSE. A placeholder that passes green would
@@ -115,7 +115,7 @@ jobs:
       # other dangerous patterns. `--config auto` selects rules for whatever
       # languages are present, so this step works out of the box on any
       # stack. The agent may pin or extend rulesets during enforcement-
-      # tooling setup (protocols/enforcement-tooling.md). Findings fail the
+      # tooling setup (see README — quality gates). Findings fail the
       # build; triage in the decision log (fix, or suppress with same-line
       # justification).
       - name: Static analysis (semgrep)

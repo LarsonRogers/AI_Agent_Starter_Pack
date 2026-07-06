@@ -1,278 +1,143 @@
-# AI Agent Starter Pack
-<!-- Starter Pack v12.19 — 2026-06-18 -->
+# AI Agent Starter Pack — v13
 
-An instruction set for AI coding agents. Drop it into any repo and any
-supported agent — Claude Code, Codex, OpenCode first-class; others
-best-effort — will orient itself, follow consistent rules, and maintain a
-running handoff log so nothing is lost between sessions or platforms.
+A cross-harness agent kit whose **doctrine core is Fablized** — a charter of 12 decision
+procedures distilled from watching top-tier models work, plus eight protocols that load
+at phase boundaries — and whose **chassis** is the pack's project policy: guardrails,
+delegation tiers, session continuity, and deterministic enforcement. One source of
+truth in `core/`; everything a harness reads is generated from it.
 
-Works for developers and non-developers alike. The agent detects who it's
-working with and adapts its communication style, explanation depth, and
-confirmation behavior accordingly.
+The premise: the gap between a strong and a weak coding agent is mostly **behavior at a
+small number of recurring decision points** — whether to read before writing, reproduce
+before fixing, re-diagnose after two failed attempts, verify before claiming done. The
+kit installs those behaviors as loadable procedure, and backs them with gates that
+don't depend on the model at all.
 
----
+## The layers
 
-> **Note:** This pack requires the `protocols/` folder to be present in your
-> repo root for full operation. If protocol files named in the AGENTS.md
-> Protocol Index are missing, the agent will halt and report it rather than
-> proceeding with undefined behavior.
+| Layer | What it does | Where |
+|---|---|---|
+| **Charter** | 12 laws + cadence + self-check tells; always loaded | `core/charter.md` → generated into every adapter |
+| **Guardrails** | hard limits, confirm-first defaults, safety floor, precedence | `core/guardrails.md` |
+| **Protocols (8)** | preflight · deep-debug · stuck · landing · security-review · destructive-ops · delegation · session-continuity | `core/protocols/` → skills, rules, or files per harness |
+| **Part 2** | your project's specifics, agent-maintained; three onboarding toggles (demo gate, sizing, accessibility) that delete when off | template in `core/part2-template.md`, lives in your `AGENTS.md` |
+| **Subagents** | `light-checker` (cheap rubric scans) + `reviewer` (fresh-context, consumes the landing report) | `.claude/agents/`, `.opencode/agent/`, `.codex/agents/` |
+| **Deterministic gates** | `tools/land.sh` landing gate · `.githooks/pre-commit` (secrets, size, GENERATED-file guard) · notify hooks | `tools/`, `.githooks/`, `.claude/hooks/` |
+| **Evals** | kit-vs-baseline behavior cases per target model | `evals/` |
 
-## What You Get
+## Install
 
-A coding agent that:
+**Claude Code (plugin):**
 
-- **Adapts to who you are** — asks one or two questions (second only if the first answer is ambiguous), picks one of three
-  modes (Developer, Technical non-dev, Non-dev), records it, never asks again
-- **Reads before it touches anything** — full codebase assessment before the
-  first line of code is written, loads detailed protocols on demand to stay
-  within context limits
-- **Confirms before it acts** — reformulates your prompts into structured task
-  briefs and waits for your approval before starting
-- **Plans cross-cutting changes upfront** — any change touching multiple files
-  or layers requires a confirmed pre-flight plan
-- **Sizes the architecture on day one** — picks the simplest structure that fits
-  (single-file tool → layered app) and writes the layer rules down before coding,
-  instead of letting structure drift (the data layer that keeps a growing app
-  maintainable, decided up front)
-- **Scales rigor to the stakes** — a throwaway spike gets light tooling and
-  minimal docs; a production app gets the full set (CI, security scanning,
-  coverage); the safety floor (secrets, security pass, review) never scales down
-- **Pressure-tests vague or ambitious requests** — interrogates assumptions, edge
-  cases, and failure modes before building, so it builds the right thing — without
-  grilling you over a one-line fix
-- **Sets up quality gates before the first feature** — linter, formatter, type
-  checks, tests, a secrets pre-commit hook, and CI, each demonstrated actually
-  catching a planted failure before it's trusted
-- **Runs a security pass with an independent review** — for anything touching
-  input, auth, sessions, or stored data, with a focus on the holes models
-  actually miss (CSRF, session handling, access control), checked by a
-  fresh-context reviewer before work is called done
-- **Routes cheap work to cheaper models (optional)** — bounded, rule-bound checks
-  can run on a faster/cheaper model while judgment and safety work stay on the
-  main one; it can optionally note in each work summary when it used the cheaper
-  model, so you see how often
-- **Keeps itself current** — can check whether a newer pack version is published
-  and migrate a project onto it without touching your project's own content
-- **Maintains an append-only decision log** — structured entries (what, why,
-  state, watch items) so any agent on any platform can trace how the project
-  got here
-- **Keeps a one-page handoff current** — HANDOFF.md is overwritten after every
-  task with where-we-are and a ready-to-paste resume prompt for switching
-  between agents
-- **Enforces guardrails** — by default requires explicit confirmation for file
-  deletion (see Safe Deletion Procedure), requires explicit confirmation for
-  auth/access-control changes, never unsafely handles secrets, and never executes irreversible destructive operations (dropping tables,
-  deleting cloud resources, purging backups) regardless of confirmation
-- **Surfaces conflicts** — when instructions conflict, states which rule wins
-  and why, never resolves silently
-- **Translates errors** — explains failures in plain English with clear options,
-  never leaves you with a raw stack trace
-- **Has a circuit breaker** — three failed attempts triggers a stop-and-escalate,
-  not an infinite retry loop
-- **Handles knowledge gaps honestly** — if it doesn't know an API or SDK and
-  can't look it up, it says so and offers to generate a research prompt you can
-  take to a web-enabled AI
-- **Scans for sensitive data** — flags credentials, PII, and secrets on
-  inherited repos before any work begins
-- **Checkpoints long sessions** — after 5 tasks, saves state and recommends a
-  clean restart before context degrades
-- **Produces handoff-ready code** — commented, documented, and readable by a
-  human dev team from day one
-
----
-
-## Setup
-
-1. Copy all files into your repo root, preserving the `.claude/`, `.codex/`,
-   and `.github/` directory structures — **excluding the `pack-dev/`
-   directory** (the pack's own development artifacts; never part of a
-   project).
-2. Start your agent session. The agent handles everything else.
-
-No manual editing of pack placeholders required. The agent infers your project
-details, presents them for confirmation, and fills in the pack files itself.
-Optional: developers can manually adapt `.claude/settings.json` and the CI
-workflow after first session.
-
-See `SETUP.md` for a full walkthrough including non-developer instructions.
-
----
-
-## Learn it
-
-Three human-facing docs (read in any order — none of them is loaded by the agent):
-
-- **`SETUP.md`** — install and bootstrap the pack into your repo.
-- **`WALKTHROUGH.md`** — one small project built end to end, narrated, so you can
-  see the whole process in motion.
-- **`GUIDE.md`** — the concepts behind it and how to drive the agent well (the
-  four dials, Project Stakes, the guardrails, and the best practices).
-
----
-
-## Use Cases
-
-Works for new projects, active projects, inherited codebases, and refactors.
-See `SETUP.md` for what happens in each scenario.
-
----
-
-## Authority
-
-`AGENTS.md` is the single source of truth — policy (Part 1) and project
-specifics (Part 2). If two files appear to conflict, the Authority Matrix
-in `AGENTS.md` is authoritative. `CLAUDE.md` is only the Claude Code import
-shim; `protocols/` files govern procedure detail; everything else is
-human-facing documentation.
-
----
-
-## Files
-
-```
-SETUP.md                    Human bootstrap checklist and walkthrough.
-                            Start here, especially if you're not a developer.
-
-WALKTHROUGH.md              Human-facing. One small project built end to end,
-                            narrated. NOT loaded by the agent.
-
-GUIDE.md                    Human-facing handbook — how it works, the four
-                            dials, best practices. NOT loaded by the agent.
-
-TASK_TEMPLATE.md            Structured task brief template. The agent uses
-                            this to reformulate your prompts before starting
-                            work. You can also fill it out yourself for
-                            precise scope control.
-
-AGENTS.md                   THE single source of truth — always loaded by
-                            both harnesses (Codex directly; Claude Code via
-                            the CLAUDE.md import). Part 1: guardrails,
-                            policies, session protocols, Protocol Index,
-                            Authority Matrix. Part 2: project specifics,
-                            agent-maintained as a bounded living summary.
-
-protocols/                  One file per protocol (~300–1,900 tokens each).
-                            Agents load only the file triggered by their
-                            current situation. Protocol files covering
-                            inherited codebases, refactors, research,
-                            sensitive data, testing, and more.
-
-CLAUDE.md                   Claude Code import shim — `@AGENTS.md` plus
-                            Claude-specific mechanics only. No project
-                            content lives here.
-
-.claude/settings.json       Claude Code permissions — auto-approves edits
-                            and common commands, denies destructive ops
-                            and secret access.
-
-.codex/config.toml          Codex CLI config — approval policy, sandbox
-                            permissions, instruction file references, and
-                            web access notes.
-
-opencode.json               OpenCode config — permission rules that ask
-                            before pack-file edits and deny reads/edits of
-                            secret files and dangerous commands. Defense-
-                            in-depth, not a hard boundary (see
-                            protocols/sensitive-data.md).
-
-.github/workflows/
-  agent-ci.yml              CI template — lint, format, type check, tests,
-                            secret scanning, dependency audit. Adapt to
-                            your stack before use.
-
-.claude/agents/             Light-tier sub-agent templates (also .opencode/agent/
-.opencode/agent/            and .codex/agents/) — fill-the-model `*.example`
-.codex/agents/              files for routing cheap checks to a cheaper model.
-                            Inert until you (or the agent) activate one.
-
-.claude/hooks/              Optional, opt-in Claude Code launch hook that notifies
-                            you when a newer pack version is published. Off until
-                            registered; reads the upstream URL from AGENTS.md.
-
-pack-dev/                   Pack development artifacts (known-limitations
-                            ledger, the pack's own decision log + handoff).
-                            NOT copied into projects — the whole directory
-                            is excluded from distribution.
-
---- Agent-created files (not present until first session) ---
-
-DECISION_LOG.md             Created on first session. Append-only structured
-                            log — one compact entry per task: what changed,
-                            decisions + why, state deltas, watch items. A
-                            human changelog can be generated from it.
-
-HANDOFF.md                  Overwritten after every task. Where-we-are
-                            snapshot + resume prompt — the first thing a
-                            new session reads after AGENTS.md.
-
-BACKLOG.md                  Created by the product-definition protocol.
-                            Ordered user-visible outcomes; completing an
-                            item triggers a full demo.
-
-RUNBOOK.md                  Created when the app first becomes runnable.
-                            Plain-English "how to run this" — kept current
-                            in the same commit as any run-step change.
+```bash
+claude --plugin-dir /path/to/this/repo     # try it
+# or add the repo as a marketplace source and: /plugin install agent-starter-pack
 ```
 
----
+**Claude Code (drop-in):** copy `AGENTS.md`, `CLAUDE.md`, `docs/fablized/`,
+`.claude/`, `tools/`, `.githooks/`, `templates/` into your repo root.
 
-## Starting a Session
+**Codex CLI / OpenCode / anything AGENTS.md:** copy `AGENTS.md` + `docs/fablized/`
+(+ `.codex/` or `.opencode/` + `opencode.json` for permissions/agents, `tools/`,
+`.githooks/`, `templates/`).
 
-**CLI agents** (Claude Code, Codex, OpenCode) — run from repo root, agent
-reads instruction files automatically (Codex and OpenCode read AGENTS.md
-directly; Claude Code reads it through the CLAUDE.md import).
+**Cursor:** `adapters/cursor/.cursor/rules/` (self-contained).
+**Gemini CLI:** `adapters/gemini/GEMINI.md` + `docs/fablized/`.
+**Copilot:** `adapters/copilot/.github/copilot-instructions.md` + `docs/fablized/`.
+**Direct API / other harnesses:** one file from `adapters/system-prompt/` (table below).
 
-**Web / IDE agents** (Cursor, Windsurf, ChatGPT web, etc.) — paste this
-as your opening message:
+**Every install, once per clone:**
+
+```bash
+git config core.hooksPath .githooks    # enables the pre-commit gate
+```
+
+## Context cost per adapter
+
+Counts are words (≈ tokens × 0.74); `python tools/build.py` reprints them.
+
+| Adapter | Words | Use when |
+|---|---|---|
+| `AGENTS.md` (charter + guardrails + Part 2) | ~1,794 | any file-reading harness; protocols load on demand from `docs/fablized/` |
+| `fablized-full.md` | ~6,279 | direct API, ≥64k context, long tasks |
+| `fablized-compact.md` | ~2,593 | tight context; digests instead of full protocols |
+| `fablized-micro.md` | ~1,063 (build fails >1,200) | local/small models (Qwen 3.6-class, 8–32K): charter digest + guardrail one-liners + four protocol digests, fully inlined |
+| per-skill (loads only when triggered) | 548–759 each | Claude Code / Cursor auto-loading |
+
+**Small-model rule (important):** skill/rule **auto-triggering is a frontier-harness
+feature — never assume it below that tier.** Compact and micro inline everything;
+the file-referencing adapters say "open `docs/fablized/<name>.md` now" explicitly.
+For weak models the discipline is carried by the deterministic gates (`land.sh`,
+pre-commit), which work identically under any harness or a bare loop.
+
+Anthropic-API-compatible endpoints (e.g. Qwen 3.7-Max) can drive Claude Code directly
+via `ANTHROPIC_BASE_URL` — then the full `.claude/` asset set applies unchanged; the
+micro/shell profile is for local weights and minimal harnesses.
+
+## Tiering (delegation protocol)
+
+- **Standard:** session model = capable; cheaper API model = light (pin it in the
+  agent files + Part 2 tier map).
+- **Hybrid local+API:** the local model is the **light** tier; the API model is
+  capable and the reviewer — review goes *up*, never sideways.
+- **Fully offline:** single-tier; the reviewer degrades to `tools/land.sh` + the
+  diff-connect checklist in the delegation protocol. Machine-checked landing beats
+  author self-review.
+
+## Running the evals
+
+See `evals/README.md`. Three cases (reproduce-first, stuck-report, landing-audit),
+each run **kit-vs-baseline per target model**; acceptance for any non-Claude target is
+the kit arm beating the baseline arm on that model. If kit overhead hurts a small
+model, prune to what pays for itself and record it as a **named build variant** —
+never silently thin the doctrine.
+
+## Editing the doctrine
+
+Edit **only** `core/`, then:
+
+```bash
+python tools/build.py     # regenerates every adapter; fails over word budgets
+```
+
+Never hand-edit generated files (they carry a GENERATED marker; the pre-commit hook
+blocks it). Charter and the four Fablized protocol texts are frozen doctrine — the
+sanctioned condensation surface is `core/digests.md`. After editing a full protocol,
+update its digest; a drifted digest quietly forks the doctrine. Maintenance loop:
+recurring failure → entry in `doctrine/failure-modes.md` → promote to a protocol step
+or law only if the entry alone doesn't stop it.
+
+## Harness parity notes
+
+- **Claude Code** gets everything: skills, subagents, notify hooks, plugin packaging.
+- **OpenCode** gets permissions (`opencode.json`) + subagents; no hook system — the
+  deterministic gates (`land.sh`, pre-commit) carry enforcement. Restart after adding
+  agent files.
+- **Codex** gets `.codex/config.toml` + subagents; no permission-ask layer for pack
+  files and no hooks — same answer: the git-level gates are the floor, and the
+  guardrails file is the contract. Restart after adding agent files.
+- Versioning: Claude Code installs get plugin versions; every other harness pins by
+  git tag (this release: `v13.0-rc1`).
+
+## Repo map
 
 ```
-Before doing anything else, read AGENTS.md at the repo root and follow
-the session start protocol exactly as written. Do not write any code
-until the protocol is complete.
+core/                 SOURCE OF TRUTH: charter, guardrails, part2 template, 8 protocols, digests
+tools/build.py        regenerates everything below; enforces word budgets
+tools/land.sh         landing gate (validation cmds, done-check, scaffolding, banned phrases)
+.githooks/pre-commit  secrets / oversize / GENERATED-file guard
+AGENTS.md, CLAUDE.md, docs/fablized/, .claude/skills/, adapters/   GENERATED
+.claude/agents/, .opencode/agent/, .codex/agents/                  subagents (light-checker, reviewer)
+templates/BRIEFING.md delegation payload
+doctrine/             failure-modes bestiary (maintenance surface), worked examples
+evals/                behavior cases + fixtures + acceptance rules
 ```
 
-See `SETUP.md` for troubleshooting and detailed instructions by agent type.
+## Why believe any of this
 
----
-
-## Agent Compatibility
-
-Instructions are plain markdown — any agent that can read files can follow them.
-
-| Agent | Entry point |
-|-------|-------------|
-| Claude Code | `CLAUDE.md` (auto-read; imports `AGENTS.md` at launch) |
-| Codex CLI | `AGENTS.md` (auto-read on session start) |
-| OpenCode | `AGENTS.md` (auto-read on session start) |
-| Other agents (best-effort) | Paste `AGENTS.md` — it is self-contained |
-
----
-
-## Evaluation Harness (recommended)
-
-Not included — too project-specific to template. Worth building: a small set
-of benchmark tasks with known expected outcomes. Run them when you update the
-pack to catch regressions in agent behavior before they affect real work.
-
----
-
-## Release Checklist
-
-Before tagging a new pack version, verify:
-
-- [ ] `ls protocols/` matches the AGENTS.md → Protocol Index exactly: every
-      indexed file exists, no protocols/ file is missing from the index (both
-      directions)
-- [ ] Version string updated in ALL pack file headers — `grep -r "Starter Pack v"`
-      over AGENTS.md, CLAUDE.md, TASK_TEMPLATE.md, SETUP.md, README.md,
-      WALKTHROUGH.md, GUIDE.md, every `protocols/*.md`, and the agent/hook
-      templates — all match
-- [ ] If pack *behavior* changed: the human docs that describe it are updated —
-      README "What You Get", WALKTHROUGH.md, GUIDE.md (they rot silently otherwise)
-
-## Version
-
-This is **Starter Pack v12.19**. The version is recorded in the header of
-`AGENTS.md`, `CLAUDE.md`, and in every development log entry so there's
-always an audit trail of which instruction set was active for any given
-session.
+In A/B testing of the predecessor pack, the two reproduced wins were **day-one
+architecture that held as features grew** and **an independent review catching a
+shipped CSRF hole the unguided model rationalized away** — both mechanisms survive
+here (sizing block; security-review high-miss set + reviewer agent). The honest
+limits: the kit adds no reasoning depth, and compliance varies by model — test a
+candidate on one real task against `doctrine/failure-modes.md` before trusting it,
+or just run the evals.

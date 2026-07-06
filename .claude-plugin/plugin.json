@@ -1,0 +1,37 @@
+{
+  "name": "agent-starter-pack",
+  "displayName": "AI Agent Starter Pack (Fablized core)",
+  "version": "13.0.0-rc1",
+  "description": "Fablized doctrine (charter + 8 phase-boundary protocols as skills) on a project-policy chassis: guardrails, tiered delegation subagents, session continuity, and deterministic landing/pre-commit gates.",
+  "author": { "name": "LarsonRogers" },
+  "repository": "https://github.com/LarsonRogers/AI_Agent_Starter_Pack",
+  "license": "MIT",
+  "keywords": ["discipline", "protocols", "skills", "guardrails", "code-review"],
+  "skills": "./.claude/skills",
+  "agents": "./.claude/agents",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/.claude/hooks/post-edit-validate.sh",
+            "timeout": 120
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/.claude/hooks/stop-banned-phrases.sh",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  }
+}

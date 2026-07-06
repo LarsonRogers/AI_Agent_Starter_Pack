@@ -2,7 +2,7 @@
 #
 # IMPORTANT: package-ecosystem below is a placeholder. Dependabot silently
 # does nothing if it doesn't match your stack — the agent sets the real
-# value during enforcement-tooling setup (protocols/enforcement-tooling.md,
+# value when wiring up project tooling (see README — quality gates;
 # CI wiring step). Common values: npm, pip, cargo, gomod, bundler, maven.
 version: 2
 updates:
