@@ -1,0 +1,30 @@
+# config/local-tier/local-tier.service — systemd unit template (Linux).
+# Install: fill config/local-tier/llama-server.args, copy this file to
+#   /etc/systemd/system/local-tier.service, then:
+#   systemctl daemon-reload && systemctl enable --now local-tier
+# Record the endpoint in AGENTS.md Part 2 -> Model Tiers (URL, model id,
+# auth path, service name, decided date).
+
+[Unit]
+Description=Fablized local Light-tier LLM endpoint (llama-server)
+After=network-online.target
+
+[Service]
+Type=simple
+# EnvironmentFile holds MODEL_PATH/CTX_SIZE/PORT/... (the filled .args file) and
+# the API key env file lives OUTSIDE any repo (e.g. ~/.config/fablized/local-tier.env).
+EnvironmentFile=/etc/local-tier/llama-server.args
+EnvironmentFile=/etc/local-tier/local-tier.env
+# Power caps do not survive reboots — reapply at every service start.
+ExecStartPre=/usr/bin/nvidia-smi -pl ${POWER_LIMIT_W}
+# Auth: llama-server reads LLAMA_API_KEY from its environment — define it in
+# local-tier.env above (outside any repo). No key on the command line (ps-safe).
+ExecStart=/usr/local/bin/llama-server \
+  -m ${MODEL_PATH} -c ${CTX_SIZE} -np ${PARALLEL_SLOTS} \
+  --host ${HOST} --port ${PORT}
+Environment=CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES}
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -163,7 +163,11 @@ Before handing work to another model or agent:
    work — review, security, guardrails — never downgraded). Unsure → capable.
 2. Hybrid local+API: local = light, API = capable/reviewer. Fully offline:
    single-tier; reviewer degrades to the landing gate script + hunk-by-hunk
-   diff-connect against the briefing.
+   diff-connect against the briefing. Local GPU endpoint: dispatch only through
+   the delegate script (health check, lock, timeout, metrics); privileged/
+   local-only material stays in fully local sessions — the orchestrator never
+   composes or reads those briefings; endpoint down → claim-tagged report, one
+   retry max after a fresh health check; never parallel heavy tasks to one GPU.
 3. Brief with the briefing template — one goal; evidence, not conclusions; blank
    fields become guesses.
 4. Require results back in landing format with claim tags; untagged results go back.

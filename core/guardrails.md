@@ -29,8 +29,8 @@ permission.
 - Schema changes. Additive: confirm. Destructive: hard guardrail 2 — never.
 - CI/CD or deployment configuration changes.
 - Sending project data to an external service; irreversible external side effects
-  (emails, webhooks, pushing to remote branches).
-- Deleting any file — follow the destructive-ops protocol.
+  (emails, webhooks, remote pushes).
+- Deleting any file (destructive-ops protocol).
 - Uncertain about API behavior, auth impact, schema/data behavior, or external effects
   → stop and ask. Style, naming, idiom → resolve from the codebase instead.
 

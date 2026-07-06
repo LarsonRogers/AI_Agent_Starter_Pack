@@ -134,8 +134,8 @@ permission.
 - Schema changes. Additive: confirm. Destructive: hard guardrail 2 — never.
 - CI/CD or deployment configuration changes.
 - Sending project data to an external service; irreversible external side effects
-  (emails, webhooks, pushing to remote branches).
-- Deleting any file — follow the destructive-ops protocol.
+  (emails, webhooks, remote pushes).
+- Deleting any file (destructive-ops protocol).
 - Uncertain about API behavior, auth impact, schema/data behavior, or external effects
   → stop and ask. Style, naming, idiom → resolve from the codebase instead.
 
@@ -183,13 +183,13 @@ sentence, **delete the off blocks** — they cost context every session. Log the
 ### Demo gate (delete this block if off)
 
 A task changing user-visible behavior is done only when the user has SEEN it run —
-passing tests are invisible to a non-developer. Maintain `RUNBOOK.md` (start steps /
-"you should see" / stop / if-it-fails) from the first runnable state, updated in the
-same commit as any run-step change. Only the user may defer a demo; log the deferral.
+passing tests are invisible to a non-developer. Maintain `RUNBOOK.md` (start / "you
+should see" / stop / if-it-fails) from first runnable state, updated in the same
+commit as run steps. Only the user may defer a demo; log the deferral.
 
 ### Architecture sizing (delete this block if off)
 
-Sized on day one, written down, one WHY per layer:
+Sized on day one, one WHY per layer:
 S1 single-file tool · S2 UI + logic + storage · S3 client + server · S4 + database.
 Growth triggers forcing a LOGGED resize (never silent drift): authentication (≥ S3) ·
 shared multi-user data (S4) · a second consumer (extract a service layer) · a file past
@@ -211,6 +211,8 @@ The safety floor never scales down; ratchet rules live in guardrails.]
 - Provider / environment: [NOT SET]
 - Capable (session model, never downgraded): [NOT SET]
 - Light (bounded rubric checks): [model, or "none — single-tier (YYYY-MM-DD)"]
+- Local endpoint (if Light is a local GPU): [URL · model id · auth: <path outside
+  repo> · service name · decided YYYY-MM-DD]
 
 ## Quick constraints
 
@@ -222,17 +224,16 @@ The safety floor never scales down; ratchet rules live in guardrails.]
 
 ## Tech stack
 
-[language / runtime / framework / test + lint tooling, with versions]
+[language / runtime / framework / tooling, with versions]
 
 ## File structure
 
-[actual layout — one line per top-level directory, with its job]
+[one line per top-level directory, with its job]
 
 ## Pattern Registry (cap: 40 lines)
 
 ### [Pattern name]
-Purpose: [one sentence] · Location: [canonical example file] ·
-Usage: [how to apply] · Anti-pattern: [what NOT to do]
+Purpose · Location (canonical example) · Usage · Anti-pattern [fill per pattern]
 
 ## Architecture (cap: 60 lines)
 

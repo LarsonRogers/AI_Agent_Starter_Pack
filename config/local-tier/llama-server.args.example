@@ -1,0 +1,41 @@
+# config/local-tier/llama-server.args.example — parameterized launch config.
+# Copy to llama-server.args (gitignored path recommended) and fill in. The service
+# wrappers (local-tier.service / local-tier-windows.md) read these values.
+#
+# Worked example values in comments are Volta-class (V100 32GB): llama.cpp/GGUF
+# only, power-capped 140-180W, slow prefill / adequate decode. They are EXAMPLES —
+# the profile is GPU-agnostic.
+
+# Model file. Keep models on SSD/NVMe — cold-load time is part of every
+# availability check.                       # e.g. /models/qwen3.6-32b-q4_k_m.gguf
+MODEL_PATH=
+
+# Context size. One heavy task, or two light tasks sharing the KV budget.
+# e.g. 16384 for one slot on 32GB with a 32B Q4 model
+CTX_SIZE=16384
+PARALLEL_SLOTS=1                            # 1 heavy, or 2 light
+
+# GPU pinning (mixed GeForce+datacenter boxes: pin the serving card).
+CUDA_VISIBLE_DEVICES=0
+
+# Bind loopback ONLY — never 0.0.0.0. Remote transport is out of scope for v13.
+HOST=127.0.0.1
+PORT=8080
+
+# An API key is REQUIRED even on loopback. Do NOT put the key here — this file
+# may be committed as an example. The key lives outside the repo in
+# ~/.config/fablized/local-tier.env, and llama-server reads it from the
+# environment (LLAMA_API_KEY, set by the service wrapper from that env file).
+
+# Power cap, reapplied at every service start (caps do not survive reboots).
+# e.g. 160 for V100 in the 140-180W band
+POWER_LIMIT_W=
+
+# Resulting launch (the wrappers assemble this; auth arrives via the env file,
+# outside the repo — nothing key-shaped on the command line):
+#   nvidia-smi -pl ${POWER_LIMIT_W}
+#   CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES} llama-server \
+#     -m ${MODEL_PATH} -c ${CTX_SIZE} -np ${PARALLEL_SLOTS} \
+#     --host ${HOST} --port ${PORT}
+# Keep the server PERSISTENT (a service, not per-request) so the KV/prompt cache
+# survives across agent turns.

@@ -83,6 +83,49 @@ micro/shell profile is for local weights and minimal harnesses.
   diff-connect checklist in the delegation protocol. Machine-checked landing beats
   author self-review.
 
+## Local endpoint (homelab) profile
+
+The Light tier can be a single local GPU on the same box as the orchestrator.
+GPU-agnostic; the shipped example values are Volta-class (V100 32GB: llama.cpp/GGUF
+only, `nvidia-smi -pl` 140–180W, slow prefill / adequate decode).
+
+- **Serve:** fill `config/local-tier/llama-server.args.example` (model path, context,
+  `CUDA_VISIBLE_DEVICES`, port; `--api-key` required even on loopback; bind
+  `127.0.0.1` only, never `0.0.0.0`). Run it **persistent** — a service, so the
+  KV/prompt cache survives across agent turns. Slots: one heavy task, or two light
+  tasks sharing the KV budget. Model files and agent workspaces belong on SSD/NVMe —
+  cold-load time is part of every availability check.
+- **Pick the service wrapper (human decision, no auto-detection):**
+  `config/local-tier/local-tier.service` (systemd) or
+  `config/local-tier/local-tier-windows.md` (NSSM, or Task Scheduler with no
+  installs). **Mixed GeForce + datacenter box?** Run the per-device dual-driver test
+  first: under the one Windows driver package, run `nvidia-smi` per device plus a
+  small CUDA workload pinned to each device in turn; if either card misbehaves under
+  the unified driver, dual-boot Linux for the serving card is the fallback. Both
+  wrappers reapply the power cap at every service start — caps do not survive
+  reboots.
+- **Record it:** AGENTS.md Part 2 → Model Tiers gains `endpoint URL · model id ·
+  auth: <path outside repo> · service name · decided YYYY-MM-DD`.
+- **Dispatch:** always through `tools/delegate.sh` (health check → mkdir lock →
+  timeout → BRIEFING + micro prompt → landing-format response → one JSONL metrics
+  line in `var/metrics/local-tier.jsonl`, gitignored — this feeds the per-model eval
+  gate). The API key is read at runtime from `~/.config/fablized/local-tier.env` —
+  outside the repo, never echoed.
+- **Canary:** `.claude/hooks/local-tier-canary.sh` is registered as a SessionStart
+  hook — one line per session: `local tier: up|down, <model>, ~<tok/s>, <temp>`,
+  with a configurable tok/s band and temperature threshold (`CANARY_MIN_TOKS`,
+  `CANARY_MAX_TEMP`). It doubles as the regression detector for driver updates and
+  cooling drift.
+- **Host hygiene (documented, not enforced):** volume encryption (BitLocker/LUKS)
+  for workspaces, briefings, transcripts, and metrics; exclude all agent working
+  directories from cloud sync (OneDrive/Dropbox/Drive); loopback only. Remote/LAN
+  transport is out of scope for v13 — SSH tunnel or WireGuard is the pointer if the
+  endpoint ever leaves the box.
+- **Sensitivity routing (delegation protocol):** privileged/local-only material is
+  handled in fully local single-tier sessions — the frontier orchestrator neither
+  composes nor reads those briefings; routing the payload locally does not protect
+  content the orchestrator itself wrote.
+
 ## Running the evals
 
 See `evals/README.md`. Three cases (reproduce-first, stuck-report, landing-audit),

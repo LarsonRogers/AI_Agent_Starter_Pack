@@ -36,6 +36,21 @@ capable tier. Tiering lowers cost, never coverage.
   checklist below — instead of open-ended judgment review. A machine-checked landing
   beats a self-review by the author model.
 
+For a local GPU endpoint, dispatch through `tools/delegate.sh` (health check, single-
+flight lock, timeout, metrics) — never raw calls. Three rules specific to that setup:
+
+- **Sensitivity routing.** Material marked privileged/local-only is handled in fully
+  local single-tier sessions. The frontier orchestrator neither composes nor reads
+  briefings for such tasks — routing the payload locally does not protect content the
+  orchestrator itself wrote.
+- **Failure policy.** Endpoint down or timed out → report it claim-tagged
+  (`[OBSERVED] local tier unreachable: <check output>`), then queue or escalate to
+  the capable tier per the briefing's Budget & escalation line. At most one retry,
+  and only after a fresh health check passes. Never silent retry-loops.
+- **Concurrency.** The orchestrator queues heavy tasks; it never fans out parallel
+  heavy work to a single-GPU endpoint (one heavy task, or two light tasks sharing
+  the KV budget).
+
 ## 3. Brief with `templates/BRIEFING.md`
 
 One goal per briefing. Fill every field — anything left blank, the executor fills
