@@ -210,10 +210,11 @@ The safety floor never scales down; ratchet rules live in guardrails.]
 
 - Provider / environment: [NOT SET]
 - Capable (session model, never downgraded): [NOT SET]
-- Light (bounded rubric checks): deepseek-coder-v2:latest (strongest coder model on
-  the local Ollama instance, 15.7B Q4_0) — revisit at V100 install — ulysses item 10
+- Light (bounded rubric checks): qwen2.5-coder:7b (100% GPU on the 3070, ~40 tok/s
+  measured vs deepseek-coder-v2 ~7 tok/s at 46% CPU spill, 2026-07-06 benchmark in
+  var/metrics/local-tier.jsonl) — revisit at V100 install — ulysses item 10
 - Local endpoint (if Light is a local GPU): http://127.0.0.1:11434 ·
-  deepseek-coder-v2:latest · auth: none (loopback only) · ollama · decided 2026-07-06
+  qwen2.5-coder:7b · auth: none (loopback only) · ollama · decided 2026-07-06
 
 ## Quick constraints
 
