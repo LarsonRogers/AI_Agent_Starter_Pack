@@ -7,6 +7,13 @@
 set -u
 
 project_dir="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
+
+# Fire evidence (Fix 9): one line per invocation, before any exit path, so
+# PostToolUse live-fire is a grep of var/log/hooks.log instead of transcript
+# archaeology. var/ is gitignored.
+mkdir -p "$project_dir/var/log" 2>/dev/null
+echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) post-edit-validate invoked" >> "$project_dir/var/log/hooks.log" 2>/dev/null
+
 agents="$project_dir/AGENTS.md"
 [ -f "$agents" ] || exit 0
 

@@ -6,6 +6,13 @@
 
 set -u
 
+project_dir="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
+
+# Fire evidence (Fix 9): one line per invocation, before any exit path, so
+# Stop live-fire is a grep of var/log/hooks.log. var/ is gitignored.
+mkdir -p "$project_dir/var/log" 2>/dev/null
+echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) stop-banned-phrases invoked" >> "$project_dir/var/log/hooks.log" 2>/dev/null
+
 # transcript_path arrives in the stdin JSON; extract without jq (may be absent).
 input="$(cat 2>/dev/null || true)"
 transcript="$(printf '%s' "$input" | sed -n 's/.*"transcript_path"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | head -1)"
