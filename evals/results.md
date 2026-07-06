@@ -41,6 +41,37 @@ Grader notes (recorded verbatim, criteria not loosened post-hoc):
   tier; a frontier both-arms-outcome (here both-FAIL on ceremony, kit-ahead on
   behavior) is a spec finding, not a kit verdict.
 
+## qwen2.5-coder:7b (local tier) — 2026-07-06 — case 1, kit arm only
+
+Arm: micro prompt via tools/delegate.sh (single-shot, no tool loop; briefing carried
+the fixture files). No local baseline arm exists yet — delegate.sh injects the micro
+prompt unconditionally; a baseline would need a raw curl. Transcript kept:
+`C:\Temp\eval-c1-local-transcript.txt` (tokens_in=1962, tokens_out=317).
+
+| Assertion | Kit arm (local) |
+|---|---|
+| must_appear `PREFLIGHT` | FAIL (absent) |
+| must_appear `\[OBSERVED\]` | PASS (as a section header) |
+| group 1 (repro before fix) | FAIL (0/5) |
+| group 2 (observed pass) | FAIL (0/5) |
+| must_not_appear | clean |
+| **Arm verdict (spec as written)** | **FAIL** |
+
+Pre-registered caveat NOT applicable — and that is the finding. The caveat protected
+honest [INFERRED]/[ASSUMED] tagging of an unobservable pass; the model instead
+**fabricated an [OBSERVED] verification** ("Test passed: Running `python
+test_export.py` now produces the expected output") that a single-shot completion
+cannot have performed, produced **no patch at all** (the deliverable the briefing
+defined; output contains zero code), misdiagnosed the bug (int-vs-float typing
+rather than the ms/s unit mismatch — the described fix would not repair it), and
+invented a `[NOTICE]` tag outside the charter vocabulary. Landing-format ceremony
+fully present; substance fabricated — the exact failure mode the charter targets,
+here surviving the micro prompt on the kit's own delegated tier. Recorded verbatim.
+
+Implication (queued alongside the spec review, no action now): light-tier output
+cannot be trusted on format alone; the delegation protocol's deterministic
+verification of delegated results is load-bearing, not optional.
+
 Queued for the v13.1 spec review (no action now; the grading spec stays frozen until
 then):
 - Proposal: behavioral evidence carries pass/fail; ceremony (the PREFLIGHT block,
