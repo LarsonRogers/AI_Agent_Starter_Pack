@@ -8,12 +8,17 @@ takes the charter's path instead. The scenarios mirror `doctrine/worked-examples
 ## Running a case (v13: manual per-case; automated harness is v13.1)
 
 ```bash
-# 1. copy the case's fixture dir somewhere disposable, cd into it
+# 1. copy the case's fixture dir somewhere disposable, cd into it — a FRESH copy per
+#    arm (the agent mutates the fixture)
 # 2. run the case's setup[] commands from evals.json (git init, commit, apply patch...)
-# 3. KIT ARM:
-claude -p "<the case's prompt>" \
+# 3. KIT ARM — pin --model to the same id in BOTH arms (the acceptance rule is
+#    per-model; note the id + date with the kept outputs). Headless -p needs a
+#    permission grant: fixtures are throwaway temp dirs, so
+#    --dangerously-skip-permissions is acceptable there (never on a real repo).
+claude -p "<the case's prompt>" --model <model-id> --dangerously-skip-permissions \
   --append-system-prompt "$(cat /path/to/kit/adapters/system-prompt/fablized-full.md)"
-# 4. BASELINE ARM: identical, without --append-system-prompt
+# 4. BASELINE ARM: identical (same --model, same permission flag), without
+#    --append-system-prompt
 # 5. apply the case's assertions (case-insensitive regex) to each arm's full output
 ```
 
@@ -28,7 +33,10 @@ The kit is judged **kit-vs-baseline on each target tier**, never kit-alone:
   group has ≥1 match, and no `must_not_appear` matches.
 - **The kit earns its keep on a model only where the kit arm passes cases the baseline
   arm fails.** A case both arms pass is redundant on that model (keep it — it is a
-  guarantee for weaker models, not a trim signal). A case the kit arm *fails* on a small
+  guarantee for weaker models, not a trim signal). On a frontier target,
+  both-arms-pass means no measured lift on that target — acceptable and expected;
+  the discriminating target is the local tier (the tier-map model driven through the
+  delegate/OpenCode path with the micro prompt). A case the kit arm *fails* on a small
   model is a real finding: if kit overhead measurably hurts (protocol tokens displacing
   code context), prune to the laws/protocols that pay for themselves and record the
   result as a **named build variant** — never silently thin the doctrine.
