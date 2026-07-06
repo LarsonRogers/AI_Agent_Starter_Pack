@@ -54,9 +54,12 @@ auth_curl() {
 }
 
 health_check() {
+  # Order covers both endpoint shapes (decision 13): llama-server (/health),
+  # any OpenAI-compatible incl. Ollama's shim (/v1/models), Ollama native (/api/tags).
   echo "health: checking $URL"
   auth_curl -f --max-time 5 -o /dev/null "$URL/health" 2>/dev/null && return 0
   auth_curl -f --max-time 5 -o /dev/null "$URL/v1/models" 2>/dev/null && return 0
+  auth_curl -f --max-time 5 -o /dev/null "$URL/api/tags" 2>/dev/null && return 0
   return 1
 }
 
@@ -173,26 +176,41 @@ self_test() {
   else echo "self-test FAIL: metrics written on unreachable"; status=1; fi
 
   # --- b) mock endpoint: landing output, exit 0, exactly one JSONL line -------
+  # Two shapes (decision 13): llama-server-shaped (GET /health ok) on $port and
+  # Ollama-shaped (only GET /api/tags answers; /health and /v1/models 404) on $port2.
   port=58231
-  python - "$port" <<'PYEOF' &
-import json, sys
+  port2=58232
+  python - "$port" "$port2" <<'PYEOF' &
+import json, sys, threading
 from http.server import BaseHTTPRequestHandler, HTTPServer
-class H(BaseHTTPRequestHandler):
-    def log_message(self, *a): pass
-    def _send(self, obj):
-        b = json.dumps(obj).encode()
-        self.send_response(200); self.send_header("Content-Type", "application/json")
-        self.send_header("Content-Length", str(len(b))); self.end_headers(); self.wfile.write(b)
-    def do_GET(self): self._send({"status": "ok"})
-    def do_POST(self):
-        self.rfile.read(int(self.headers.get("Content-Length", 0)))
-        self._send({"choices": [{"message": {"content":
-            "Outcome: OK printed.\nVerified: ran the check [OBSERVED].\nAssumed: none.\nNoticed but not done: none.\nRemaining risk: none."}}],
-            "usage": {"prompt_tokens": 100, "completion_tokens": 42}})
-srv = HTTPServer(("127.0.0.1", int(sys.argv[1])), H)
-srv.timeout = 30
-for _ in range(16):
-    srv.handle_request()
+COMPLETION = {"choices": [{"message": {"content":
+    "Outcome: OK printed.\nVerified: ran the check [OBSERVED].\nAssumed: none.\nNoticed but not done: none.\nRemaining risk: none."}}],
+    "usage": {"prompt_tokens": 100, "completion_tokens": 42}}
+def handler(shape):
+    class H(BaseHTTPRequestHandler):
+        def log_message(self, *a): pass
+        def _send(self, code, obj):
+            b = json.dumps(obj).encode()
+            self.send_response(code); self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(b))); self.end_headers(); self.wfile.write(b)
+        def do_GET(self):
+            if shape == "ollama":
+                if self.path == "/api/tags": self._send(200, {"models": [{"name": "mock"}]})
+                else: self._send(404, {})
+            else:
+                self._send(200, {"status": "ok"})
+        def do_POST(self):
+            self.rfile.read(int(self.headers.get("Content-Length", 0)))
+            self._send(200, COMPLETION)
+    return H
+srvs = [HTTPServer(("127.0.0.1", int(sys.argv[1])), handler("llama")),
+        HTTPServer(("127.0.0.1", int(sys.argv[2])), handler("ollama"))]
+for s in srvs: s.timeout = 30
+def run(s):
+    for _ in range(16): s.handle_request()
+ts = [threading.Thread(target=run, args=(s,)) for s in srvs]
+for t in ts: t.start()
+for t in ts: t.join()
 PYEOF
   srv_pid=$!
   sleep 1
@@ -205,6 +223,14 @@ PYEOF
   lines="$(wc -l < "$metrics" 2>/dev/null || echo 0)"
   if [ "$lines" -eq 1 ]; then echo "self-test PASS: exactly one JSONL metrics line"
   else echo "self-test FAIL: $lines metrics lines"; status=1; fi
+
+  # --- b2) Ollama-shaped mock: health falls through to /api/tags, dispatch OK --
+  out="$(LOCAL_TIER_URL="http://127.0.0.1:$port2" LOCAL_TIER_MODEL=mock-ollama \
+         FABLIZED_LOCAL_TIER_ENV=/nonexistent LOCAL_TIER_METRICS="$metrics" \
+         LOCAL_TIER_LOCKDIR="$tdir/lock2b" bash "$self" --briefing "$briefing" --task-id st-ollama 2>/dev/null)" \
+    || { echo "self-test FAIL: ollama-shaped dispatch exited nonzero"; status=1; }
+  case "$out" in *"Verified"*"[OBSERVED]"*) echo "self-test PASS: ollama-shaped endpoint served via /api/tags fallback" ;;
+    *) echo "self-test FAIL: ollama-shaped output wrong"; status=1 ;; esac
 
   # --- c) lock (against the live mock: health precedes lock by contract) -------
   mkdir -p "$tdir/lock3"

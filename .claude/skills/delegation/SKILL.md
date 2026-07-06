@@ -43,10 +43,19 @@ capable tier. Tiering lowers cost, never coverage.
 For a local GPU endpoint, dispatch through `tools/delegate.sh` (health check, single-
 flight lock, timeout, metrics) — never raw calls. Three rules specific to that setup:
 
-- **Sensitivity routing.** Material marked privileged/local-only is handled in fully
-  local single-tier sessions. The frontier orchestrator neither composes nor reads
-  briefings for such tasks — routing the payload locally does not protect content the
-  orchestrator itself wrote.
+- **Sensitivity routing — three classes.** Classify the material before composing
+  anything:
+  1. **open** — the frontier orchestrator has full access; route normally.
+  2. **obfuscation-floored** — material may egress to cloud models ONLY through a
+     scrub → residual-verify → preview/confirm → send → rehydrate pipeline. A scrub
+     with surviving high-risk tokens is BLOCKED, never sent. Cloud use for this
+     class is off by default, and every enablement is logged. This floor is a
+     contract v13 states, not code it ships — the reference implementation is
+     external (see the README's reference-homelab section).
+  3. **local-only** — the frontier orchestrator neither composes nor reads the
+     briefing; fully local single-tier execution. Routing the payload locally does
+     not protect content the orchestrator itself wrote — that is why this class
+     exists apart from class 2.
 - **Failure policy.** Endpoint down or timed out → report it claim-tagged
   (`[OBSERVED] local tier unreachable: <check output>`), then queue or escalate to
   the capable tier per the briefing's Budget & escalation line. At most one retry,

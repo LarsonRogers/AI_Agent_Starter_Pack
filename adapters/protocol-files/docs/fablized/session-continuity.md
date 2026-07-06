@@ -26,6 +26,15 @@ in one block, never ask the user to edit files. Set the three Project Options
 all three in one sentence, delete the blocks that are off. Create `DECISION_LOG.md`
 (first entry records the options chosen) and `HANDOFF.md`.
 
+**Endpoint onboarding (probe-then-offer):** when the Part 2 tier map has no local
+endpoint recorded, probe before asking. On harnesses with a SessionStart hook the
+canary's `--discover` mode does this automatically; everywhere else, run it yourself
+at session start: `bash .claude/hooks/local-tier-canary.sh --discover` (probes
+localhost 11434 Ollama / 8080 llama-server / 1234 LM Studio / 8000 vLLM). A hit →
+propose recording that endpoint as the Light tier and wait for a yes — never write
+Part 2 silently. No hit → ask the tier question once (a Light model, or single-tier),
+record the answer, and do not re-ask.
+
 ## 2. Task close — one write per task
 
 After the landing report, before moving on:

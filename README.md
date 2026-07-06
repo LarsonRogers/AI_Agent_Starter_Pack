@@ -121,10 +121,28 @@ only, `nvidia-smi -pl` 140–180W, slow prefill / adequate decode).
   directories from cloud sync (OneDrive/Dropbox/Drive); loopback only. Remote/LAN
   transport is out of scope for v13 — SSH tunnel or WireGuard is the pointer if the
   endpoint ever leaves the box.
-- **Sensitivity routing (delegation protocol):** privileged/local-only material is
-  handled in fully local single-tier sessions — the frontier orchestrator neither
-  composes nor reads those briefings; routing the payload locally does not protect
-  content the orchestrator itself wrote.
+- **Sensitivity routing (delegation protocol) — three classes:** *open* (route
+  normally) · *obfuscation-floored* (egress only via scrub → residual-verify →
+  preview/confirm → send → rehydrate; surviving high-risk tokens block the send;
+  cloud off-by-default, enablements logged — a contract v13 states, implemented
+  externally) · *local-only* (the frontier orchestrator neither composes nor reads
+  the briefing; routing the payload locally does not protect content the
+  orchestrator itself wrote).
+- **Endpoint onboarding (probe-then-offer):** with no endpoint recorded in Part 2,
+  the canary's `--discover` mode probes localhost 11434 (Ollama), 8080
+  (llama-server), 1234 (LM Studio), 8000 (vLLM), identifies server + models, and
+  the agent proposes recording the hit as the Light tier — ask-first, never a
+  silent Part 2 write. The single ask-once tier question fires only when no probe
+  answers. Hookless harnesses run the same probe via the session-continuity
+  protocol.
+- **Reference implementation:** the pack ships interfaces, not services. The
+  reference homelab is **windows-llm-lab-ulysses** (`local_ai`): serving registry +
+  swap manager (`tiers.yaml`), the class-2 obfuscation floor
+  (`cloud/obfuscate.py` block-on-residual, `cloud/escalation.py` gates),
+  eval-gated tier promotion, a retrieval tier, and a dashboard. The interfaces v13
+  owns and that implementation consumes: the endpoint contract above, the
+  `var/metrics/local-tier.jsonl` schema (timestamp, task id, model, tokens in/out,
+  duration, status), and the three routing classes.
 
 ## Running the evals
 
@@ -177,8 +195,12 @@ its digest heading, and rebuild. This is why the security protocol is named
 - **Codex** gets `.codex/config.toml` + subagents; no permission-ask layer for pack
   files and no hooks — same answer: the git-level gates are the floor, and the
   guardrails file is the contract. Restart after adding agent files.
+- **Pi / picode** loads AGENTS.md and skills natively — no separate adapter; the
+  system-prompt adapter is the fallback. Caveat: Pi has no built-in permission
+  system, so privileged work under Pi runs sandboxed (container/micro-VM) and
+  relies on the `land.sh` + git-hook floor for enforcement.
 - Versioning: Claude Code installs get plugin versions; every other harness pins by
-  git tag (this release: `v13.0-rc1`).
+  git tag (this release: `v13.0-rc1`). Upgrading a v12.x project: see MIGRATION.md.
 
 ## Repo map
 

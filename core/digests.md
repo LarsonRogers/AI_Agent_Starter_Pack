@@ -164,10 +164,13 @@ Before handing work to another model or agent:
 2. Hybrid local+API: local = light, API = capable/reviewer. Fully offline:
    single-tier; reviewer degrades to the landing gate script + hunk-by-hunk
    diff-connect against the briefing. Local GPU endpoint: dispatch only through
-   the delegate script (health check, lock, timeout, metrics); privileged/
-   local-only material stays in fully local sessions — the orchestrator never
-   composes or reads those briefings; endpoint down → claim-tagged report, one
-   retry max after a fresh health check; never parallel heavy tasks to one GPU.
+   the delegate script (health check, lock, timeout, metrics); endpoint down →
+   claim-tagged report, one retry max after a fresh health check; never parallel
+   heavy tasks to one GPU. Sensitivity classes: open (route normally) ·
+   obfuscation-floored (egress only via scrub → residual-verify → confirm →
+   send → rehydrate; surviving high-risk tokens block the send; cloud
+   off-by-default, enablements logged) · local-only (orchestrator never composes
+   or reads the briefing; fully local single-tier).
 3. Brief with the briefing template — one goal; evidence, not conclusions; blank
    fields become guesses.
 4. Require results back in landing format with claim tags; untagged results go back.
@@ -178,7 +181,9 @@ Before handing work to another model or agent:
 1. Session start: read the handoff, then the log tail; report last task / state /
    watch items / proposed next — then wait. Missing handoff → regenerate from log.
    No log → first session: fill Part 2 from the template, set the three Project
-   Options (infer, confirm in one sentence, delete off-blocks).
+   Options (infer, confirm in one sentence, delete off-blocks). Tier map without an
+   endpoint → probe-then-offer (canary --discover: 11434/8080/1234/8000); propose on
+   a hit, ask-once on none; never write Part 2 without a yes.
 2. Task close, every task: append one log entry (date, Did with real identifiers,
    Decisions+WHY, State, Watch — deltas only), overwrite the handoff, commit.
    Checks failed → roll back; never log broken state as done.
