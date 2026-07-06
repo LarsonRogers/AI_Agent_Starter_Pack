@@ -1,0 +1,88 @@
+---
+name: session-continuity
+title: Session continuity
+description: Run at the start of every session in a repo that has (or should have) HANDOFF.md or DECISION_LOG.md — resume by reading them and reporting where work left off; at the close of every task — one log append + handoff overwrite; when a session runs long — checkpoint; and on the first session in a fresh project — bootstrap Part 2 from the template and set the Project Options.
+---
+
+# Session continuity
+
+Context dies between sessions; the repo is what survives. Two artifacts carry the
+thread: `DECISION_LOG.md` (append-only history — how we got here and why) and
+`HANDOFF.md` (overwritten snapshot — where we are and what's next). Every session
+starts by reading them and ends having written them.
+
+## 1. Session start
+
+Read `HANDOFF.md`, then the log from the bottom, only as far as needed to act. Then
+report unprompted — the user should never have to ask "where were we?":
+(a) last completed task, (b) current state, (c) open watch items, (d) proposed next
+step. **Wait for confirmation before touching anything.**
+
+- HANDOFF missing but a log exists → regenerate the handoff from the last entries,
+  note the regeneration in the next log entry.
+- Log unreadable or has no entries → treat as a first session (below); never parse
+  garbage forward.
+
+**First session (no log):** read the repo before writing anything. Fill Part 2 from
+`core/part2-template.md` — infer values from the repo, present them for confirmation
+in one block, never ask the user to edit files. Set the three Project Options
+(demo gate / architecture sizing / accessibility): infer each from the brief, confirm
+all three in one sentence, delete the blocks that are off. Create `DECISION_LOG.md`
+(first entry records the options chosen) and `HANDOFF.md`.
+
+## 2. Task close — one write per task
+
+After the landing report, before moving on:
+
+1. Append the log entry (format below) — bottom of the file, never rewriting or
+   reordering old entries. Corrections are appended as their own entry referencing
+   what they correct.
+2. Overwrite `HANDOFF.md` (format below).
+3. Commit. If the task's checks failed, do not log it as done — roll back to the last
+   clean state rather than stacking broken state into the next task.
+
+If the project's Demo gate option is on: a task that changed user-visible behavior
+closes only after the user has seen it run (RUNBOOK steps); only the user may defer,
+and the deferral is logged as a watch item.
+
+## 3. Formats
+
+```
+## [YYYY-MM-DD] <task name> — <agent/platform>
+- Did: <files/functions changed — real identifiers, deltas only>
+- Decisions: <decision> — WHY: <rationale>   (omit if none)
+- State: <what newly works / what is stubbed>
+- Watch: <new loose ends / risks>            (omit if none)
+```
+
+```
+# Handoff — <project>
+As of: <date> · Last completed: <task>
+Next: <confirmed next task, or "ask the user">
+Watch items: <carried-forward, pruned when resolved>
+Resume: read Part 2, then this file, then the log tail; report status before working.
+```
+
+An entry a cold agent cannot act on is noise — specific paths and names, no prose
+recaps of what earlier entries already say.
+
+## 4. Long sessions
+
+After roughly five tasks, or when you notice re-asking answered questions or
+contradicting a settled decision: finish the current task, run its close, write the
+checkpoint into the handoff, and recommend a fresh session. Do not start new work
+after recommending the checkpoint.
+
+## Prohibitions
+
+- Never rewrite, reorder, or delete existing log entries.
+- Never start work in a resumed repo before the report-and-confirm exchange.
+- Never leave HANDOFF stale after a committed task — one write per task, always.
+- Never log a task as done whose checks did not pass.
+
+## Tells
+
+The thread is breaking if: you are writing code and haven't read the handoff; a log
+entry restates the whole project instead of the delta; you just asked something the
+session already answered (checkpoint signal); or the handoff's "next" still names the
+task you finished an hour ago.
