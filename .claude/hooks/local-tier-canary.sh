@@ -4,8 +4,11 @@
 # on every hook path.
 #
 # Default mode (endpoint configured): one status line —
-#   local tier: up|down, <model>, ~<tok/s>, <temp>   (band via CANARY_MIN_TOKS,
-#   CANARY_MAX_TEMP) — doubles as the driver-update / cooling-drift detector.
+#   local tier: up|down, <model>, ~<tok/s>, <temp> — doubles as the driver-update /
+#   cooling-drift detector. The probe asks for a fixed ~24-token reply; under 16
+#   completion tokens the rate prints as n/a instead of a noise figure (Fix 8).
+#   Warn band: below 50% of the tok/s recorded in Part 2 for the active model;
+#   CANARY_MIN_TOKS (default 5) fallback when none recorded. Temp: CANARY_MAX_TEMP.
 #
 # --discover (decision 13, probe-then-offer): when Part 2 -> Model Tiers has no
 # endpoint recorded, probe localhost 11434 (Ollama), 8080 (llama-server),
@@ -163,10 +166,17 @@ if ! curl -sf --max-time 4 -H "Authorization: Bearer ${LOCAL_TIER_API_KEY:-}" \
   exit 0
 fi
 
+# Untimed 1-token warmup: SessionStart is exactly the cold-load moment, and a
+# timed probe that pays the model load would sit below any honest band (Fix 8).
+curl -sf --max-time 30 -H "Authorization: Bearer ${LOCAL_TIER_API_KEY:-}" \
+  -H "Content-Type: application/json" \
+  -d "{\"model\":\"$model\",\"messages\":[{\"role\":\"user\",\"content\":\"hi\"}],\"max_tokens\":1}" \
+  -o /dev/null "$url/v1/chat/completions" 2>/dev/null || true
+
 start="$(date +%s%N 2>/dev/null || date +%s)"
 resp="$(curl -sf --max-time 30 -H "Authorization: Bearer ${LOCAL_TIER_API_KEY:-}" \
   -H "Content-Type: application/json" \
-  -d "{\"model\":\"$model\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with the single word: ready\"}],\"max_tokens\":24}" \
+  -d "{\"model\":\"$model\",\"messages\":[{\"role\":\"user\",\"content\":\"Count from 1 to 24 as plain digits separated by single spaces.\"}],\"max_tokens\":64}" \
   "$url/v1/chat/completions" 2>/dev/null)" || { echo "local tier: up, $model, completion FAILED"; exit 0; }
 end="$(date +%s%N 2>/dev/null || date +%s)"
 
@@ -187,8 +197,20 @@ if command -v nvidia-smi >/dev/null 2>&1; then
   [ -n "$t" ] && temp="${t}C"
 fi
 
-line="local tier: up, $model, ~${tps} tok/s, $temp"
-[ "$tps" -lt "$min_toks" ] 2>/dev/null && line="$line [WARN: below ${min_toks} tok/s band — driver/config regression?]"
+if [ "$toks" -lt 16 ]; then
+  # Too few completion tokens to measure a rate — print n/a, never warn on noise.
+  line="local tier: up, $model, tok/s n/a (${toks}-token sample), $temp"
+else
+  # Band floor: 50% of the tok/s recorded in Part 2 for the active model (first
+  # "N tok/s" after the model name on its tier-map line); fixed fallback if none.
+  esc="$(printf '%s' "$model" | sed 's/[][\\.*^$]/\\&/g')"
+  rec="$(grep -o "${esc}.*" "$project_dir/AGENTS.md" 2>/dev/null \
+    | grep -o '[0-9][0-9]* tok/s' | head -1 | grep -o '[0-9][0-9]*')"
+  if [ -n "$rec" ]; then floor=$(( rec / 2 )); band="50% of recorded ${rec}"
+  else floor="$min_toks"; band="fixed ${min_toks}"; fi
+  line="local tier: up, $model, ~${tps} tok/s, $temp"
+  [ "$tps" -lt "$floor" ] 2>/dev/null && line="$line [WARN: below ${band} tok/s band — driver/config regression?]"
+fi
 case "$temp" in
   n/a) : ;;
   *) [ "${temp%C}" -gt "$max_temp" ] 2>/dev/null && line="$line [WARN: over ${max_temp}C — cooling drift?]" ;;
