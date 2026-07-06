@@ -1,8 +1,8 @@
 # Part 2 — Project Specifics (agent-maintained)
 
-Bounded living summary: rewrite sections to stay current, never append-only. Caps:
-Pattern Registry ≤ 40 lines, Architecture ≤ 60, everything else at template size. Over
-a cap, compress — superseded detail moves to DECISION_LOG.md.
+Bounded living summary: rewrite to stay current, never append-only. Caps: Pattern
+Registry ≤ 40 lines, Architecture ≤ 60. Over a cap, compress — superseded detail moves
+to DECISION_LOG.md.
 
 ## Project Summary
 
@@ -10,14 +10,13 @@ a cap, compress — superseded detail moves to DECISION_LOG.md.
 
 ## Project Options
 
-Set once, at the first session: infer each default from the brief, confirm all three in
-one sentence, then **delete the blocks that are off** — they cost context every
-session. Record the choices in the first log entry.
+Set once at first session: infer each default from the brief, confirm all three in one
+sentence, **delete the off blocks** — they cost context every session. Log the choices.
 
 - **Demo gate:** [on if the user is non-technical or others will use the app; off for a
-  developer running their own tools]
-- **Architecture sizing:** [on for greenfield apps; off for scripts, libraries, or an
-  existing structure]
+  dev running their own tools]
+- **Architecture sizing:** [on for greenfield apps; off for scripts, libraries,
+  existing structures]
 - **Accessibility baseline:** [on if the project has user-facing UI]
 
 ### Demo gate (delete this block if off)
@@ -37,16 +36,16 @@ shared multi-user data (S4) · a second consumer (extract a service layer) · a 
 
 ### Accessibility baseline (delete this block if off)
 
-For user-facing UI, part of done — not polish: semantic elements (button/a/label — no
-clickable divs) · alt text on images · full keyboard reachability with visible focus ·
-~4.5:1 body-text contrast · color never the only signal for state.
+Part of done, not polish: semantic elements (button/a/label, no clickable divs) · alt
+text · full keyboard reachability, visible focus · ~4.5:1 text contrast · color never
+the only signal.
 
 ## Stakes
 
 [Spike = throwaway · Standard = default · Production = shipped, shared, or real data.
 The safety floor never scales down; ratchet rules live in guardrails.]
 
-## Tier map (used by the delegation protocol)
+## Tier map (delegation protocol)
 
 - Provider / environment: [NOT SET]
 - Capable (session model, never downgraded): [NOT SET]

@@ -1,14 +1,19 @@
 #!/usr/bin/env python3
 """Generate per-harness adapters from core/.
 
-Single source of truth: core/charter.md, core/protocols/*.md, core/digests.md.
-Everything this script writes carries a GENERATED marker — edit core/, then rerun:
+Single source of truth: core/charter.md, core/guardrails.md, core/part2-template.md,
+core/protocols/*.md, core/digests.md. Everything this script writes carries a GENERATED
+marker — edit core/, then rerun:
 
     python tools/build.py
 
 Placeholders in core files:
     {{GO:name}} / {{go:name}}  -> harness-appropriate "run this protocol" phrase,
                                   capitalized as a sentence / lowercase mid-sentence.
+
+Budgets (build FAILS over budget, per marching orders + Amendment 01):
+    AGENTS.md                                 <= 1800 words
+    adapters/system-prompt/fablized-micro.md  <= 1200 words
 """
 
 import re
@@ -19,7 +24,18 @@ ROOT = Path(__file__).resolve().parent.parent
 CORE = ROOT / "core"
 ADAPTERS = ROOT / "adapters"
 
-PROTOCOLS = ["preflight", "deep-debug", "stuck", "landing"]
+PROTOCOLS = [
+    "preflight", "deep-debug", "stuck", "landing",
+    "security-review", "destructive-ops", "delegation", "session-continuity",
+]
+# The micro build inlines only these digest sections (Amendment 01: charter digest
+# + four protocol digests + guardrail one-liners).
+MICRO_DIGESTS = ["Charter digest", "Guardrails digest",
+                 "Preflight digest", "Deep-debug digest",
+                 "Stuck digest", "Landing digest"]
+
+AGENTS_BUDGET = 1800
+MICRO_BUDGET = 1200
 
 # Where protocol files live inside a *target* repo for file-referencing harnesses.
 PROTOCOL_DIR = "docs/fablized"
@@ -46,12 +62,25 @@ def parse(path: Path):
 
 def load():
     charter = parse(CORE / "charter.md")[1]
+    guardrails = parse(CORE / "guardrails.md")[1]
+    part2 = parse(CORE / "part2-template.md")[1]
     protocols = {}
     for name in PROTOCOLS:
         meta, body = parse(CORE / "protocols" / f"{name}.md")
         protocols[name] = {"meta": meta, "body": body}
     digests = parse(CORE / "digests.md")[1]
-    return charter, protocols, digests
+    return charter, guardrails, part2, protocols, digests
+
+
+def digest_sections(digests: str):
+    """Return (intro, ordered {section title: full section text incl. '## ' header})."""
+    parts = re.split(r"(?m)^## ", digests)
+    intro = parts[0].rstrip("\n")
+    sections = {}
+    for part in parts[1:]:
+        title = part.split("\n", 1)[0].strip()
+        sections[title] = "## " + part.rstrip("\n")
+    return intro, sections
 
 
 # --- reference styles: how each harness tells the model to run a protocol ---
@@ -83,6 +112,19 @@ def substitute(text, ref, titles):
     return re.sub(r"\{\{(GO|go):([a-z-]+)\}\}", repl, text)
 
 
+def words(text: str) -> int:
+    return len(text.split())
+
+
+def check_budget(label: str, content: str, budget: int) -> int:
+    n = words(content)
+    if n > budget:
+        sys.exit(f"BUILD FAILED: {label} is {n} words (budget {budget}). "
+                 f"Trim core/ sources -- digests/guardrails/part2, never the charter "
+                 f"(doctrine wording is frozen).")
+    return n
+
+
 def write(path: Path, content: str):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content, encoding="utf-8", newline="\n")
@@ -90,8 +132,10 @@ def write(path: Path, content: str):
 
 
 def main():
-    charter, protocols, digests = load()
+    charter, guardrails, part2, protocols, digests = load()
     titles = {n: p["meta"]["title"] for n, p in protocols.items()}
+    intro, dsec = digest_sections(digests)
+    counts = {}
 
     def charter_for(ref):
         return substitute(charter, ref, titles)
@@ -99,55 +143,91 @@ def main():
     def body_for(name, ref):
         return substitute(protocols[name]["body"], ref, titles)
 
-    # --- Claude Code (installed at repo root: dogfooded by this repo itself) ---
-    write(ROOT / "CLAUDE.md", f"{GENERATED}\n\n{charter_for(ref_claude)}")
+    def kit_for(ref):
+        """Charter + guardrails + Part 2 skeleton — the full always-on layer."""
+        return f"{charter_for(ref)}\n\n---\n\n{guardrails}\n\n---\n\n{part2}"
+
+    # --- root AGENTS.md (file-referencing: Codex / OpenCode / anything) --------
+    agents = f"{GENERATED}\n\n{kit_for(ref_file)}"
+    counts["AGENTS.md"] = check_budget("AGENTS.md", agents, AGENTS_BUDGET)
+    write(ROOT / "AGENTS.md", agents)
+
+    # --- Claude Code: shim + skills -------------------------------------------
+    write(ROOT / "CLAUDE.md",
+          f"{GENERATED}\n\n@AGENTS.md\n\n"
+          f"Claude Code note: where the charter says \"open `{PROTOCOL_DIR}/<name>.md`"
+          f" and follow it\", invoke the `<name>` skill instead — the skills in"
+          f" `.claude/skills/` carry the same protocols and also load by description"
+          f" at phase boundaries. Project facts live in AGENTS.md Part 2 only.")
     for name, p in protocols.items():
         fm = f"---\nname: {p['meta']['name']}\ndescription: {p['meta']['description']}\n---"
         write(ROOT / ".claude" / "skills" / name / "SKILL.md",
               f"{fm}\n{GENERATED}\n\n{body_for(name, ref_claude)}")
 
-    # --- shared protocol files for file-referencing harnesses -----------------
-    # Install alongside AGENTS.md / GEMINI.md / copilot-instructions.md by
-    # copying adapters/protocol-files/docs/fablized/ into the target repo.
+    # --- protocol files: at repo root (so root AGENTS.md refs resolve) and in
+    # --- adapters/ (for copying into target repos alongside one-file adapters) -
     for name in PROTOCOLS:
-        write(ADAPTERS / "protocol-files" / "docs" / "fablized" / f"{name}.md",
-              f"{GENERATED}\n\n{body_for(name, ref_file)}")
+        content = f"{GENERATED}\n\n{body_for(name, ref_file)}"
+        write(ROOT / "docs" / "fablized" / f"{name}.md", content)
+        write(ADAPTERS / "protocol-files" / "docs" / "fablized" / f"{name}.md", content)
 
-    # --- AGENTS.md standard (Codex CLI, Amp, Jules, Zed, Cursor ≥1.0, ...) ----
+    # --- one-file adapters (AGENTS.md standard, Gemini, Copilot) ---------------
     preamble = (f"{GENERATED}\n"
                 f"<!-- Requires the protocol files: copy adapters/protocol-files/"
                 f"{PROTOCOL_DIR}/ into this repo at {PROTOCOL_DIR}/. -->\n\n")
-    write(ADAPTERS / "agents-md" / "AGENTS.md", preamble + charter_for(ref_file))
-
-    # --- Gemini CLI ------------------------------------------------------------
-    write(ADAPTERS / "gemini" / "GEMINI.md", preamble + charter_for(ref_file))
-
-    # --- GitHub Copilot ---------------------------------------------------------
+    write(ADAPTERS / "agents-md" / "AGENTS.md", preamble + kit_for(ref_file))
+    write(ADAPTERS / "gemini" / "GEMINI.md", preamble + kit_for(ref_file))
     write(ADAPTERS / "copilot" / ".github" / "copilot-instructions.md",
-          preamble + charter_for(ref_file))
+          preamble + kit_for(ref_file))
 
-    # --- Cursor rules ------------------------------------------------------------
+    # --- Cursor rules -----------------------------------------------------------
     write(ADAPTERS / "cursor" / ".cursor" / "rules" / "fablized-charter.mdc",
-          f"---\ndescription: Fablized charter — core working discipline\n"
-          f"globs:\nalwaysApply: true\n---\n{GENERATED}\n\n{charter_for(ref_cursor)}")
+          f"---\ndescription: Fablized charter + guardrails — core working discipline\n"
+          f"globs:\nalwaysApply: true\n---\n{GENERATED}\n\n"
+          f"{charter_for(ref_cursor)}\n\n---\n\n{guardrails}")
     for name, p in protocols.items():
         write(ADAPTERS / "cursor" / ".cursor" / "rules" / f"fablized-{name}.mdc",
               f"---\ndescription: {p['meta']['description']}\n"
               f"globs:\nalwaysApply: false\n---\n{GENERATED}\n\n{body_for(name, ref_cursor)}")
 
-    # --- raw system prompts (any model via API, orchestrators, other harnesses) ---
-    full = [f"{GENERATED}\n", charter_for(ref_inline)]
+    # --- raw system prompts -----------------------------------------------------
+    full = [f"{GENERATED}\n", charter_for(ref_inline), "\n---\n", guardrails]
     for name in PROTOCOLS:
         full.append(f"\n---\n\n# Protocol: {titles[name]}\n")
         # drop the duplicate H1 the body already carries
         body = re.sub(r"^# .+\n", "", body_for(name, ref_inline), count=1)
         full.append(body)
-    write(ADAPTERS / "system-prompt" / "fablized-full.md", "\n".join(full))
+    full_text = "\n".join(full)
+    counts["full"] = words(full_text)
+    write(ADAPTERS / "system-prompt" / "fablized-full.md", full_text)
 
-    compact = (f"{GENERATED}\n\n{charter_for(ref_digest)}\n\n---\n\n"
-               + substitute(digests, ref_digest, titles))
+    # Compact: full charter + full guardrails + every digest EXCEPT the charter's
+    # (the charter is already present in full).
+    compact_digests = "\n\n".join(
+        text for title, text in dsec.items() if title != "Charter digest")
+    compact = (f"{GENERATED}\n\n{charter_for(ref_digest)}\n\n---\n\n{guardrails}"
+               f"\n\n---\n\n{intro}\n\n{compact_digests}")
+    counts["compact"] = words(compact)
     write(ADAPTERS / "system-prompt" / "fablized-compact.md", compact)
 
+    # Micro: digests only, fully inlined — no skills, no files to open, nothing
+    # for a small model to fail to trigger (Amendment 01).
+    micro_note = ("Fablized micro build for small-context models. Follow literally. "
+                  "The digests below ARE the full procedure — nothing else to open, "
+                  "no skills to trigger.")
+    micro = (f"{GENERATED}\n\n{micro_note}\n\n"
+             + "\n\n".join(dsec[t] for t in MICRO_DIGESTS))
+    counts["micro"] = check_budget(
+        "adapters/system-prompt/fablized-micro.md", micro, MICRO_BUDGET)
+    write(ADAPTERS / "system-prompt" / "fablized-micro.md", micro)
+
+    # --- token-cost table data (README carries the human copy — keep it current) -
+    per_skill = {n: words(protocols[n]["body"]) for n in PROTOCOLS}
+    # ASCII-only output: Windows consoles may be cp1252 and choke on wider glyphs.
+    print("\nword counts (approx tokens = words * 1.35):")
+    print(f"  AGENTS.md {counts['AGENTS.md']} | full {counts['full']} | "
+          f"compact {counts['compact']} | micro {counts['micro']}")
+    print("  per-skill: " + ", ".join(f"{n} {c}" for n, c in per_skill.items()))
     print("done.")
 
 
