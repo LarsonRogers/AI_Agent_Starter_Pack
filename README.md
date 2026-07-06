@@ -162,7 +162,8 @@ against known built-ins, user-level `~/.claude/skills`, and installed plugins, a
 prints one warning line on collision. Detection is best-effort (built-ins aren't
 enumerable from disk); if it fires, rename the kit skill in `core/protocols/`, update
 its digest heading, and rebuild. This is why the security protocol is named
-`secure-coding` — `security-review` collides with a Claude Code built-in.
+`secure-coding` — its original name collided with a same-named Claude Code built-in
+(the exact case the check's built-ins list still watches for).
 
 ## Harness parity notes
 
