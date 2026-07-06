@@ -144,10 +144,13 @@ python tools/build.py     # regenerates every adapter; fails over word budgets
 
 Never hand-edit generated files (they carry a GENERATED marker; the pre-commit hook
 blocks it — with one deliberate exemption: AGENTS.md, whose Part 2 is agent-maintained
-per project). **Deployed projects must not run `build.py`** — it regenerates the Part 2
-skeleton and would clobber a filled Part 2; rebuilding is a kit-development activity.
-The word-budget gate covers the shipped skeleton only; a filled Part 2's size is
-governed by its own line caps and the delete-off-blocks rule. Charter and the four Fablized protocol texts are frozen doctrine — the
+per project). `build.py` is **Part-2-safe**: if the existing AGENTS.md holds a filled
+(non-skeleton) Part 2, a rebuild preserves it byte-for-byte and regenerates only
+Part 1 (charter + guardrails); if the Part 2 heading can't be found at all, the build
+refuses with a named reason rather than guess the boundary. `--force-part2` is the
+explicit overwrite-with-skeleton path. The word-budget gate always evaluates the
+shipped skeleton composition; a filled Part 2's size is governed by its own line caps
+and the delete-off-blocks rule. Charter and the four Fablized protocol texts are frozen doctrine — the
 sanctioned condensation surface is `core/digests.md`. After editing a full protocol,
 update its digest; a drifted digest quietly forks the doctrine. Maintenance loop:
 recurring failure → entry in `doctrine/failure-modes.md` → promote to a protocol step
