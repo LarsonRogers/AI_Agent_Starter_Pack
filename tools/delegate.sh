@@ -233,6 +233,23 @@ PYEOF
   case "$out" in *"Verified"*"[OBSERVED]"*) echo "self-test PASS: ollama-shaped endpoint served via /api/tags fallback" ;;
     *) echo "self-test FAIL: ollama-shaped output wrong"; status=1 ;; esac
 
+  # --- b3) fresh-clone tree (Fix 7 regression): no var/ anywhere — default lock
+  # and metrics paths must self-create their parents, not misreport "lock held".
+  troot="$tdir/fresh-clone"
+  mkdir -p "$troot/tools" "$troot/adapters/system-prompt"
+  cp "$self" "$troot/tools/delegate.sh"
+  cp "$MICRO" "$troot/adapters/system-prompt/fablized-micro.md"
+  out="$(LOCAL_TIER_URL="http://127.0.0.1:$port" LOCAL_TIER_MODEL=mock \
+         FABLIZED_LOCAL_TIER_ENV=/nonexistent bash "$troot/tools/delegate.sh" \
+         --briefing "$briefing" --task-id st-fresh 2>&1)" \
+    || { echo "self-test FAIL: fresh-clone (no var/) dispatch exited nonzero: $out"; status=1; }
+  if [ -f "$troot/var/metrics/local-tier.jsonl" ] \
+     && [ "$(wc -l < "$troot/var/metrics/local-tier.jsonl")" -eq 1 ]; then
+    echo "self-test PASS: fresh clone (no var/) acquires lock and writes metrics"
+  else
+    echo "self-test FAIL: fresh clone left no metrics line"; status=1
+  fi
+
   # --- c) lock (against the live mock: health precedes lock by contract) -------
   mkdir -p "$tdir/lock3"
   out="$(LOCAL_TIER_URL="http://127.0.0.1:$port" LOCAL_TIER_MODEL=mock \
