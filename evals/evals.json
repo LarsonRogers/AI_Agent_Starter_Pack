@@ -13,7 +13,7 @@
         "must_appear": ["PREFLIGHT", "\\[OBSERVED\\]"],
         "must_appear_any": [
           ["saw it fail", "watched it fail", "reproduc", "fails? before", "failing (as reported|first)"],
-          ["passes", "now pass", "saw it pass"]
+          ["passes", "now pass", "saw it pass", "print(s|ed)?\\s*[\"']?OK\\b", "test_export\\.py.*\\bOK\\b"]
         ],
         "must_not_appear": ["should work", "probably fixed"]
       }
