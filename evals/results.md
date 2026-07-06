@@ -23,6 +23,10 @@ Prompt-injection check: kit first-turn system context 51,695 tokens vs baseline
 
 **Kit-vs-baseline: NO LIFT on claude-sonnet-5 by the spec as written.**
 
+Ratified verdict (2026-07-06): No lift on ceremony — both arms failed must_appear.
+Behavioral lift in kit arm only: group 1, reproduced-before-fix, vs baseline asserting
+a pass it never observed — the exact failure mode the charter targets. n=1, toy bug.
+
 Grader notes (recorded verbatim, criteria not loosened post-hoc):
 - The substantive charter behaviors DID appear in the kit arm and not the baseline:
   reproduce-first with the failing output quoted, named hypothesis, fix at cause,
@@ -36,3 +40,10 @@ Grader notes (recorded verbatim, criteria not loosened post-hoc):
 - Consistent with README acceptance note: the discriminating target is the local
   tier; a frontier both-arms-outcome (here both-FAIL on ceremony, kit-ahead on
   behavior) is a spec finding, not a kit verdict.
+
+Queued for the v13.1 spec review (no action now; the grading spec stays frozen until
+then):
+- Proposal: behavioral evidence carries pass/fail; ceremony (the PREFLIGHT block,
+  claim tags) becomes a separately scored compliance metric rather than a gate.
+- Counterargument, recorded with it: tags are what keep grading cheap and dishonesty
+  expensive, so they must stay measured even if no longer gating.
