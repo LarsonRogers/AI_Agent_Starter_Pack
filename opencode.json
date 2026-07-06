@@ -9,10 +9,12 @@
     },
     "edit": {
       "*": "allow",
+      "core/**": "ask",
+      "templates/**": "ask",
       "AGENTS.md": "ask",
       "CLAUDE.md": "ask",
-      "TASK_TEMPLATE.md": "ask",
-      "protocols/**": "ask",
+      "docs/fablized/**": "ask",
+      "adapters/**": "ask",
       ".env": "deny",
       ".env.*": "deny",
       "secrets/**": "deny"
