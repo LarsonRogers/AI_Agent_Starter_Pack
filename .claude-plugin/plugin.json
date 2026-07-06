@@ -8,7 +8,10 @@
   "license": "MIT",
   "keywords": ["discipline", "protocols", "skills", "guardrails", "code-review"],
   "skills": "./.claude/skills",
-  "agents": "./.claude/agents",
+  "agents": [
+    "./.claude/agents/light-checker.md",
+    "./.claude/agents/reviewer.md"
+  ],
   "hooks": {
     "PostToolUse": [
       {
