@@ -161,6 +161,58 @@ reasoning and safety floor. Follow it literally; do not expand it into ceremony.
    remote destruction; confirm auth, dependency, schema, deploy, network-send, publish, and
    file-deletion changes first. Unknown external behavior stays flagged until verified.
 
+## Micro bugfix slice
+
+Delegated bug fix, single completion. The briefing is your only context; you cannot run,
+execute, or test anything — claiming you did is the one unforgivable failure. Verification
+belongs to the delegator.
+
+1. Quote the failing evidence from the briefing (error text, failing output). No failing
+   evidence in the briefing → stop and return "Cannot proceed: briefing lacks <X>".
+2. Name one hypothesis: "X fails because Y", citing the quoted evidence.
+3. Produce the smallest patch that fixes the cause, as one fenced code block, imitating the
+   briefing's prior-art example. No patch = no deliverable.
+4. Tell the delegator how to verify: exact command + expected output, tagged [UNVERIFIED].
+
+Return exactly:
+
+FIX REPORT
+Failing evidence: <quoted from briefing>
+Hypothesis: <one sentence>
+Patch: <one fenced code block, changed code only>
+Verify by: <command + expected output> [UNVERIFIED]
+Assumptions: <[ASSUMED] items, or "none">
+
+## Micro investigation slice
+
+Delegated read-only analysis, single completion. Deliverable is tagged findings — never code
+changes, never a patch. You cannot run anything; the only [OBSERVED] source available to you
+is the briefing text itself — cite it as [OBSERVED briefing]. Everything you conclude beyond
+it is [INFERRED]; everything unchecked is [ASSUMED].
+
+Return exactly:
+
+INVESTIGATION REPORT
+Question: <restated from the briefing goal>
+Findings: <one line each, every line tagged [OBSERVED briefing] / [INFERRED] / [ASSUMED]>
+Evidence: <the briefing lines each finding rests on, quoted>
+Unknowns: <what the briefing cannot answer + what observation would answer it>
+
+## Micro landing slice
+
+Delegated audit of a diff or draft report, single completion. You judge scope and claims; you
+cannot run checks. Never repeat a draft's claim as true — a claim you cannot verify is listed
+under Unverifiable, even when quoting it to reject it. Every hunk must connect to the stated
+goal in one sentence; hunks with none are drive-by and the recommendation is revert.
+
+Return exactly:
+
+LANDING AUDIT
+In-scope hunks: <hunk → the goal line it serves>
+Drive-by hunks: <hunk → why unconnected + "revert", or "none">
+Unverifiable claims: <each claim from the draft you could not verify, listed — never endorsed>
+Verdict: <land | revert drive-bys first | reject> — <one sentence why>
+
 ## Secure-coding digest
 
 On any task touching input, auth, sessions, stored data, paths/uploads, or rendered
@@ -204,9 +256,11 @@ Before handing work to another model or agent:
 2. Hybrid local+API: local = light, API = capable/reviewer. Fully offline:
    single-tier; reviewer degrades to the landing gate script + hunk-by-hunk
    diff-connect against the briefing. Local GPU endpoint: dispatch only through
-   the delegate script (health check, lock, timeout, metrics); endpoint down →
-   claim-tagged report, one retry max after a fresh health check; never parallel
-   heavy tasks to one GPU. Sensitivity classes: open (route normally) ·
+   the delegate script (health check, lock, timeout, metrics) with --task-class so
+   the executor gets the matching micro slice; results are verified fail-closed —
+   fabricated run-claims, missing deliverables, or untagged output are rejected and
+   never used; endpoint down → claim-tagged report, one retry max after a fresh
+   health check; never parallel heavy tasks to one GPU. Sensitivity classes: open (route normally) ·
    obfuscation-floored (egress only via scrub → residual-verify → confirm →
    send → rehydrate; surviving high-risk tokens block the send; cloud
    off-by-default, enablements logged) · local-only (orchestrator never composes

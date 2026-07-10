@@ -15,3 +15,11 @@
   briefing payloads out of command arguments and proxies.
 - Change harness defaults to ask-first/network-off and add reproducible pack CI.
 - Add a synchronized version source, MIT license, migration notes, and repository validator.
+- Add task-class micro slices (bugfix / investigation / landing, ≤400 words each) with
+  literal output skeletons, dispatched by `delegate.py --task-class` — a 7B holds one task
+  shape, not the whole doctrine (evals 2026-07-10).
+- Verify light-tier results fail-closed in `delegate.py`: fabricated run-claims a single-shot
+  completion cannot back, missing per-class deliverables, and untagged output are rejected
+  (exit 5, metrics status `rejected`); refutation-quotes are exempt.
+- Record the light tier's measured scope in Part 2 (bugfix slices + rubric scans only) and
+  the class-scoped dispatch rule in the delegation protocol.

@@ -8,6 +8,7 @@ import contextlib
 import io
 import json
 import os
+import re
 import socket
 import sys
 import tempfile
@@ -21,6 +22,61 @@ from local_tier_common import ConfigError, endpoint_healthy, load_config, reques
 
 
 ROOT = Path(__file__).resolve().parent.parent
+
+# Task classes map to micro slices built by tools/build.py. "general" keeps the
+# universal micro loop for tasks that fit no slice.
+TASK_CLASSES = ("bugfix", "investigation", "landing", "general")
+
+# Fail-closed output verification (evals 2026-07-06/10: the light tier fabricated an
+# [OBSERVED] test pass a single-shot completion cannot have performed, and returned
+# ceremony without the deliverable). A rejected result exits 5 and is recorded
+# "rejected" — it must never enter the task record as a usable answer.
+#
+# Run-claim patterns: first-person execution claims and past-tense pass reports.
+# A line is exempt when it is instructing the delegator how to verify (Verify by /
+# expect / [UNVERIFIED]) — quoting a command is honest; claiming it ran is not.
+RUN_CLAIM_PATTERNS = (
+    re.compile(r"(?i)\b(?:i|we)\s+(?:ran|executed|tested|verified|confirmed)\b"),
+    re.compile(r"(?i)\btest(?:s)?\s+(?:passed|pass|succeeded|now\s+pass(?:es)?)\b"),
+    re.compile(r"(?i)\bnow\s+(?:produces|prints|outputs|passes|works)\b"),
+    re.compile(r"(?i)\brunning\s+\S+\s+(?:produces|prints|outputs|shows|confirms)\b"),
+    re.compile(r"(?i)\[(?:VERIFIED|OBSERVED)\]\s*(?:via|by)?\s*(?:run|running|test|execution)\b"),
+)
+# Exemptions: instructing the delegator (Verify by / expect / [UNVERIFIED]) and naming a
+# claim in order to reject it (evals 2026-07-09: refutation-quotes are not endorsements).
+RUN_CLAIM_EXEMPT = re.compile(
+    r"(?i)\[UNVERIFIED\]|verify\s+by|should\s+(?:print|show|output|produce)"
+    r"|cannot\s+be\s+verified|unverifiable|claim(?:s|ed)?\b")
+
+CLAIM_TAG = re.compile(r"\[(?:OBSERVED|INFERRED|ASSUMED)[^\]]*\]")
+
+# Per-class deliverable requirements: headings from the slice's output skeleton.
+REQUIRED_MARKERS = {
+    "bugfix": ("FIX REPORT", "Hypothesis:", "Patch:", "Verify by:"),
+    "investigation": ("INVESTIGATION REPORT", "Findings:", "Unknowns:"),
+    "landing": ("LANDING AUDIT", "Drive-by hunks:", "Unverifiable claims:", "Verdict:"),
+    "general": (),
+}
+
+
+def verify_output(content: str, task_class: str) -> list[str]:
+    """Return violations that make a single-shot light-tier result unusable."""
+    violations = []
+    for line in content.splitlines():
+        if RUN_CLAIM_EXEMPT.search(line):
+            continue
+        for pattern in RUN_CLAIM_PATTERNS:
+            if pattern.search(line):
+                violations.append(f"run-claim a single-shot completion cannot back: {line.strip()!r}")
+                break
+    for marker in REQUIRED_MARKERS[task_class]:
+        if marker not in content:
+            violations.append(f"missing required deliverable marker: {marker!r}")
+    if task_class == "bugfix" and "```" not in content:
+        violations.append("missing patch: no fenced code block in a bugfix result")
+    if not CLAIM_TAG.search(content):
+        violations.append("no claim tags ([OBSERVED]/[INFERRED]/[ASSUMED]) — untagged results go back")
+    return violations
 
 
 class DirectoryLock:
@@ -81,7 +137,11 @@ def record_metric(path: Path, task_id: str, model: str, status: str, usage: dict
 def dispatch(args, root: Path = ROOT, environ: Mapping[str, str] | None = None) -> int:
     environment = os.environ if environ is None else environ
     briefing = Path(args.briefing)
-    micro = root / "adapters" / "system-prompt" / "fablized-micro.md"
+    task_class = getattr(args, "task_class", "general")
+    if task_class == "general":
+        micro = root / "adapters" / "system-prompt" / "fablized-micro.md"
+    else:
+        micro = root / "adapters" / "system-prompt" / f"fablized-micro-{task_class}.md"
     if not briefing.is_file():
         print(f"delegate.py: briefing file not found: {briefing}", file=sys.stderr)
         return 2
@@ -115,16 +175,17 @@ def dispatch(args, root: Path = ROOT, environ: Mapping[str, str] | None = None) 
         print(f"delegate.py: lock held ({lock_path}) — one task at a time")
         return 4
     try:
+        if task_class == "general":
+            # Slices carry their own return skeleton; only the universal loop needs one.
+            suffix = ("\n\nReturn a concise landing report: outcome; verified observations; "
+                      "assumed/unverified; noticed but not done; remaining risk.")
+        else:
+            suffix = "\n\nReturn exactly the skeleton your instructions define."
         payload = {
             "model": model,
             "messages": [
                 {"role": "system", "content": micro.read_text(encoding="utf-8")},
-                {
-                    "role": "user",
-                    "content": briefing.read_text(encoding="utf-8")
-                    + "\n\nReturn a concise landing report: outcome; verified observations; "
-                    "assumed/unverified; noticed but not done; remaining risk.",
-                },
+                {"role": "user", "content": briefing.read_text(encoding="utf-8") + suffix},
             ],
             "temperature": 0.2,
         }
@@ -144,6 +205,16 @@ def dispatch(args, root: Path = ROOT, environ: Mapping[str, str] | None = None) 
             return 3
         content = response["choices"][0]["message"]["content"]
         usage = response.get("usage", {})
+        violations = verify_output(content, task_class)
+        if violations:
+            record_metric(metrics, args.task_id, model, "rejected", usage, duration_ms)
+            print(f"[OBSERVED] light-tier result REJECTED ({len(violations)} violation(s)):")
+            for violation in violations:
+                print(f"  - {violation}")
+            print("\n--- rejected output (do not use as a result) ---")
+            print(content)
+            print("Re-brief with the missing evidence, or escalate to the capable tier.")
+            return 5
         print(content)
         print(
             f"\n---\ntokens_in={usage.get('prompt_tokens', 0)} "
@@ -160,6 +231,8 @@ def dispatch(args, root: Path = ROOT, environ: Mapping[str, str] | None = None) 
 
 
 class _MockHandler(BaseHTTPRequestHandler):
+    content = "Outcome: OK\nVerified: mock [OBSERVED]"
+
     def log_message(self, *_):
         pass
 
@@ -178,7 +251,7 @@ class _MockHandler(BaseHTTPRequestHandler):
         self.rfile.read(int(self.headers.get("Content-Length", "0")))
         self._send(
             {
-                "choices": [{"message": {"content": "Outcome: OK\nVerified: mock [OBSERVED]"}}],
+                "choices": [{"message": {"content": type(self).content}}],
                 "usage": {"prompt_tokens": 10, "completion_tokens": 4},
             }
         )
@@ -196,7 +269,7 @@ def self_test() -> int:
         thread = threading.Thread(target=server.serve_forever, daemon=True)
         thread.start()
         port = server.server_address[1]
-        args = argparse.Namespace(briefing=str(briefing), task_id="self-test")
+        args = argparse.Namespace(briefing=str(briefing), task_id="self-test", task_class="general")
         environment = {
             "LOCAL_TIER_URL": f"http://127.0.0.1:{port}",
             "LOCAL_TIER_MODEL": "mock",
@@ -210,10 +283,24 @@ def self_test() -> int:
         captured = io.StringIO()
         with contextlib.redirect_stdout(captured):
             status = dispatch(args, root, environment)
-        server.shutdown()
-        server.server_close()
         passed = status == 0 and "Verified" in captured.getvalue() and (root / "metrics.jsonl").is_file()
         print("self-test PASS: secure loopback dispatch" if passed else "self-test FAIL: dispatch")
+
+        # Fabricated run-claim must be rejected fail-closed (exit 5, status "rejected").
+        _MockHandler.content = ("FIX REPORT\nTest passed: running python test.py now produces "
+                                "the expected output [OBSERVED]")
+        rejected_out = io.StringIO()
+        with contextlib.redirect_stdout(rejected_out):
+            rejected_status = dispatch(args, root, environment)
+        _MockHandler.content = "Outcome: OK\nVerified: mock [OBSERVED]"
+        server.shutdown()
+        server.server_close()
+        metrics_tail = (root / "metrics.jsonl").read_text(encoding="utf-8").strip().splitlines()[-1]
+        rejected_passed = (rejected_status == 5
+                           and "REJECTED" in rejected_out.getvalue()
+                           and json.loads(metrics_tail)["status"] == "rejected")
+        print("self-test PASS: fabricated run-claim rejected" if rejected_passed
+              else "self-test FAIL: fabricated run-claim accepted")
 
         with socket.socket() as probe:
             probe.bind(("127.0.0.1", 0))
@@ -229,13 +316,15 @@ def self_test() -> int:
             remote_status = dispatch(args, root, environment)
         remote_passed = remote_status == 2
         print("self-test PASS: remote endpoint rejected" if remote_passed else "self-test FAIL: remote accepted")
-        return 0 if passed and down_passed and remote_passed else 1
+        return 0 if passed and rejected_passed and down_passed and remote_passed else 1
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--briefing")
     parser.add_argument("--task-id", default=f"task-{os.getpid()}")
+    parser.add_argument("--task-class", choices=TASK_CLASSES, default="general",
+                        help="selects the micro slice; the result is verified against its skeleton")
     parser.add_argument("--self-test", action="store_true")
     args = parser.parse_args()
     if args.self_test:

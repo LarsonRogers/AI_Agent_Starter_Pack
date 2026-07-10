@@ -304,9 +304,11 @@ Before handing work to another model or agent:
 2. Hybrid local+API: local = light, API = capable/reviewer. Fully offline:
    single-tier; reviewer degrades to the landing gate script + hunk-by-hunk
    diff-connect against the briefing. Local GPU endpoint: dispatch only through
-   the delegate script (health check, lock, timeout, metrics); endpoint down →
-   claim-tagged report, one retry max after a fresh health check; never parallel
-   heavy tasks to one GPU. Sensitivity classes: open (route normally) ·
+   the delegate script (health check, lock, timeout, metrics) with --task-class so
+   the executor gets the matching micro slice; results are verified fail-closed —
+   fabricated run-claims, missing deliverables, or untagged output are rejected and
+   never used; endpoint down → claim-tagged report, one retry max after a fresh
+   health check; never parallel heavy tasks to one GPU. Sensitivity classes: open (route normally) ·
    obfuscation-floored (egress only via scrub → residual-verify → confirm →
    send → rehydrate; surviving high-risk tokens block the send; cloud
    off-by-default, enablements logged) · local-only (orchestrator never composes

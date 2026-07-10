@@ -32,11 +32,20 @@ PROTOCOLS = [
 # The micro build uses a named, aggressively condensed action loop. Small-model
 # context is a performance constraint: every included word must earn its cost in evals.
 MICRO_DIGESTS = ["Micro operating loop"]
+# Task-class slices: per-class micro prompts for delegate.py --task-class. A 7B holds
+# one task shape, not the whole doctrine (evals 2026-07-10: universal micro 0/3 on
+# stuck + landing). Each slice ends in a literal output skeleton delegate.py verifies.
+MICRO_SLICES = {
+    "bugfix": "Micro bugfix slice",
+    "investigation": "Micro investigation slice",
+    "landing": "Micro landing slice",
+}
 
 AGENTS_BUDGET = 1800
 FULL_BUDGET = 8000
 COMPACT_BUDGET = 3200
 MICRO_BUDGET = 800
+SLICE_BUDGET = 400
 
 # Where protocol files live inside a *target* repo for file-referencing harnesses.
 PROTOCOL_DIR = "docs/fablized"
@@ -265,7 +274,7 @@ def main():
     # (the charter is already present in full).
     compact_digests = "\n\n".join(
         text for title, text in dsec.items()
-        if title not in {"Charter digest", "Micro operating loop"})
+        if title not in {"Charter digest", "Micro operating loop", *MICRO_SLICES.values()})
     compact = (f"{GENERATED}\n\n{charter_for(ref_digest)}\n\n---\n\n{guardrails}"
                f"\n\n---\n\n{intro}\n\n{compact_digests}")
     counts["compact"] = check_budget(
@@ -283,6 +292,15 @@ def main():
         "adapters/system-prompt/fablized-micro.md", micro, MICRO_BUDGET)
     write(ADAPTERS / "system-prompt" / "fablized-micro.md", micro)
 
+    # Slices: one task class per file, dispatched by tools/delegate.py --task-class.
+    slice_note = ("Fablized micro slice for a single delegated task class. Follow literally. "
+                  "This slice IS the full procedure — nothing else to open.")
+    for cls, title in MICRO_SLICES.items():
+        slice_text = f"{GENERATED}\n\n{slice_note}\n\n{dsec[title]}"
+        counts[f"micro-{cls}"] = check_budget(
+            f"adapters/system-prompt/fablized-micro-{cls}.md", slice_text, SLICE_BUDGET)
+        write(ADAPTERS / "system-prompt" / f"fablized-micro-{cls}.md", slice_text)
+
     profile_manifest = {
         "generated_by": "tools/build.py",
         "profiles": {
@@ -293,6 +311,14 @@ def main():
                 "budget": COMPACT_BUDGET,
             },
             "micro": {"file": "fablized-micro.md", "words": counts["micro"], "budget": MICRO_BUDGET},
+            **{
+                f"micro-{cls}": {
+                    "file": f"fablized-micro-{cls}.md",
+                    "words": counts[f"micro-{cls}"],
+                    "budget": SLICE_BUDGET,
+                }
+                for cls in MICRO_SLICES
+            },
         },
     }
     write(

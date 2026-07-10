@@ -78,6 +78,7 @@ Counts are words (≈ tokens × 0.74); `python tools/build.py` reprints them.
 | `fablized-full.md` | ~7,230 | direct API, ≥64k context, full protocols |
 | `fablized-compact.md` | ~2,815 | constrained context; full charter + protocol digests |
 | `fablized-micro.md` | ~358 (build fails >800) | local/small models: one named reasoning/safety action loop, fully inlined |
+| `fablized-micro-{bugfix,investigation,landing}.md` | ≤400 each | one task class per prompt, ends in a literal output skeleton; dispatched via `delegate.py --task-class` |
 | per-skill (loads only when triggered) | 548–988 each | frontier harness auto-loading |
 
 **Small-model rule (important):** skill/rule **auto-triggering is a frontier-harness
@@ -132,7 +133,11 @@ only, `nvidia-smi -pl` 140–180W, slow prefill / adequate decode).
 - **Dispatch:** always through `python tools/delegate.py` (health check → directory lock →
   timeout → BRIEFING + micro prompt → landing-format response → one JSONL metrics
   line in `var/metrics/local-tier.jsonl`, gitignored — this feeds the per-model eval
-  gate). A strict `KEY=VALUE` parser reads the API key from
+  gate). Pass `--task-class bugfix|investigation|landing` to swap the universal micro
+  for that class's slice; the response is then verified fail-closed against the slice
+  skeleton — a fabricated run-claim, missing deliverable, or untagged output exits 5
+  with metrics status `rejected` and never counts as a result. A strict `KEY=VALUE`
+  parser reads the API key from
   `~/.config/fablized/local-tier.env`; it never executes the file. Transport rejects
   non-loopback URLs, and Python holds credentials and briefing payloads in-process rather
   than exposing them as command arguments.

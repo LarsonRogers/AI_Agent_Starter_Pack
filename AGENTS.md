@@ -215,6 +215,10 @@ The safety floor never scales down; ratchet rules live in guardrails.]
   var/metrics/local-tier.jsonl) — revisit at V100 install — ulysses item 10
 - Local endpoint (if Light is a local GPU): http://127.0.0.1:11434 ·
   qwen2.5-coder:7b · auth: none (loopback only) · ollama · decided 2026-07-06
+- Light scope (evals 2026-07-06/10): bugfix slices + rubric scans only — the 7B never
+  installed stuck/landing discipline (0/3 each); investigation/landing judgment stays
+  capable-tier. delegate.py --task-class + fail-closed verification enforce this.
+  Re-test all three cases unchanged at V100 install — ulysses item 10.
 
 ## Quick constraints
 

@@ -790,7 +790,12 @@ capable tier. Tiering lowers cost, never coverage.
   beats a self-review by the author model.
 
 For a local GPU endpoint, dispatch through `python tools/delegate.py` (health check, single-
-flight lock, timeout, metrics) — never raw calls. Three rules specific to that setup:
+flight lock, timeout, metrics) — never raw calls. Pass `--task-class
+bugfix|investigation|landing` so the executor receives the matching micro slice and its
+output skeleton; the result is verified fail-closed — a run-claim a single-shot completion
+cannot back, a missing deliverable, or untagged output is rejected (exit 5, metrics status
+`rejected`) and never enters the task record. Rejected → re-brief with the missing evidence
+or escalate to the capable tier. Three rules specific to that setup:
 
 - **Sensitivity routing — three classes.** Classify the material before composing
   anything:

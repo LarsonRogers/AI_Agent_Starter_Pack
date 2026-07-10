@@ -3,18 +3,33 @@
   "profiles": {
     "full": {
       "file": "fablized-full.md",
-      "words": 7230,
+      "words": 7290,
       "budget": 8000
     },
     "compact": {
       "file": "fablized-compact.md",
-      "words": 2815,
+      "words": 2842,
       "budget": 3200
     },
     "micro": {
       "file": "fablized-micro.md",
       "words": 358,
       "budget": 800
+    },
+    "micro-bugfix": {
+      "file": "fablized-micro-bugfix.md",
+      "words": 180,
+      "budget": 400
+    },
+    "micro-investigation": {
+      "file": "fablized-micro-investigation.md",
+      "words": 132,
+      "budget": 400
+    },
+    "micro-landing": {
+      "file": "fablized-micro-landing.md",
+      "words": 153,
+      "budget": 400
     }
   }
 }

@@ -68,6 +68,10 @@ changes), say so in Goal and require the deliverable as findings with claim tags
 ## For orchestrators (model-to-model delegation)
 
 - One goal per briefing. Two goals in a briefing yields two half-done tasks.
+- Name the task class and dispatch with it (`python tools/delegate.py --task-class
+  bugfix|investigation|landing`) — the executor gets a class-shaped micro slice and its
+  output skeleton, and the result is verified fail-closed against that skeleton. No fitting
+  class → omit the flag (universal loop) and expect only landing format + claim tags back.
 - Paste **evidence, not conclusions**, into Starting points: the actual error text, the
   actual log lines. Conclusions inherited from another model arrive premise-shaped and
   will be swallowed (failure mode #7) unless marked "must verify."
