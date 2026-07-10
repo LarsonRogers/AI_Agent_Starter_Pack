@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import shutil
 import subprocess
 import tempfile
@@ -29,12 +30,21 @@ PROFILE_MANIFEST = json.loads(
 PROFILE_BUDGETS = {name: profile["budget"] for name, profile in PROFILE_MANIFEST.items()}
 
 
+def artifact_component(value: str) -> str:
+    """Return a portable, non-empty directory component for an external identifier."""
+    return re.sub(r"[^A-Za-z0-9._-]+", "_", value).strip("._") or "model"
+
+
 def run(command: list[str], cwd: Path, *, timeout: int = 60) -> subprocess.CompletedProcess[str]:
     return subprocess.run(command, cwd=cwd, text=True, capture_output=True, timeout=timeout)
 
 
 def prepare_fixture(case: dict[str, Any], destination: Path) -> dict[str, str]:
-    shutil.copytree(EVAL_ROOT / case["fixture"], destination)
+    shutil.copytree(
+        EVAL_ROOT / case["fixture"],
+        destination,
+        ignore=shutil.ignore_patterns(".cache", ".pytest_cache", "__pycache__", "*.pyc"),
+    )
     for action in case.get("setup", []):
         if action == "git_init":
             commands = [
@@ -190,7 +200,7 @@ def main() -> int:
     cases = select_cases(spec["cases"], args.case)
     arms = ["kit", "baseline"] if args.arm == "both" else [args.arm]
     stamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
-    run_root = args.artifacts / stamp / args.model.replace("/", "_")
+    run_root = args.artifacts / stamp / artifact_component(args.model)
     run_root.mkdir(parents=True, exist_ok=True)
     prompt_words = len(PROMPTS[args.profile].read_text(encoding="utf-8").split())
     summary: dict[str, Any] = {

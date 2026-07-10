@@ -104,7 +104,14 @@ def _first_event(events: list[TraceEvent], predicate) -> int | None:
 
 
 def _is_edit(event: TraceEvent) -> bool:
-    return event.kind == "tool" and event.name.lower() in {"edit", "write", "multiedit", "apply_patch"}
+    return event.kind == "tool" and event.name.lower() in {
+        "apply_patch",
+        "edit",
+        "multiedit",
+        "replace_text",
+        "write",
+        "write_file",
+    }
 
 
 def _command_event(event: TraceEvent, needle: str) -> bool:

@@ -3,10 +3,14 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from behavioral_graders import grade_landing_audit, parse_trace, snapshot_tree
+from behavioral_graders import TraceEvent, _is_edit, grade_landing_audit, parse_trace, snapshot_tree
 
 
 class BehavioralGradersTest(unittest.TestCase):
+    def test_common_provider_edit_names_are_recognized(self):
+        for name in ("Edit", "write_file", "replace_text", "apply_patch"):
+            self.assertTrue(_is_edit(TraceEvent(0, "tool", name, "{}")))
+
     def test_snapshot_ignores_git(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

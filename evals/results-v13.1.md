@@ -22,10 +22,28 @@ rerun. This correction changed grading, not agent output.
 
 ## Local micro profile
 
-Profile: `fablized-micro.md`, 358 words, 800-word budget. The recorded local endpoint was
-down on 2026-07-10, so no v13.1 micro kit-vs-baseline result exists yet. The historical v13
-local result in `results.md` remains FAIL 3/3 and cannot validate this redesigned profile.
+Model: `qwen2.5-coder:7b` (Ollama, Q4_K_M) on 2026-07-10. Profile:
+`fablized-micro.md`, 358 words, 800-word budget. The canary reported approximately 64 tok/s
+at 48C.
 
-Next acceptance target: run all cases repeatedly against the deployed small/local model
-through a tool-capable generic adapter. Promotion requires at least one lift case, no
-baseline regression, and context-budget compliance.
+Codex 0.144.1 and OpenCode could reach the model, but Ollama returned requested tool calls as
+plain JSON message content rather than structured tool-call events. The repeated comparison
+therefore used a fixture-scoped JSON tool-loop adapter with path confinement and an allowlist
+for verification commands. Three runs used the same final adapter version and fresh fixtures.
+
+| Case | Kit passes | Baseline passes |
+|---|---:|---:|
+| `bugfix-reproduce-first` | 2/3 | 0/3 |
+| `stuck-investigation` | 0/3 | 0/3 |
+| `landing-audit` | 0/3 | 0/3 |
+
+Two of three complete runs met the formal acceptance rule through the bugfix lift, with no
+baseline regression and the context budget passing. This is **partial, unstable evidence—not
+a promotion result**: the kit never passed investigation or landing, one earlier diagnostic
+edited the protected reproduction instead of the implementation, and the model sometimes
+exhausted the tool-step limit. The micro loop can elicit a correct reproduce-first fix from
+this model, but it does not reliably enforce falsification, scope audit, or honest landing.
+
+Testing also exposed two provider/OS defects in the runner: Windows-invalid model IDs in
+artifact paths and unrecognized `write_file`/`replace_text` edit events. Both were corrected
+with unit coverage; fixture copies now exclude runtime caches as well.
