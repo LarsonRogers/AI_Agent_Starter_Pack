@@ -2,7 +2,7 @@
 # .claude/hooks/post-edit-validate.sh — PostToolUse (Edit|Write) hook (v13).
 # NOTIFY-ONLY: runs the project's configured lint/format commands after an edit
 # and prints a one-line warning if one fails. Exits 0 on every path — it never
-# blocks an edit; the blocking gates are tools/land.sh and .githooks/pre-commit.
+# blocks an edit; the blocking gates are tools/land.py and .githooks/pre-commit.
 
 set -u
 
@@ -20,6 +20,11 @@ agents="$project_dir/AGENTS.md"
 line="$(grep -m1 -E '^- Lint:' "$agents" 2>/dev/null || true)"
 [ -n "$line" ] || exit 0
 
+if [ "${FABLIZED_RUN_CONFIGURED_HOOKS:-0}" != "1" ]; then
+  echo "post-edit: configured lint/format commands not auto-run; inspect them and opt in with FABLIZED_RUN_CONFIGURED_HOOKS=1." >&2
+  exit 0
+fi
+
 # sed, not tr: the '·' separator is multibyte UTF-8.
 printf '%s\n' "${line#- }" | sed 's/·/\n/g' | while IFS= read -r part; do
   label="$(printf '%s' "${part%%:*}" | sed 's/^ *//;s/ *$//')"
@@ -28,7 +33,7 @@ printf '%s\n' "${line#- }" | sed 's/·/\n/g' | while IFS= read -r part; do
   case "$label" in
     Lint|Format)
       if ! (cd "$project_dir" && sh -c "$cmd" >/dev/null 2>&1); then
-        echo "post-edit: $label failed ($cmd) — fix before landing; tools/land.sh will gate on it." >&2
+        echo "post-edit: $label failed ($cmd) — fix before landing; tools/land.py will gate on it." >&2
       fi
       ;;
   esac

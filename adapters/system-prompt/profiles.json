@@ -1,0 +1,20 @@
+{
+  "generated_by": "tools/build.py",
+  "profiles": {
+    "full": {
+      "file": "fablized-full.md",
+      "words": 7230,
+      "budget": 8000
+    },
+    "compact": {
+      "file": "fablized-compact.md",
+      "words": 2815,
+      "budget": 3200
+    },
+    "micro": {
+      "file": "fablized-micro.md",
+      "words": 358,
+      "budget": 800
+    }
+  }
+}

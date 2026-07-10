@@ -44,3 +44,6 @@ Thumbs.db
 
 # Local-tier runtime artifacts (metrics, locks) — never committed
 var/
+
+# Local eval transcripts may contain model output and fixture contents.
+evals/artifacts/

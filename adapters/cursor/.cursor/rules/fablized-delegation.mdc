@@ -37,11 +37,11 @@ capable tier. Tiering lowers cost, never coverage.
   main loop runs on a small local model, review and safety work go UP to the API
   model, not to another local instance.
 - **Fully offline (single-tier):** everything runs on the one model. The reviewer
-  role degrades to deterministic gates — `tools/land.sh` plus the diff-connect
+  role degrades to deterministic gates — `python tools/land.py` plus the diff-connect
   checklist below — instead of open-ended judgment review. A machine-checked landing
   beats a self-review by the author model.
 
-For a local GPU endpoint, dispatch through `tools/delegate.sh` (health check, single-
+For a local GPU endpoint, dispatch through `python tools/delegate.py` (health check, single-
 flight lock, timeout, metrics) — never raw calls. Three rules specific to that setup:
 
 - **Sensitivity routing — three classes.** Classify the material before composing
@@ -51,7 +51,7 @@ flight lock, timeout, metrics) — never raw calls. Three rules specific to that
      scrub → residual-verify → preview/confirm → send → rehydrate pipeline. A scrub
      with surviving high-risk tokens is BLOCKED, never sent. Cloud use for this
      class is off by default, and every enablement is logged. This floor is a
-     contract v13 states, not code it ships — the reference implementation is
+     contract the pack states, not code it ships — the reference implementation is
      external (see the README's reference-homelab section).
   3. **local-only** — the frontier orchestrator neither composes nor reads the
      briefing; fully local single-tier execution. Routing the payload locally does
@@ -90,7 +90,7 @@ more scrutiny than was applied.
 
 ```
 For every hunk in the diff: name the briefing line it serves — revert hunks with none.
-Run tools/land.sh from the current tree; paste its output verbatim.
+Run `python tools/land.py` from the current tree; paste its output verbatim.
 Break the done-check once on purpose; confirm it fails; restore — or mark Unverified.
 List every touched file not named in the briefing, with one line of justification.
 ```

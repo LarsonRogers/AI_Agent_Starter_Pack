@@ -128,3 +128,24 @@ as evidence the *behavior* is correct.
 requires designing an observation.
 **Tell:** Your done-check would pass even if the feature were deleted.
 **Countermeasure:** Law 7, landing §3 (break it on purpose, watch the check catch it).
+
+## 15. Protocol cosplay
+**Pattern:** Producing `PREFLIGHT`, `[OBSERVED]`, FACTS/BELIEFS, or landing headings while
+the underlying actions never happened; the local model's fabricated `[OBSERVED]` test run
+is the canonical example.
+**Why it happens:** Literal format is cheaper to imitate than evidence-producing tool use,
+especially when evals reward keywords.
+**Tell:** The report has perfect doctrine vocabulary but no corresponding command, artifact,
+state change, or executable observation.
+**Countermeasure:** Grade tool order, protected files, repository state, and hidden behavior;
+headings are never pass criteria. Reviewer reruns cheap evidence.
+
+## 16. Premature hypothesis collapse
+**Pattern:** The first plausible cause becomes the only cause; every subsequent observation
+is interpreted as support, while another layer is never considered.
+**Why it happens:** A coherent story is easy to continue and candidate generation feels like
+delay once one explanation is available.
+**Tell:** The ledger begins with one hypothesis even though the evidence fits several, or the
+chosen check can only confirm the favorite rather than separate alternatives.
+**Countermeasure:** High-depth preflight §5a and deep-debug §3: generate 2–4 candidates across
+layers, rank them, and choose the highest-information discriminator before editing.

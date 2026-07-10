@@ -5,3 +5,5 @@
 # Shell scripts must keep LF on every platform — a CRLF shebang (#!/usr/bin/env
 # bash\r) fails to execute on Unix. Forces LF checkout even on Windows.
 *.sh text eol=lf
+.githooks/* text eol=lf
+*.service text eol=lf

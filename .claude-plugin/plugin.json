@@ -1,7 +1,7 @@
 {
   "name": "agent-starter-pack",
   "displayName": "AI Agent Starter Pack (Fablized core)",
-  "version": "13.0.0-rc1",
+  "version": "13.1.0-dev",
   "description": "Fablized doctrine (charter + 8 phase-boundary protocols as skills) on a project-policy chassis: guardrails, tiered delegation subagents, session continuity, and deterministic landing/pre-commit gates.",
   "author": { "name": "LarsonRogers" },
   "repository": "https://github.com/LarsonRogers/AI_Agent_Starter_Pack",

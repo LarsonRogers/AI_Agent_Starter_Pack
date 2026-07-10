@@ -2,8 +2,10 @@
 
 Three compact traces of the same task handled two ways: **baseline** (the default behavior
 of a capable-but-undisciplined model) and **Fablized** (the same model following the
-charter). Note that the Fablized version is not smarter — it takes different *actions at
-decision points*. That is the entire thesis of this kit.
+charter). The Fablized version is not intrinsically smarter, but it performs a broader and
+more falsifiable reasoning search: it generates alternatives, chooses observations that
+separate them, and tries to disconfirm the result. The thesis is improved reasoning
+performance through better actions at decision points, not increased model capacity.
 
 ---
 
@@ -26,10 +28,12 @@ and a false "fixed" claim.
    user: finds an empty export in logs/artifacts — header-only. That kills the "no write
    happened" family of hypotheses immediately.
 2. **deep-debug.** Boundary: rows exist in the DB [OBSERVED via query], zero rows reach
-   the writer [OBSERVED via log added at the boundary]. Defect is between query and writer.
-   Ledger: H1 filter drops rows when `updated_at` crosses midnight UTC — predicts failures
-   cluster on date boundaries — checks timestamps of failed exports [OBSERVED: all within
-   an hour of midnight]. Confirmed.
+   the writer [OBSERVED via log added at the boundary]. Candidate ledger: H1 timezone
+   boundary; H2 pagination drops the last page; H3 permission filtering removes rows.
+   The cheapest discriminator is the failed-export timestamp distribution: only H1 predicts
+   clustering at date boundaries. The check observes every failure within an hour of
+   midnight, then a non-boundary counterexample stays healthy. H1 is confirmed; H2/H3 die
+   without speculative edits.
 3. Fix at the cause: the filter compares a local-date string to a UTC timestamp. One-line
    fix at the comparison. Writes the regression test with a boundary timestamp: fails
    pre-fix, passes post-fix [OBSERVED].

@@ -39,6 +39,10 @@ model steps on them.
  - imitate: <file:line — an existing example of the same kind of thing>
  - the design doc / ticket / prior discussion: <link>>
 
+## Useful capabilities
+<Relevant installed tools or skills. If a known uninstalled skill would materially improve
+correctness or verification, name it as a recommendation — never install it implicitly.>
+
 ## Landmines
 <Known traps a newcomer would hit: the test suite that needs env var X, the module that
  looks dead but isn't, the flaky test to ignore, the file that is generated — don't edit.>

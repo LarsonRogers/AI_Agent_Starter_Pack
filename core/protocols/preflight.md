@@ -6,9 +6,10 @@ description: Run before starting any nontrivial implementation task (feature, bu
 
 # Preflight
 
-Do not write or edit any code until every step below has produced its output. The output of
-this protocol is a **preflight block** posted in your response, followed immediately by the
-work.
+Do not write or edit any code until every applicable step below has produced its output. Keep
+the output as a concise, auditable work record; it may be shown to the user when useful, but
+never request or expose private chain-of-thought. Record decisions, evidence, predictions,
+and tests rather than a hidden reasoning transcript.
 
 ## 1. Restate the task (one sentence)
 
@@ -28,11 +29,35 @@ The class sets the burden of proof:
   (existing tests? a before/after output comparison you construct?).
 - **Investigation** → your deliverable is findings with claim tags, not changes.
 
+Set the **reasoning depth** at the same time:
+
+- **Routine:** localized, reversible, low-uncertainty work. Use the source, blast-radius,
+  rules, and done-check steps; keep the record minimal.
+- **Standard:** multiple files, a behavior boundary, or meaningful uncertainty. Run every
+  step below.
+- **High uncertainty / high impact:** architecture, security, concurrency, data migration,
+  ambiguous requirements, or several plausible causes. In addition to every step below,
+  produce the reasoning artifact in §5a and obtain independent review before landing when
+  the harness provides it; otherwise run the delegation protocol's offline diff-connect
+  checklist.
+
+Depth follows uncertainty and consequence, not task size. Do not turn a one-line correction
+into ceremony, and do not treat a small diff at an auth or data boundary as routine.
+
 ## 3. Check the premises
 
 List every factual claim embedded in the request ("the bug is in X", "we don't handle Y",
 "Z is unused"). Verify each one cheaply (search, read, run) before building on it. A wrong
 premise found now costs one minute; found after implementation it costs the whole task.
+
+### 3a. Check available capabilities
+
+Inspect the tools and skills available in the current harness before inventing a workflow.
+Use a relevant installed skill when it materially improves correctness or verification. If a
+known but uninstalled skill would materially improve the task, recommend installing it and
+explain the benefit; never install it without approval, and do not block ordinary work merely
+because an optional skill is absent. When a harness-specific optional-skills catalog exists,
+search it lazily for a task fit rather than loading the entire catalog into every prompt.
 
 ## 4. Meet the evidence quota
 
@@ -46,11 +71,32 @@ Before touching anything, collect and note (`file:line`):
 - **The project's own rules** — agent instruction files, contributing docs, lint config,
   existing test patterns. House style beats your training-data style.
 
+Routine work may omit prior art when it changes no pattern and may summarize the blast radius
+in one line. Standard and high-depth work require all four. Never fabricate a citation to
+satisfy the shape of the checklist; a genuine absence is evidence and should be recorded.
+
 ## 5. Surface assumptions
 
 List what you are assuming (environment, versions, invariants, input shapes). For each:
 verify it now if it costs under a minute; otherwise tag it **[ASSUMED]** and carry it into
 your final report. Unstated assumptions are where confident wrong answers come from.
+
+### 5a. Build a reasoning artifact when depth is high
+
+Create a compact decision record, not a chain-of-thought transcript:
+
+```
+Observations: <facts that constrain the decision>
+Candidates: <2–4 plausible causes or solution options>
+Discriminator: <cheapest observation, counterexample, or comparison that separates them>
+Decision: <next action or selected option + why the evidence favors it>
+Would change my mind: <specific disconfirming evidence>
+```
+
+For design work, candidates are competing designs and the discriminator is an invariant,
+trade-off, failure scenario, or likely next change. For debugging, this artifact becomes the
+hypothesis ledger in deep-debug. Generate alternatives before committing to one; execute or
+edit against only one selected candidate at a time.
 
 ## 6. Define done as a check
 
@@ -75,13 +121,17 @@ what you check the final diff against in landing.
 PREFLIGHT
 Task: <one sentence, observable outcome>
 Class: <bug|behavior|preserving|investigation>
+Depth: <routine|standard|high>
 Premises checked: <claim → verdict, ...>
 Evidence: source=<file:line> blast=<summary> prior-art=<file:line>
+Capabilities: <relevant installed skill/tool, or useful skill recommendation>
 Assumptions: <[ASSUMED] items>
+Reasoning: <high-depth artifact, otherwise omit>
 Done-check: <command / procedure that can fail>
 Risk: <pre-mortem answer>
 Non-goals: <...>
 ```
 
-Keep it terse — five to ten lines. If filling it in feels impossible, that is the finding:
+Keep it terse and scale it to the chosen depth. Literal headings are not success criteria;
+the evidence and decisions are. If filling it in feels impossible, that is the finding:
 report what's unknowable and why before proceeding.
