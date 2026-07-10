@@ -1,0 +1,28 @@
+# Downstream project CI template. Copy to .github/workflows/agent-ci.yml and
+# replace each CONFIGURE line with the project's real command. A bootstrap
+# should fail until these commands are set; this template is not the pack's own CI.
+name: Agent CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - name: Lint
+        run: echo "CONFIGURE lint" && exit 1
+      - name: Format check
+        run: echo "CONFIGURE format check" && exit 1
+      - name: Type check
+        run: echo "CONFIGURE type check or remove this step" && exit 1
+      - name: Tests
+        run: echo "CONFIGURE tests" && exit 1
+      - name: Dependency audit
+        run: echo "CONFIGURE dependency audit" && exit 1

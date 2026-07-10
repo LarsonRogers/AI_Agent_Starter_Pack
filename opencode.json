@@ -8,7 +8,7 @@
       "secrets/**": "deny"
     },
     "edit": {
-      "*": "allow",
+      "*": "ask",
       "core/**": "ask",
       "templates/**": "ask",
       "AGENTS.md": "ask",
@@ -20,11 +20,17 @@
       "secrets/**": "deny"
     },
     "bash": {
-      "*": "allow",
+      "*": "ask",
+      "git status*": "allow",
+      "git diff*": "allow",
+      "git log*": "allow",
+      "python tools/build.py --check": "allow",
+      "python tools/land.py --self-test": "allow",
       "rm -rf *": "deny",
       "sudo *": "deny",
-      "chmod *": "deny"
+      "chmod *": "deny",
+      "git push *": "ask"
     },
-    "webfetch": "allow"
+    "webfetch": "ask"
   }
 }

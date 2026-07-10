@@ -1,55 +1,82 @@
-# Evals — does the kit change behavior at the decision points?
+# Behavioral evals
 
-Each case in `evals.json` plants a situation where an undisciplined model reliably takes
-the cheap path (fix without reproducing; a fourth speculative edit; "all tests pass"
-without a run) and asserts, by regex over the agent's output, that the kit-driven run
-takes the charter's path instead. The scenarios mirror `doctrine/worked-examples.md`.
+The evals test whether the pack changes actions and outcomes, not whether the model repeats
+protocol vocabulary. Primary grading signals are:
 
-## Running a case (v13: manual per-case; automated harness is v13.1)
+- executable public and hidden behavior checks;
+- protected-file integrity and final repository state;
+- tool order, such as observing the reproduction before the first edit;
+- report semantics only when the requested deliverable is itself a report.
+
+`PREFLIGHT`, `[OBSERVED]`, and other literal labels are not pass conditions. A model can use
+the right words while fabricating verification; `results.md` records that exact failure in
+the former local-tier eval.
+
+## Run kit vs. baseline
+
+Prerequisites: Claude Code on `PATH`, an authenticated session, and the requested model.
+The runner creates disposable fixture copies, so the fixture-only permission bypass never
+touches a real repository.
 
 ```bash
-# 1. copy the case's fixture dir somewhere disposable, cd into it — a FRESH copy per
-#    arm (the agent mutates the fixture), or reset between arms:
-#    git reset --hard "$(git rev-list --max-parents=0 HEAD)" && git clean -fd
-# 2. run the case's setup[] commands from evals.json (git init, commit, apply patch...)
-# 3. KIT ARM — pin --model to the same id in BOTH arms (the acceptance rule is
-#    per-model; note the id + date with the kept outputs). Headless -p needs a
-#    permission grant: fixtures are throwaway temp dirs, so
-#    --dangerously-skip-permissions is acceptable there (never on a real repo).
-#    CAPTURE: default text output prints ONLY the final message — turn-by-turn
-#    protocol evidence (PREFLIGHT, per-step claims) is discarded and the
-#    must_appear greps read nothing. Capture stream-json (--print requires
-#    --verbose with it) and keep the raw stream as the graded artifact.
-#    SYSTEM PROMPT: use --append-system-prompt-file — the inline $(cat ...) form
-#    exceeds the ~32K argv cap on Windows.
-claude -p "<the case's prompt>" --model <model-id> --dangerously-skip-permissions \
-  --output-format stream-json --verbose \
-  --append-system-prompt-file /path/to/kit/adapters/system-prompt/fablized-full.md \
-  2>&1 | tee kit-arm-stream.jsonl
-# 4. BASELINE ARM: identical (same --model, same capture flags), without
-#    --append-system-prompt-file
-# 5. apply the case's assertions (case-insensitive regex) to each arm's full
-#    captured stream (the .jsonl files)
+python evals/run_evals.py --model claude-sonnet-5 --profile full
+python evals/run_evals.py --model qwen2.5-coder:7b --profile micro --claude <compatible-cli>
 ```
 
-For small-context targets substitute `fablized-compact.md` or `fablized-micro.md` — that
-is the honest test of the profile actually being shipped to that model.
+Options:
 
-## Acceptance rule — per target model (Amendment 01)
+- `--case <id>` selects one or more cases.
+- `--arm kit|baseline|both` defaults to both.
+- `--profile full|compact|micro` selects the shipped context profile.
+- `--artifacts <dir>` changes the gitignored transcript/result directory.
 
-The kit is judged **kit-vs-baseline on each target tier**, never kit-alone:
+The default invocation adapter targets Claude Code's `stream-json` interface. The core
+runner and graders are provider-neutral: pass `--command-json` with an argv JSON array for
+another harness. The runner supplies `{prompt_file}`, `{system_prompt_file}`, `{model}`,
+`{arm}`, `{fixture}`, and `{transcript}` placeholders plus matching `FABLIZED_EVAL_*`
+environment variables. Example shape:
 
-- A case passes an arm when all `must_appear` regexes match, each `must_appear_any`
-  group has ≥1 match, and no `must_not_appear` matches.
-- **The kit earns its keep on a model only where the kit arm passes cases the baseline
-  arm fails.** A case both arms pass is redundant on that model (keep it — it is a
-  guarantee for weaker models, not a trim signal). On a frontier target,
-  both-arms-pass means no measured lift on that target — acceptable and expected;
-  the discriminating target is the local tier (the tier-map model driven through the
-  delegate/OpenCode path with the micro prompt). A case the kit arm *fails* on a small
-  model is a real finding: if kit overhead measurably hurts (protocol tokens displacing
-  code context), prune to the laws/protocols that pay for themselves and record the
-  result as a **named build variant** — never silently thin the doctrine.
+```bash
+python evals/run_evals.py --model local-model --profile micro \
+  --command-json '["my-agent", "--prompt-file", "{prompt_file}", \
+  "--system-file", "{system_prompt_file}", "--json"]'
+```
 
-Record results per model (model id, date, arm outputs kept) so the claim "validated on
-X" always names X.
+The adapter must write JSONL tool events and a final result to stdout. Adding a provider is
+therefore a thin edge adapter; no provider behavior belongs in the graders or doctrine.
+
+## Acceptance
+
+For a kit-vs-baseline run on one model/profile:
+
+1. The prompt must remain inside its named word budget.
+2. The kit may not regress a case the baseline passes.
+3. The kit must pass at least one case the baseline fails.
+
+For a kit-only diagnostic run, every selected case must pass. Kit-only results do not prove
+lift and must not be described as validation against a model.
+
+Run multiple repetitions before a release when the target is stochastic. Keep model id,
+profile, date, runner version, and artifacts. Report success rate and median input/output
+tokens and latency when the harness exposes them; a reasoning procedure that consumes the
+context needed for the task has not earned its cost.
+
+Tracked release summaries live in `results-v13.1.md`; raw transcripts remain gitignored.
+
+## Small-model rule
+
+Use the exact profile intended for deployment. `micro` is a named, aggressively condensed
+operating loop with an 800-word hard ceiling; it is not the full doctrine silently truncated.
+Promote a small model/profile only when it shows behavioral lift without task-success
+regression. If more instructions reduce performance, change the named condensation in
+`core/digests.md`, rebuild, and rerun both arms.
+
+## Current cases
+
+- `bugfix-reproduce-first`: hidden output boundaries, protected reproduction, and trace order.
+- `stuck-investigation`: read-only fixture integrity plus the first directly verifiable cause.
+- `landing-audit`: fixture integrity, scope-creep detection, and rejection of an unrun claim.
+
+Add cases by pairing a fixture with a grader in `behavioral_graders.py`. Prefer executable
+oracles and hidden inputs over text matching. Any semantic matcher must grade the requested
+meaning, not a doctrine-specific phrase.

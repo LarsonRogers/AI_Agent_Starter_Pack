@@ -1,4 +1,4 @@
-# AI Agent Starter Pack — v13
+# AI Agent Starter Pack — v13.1.0-dev
 
 A cross-harness agent kit whose **doctrine core is Fablized** — a charter of 12 decision
 procedures distilled from watching top-tier models work, plus eight protocols that load
@@ -6,11 +6,12 @@ at phase boundaries — and whose **chassis** is the pack's project policy: guar
 delegation tiers, session continuity, and deterministic enforcement. One source of
 truth in `core/`; everything a harness reads is generated from it.
 
-The premise: the gap between a strong and a weak coding agent is mostly **behavior at a
-small number of recurring decision points** — whether to read before writing, reproduce
-before fixing, re-diagnose after two failed attempts, verify before claiming done. The
-kit installs those behaviors as loadable procedure, and backs them with gates that
-don't depend on the model at all.
+The premise: a large part of the gap between strong and weak coding-agent performance is
+**behavior at recurring decision points** — whether to generate alternatives before
+anchoring, choose a discriminating observation, read before writing, reproduce before
+fixing, re-diagnose after failed attempts, and try to disconfirm a result. The kit cannot
+increase a model's intrinsic capability; it elicits and audits better reasoning actions,
+then measures whether those actions improve executable outcomes.
 
 ## The layers
 
@@ -21,8 +22,8 @@ don't depend on the model at all.
 | **Protocols (8)** | preflight · deep-debug · stuck · landing · secure-coding · destructive-ops · delegation · session-continuity | `core/protocols/` → skills, rules, or files per harness |
 | **Part 2** | your project's specifics, agent-maintained; three onboarding toggles (demo gate, sizing, accessibility) that delete when off | template in `core/part2-template.md`, lives in your `AGENTS.md` |
 | **Subagents** | `light-checker` (cheap rubric scans) + `reviewer` (fresh-context, consumes the landing report) | `.claude/agents/`, `.opencode/agent/`, `.codex/agents/` |
-| **Deterministic gates** | `tools/land.sh` landing gate · `.githooks/pre-commit` (secrets, size, GENERATED-file guard) · notify hooks | `tools/`, `.githooks/`, `.claude/hooks/` |
-| **Evals** | kit-vs-baseline behavior cases per target model | `evals/` |
+| **Deterministic gates** | cross-platform `tools/land.py` · pre-commit secrets/size/generated checks · notify hooks | `tools/`, `.githooks/`, `.claude/hooks/` |
+| **Evals** | automated kit-vs-baseline grading of tool order, protected files, repo state, and hidden behavior | `evals/` |
 
 ## Install
 
@@ -45,10 +46,26 @@ claude --plugin-dir /path/to/this/repo     # try it
 **Copilot:** `adapters/copilot/.github/copilot-instructions.md` + `docs/fablized/`.
 **Direct API / other harnesses:** one file from `adapters/system-prompt/` (table below).
 
+Runtime tools require Python 3.11+. Shell entry points are compatibility wrappers; on
+Windows, run `python tools/land.py` and `python tools/delegate.py` directly—WSL is not
+required. Default harness configs keep network, shell, and edits ask-first; loosen them
+only after recording a project-specific decision.
+
+### Universality boundary
+
+The canonical layer is plain Markdown in `core/` and has no provider dependency. Python
+standard-library gates work without Claude, Codex, OpenCode, GitHub, or a network. Harness
+configs, hooks, agents, and CI files are replaceable edge adapters generated or copied from
+that core. Unsupported harnesses use `AGENTS.md` + protocol files or a system-prompt profile;
+non-GitHub projects replace the CI template while keeping the same local gates. Provider-
+specific behavior must not leak back into doctrine or behavioral graders.
+
 **Every install, once per clone:**
 
 ```bash
 git config core.hooksPath .githooks    # enables the pre-commit gate
+python tools/validate_repo.py
+python tools/build.py --check
 ```
 
 ## Context cost per adapter
@@ -57,21 +74,27 @@ Counts are words (≈ tokens × 0.74); `python tools/build.py` reprints them.
 
 | Adapter | Words | Use when |
 |---|---|---|
-| `AGENTS.md` (charter + guardrails + Part 2) | ~1,794 | any file-reading harness; protocols load on demand from `docs/fablized/` |
-| `fablized-full.md` | ~6,279 | direct API, ≥64k context, long tasks |
-| `fablized-compact.md` | ~2,593 | tight context; digests instead of full protocols |
-| `fablized-micro.md` | ~1,063 (build fails >1,200) | local/small models (Qwen 3.6-class, 8–32K): charter digest + guardrail one-liners + four protocol digests, fully inlined |
-| per-skill (loads only when triggered) | 548–759 each | Claude Code / Cursor auto-loading |
+| `AGENTS.md` (charter + guardrails + Part 2) | ~1,796 | file-reading harnesses; protocols load on demand |
+| `fablized-full.md` | ~7,230 | direct API, ≥64k context, full protocols |
+| `fablized-compact.md` | ~2,815 | constrained context; full charter + protocol digests |
+| `fablized-micro.md` | ~358 (build fails >800) | local/small models: one named reasoning/safety action loop, fully inlined |
+| per-skill (loads only when triggered) | 548–988 each | frontier harness auto-loading |
 
 **Small-model rule (important):** skill/rule **auto-triggering is a frontier-harness
-feature — never assume it below that tier.** Compact and micro inline everything;
+feature — never assume it below that tier.** Compact and micro inline their procedures;
 the file-referencing adapters say "open `docs/fablized/<name>.md` now" explicitly.
-For weak models the discipline is carried by the deterministic gates (`land.sh`,
-pre-commit), which work identically under any harness or a bare loop.
+The micro profile is a named condensation in `core/digests.md`, not an ad hoc truncation.
+For weak models, Python landing and git-level gates provide the enforcement floor.
 
 Anthropic-API-compatible endpoints (e.g. Qwen 3.7-Max) can drive Claude Code directly
 via `ANTHROPIC_BASE_URL` — then the full `.claude/` asset set applies unchanged; the
-micro/shell profile is for local weights and minimal harnesses.
+micro profile is for local weights and minimal harnesses.
+
+Preflight also checks the current harness's installed tools and skills. It uses a relevant
+installed skill when useful and recommends an uninstalled skill only when the expected
+correctness or verification benefit justifies the interruption; installation always needs
+user approval. Provider catalogs remain lazy edge files (for Codex, see
+`.codex/optional-skills.md`) so they do not tax every model's context.
 
 ## Tiering (delegation protocol)
 
@@ -79,7 +102,7 @@ micro/shell profile is for local weights and minimal harnesses.
   agent files + Part 2 tier map).
 - **Hybrid local+API:** the local model is the **light** tier; the API model is
   capable and the reviewer — review goes *up*, never sideways.
-- **Fully offline:** single-tier; the reviewer degrades to `tools/land.sh` + the
+- **Fully offline:** single-tier; the reviewer degrades to `python tools/land.py` + the
   diff-connect checklist in the delegation protocol. Machine-checked landing beats
   author self-review.
 
@@ -106,11 +129,13 @@ only, `nvidia-smi -pl` 140–180W, slow prefill / adequate decode).
   reboots.
 - **Record it:** AGENTS.md Part 2 → Model Tiers gains `endpoint URL · model id ·
   auth: <path outside repo> · service name · decided YYYY-MM-DD`.
-- **Dispatch:** always through `tools/delegate.sh` (health check → mkdir lock →
+- **Dispatch:** always through `python tools/delegate.py` (health check → directory lock →
   timeout → BRIEFING + micro prompt → landing-format response → one JSONL metrics
   line in `var/metrics/local-tier.jsonl`, gitignored — this feeds the per-model eval
-  gate). The API key is read at runtime from `~/.config/fablized/local-tier.env` —
-  outside the repo, never echoed.
+  gate). A strict `KEY=VALUE` parser reads the API key from
+  `~/.config/fablized/local-tier.env`; it never executes the file. Transport rejects
+  non-loopback URLs, and Python holds credentials and briefing payloads in-process rather
+  than exposing them as command arguments.
 - **Canary:** `.claude/hooks/local-tier-canary.sh` is registered as a SessionStart
   hook — one line per session: `local tier: up|down, <model>, ~<tok/s>, <temp>`,
   with a configurable tok/s band and temperature threshold (`CANARY_MIN_TOKS`,
@@ -119,12 +144,12 @@ only, `nvidia-smi -pl` 140–180W, slow prefill / adequate decode).
 - **Host hygiene (documented, not enforced):** volume encryption (BitLocker/LUKS)
   for workspaces, briefings, transcripts, and metrics; exclude all agent working
   directories from cloud sync (OneDrive/Dropbox/Drive); loopback only. Remote/LAN
-  transport is out of scope for v13 — SSH tunnel or WireGuard is the pointer if the
+  transport is out of scope for v13.1 — SSH tunnel or WireGuard is the pointer if the
   endpoint ever leaves the box.
 - **Sensitivity routing (delegation protocol) — three classes:** *open* (route
   normally) · *obfuscation-floored* (egress only via scrub → residual-verify →
   preview/confirm → send → rehydrate; surviving high-risk tokens block the send;
-  cloud off-by-default, enablements logged — a contract v13 states, implemented
+  cloud off-by-default, enablements logged — a contract the pack states, implemented
   externally) · *local-only* (the frontier orchestrator neither composes nor reads
   the briefing; routing the payload locally does not protect content the
   orchestrator itself wrote).
@@ -139,18 +164,18 @@ only, `nvidia-smi -pl` 140–180W, slow prefill / adequate decode).
   reference homelab is **windows-llm-lab-ulysses** (`local_ai`): serving registry +
   swap manager (`tiers.yaml`), the class-2 obfuscation floor
   (`cloud/obfuscate.py` block-on-residual, `cloud/escalation.py` gates),
-  eval-gated tier promotion, a retrieval tier, and a dashboard. The interfaces v13
+  eval-gated tier promotion, a retrieval tier, and a dashboard. The interfaces this pack
   owns and that implementation consumes: the endpoint contract above, the
   `var/metrics/local-tier.jsonl` schema (timestamp, task id, model, tokens in/out,
   duration, status), and the three routing classes.
 
 ## Running the evals
 
-See `evals/README.md`. Three cases (reproduce-first, stuck-report, landing-audit),
-each run **kit-vs-baseline per target model**; acceptance for any non-Claude target is
-the kit arm beating the baseline arm on that model. If kit overhead hurts a small
-model, prune to what pays for itself and record it as a **named build variant** —
-never silently thin the doctrine.
+See `evals/README.md` and run `python evals/run_evals.py --model <id> --profile <name>`.
+The automated runner uses fresh fixtures per arm and grades executable oracles, protected
+files, tool order, and report meaning. Acceptance requires no baseline regression, at least
+one kit lift, and the named context budget. Small-model changes must earn their token cost;
+condense only through a named digest/profile and rerun both arms.
 
 ## Editing the doctrine
 
@@ -158,6 +183,7 @@ Edit **only** `core/`, then:
 
 ```bash
 python tools/build.py     # regenerates every adapter; fails over word budgets
+python tools/build.py --check  # CI/pre-commit drift check; writes nothing
 ```
 
 Never hand-edit generated files (they carry a GENERATED marker; the pre-commit hook
@@ -189,39 +215,52 @@ its digest heading, and rebuild. This is why the security protocol is named
 ## Harness parity notes
 
 - **Claude Code** gets everything: skills, subagents, notify hooks, plugin packaging.
-- **OpenCode** gets permissions (`opencode.json`) + subagents; no hook system — the
-  deterministic gates (`land.sh`, pre-commit) carry enforcement. Restart after adding
+- **OpenCode** gets ask-first permissions (`opencode.json`) + subagents; no hook system —
+  Python landing and pre-commit carry enforcement. Restart after adding
   agent files.
-- **Codex** gets `.codex/config.toml` + subagents; no permission-ask layer for pack
-  files and no hooks — same answer: the git-level gates are the floor, and the
-  guardrails file is the contract. Restart after adding agent files.
+- **Codex** gets `.codex/config.toml` + subagents with workspace-write, network-off, and
+  on-request approval defaults; it has no pack hooks, so Python landing + pre-commit remain
+  the deterministic floor. Restart after adding agent files.
 - **Pi / picode** loads AGENTS.md and skills natively — no separate adapter; the
   system-prompt adapter is the fallback. Caveat: Pi has no built-in permission
   system, so privileged work under Pi runs sandboxed (container/micro-VM) and
-  relies on the `land.sh` + git-hook floor for enforcement.
+  relies on the Python landing + git-hook floor for enforcement.
 - Versioning: Claude Code installs get plugin versions; every other harness pins by
-  git tag (this release: `v13.0-rc1`). Upgrading a v12.x project: see MIGRATION.md.
+  git tag. Development version: `13.1.0-dev`; `VERSION`, plugin metadata, and README are
+  checked together by CI. Upgrading a v12.x project: see MIGRATION.md.
 
 ## Repo map
 
 ```
 core/                 SOURCE OF TRUTH: charter, guardrails, part2 template, 8 protocols, digests
 tools/build.py        regenerates everything below; enforces word budgets
-tools/land.sh         landing gate (validation cmds, done-check, scaffolding, banned phrases)
-.githooks/pre-commit  secrets / oversize / GENERATED-file guard
+tools/land.py         cross-platform landing gate; land.sh is a compatibility wrapper
+tools/delegate.py     loopback-only local-tier transport; delegate.sh wraps it
+tools/validate_repo.py metadata, config, action-pin, and line-ending validation
+tools/pre_commit.py   cross-platform staged secrets / size / generated-output guard
+.githooks/pre-commit  thin Git wrapper for tools/pre_commit.py
+adapters/system-prompt/profiles.json generated word counts + hard budgets consumed by evals
 AGENTS.md, CLAUDE.md, docs/fablized/, .claude/skills/, adapters/   GENERATED
 .claude/agents/, .opencode/agent/, .codex/agents/                  subagents (light-checker, reviewer)
 templates/BRIEFING.md delegation payload
 doctrine/             failure-modes bestiary (maintenance surface), worked examples
-evals/                behavior cases + fixtures + acceptance rules
+evals/                automated A/B runner, graders, fixtures, current + historical results
 ```
+
+`land.py` never executes commands read from `AGENTS.md` implicitly. Inspect the configured
+lint/format/typecheck/test commands, then pass `--run-configured` (or set
+`LAND_RUN_CONFIGURED=1`) in a trusted project. Claude's post-edit hook follows the same rule;
+`FABLIZED_RUN_CONFIGURED_HOOKS=1` is an explicit project opt-in.
 
 ## Why believe any of this
 
-In A/B testing of the predecessor pack, the two reproduced wins were **day-one
-architecture that held as features grew** and **an independent review catching a
-shipped CSRF hole the unguided model rationalized away** — both mechanisms survive
-here (sizing block; secure-coding high-miss set + reviewer agent). The honest
-limits: the kit adds no reasoning depth, and compliance varies by model — test a
-candidate on one real task against `doctrine/failure-modes.md` before trusting it,
-or just run the evals.
+In predecessor A/B work, reproduced wins included architecture that survived later growth
+and an independent review catching a CSRF hole the unguided model rationalized away. The
+v13 transcript results were candid but ceremony-heavy and showed the local micro profile
+failing 3/3 without a baseline. They remain historical evidence, not validation of v13.1.
+
+The current claim is narrower and testable: the pack attempts to improve reasoning
+**performance** by generating alternatives, choosing discriminating observations, and
+trying to falsify conclusions. It cannot make a model intrinsically smarter. Trust a
+model/profile only after the automated behavior-first kit-vs-baseline gate shows lift on
+that exact target without context-cost regression.

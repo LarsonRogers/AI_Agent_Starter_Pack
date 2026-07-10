@@ -35,7 +35,7 @@ outside that interval is innocent. Ways to shrink it:
 
 ## 3. Keep a hypothesis ledger
 
-Maintain an explicit list:
+Before selecting a cause, generate a small candidate set. Maintain an explicit list:
 
 ```
 H1: <cause> — predicts: <observation> — status: untested | dead (<evidence>) | CONFIRMED
@@ -44,10 +44,17 @@ H1: <cause> — predicts: <observation> — status: untested | dead (<evidence>)
 Rules:
 - A hypothesis must predict something observable. "Something's wrong with the cache" is not
   a hypothesis; "the cache returns stale entries after TTL because eviction never runs" is.
+- Generate 2–4 plausible hypotheses when the cause is not already forced by evidence. Include
+  at least one explanation from a different layer (input, environment, dependency, config,
+  expectation) so the first plausible story does not become the only story.
+- Rank candidates by fit with the observations and choose the cheapest observation with the
+  highest information gain — one that would separate multiple candidates, not merely confirm
+  your favorite.
 - **Test the prediction with an observation before writing the fix.** The cheapest
   discriminating observation first — a log line beats an edit.
-- One live hypothesis at a time. Never stack two speculative changes; a green run tells you
-  nothing about which one mattered, and now your mental model is corrupted.
+- Keep one **active test or edit** at a time, not one imagined cause. Never stack two
+  speculative changes; a green run tells you nothing about which one mattered, and now your
+  mental model is corrupted.
 - When a hypothesis dies, record why. Re-testing dead hypotheses is the signature of thrash.
 
 ## 4. The two-strike rule
@@ -76,6 +83,10 @@ that was failing.
 
 If the bug had no test, write the test that would have caught it. That test failing on the
 pre-fix code and passing on the post-fix code is the strongest proof available.
+
+Before closing the ledger, state what observation would falsify the confirmed cause and check
+it when cheap. A cause that only explains the chosen reproduction but not a nearby
+counterexample is not yet a root cause.
 
 ## Tells that you're shotgun debugging
 

@@ -12,13 +12,14 @@ After=network-online.target
 [Service]
 Type=simple
 # EnvironmentFile holds MODEL_PATH/CTX_SIZE/PORT/... (the filled .args file) and
-# the API key env file lives OUTSIDE any repo (e.g. ~/.config/fablized/local-tier.env).
+# the server API key env file lives OUTSIDE any repo and is separate from the
+# client's strict ~/.config/fablized/local-tier.env file.
 EnvironmentFile=/etc/local-tier/llama-server.args
-EnvironmentFile=/etc/local-tier/local-tier.env
+EnvironmentFile=/etc/local-tier/local-tier-server.env
 # Power caps do not survive reboots — reapply at every service start.
 ExecStartPre=/usr/bin/nvidia-smi -pl ${POWER_LIMIT_W}
 # Auth: llama-server reads LLAMA_API_KEY from its environment — define it in
-# local-tier.env above (outside any repo). No key on the command line (ps-safe).
+# local-tier-server.env above (outside any repo). No key on the command line (ps-safe).
 ExecStart=/usr/local/bin/llama-server \
   -m ${MODEL_PATH} -c ${CTX_SIZE} -np ${PARALLEL_SLOTS} \
   --host ${HOST} --port ${PORT}

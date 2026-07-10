@@ -1,134 +1,51 @@
-# .github/workflows/agent-ci.yml
-#
-# CI enforcement for agent-produced code.
-# Runs on every push and pull request.
-# CI green is part of the Definition of Done — the agent must not consider
-# a task complete until this workflow passes.
-#
-# SETUP: The agent replaces the [NOT CONFIGURED] steps with real commands
-# when wiring up project tooling (see README — quality gates) —
-# normally as part of backlog item 1. Humans can also adapt manually.
-#
-# UNCONFIGURED JOBS FAIL ON PURPOSE. A placeholder that passes green would
-# falsely satisfy the Definition of Done while verifying nothing. Each job
-# exits 1 until you replace it with a real command — so "CI is green" can
-# never be true by accident. To skip a job your stack genuinely doesn't
-# need (e.g. typecheck for plain JS), delete the job rather than letting
-# it fail.
-#
-# For non-GitHub CI (GitLab, Bitbucket, CircleCI, etc.): adapt the
-# structure below to your platform's syntax. The job names and intent
-# are platform-agnostic even if the YAML format is not.
-
-name: Agent CI
+name: Starter Pack CI
 
 on:
   push:
-    branches: ["**"]
   pull_request:
-    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pack-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-
-  lint:
-    name: Lint
+  validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
-      # Replace with your language setup and lint command
-      # Examples:
-      #   Node:   actions/setup-node + npm ci + npm run lint
-      #   Python: actions/setup-python + pip install + ruff check .
-      #   Rust:   actions/setup-rust + cargo clippy
-      - name: Run linter
-        run: |
-          echo "::error::Lint is NOT CONFIGURED. Replace this step with your stack's lint command. This job fails on purpose so unconfigured CI cannot satisfy the Definition of Done."
-          exit 1
-
-  format:
-    name: Format check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      # Examples:
-      #   Node:   npx prettier --check .
-      #   Python: black --check .
-      #   Rust:   cargo fmt --check
-      - name: Check formatting
-        run: |
-          echo "::error::Format check is NOT CONFIGURED. Replace this step with your stack's format-check command. This job fails on purpose so unconfigured CI cannot satisfy the Definition of Done."
-          exit 1
-
-  typecheck:
-    name: Type check
-    runs-on: ubuntu-latest
-    # Delete this job if your stack has no type checker
-    steps:
-      - uses: actions/checkout@v4
-
-      # Examples:
-      #   TypeScript: npx tsc --noEmit
-      #   Python:     mypy .
-      - name: Run type checker
-        run: |
-          echo "::error::Type check is NOT CONFIGURED. Replace this step with your stack's type-check command, or delete this job if your stack has no type checker. This job fails on purpose so unconfigured CI cannot satisfy the Definition of Done."
-          exit 1
-
-  test:
-    name: Tests
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      # Examples:
-      #   Node:   npm ci + npm test
-      #   Python: pip install -r requirements.txt + pytest
-      #   Rust:   cargo test
-      - name: Run tests
-        run: |
-          echo "::error::Tests are NOT CONFIGURED. Replace this step with your stack's test command. This job fails on purpose so unconfigured CI cannot satisfy the Definition of Done."
-          exit 1
-
-  security:
-    name: Security scan
-    runs-on: ubuntu-latest
-    steps:
-      # fetch-depth: 0 — trufflehog needs full history to diff the pushed range
-      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
-          fetch-depth: 0
+          python-version: "3.13"
 
-      # Secret scanning — detects accidentally committed credentials.
-      # Pinned to a release tag (not @main) so the security job itself is not
-      # an unpinned supply-chain dependency. base/head are deliberately
-      # omitted: the action auto-detects the commit range per event, which
-      # avoids the "BASE and HEAD commits are the same" failure on pushes
-      # and the initial-commit failure.
-      - name: Scan for secrets
-        uses: trufflesecurity/trufflehog@v3.95.5
-        with:
-          extra_args: --results=verified,unknown
+      - name: Validate repository metadata
+        run: python tools/validate_repo.py
 
-      # Static analysis (SAST) — catches injection, XSS, eval-on-input, and
-      # other dangerous patterns. `--config auto` selects rules for whatever
-      # languages are present, so this step works out of the box on any
-      # stack. The agent may pin or extend rulesets during enforcement-
-      # tooling setup (see README — quality gates). Findings fail the
-      # build; triage in the decision log (fix, or suppress with same-line
-      # justification).
-      - name: Static analysis (semgrep)
+      - name: Verify generated adapters
+        run: python tools/build.py --check
+
+      - name: Compile Python
+        run: python -m compileall -q tools evals tests
+
+      - name: Run unit tests
         run: |
-          pip install semgrep
-          semgrep scan --config auto --error .
+          python -m unittest discover -s evals -p "test_*.py" -v
+          python -m unittest discover -s tests -p "test_*.py" -v
 
-      # Dependency audit — detects vulnerable packages
-      # Examples:
-      #   Node:   npm audit --audit-level=high
-      #   Python: pip-audit
-      #   Rust:   cargo audit
-      - name: Audit dependencies
+      - name: Run deterministic gate self-tests
         run: |
-          echo "::error::Dependency audit is NOT CONFIGURED. Replace this step with your stack's audit command (npm audit / pip-audit / cargo audit). This job fails on purpose so unconfigured CI cannot satisfy the Definition of Done."
-          exit 1
+          python tools/land.py --self-test
+          python tools/delegate.py --self-test
+          python tools/local_tier_canary.py --self-test
+
+      - name: Check shell wrapper and hook syntax
+        run: |
+          for file in .githooks/pre-commit tools/*.sh .claude/hooks/*.sh; do
+            bash -n "$file"
+          done

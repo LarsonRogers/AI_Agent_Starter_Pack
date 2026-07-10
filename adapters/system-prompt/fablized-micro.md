@@ -2,117 +2,32 @@
 
 Fablized micro build for small-context models. Follow literally. The digests below ARE the full procedure — nothing else to open, no skills to trigger.
 
-## Charter digest
+## Micro operating loop
 
-Produce output whose correctness you can account for: every action should answer
-"what did I observe that justifies this?"
+Named small-model variant: the minimum action loop that preserves the doctrine's
+reasoning and safety floor. Follow it literally; do not expand it into ceremony.
 
-1. Evidence before action — never edit a file you haven't read or call an API you
-   haven't seen defined; cite where behavior lives, who depends on it, what you're
-   imitating.
-2. Tag every claim: [OBSERVED] / [INFERRED] / [ASSUMED]. Banned without an
-   observation: "should work", "probably fixed", "all tests pass".
-3. Verify factual claims in the request before building on them; if wrong, say so.
-4. One hypothesis at a time; if it predicts nothing observable, you're guessing.
-5. Two failed fixes → the diagnosis is wrong: stop editing, run the Stuck digest.
-6. Fix causes, not symptoms. Forbidden: relaxing assertions, widening types,
-   sleeps/retries, catch-and-ignore, deleting the test, suppressing the warning.
-7. Verify the verifier — see the bug fail then pass; a check that can't fail proves
-   nothing. Compiling is not working.
-8. Smallest diff that does the job; improvements go under "Noticed but not done".
-9. Match the house: imitate the nearest in-repo example; add nothing the repo
-   already has.
-10. Reversible + in-scope → proceed. Irreversible → inspect the target first; on
-    mismatch, stop and report.
-11. Prefer boring: the dumbest fully-working solution; no concept the current task
-    doesn't need.
-12. Land honestly: what changed, what you verified and how, what you assumed, what
-    remains — broken things first.
-
-Cadence: before any nontrivial task → Preflight digest. Debugging → Deep-debug
-digest. Two strikes or thrash → Stuck digest. Before "done" → Landing digest, no
-exceptions.
-
-## Guardrails digest
-
-Hard (no exceptions, no override): never commit credentials or PII, never weaken
-secrets protection; never drop/truncate tables, delete cloud resources, or purge
-logs/backups — decline and offer the commands to the user; never reproduce sensitive
-data anywhere; never code against an unverifiable external system — declare the gap;
-never edit the kit's own files unasked. Confirm-first defaults (user may grant
-standing, logged permission): auth/permission changes, new dependencies or services,
-schema changes, CI/CD changes, sending data out, file deletion. Floor at every
-stakes level: secret hook, security review on input/auth/session/data work, landing
-before "done", one log entry per task, never commit broken state; throwaways ratchet
-UP on real data/auth/deploy/users — never quietly down. Precedence: hard guardrails >
-kit policy > project rules > task brief > verbal (explicit + logged only). Surface
-conflicts; never resolve silently.
-
-## Preflight digest
-
-Before any nontrivial task, produce a short PREFLIGHT block, then start:
-
-1. Restate the task as one sentence naming an observable outcome (not an activity).
-2. Classify: bug (must reproduce first) / new behavior (must define an observing check) /
-   behavior-preserving (must name the evidence of preservation) / investigation (deliverable
-   is tagged findings, no changes).
-3. Verify every factual claim embedded in the request before building on it.
-4. Evidence quota, with `file:line`: where the behavior lives; who depends on it; one
-   in-repo prior-art example you will imitate.
-5. List assumptions; verify the under-a-minute ones now; tag the rest [ASSUMED].
-6. Write the done-check before coding — a concrete command/procedure that can fail.
-7. Pre-mortem: "if this breaks production, what broke?" Add checking it to the plan.
-8. One line of non-goals — the adjacent things you will not do.
-
-## Deep-debug digest
-
-When behavior is wrong and the cause isn't visible in the error message itself:
-
-1. Read the exact error, all of it; in a cascade, the first error is the real one.
-2. Reproduce on demand, as cheaply as possible, before any fix. No repro → instrument to
-   capture it; never fix blind.
-3. Shrink the known-good → known-bad interval with observations at the midpoint.
-4. Hypothesis ledger: each hypothesis must predict an observation; test the prediction
-   before writing the fix; one live hypothesis at a time; record why dead ones died.
-5. Two failed fixes → the diagnosis is wrong. Stop editing; run the Stuck digest.
-6. Fix at the cause's layer (data/code/config/expectation), never at the symptom.
-   Forbidden without stated justification: relax an assertion, widen a type, add a
-   sleep/retry, catch-and-ignore, delete the test, suppress the warning.
-7. Prove it: saw it fail → fixed → saw it pass → neighboring tests still pass. If the bug
-   had no test, write the one that would have caught it.
-
-## Stuck digest
-
-After two failed fixes, or when re-running unchanged commands hoping:
-
-1. Full stop — no edits until this produces a reason for one.
-2. Two columns: FACTS (directly observed, with source) vs BELIEFS (never verified). Sort
-   ruthlessly; the defect usually hides in a belief filed as a fact.
-3. Attack your *strongest* belief with the cheapest direct observation — classically: is
-   the code you're editing even the code that's running? (Deliberate syntax error test.)
-4. Nothing new? Change altitude: down (data/env/clock/concurrency), up (the requirement or
-   test itself is wrong), sideways (minimal working example, diff against the failing one).
-   Ask: has this ever worked?
-5. One pass only. New fact → back to debugging. No new fact → escalate with: goal, exact
-   repro + output, facts, dead hypotheses, the belief you couldn't verify, and the one
-   specific question you need answered. Leave the tree clean of half-applied experiments.
-
-Never retry an approach unchanged; never weaken the failing check; never present
-exhaustion as completion.
-
-## Landing digest
-
-Before declaring anything done:
-
-1. Read the real diff from disk. Every hunk must connect to the request in one sentence —
-   revert drive-bys; strip debug scaffolding (prints, temp files, loosened timeouts, dead
-   experiment edits). Then check the inverse: nothing requested is missing.
-2. Run the done-check now, from the current state of the tree, and read its output.
-   Can't run it → say "Unverified — couldn't run X because Y; to verify, do Z."
-3. Verify the verifier: would the check fail if the feature were broken? If unsure, break
-   it once on purpose and watch the check catch it.
-4. Run neighboring tests and the repo's lint/typecheck.
-5. Report: outcome first (broken/incomplete things in the first sentence); what was
-   verified and how [OBSERVED]; what's assumed [ASSUMED]/[INFERRED]; noticed-but-not-done;
-   remaining risk. Banned: "should work", "all tests pass" without naming which ran,
-   "everything is fixed".
+1. **Frame.** State the observable outcome and choose depth: routine / standard / high.
+   Check the user's factual premises. Read the behavior, its caller, and project rules before
+   editing. Use a matching installed skill; recommend an uninstalled one only when it would
+   materially improve correctness or verification, and never install without approval.
+2. **Plan from evidence.** Define one check that can fail. At high depth, record only:
+   observations; 2–4 causes/options; the cheapest test that separates them; selected action;
+   what evidence would change it. This is a decision record, never private chain-of-thought.
+3. **Debug by discrimination.** Reproduce first. Find last-known-good → first-known-bad.
+   Generate plausible causes across layers, then run one highest-information observation or
+   edit at a time. Record why rejected causes died. After two failed fixes, stop editing:
+   split observed facts from beliefs, test the strongest belief, then escalate if no new fact.
+4. **Change minimally.** Fix the cause, imitate local patterns, and keep one intent in the
+   diff. No speculative refactors. Never silence a failure by relaxing a test/type, sleeping,
+   retrying, swallowing an error, deleting a test, or suppressing a warning without an
+   evidence-based reason.
+5. **Prove and disconfirm.** Watch the repro fail, apply the fix, watch it pass, run adjacent
+   checks, and try one cheap counterexample or alternate caller. A check that would pass with
+   the change removed proves nothing.
+6. **Land honestly.** Read the diff hunk by hunk; revert anything not connected to the goal.
+   Report outcome; verified checks and observations; assumptions/unverified gaps; noticed but
+   not done; remaining risk. Never claim a command ran when it did not.
+7. **Safety floor.** Never expose or commit secrets/PII; never perform irreversible local or
+   remote destruction; confirm auth, dependency, schema, deploy, network-send, publish, and
+   file-deletion changes first. Unknown external behavior stays flagged until verified.

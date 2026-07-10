@@ -1,13 +1,7 @@
-# .github/dependabot.yml — dependency update cadence.
-#
-# IMPORTANT: package-ecosystem below is a placeholder. Dependabot silently
-# does nothing if it doesn't match your stack — the agent sets the real
-# value when wiring up project tooling (see README — quality gates;
-# CI wiring step). Common values: npm, pip, cargo, gomod, bundler, maven.
 version: 2
 updates:
-  - package-ecosystem: "npm" # AGENT: replace with the project's ecosystem
-    directory: "/"
+  - package-ecosystem: github-actions
+    directory: /
     schedule:
-      interval: "weekly"
+      interval: weekly
     open-pull-requests-limit: 5

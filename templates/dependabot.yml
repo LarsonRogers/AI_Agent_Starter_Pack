@@ -1,0 +1,9 @@
+# Downstream template: copy to .github/dependabot.yml and replace npm with the
+# project's package ecosystem (pip, cargo, gomod, bundler, maven, etc.).
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5

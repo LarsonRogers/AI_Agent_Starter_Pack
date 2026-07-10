@@ -1,4 +1,9 @@
-# Eval results — per target model
+# Historical v13 eval results — per target model
+
+> These results used manual transcript-regex grading and predate the behavior-first v13.1
+> runner. They are retained as evidence of prior failure modes, not as validation of the
+> current doctrine or micro profile. New results belong in gitignored runner artifacts and a
+> release summary generated from `evals/run_evals.py`.
 
 Format per evals/README.md acceptance rule: model id, date, per-arm verdicts against
 the assertions as written at grading time, artifact paths, grader notes. Never regrade

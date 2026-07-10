@@ -220,7 +220,7 @@ The safety floor never scales down; ratchet rules live in guardrails.]
 - Language / runtime: [NOT SET]
 - Do not edit: [lockfiles, generated files, `.env*`, `secrets/**`, build output]
 - Lint: [cmd] · Format: [cmd] · Typecheck: [cmd] · Test: [cmd] · Build: [cmd]
-- Run lint + tests after every change; `tools/land.sh` enforces them at landing.
+- Run lint + tests after every change; `python tools/land.py` enforces them at landing.
 - Commit per logical change, imperative mood.
 
 ## Tech stack

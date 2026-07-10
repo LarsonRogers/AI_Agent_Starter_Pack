@@ -5,8 +5,11 @@ survives across agent turns. The human picks the wrapper (see README — OS deci
 procedure); nothing auto-detects.
 
 Both variants: fill `config/local-tier/llama-server.args` first, and keep the API
-key OUT of the repo — it lives in `%USERPROFILE%\.config\fablized\local-tier.env`
-(same file `tools/delegate.sh` and the canary read).
+key OUT of the repo. The client config lives in
+`%USERPROFILE%\.config\fablized\local-tier.env`; copy the shipped example and run
+`python tools/delegate.py`. The service launcher uses a separate
+`C:\local-tier\local-tier-server.cmd` so the client's strict parser never executes
+shell syntax.
 
 ## Option A — NSSM-wrapped service
 
@@ -15,8 +18,8 @@ key OUT of the repo — it lives in `%USERPROFILE%\.config\fablized\local-tier.e
 
    ```bat
    @echo off
-   rem Populate variables from your filled .args file and the env file, e.g.:
-   call C:\local-tier\local-tier-env.cmd
+   rem Populate variables from your filled .args file and server-only cmd file:
+   call C:\local-tier\local-tier-server.cmd
    rem Power caps do not survive reboots — reapply at every service start.
    nvidia-smi -pl %POWER_LIMIT_W%
    set CUDA_VISIBLE_DEVICES=%CUDA_VISIBLE_DEVICES%
@@ -25,8 +28,8 @@ key OUT of the repo — it lives in `%USERPROFILE%\.config\fablized\local-tier.e
    ```
 
    Auth: llama-server reads `LLAMA_API_KEY` from its environment — the
-   `local-tier-env.cmd` above sets it from your env file
-   (`%USERPROFILE%\.config\fablized\local-tier.env`, outside any repo). No key
+   `local-tier-server.cmd` above sets it outside any repo. The client config carries
+   the matching `LOCAL_TIER_API_KEY` as inert KEY=VALUE text. No key
    appears on the command line or in this repo.
 3. `nssm install local-tier C:\local-tier\local-tier.cmd`, then
    `nssm set local-tier AppRestartDelay 5000`, `nssm start local-tier`.
@@ -46,7 +49,7 @@ key OUT of the repo — it lives in `%USERPROFILE%\.config\fablized\local-tier.e
 ## Notes
 
 - Bind `127.0.0.1` only — never `0.0.0.0`. LAN/remote transport is out of scope
-  for v13 (SSH tunnel or WireGuard is the future path if the endpoint leaves the box).
+  for v13.1 (SSH tunnel or WireGuard is the future path if the endpoint leaves the box).
 - Mixed GeForce + datacenter boxes: run the per-device dual-driver test from the
   README before trusting this setup; dual-boot Linux for the serving card is the
   fallback if one device misbehaves under the unified driver.

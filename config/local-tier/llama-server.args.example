@@ -18,14 +18,15 @@ PARALLEL_SLOTS=1                            # 1 heavy, or 2 light
 # GPU pinning (mixed GeForce+datacenter boxes: pin the serving card).
 CUDA_VISIBLE_DEVICES=0
 
-# Bind loopback ONLY — never 0.0.0.0. Remote transport is out of scope for v13.
+# Bind loopback ONLY — never 0.0.0.0. Remote transport is out of scope for v13.1.
 HOST=127.0.0.1
 PORT=8080
 
 # An API key is REQUIRED even on loopback. Do NOT put the key here — this file
 # may be committed as an example. The key lives outside the repo in
-# ~/.config/fablized/local-tier.env, and llama-server reads it from the
-# environment (LLAMA_API_KEY, set by the service wrapper from that env file).
+# a server-only service environment file. The client uses the matching value as
+# LOCAL_TIER_API_KEY in ~/.config/fablized/local-tier.env; that strict KEY=VALUE
+# file is parsed as data and is never sourced as shell code.
 
 # Power cap, reapplied at every service start (caps do not survive reboots).
 # e.g. 160 for V100 in the 140-180W band
