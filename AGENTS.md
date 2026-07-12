@@ -210,15 +210,21 @@ The safety floor never scales down; ratchet rules live in guardrails.]
 
 - Provider / environment: [NOT SET]
 - Capable (session model, never downgraded): [NOT SET]
-- Light (bounded rubric checks): qwen2.5-coder:7b (100% GPU on the 3070, ~40 tok/s
-  measured vs deepseek-coder-v2 ~7 tok/s at 46% CPU spill, 2026-07-06 benchmark in
-  var/metrics/local-tier.jsonl) — revisit at V100 install — ulysses item 10
-- Local endpoint (if Light is a local GPU): http://127.0.0.1:11434 ·
-  qwen2.5-coder:7b · auth: none (loopback only) · ollama · decided 2026-07-06
-- Light scope (evals 2026-07-06/10): bugfix slices + rubric scans only — the 7B never
-  installed stuck/landing discipline (0/3 each); investigation/landing judgment stays
-  capable-tier. delegate.py --task-class + fail-closed verification enforce this.
-  Re-test all three cases unchanged at V100 install — ulysses item 10.
+- Light (bounded rubric checks): Qwen3.6-35B-A3B Q6_K (thinking MoE, llama.cpp on a
+  rented Vast.ai V100 32GB, ~58 tok/s canary 2026-07-12) via SSH tunnel to loopback.
+  Fallback when the tunnel is down: qwen2.5-coder:7b on the 3070 (Ollama :11434,
+  ~40 tok/s, 2026-07-06 benchmark) — 7B scope then applies (bugfix slices + rubric
+  scans only).
+- Local endpoint: http://127.0.0.1:8080 · unsloth/Qwen3.6-35B-A3B-GGUF:Q6_K ·
+  auth: bearer key in ~/.config/fablized/local-tier.env · llama.cpp; instance
+  auto-stops after 45 min idle — connection/start guide in ..\v100\CLAUDE.md ·
+  decided 2026-07-12
+- Light scope (V100 evals 2026-07-12, 3 reps, evals/results-v13.1.md): bugfix +
+  investigation slices — 3/3 both arms, repro-before-edit held every run. Landing
+  judgment stays capable-tier: 0/3, the model edits the fixture during an audit
+  despite "do not edit". delegate.py --task-class + fail-closed verification still
+  enforce. Thinking model — budget max_tokens headroom (eval adapter uses 8192).
+  Ulysses item 10 CLOSED (re-tested unchanged; record in results-v13.1.md).
 
 ## Quick constraints
 

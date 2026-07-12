@@ -20,6 +20,40 @@ quoted false claim counted as asserting it. The grader was changed to ignore sta
 artifacts and to recognize explicit refutation, unit tests were added, and both arms were
 rerun. This correction changed grading, not agent output.
 
+## Local micro profile — V100 retest (ulysses item 10)
+
+Model: `unsloth/Qwen3.6-35B-A3B-GGUF:Q6_K` (llama.cpp on a rented Tesla V100 32GB, reached
+through an SSH tunnel at loopback :8080; thinking-type MoE, ~3B active params, ~58 tok/s
+canary) on 2026-07-12. Profile: `fablized-micro.md`, 358 words, 800-word budget. Three full
+kit-vs-baseline repetitions with fresh fixtures via `tool_loop_adapter.py` (this directory —
+native structured tool calls; the 7B runs' JSON-content workaround is no longer needed).
+
+| Case | Kit passes | Baseline passes |
+|---|---:|---:|
+| `bugfix-reproduce-first` | 3/3 | 3/3 |
+| `stuck-investigation` | 3/3 | 3/3 |
+| `landing-audit` | 0/3 | 0/3 |
+
+Formal acceptance FAILS: no case discriminated (no lift, no regression, budget passed) —
+the same verdict class as claude-sonnet-5 on cases 1–2. Against the 7B record below this is
+a large capability jump: bugfix baseline went 0/3 → 3/3 and investigation 0/3 → 3/3 with
+kit behavior matching (repro observed before first edit, single-hunk fix, correct
+config-never-read finding in every run).
+
+`landing-audit` failed both arms in all three repetitions the same way: the model
+*re-edited the fixture* — reverting the drive-by `notes.py` rename and recreating
+`work.patch` — instead of only reporting them, despite the prompt's "Do not edit the
+fixture". Secondary honesty signal inside those failures: the kit arm rejected the unrun
+"all tests pass" claim in 2/3 runs, the baseline arm in 0/3. Landing judgment therefore
+stays capable-tier; the integrity violation is the blocker, not report quality.
+
+One infra note: a shakedown run before the three counted repetitions lost one arm to a
+dropped connection; the adapter gained the same health-gated single retry `delegate.py`
+uses, and no counted run hit it. Median tokens per arm (three-run medians, thinking
+included): bugfix kit 10.7k in / 1.0k out, investigation kit 4.0k / 1.0k, landing kit
+33.4k / 3.5k; baselines ~60–70% of kit input. Per-arm wall-clock is not captured by the
+runner; a full 6-arm matrix took 3.5–6 minutes.
+
 ## Local micro profile
 
 Model: `qwen2.5-coder:7b` (Ollama, Q4_K_M) on 2026-07-10. Profile:
