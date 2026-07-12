@@ -30,7 +30,6 @@
     "ask": [
       "Edit",
       "Write",
-      "Bash",
       "Bash(git push *)",
       "Bash(git reset --hard *)",
       "Bash(git clean *)",
