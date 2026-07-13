@@ -2,7 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from tool_loop_adapter import confine, execute, run_shell
+from tool_loop_adapter import confine, execute, final_result_event, run_shell
 
 
 class ConfinementTest(unittest.TestCase):
@@ -37,6 +37,24 @@ class ConfinementTest(unittest.TestCase):
     def test_execute_reports_errors_instead_of_raising(self):
         self.assertIn("error:", execute(self.root, "read_file", {"path": "missing.py"}))
         self.assertIn("error: unknown tool", execute(self.root, "launch_missiles", {}))
+
+    def test_final_result_event_keeps_diagnostics_on_empty_content(self):
+        event = final_result_event(
+            {"content": "", "reasoning_content": "x" * 3000}, "stop"
+        )
+        self.assertEqual(event["result"], "")
+        self.assertEqual(event["finish_reason"], "stop")
+        self.assertEqual(event["reasoning_chars"], 3000)
+        self.assertEqual(event["content_type"], "str")
+        self.assertEqual(len(event["reasoning_tail"]), 2000)
+
+    def test_final_result_event_plain_on_nonempty_content(self):
+        event = final_result_event(
+            {"content": "LANDING AUDIT", "reasoning_content": "thinking"}, "stop"
+        )
+        self.assertEqual(event["result"], "LANDING AUDIT")
+        self.assertNotIn("reasoning_tail", event)
+        self.assertNotIn("content_type", event)
 
 
 if __name__ == "__main__":

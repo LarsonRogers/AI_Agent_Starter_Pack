@@ -150,6 +150,24 @@ def execute(root: Path, name: str, arguments: dict) -> str:
         return f"error: {type(error).__name__}: {error}"
 
 
+def final_result_event(message: dict, finish_reason) -> dict:
+    """Result event for a final (no-tool-call) turn. An empty deliverable is a known
+    failure mode on thinking models: keep enough of the raw message to attribute it
+    (finish reason, content shape, reasoning tail)."""
+    content = message.get("content") or ""
+    reasoning = message.get("reasoning_content") or ""
+    event = {
+        "type": "result",
+        "result": content,
+        "finish_reason": finish_reason,
+        "reasoning_chars": len(reasoning),
+    }
+    if not content:
+        event["content_type"] = type(message.get("content")).__name__
+        event["reasoning_tail"] = reasoning[-2000:]
+    return event
+
+
 def main() -> int:
     # Windows defaults stdout to cp1252; model text (arrows, dashes) must not crash the trace.
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -207,7 +225,7 @@ def main() -> int:
 
         tool_calls = message.get("tool_calls") or []
         if not tool_calls:
-            emit({"type": "result", "result": message.get("content") or ""})
+            emit(final_result_event(message, response["choices"][0].get("finish_reason")))
             return 0
 
         # Replay without reasoning_content: thinking stays out of the next turn's context.

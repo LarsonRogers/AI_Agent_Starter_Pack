@@ -114,9 +114,19 @@ The rep-2 kit failure is an empty deliverable, not a bad audit: the final turn e
 returned an empty result (`tool_loop_adapter.py` replays without `reasoning_content`;
 the audit text plausibly never left the reasoning channel — [INFERRED], the raw response
 is not retained). The grader failed it fail-closed, which matches `delegate.py`'s
-missing-deliverable rejection; nothing was loosened. Watch item: have the adapter log
-`reasoning_content` length on content-empty final turns so this failure mode is
-attributable instead of inferred.
+missing-deliverable rejection; nothing was loosened.
+
+Follow-up diagnosis (same day): the adapter's final-turn event now records
+`finish_reason` and `reasoning_chars`, plus `content_type` and a 2,000-char
+`reasoning_tail` when content is empty (`final_result_event`, unit-tested). Eight further
+instrumented kit-arm repetitions did not reproduce the failure — 8/8 returned a 549–673
+char report, `finish_reason=stop`, reasoning 703–2,824 chars, and all eight passed the
+grader. Verdict on the rep-2 failure: not an adapter defect — truncation is ruled out
+(551 tokens with `stop`, well under the 8,192 budget; 8/8 confirm normal split), non-string
+content never observed; a rare stochastic thinking-channel miss at temperature 0.2 remains
+the best explanation [INFERRED]. Day total under the hardened slice: kit 10/11 report
+passes, 11/11 tree integrity. The instrumentation stays in place so any recurrence is
+attributable from the artifact alone.
 
 Median tokens per arm (three-run medians, thinking included): kit 5.5k in / 1.1k out —
 down from 33.4k / 3.5k under the universal micro — baseline 26.3k in / 3.3k out. The
