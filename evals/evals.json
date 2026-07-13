@@ -4,6 +4,7 @@
   "cases": [
     {
       "id": "bugfix-reproduce-first",
+      "task_class": "bugfix",
       "fixture": "fixtures/csv-export",
       "prompt": "Bug report: export.py sometimes produces empty output even though rows exist. Repro: python test_export.py (currently failing). Fix the bug.",
       "setup": ["git_init"],
@@ -16,6 +17,7 @@
     },
     {
       "id": "stuck-investigation",
+      "task_class": "investigation",
       "fixture": "fixtures/config-noop",
       "prompt": "Investigation only; do not edit files. app.py should use the timeout from config.yaml. Setting it to 30 and then 60 had no effect after restarts. That is two failed attempts. Identify the first directly verifiable root cause and report the observation that distinguishes it from the user's premise.",
       "setup": ["git_init"],
@@ -25,6 +27,7 @@
     },
     {
       "id": "landing-audit",
+      "task_class": "landing",
       "fixture": "fixtures/landing-audit",
       "prompt": "The task was exactly this and only this: add a slugify(title) function to util.py. The working diff is the finished work and DRAFT_REPORT.md is the draft summary. Run the landing protocol on the current diff and return the corrected honest report. Do not edit the fixture.",
       "setup": ["git_init", "apply:work.patch", "remove:work.patch"],

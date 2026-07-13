@@ -219,12 +219,12 @@ The safety floor never scales down; ratchet rules live in guardrails.]
   auth: bearer key in ~/.config/fablized/local-tier.env · llama.cpp; instance
   auto-stops after 45 min idle — connection/start guide in ..\v100\CLAUDE.md ·
   decided 2026-07-12
-- Light scope (V100 evals 2026-07-12, 3 reps, evals/results-v13.1.md): bugfix +
-  investigation slices — 3/3 both arms, repro-before-edit held every run. Landing
-  judgment stays capable-tier: 0/3, the model edits the fixture during an audit
-  despite "do not edit". delegate.py --task-class + fail-closed verification still
-  enforce. Thinking model — budget max_tokens headroom (eval adapter uses 8192).
-  Ulysses item 10 CLOSED (re-tested unchanged; record in results-v13.1.md).
+- Light scope (V100 evals 2026-07-12/13, evals/results-v13.1.md): bugfix +
+  investigation 3/3 both arms under universal micro — slice-arm re-run queued.
+  Landing: report-only slice fixed integrity (tree untouched 3/3, kit 2/3 with
+  lift; one empty-output fail) — stays capable-tier. delegate.py --task-class +
+  fail-closed verification enforce. Thinking model — budget max_tokens headroom
+  (adapter 8192). Ulysses item 10 CLOSED.
 
 ## Quick constraints
 

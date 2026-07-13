@@ -30,6 +30,16 @@ PROFILE_MANIFEST = json.loads(
 PROFILE_BUDGETS = {name: profile["budget"] for name, profile in PROFILE_MANIFEST.items()}
 
 
+def kit_prompt_for(profile: str, case: dict[str, Any]) -> tuple[Path, str]:
+    """Kit-arm system prompt for a case: the task-class micro slice when the case
+    declares one (mirrors tools/delegate.py --task-class dispatch)."""
+    slice_profile = f"micro-{case.get('task_class', '')}"
+    if profile == "micro" and slice_profile in PROFILE_MANIFEST:
+        slice_file = ROOT / "adapters" / "system-prompt" / PROFILE_MANIFEST[slice_profile]["file"]
+        return slice_file, slice_profile
+    return PROMPTS[profile], profile
+
+
 def artifact_component(value: str) -> str:
     """Return a portable, non-empty directory component for an external identifier."""
     return re.sub(r"[^A-Za-z0-9._-]+", "_", value).strip("._") or "model"
@@ -76,7 +86,7 @@ def invoke_claude(
     fixture: Path,
     model: str,
     arm: str,
-    profile: str,
+    kit_system_prompt: Path,
     transcript: Path,
     timeout: int,
 ) -> int:
@@ -92,7 +102,7 @@ def invoke_claude(
         "--verbose",
     ]
     if arm == "kit":
-        command.extend(["--append-system-prompt-file", str(PROMPTS[profile])])
+        command.extend(["--append-system-prompt-file", str(kit_system_prompt)])
     with transcript.open("w", encoding="utf-8", newline="\n") as output:
         try:
             process = subprocess.run(
@@ -118,7 +128,7 @@ def invoke_command(
     fixture: Path,
     model: str,
     arm: str,
-    profile: str,
+    kit_system_prompt: Path,
     transcript: Path,
     timeout: int,
 ) -> int:
@@ -126,7 +136,7 @@ def invoke_command(
     prompt_file.write_text(case["prompt"] + "\n", encoding="utf-8")
     empty_prompt = transcript.parent / "baseline-system-prompt.txt"
     empty_prompt.write_text("", encoding="utf-8")
-    system_prompt = PROMPTS[profile] if arm == "kit" else empty_prompt
+    system_prompt = kit_system_prompt if arm == "kit" else empty_prompt
     values = {
         "prompt_file": str(prompt_file),
         "system_prompt_file": str(system_prompt),
@@ -211,10 +221,18 @@ def main() -> int:
         "cases": {},
     }
 
+    budget_failures: list[str] = []
     with tempfile.TemporaryDirectory(prefix="fablized-evals-") as temporary:
         temp_root = Path(temporary)
         for case in cases:
-            summary["cases"][case["id"]] = {}
+            kit_system_prompt, prompt_profile = kit_prompt_for(args.profile, case)
+            case_prompt_words = len(kit_system_prompt.read_text(encoding="utf-8").split())
+            if case_prompt_words > PROFILE_BUDGETS[prompt_profile]:
+                budget_failures.append(case["id"])
+            summary["cases"][case["id"]] = {
+                "kit_prompt_profile": prompt_profile,
+                "kit_prompt_words": case_prompt_words,
+            }
             for arm in arms:
                 fixture = temp_root / f"{case['id']}-{arm}"
                 initial = prepare_fixture(case, fixture)
@@ -228,7 +246,7 @@ def main() -> int:
                         fixture,
                         args.model,
                         arm,
-                        args.profile,
+                        kit_system_prompt,
                         transcript,
                         args.timeout,
                     )
@@ -239,7 +257,7 @@ def main() -> int:
                         fixture,
                         args.model,
                         arm,
-                        args.profile,
+                        kit_system_prompt,
                         transcript,
                         args.timeout,
                     )
@@ -278,7 +296,7 @@ def main() -> int:
         case_id for case_id in kit_results.keys() & baseline_results
         if kit_results[case_id] and not baseline_results[case_id]
     ]
-    budget_ok = prompt_words <= PROFILE_BUDGETS[args.profile]
+    budget_ok = prompt_words <= PROFILE_BUDGETS[args.profile] and not budget_failures
     if baseline_results:
         accepted = budget_ok and not regressions and bool(lift)
     else:

@@ -54,7 +54,7 @@ included): bugfix kit 10.7k in / 1.0k out, investigation kit 4.0k / 1.0k, landin
 33.4k / 3.5k; baselines ~60–70% of kit input. Per-arm wall-clock is not captured by the
 runner; a full 6-arm matrix took 3.5–6 minutes.
 
-## Local micro profile
+## Local micro profile — 3070 fallback (qwen2.5-coder:7b)
 
 Model: `qwen2.5-coder:7b` (Ollama, Q4_K_M) on 2026-07-10. Profile:
 `fablized-micro.md`, 358 words, 800-word budget. The canary reported approximately 64 tok/s
@@ -81,3 +81,49 @@ this model, but it does not reliably enforce falsification, scope audit, or hone
 Testing also exposed two provider/OS defects in the runner: Windows-invalid model IDs in
 artifact paths and unrecognized `write_file`/`replace_text` edit events. Both were corrected
 with unit coverage; fixture copies now exclude runtime caches as well.
+
+## V100 landing-audit retest under the hardened landing slice (2026-07-12)
+
+Same model and adapter as the V100 retest above. Two changes since that run, both
+2026-07-12: the micro landing slice gained a hard report-only rule ("an auditor never
+repairs; an audit that changes the tree is void", `core/digests.md`), and `run_evals.py`
+gained task-class slice dispatch — the kit arm of a case declaring `task_class` now
+receives `fablized-micro-<class>.md` under the micro profile, mirroring
+`tools/delegate.py --task-class`. **The earlier V100 and 7B "micro profile" rows all ran
+the kit arm under the universal `fablized-micro.md` (358 words); the task-class slices had
+never been exercised by the eval until this run.** The kit arm here ran under
+`fablized-micro-landing.md`, 207 words, 400-word budget; the baseline arm stayed empty.
+
+Three fresh kit-vs-baseline repetitions, `landing-audit` only
+(artifacts `20260713T002338Z`, `20260713T002526Z`, `20260713T002646Z`):
+
+| Rep | Kit | Baseline | Lift |
+|---|---|---|---:|
+| 1 | PASS (7/7 checks) | FAIL (edited fixture, missed unrun-test claim) | yes |
+| 2 | FAIL (empty final output; tree untouched) | FAIL (edited fixture, missed claim) | no |
+| 3 | PASS (7/7 checks) | FAIL (missed unrun-test claim) | yes |
+
+The integrity violation that failed all six session-4 arms is gone from the kit arm:
+under the hardened slice the model modified nothing in any repetition (protected files
+and `tree_matches_initial` passed 3/3). The baseline arm kept editing the fixture in 2/3
+repetitions — the discrimination the earlier runs lacked. Formal acceptance passed in
+repetitions 1 and 3 (lift, no regression, budget ok).
+
+The rep-2 kit failure is an empty deliverable, not a bad audit: the final turn emitted
+551 completion tokens with no tool calls and an empty `content` field, so the adapter
+returned an empty result (`tool_loop_adapter.py` replays without `reasoning_content`;
+the audit text plausibly never left the reasoning channel — [INFERRED], the raw response
+is not retained). The grader failed it fail-closed, which matches `delegate.py`'s
+missing-deliverable rejection; nothing was loosened. Watch item: have the adapter log
+`reasoning_content` length on content-empty final turns so this failure mode is
+attributable instead of inferred.
+
+Median tokens per arm (three-run medians, thinking included): kit 5.5k in / 1.1k out —
+down from 33.4k / 3.5k under the universal micro — baseline 26.3k in / 3.3k out. The
+slice did not just fix integrity; it cut kit landing cost by roughly six times.
+
+Light-scope consequence: landing-audit now shows 2/3 kit passes with 3/3 integrity and
+kit-vs-baseline lift, but the single empty-output failure keeps it short of the 3/3 bar
+cases 1–2 met. Landing judgment stays capable-tier; promotion would need the
+empty-deliverable failure mode understood and a clean 3/3. Cases 1–2 have not yet been
+re-run under their task-class slices (their 3/3 record is universal-micro); queued.

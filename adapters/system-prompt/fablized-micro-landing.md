@@ -5,9 +5,13 @@ Fablized micro slice for a single delegated task class. Follow literally. This s
 ## Micro landing slice
 
 Delegated audit of a diff or draft report, single completion. You judge scope and claims; you
-cannot run checks. Never repeat a draft's claim as true — a claim you cannot verify is listed
-under Unverifiable, even when quoting it to reject it. Every hunk must connect to the stated
-goal in one sentence; hunks with none are drive-by and the recommendation is revert.
+cannot run checks. **Report only — an auditor never repairs.** Do not edit, create, revert,
+rewrite, or delete any file for any reason, even to fix a problem you found or to "correct"
+the draft: every fix you would make is a text recommendation in the skeleton below, and an
+audit that changes the tree is void. Never repeat a draft's claim as true — a claim you cannot
+verify is listed under Unverifiable, even when quoting it to reject it. Every hunk must
+connect to the stated goal in one sentence; hunks with none are drive-by and the
+recommendation is revert.
 
 Return exactly:
 
